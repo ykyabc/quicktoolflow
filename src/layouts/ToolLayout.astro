@@ -1,0 +1,138 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import AdBanner from '~/components/ui/AdBanner.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+import { getPermalink } from '~/utils/permalinks';
+
+export interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  category: string;
+}
+
+const { title, description, slug, category } = Astro.props;
+const canonical = `https://quicktoolflow.com/tools/${slug}`;
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `${title} — QuickToolFlow`,
+  description,
+  url: canonical,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'QuickToolFlow', url: 'https://quicktoolflow.com' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: `What is the ${title}?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `The ${title} on QuickToolFlow is a free online tool that lets you ${description.toLowerCase()} All processing happens directly in your browser.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: `Is the ${title} free?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, completely free with no limits, no sign-up, and no hidden fees.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: `Is my data safe?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Absolutely. All data processing happens locally in your browser. No data is transmitted to or stored on any server.',
+      },
+    },
+  ],
+};
+
+const otherTools = tools.filter((t) => t.slug !== slug).slice(0, 4);
+
+const metadata = {
+  title,
+  description,
+  canonical,
+  robots: { index: true, follow: true },
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-10 mx-auto max-w-4xl sm:px-6 lg:px-8">
+    <Breadcrumb items={[
+      { name: 'Home', href: '/' },
+      { name: 'Tools', href: '/tools/' },
+      { name: title },
+    ]} />
+
+    {/* Tool Header */}
+    <header class="mb-8">
+      <span class="inline-block text-xs font-medium tracking-wider uppercase text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full px-3 py-1 mb-3">
+        {category}
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
+        {title}
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
+        {description}
+      </p>
+    </header>
+
+    {/* Top Ad */}
+    <AdBanner slot="1234567890" format="horizontal" />
+
+    {/* TOOL BODY */}
+    <div class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm mb-8">
+      <slot />
+    </div>
+
+    {/* Bottom Ad */}
+    <AdBanner slot="0987654321" format="auto" />
+
+    {/* How To Use */}
+    <div class="prose prose-lg dark:prose-invert max-w-none mt-12 mb-10">
+      <h2>How to Use This Tool</h2>
+      <ol>
+        <li>Enter or paste your content into the input field above.</li>
+        <li>Click the action button to process your data.</li>
+        <li>View results instantly in the output area.</li>
+        <li>Copy the output to your clipboard with one click.</li>
+      </ol>
+      <p>
+        All processing happens locally in your browser. No data is ever sent to our servers,
+        ensuring complete privacy and lightning-fast results.
+      </p>
+    </div>
+
+    {/* Related Tools */}
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {otherTools.map((tool) => (
+          <ToolCard
+            slug={tool.slug}
+            name={tool.name}
+            description={tool.description}
+            icon={tool.icon}
+            gradient={tool.gradient}
+          />
+        ))}
+      </div>
+    </section>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(toolSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+</Layout>

@@ -1,0 +1,45 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import AdBanner from '~/components/ui/AdBanner.astro';
+import { tools, categories, getToolsByCategory } from '~/utils/tools-data';
+
+const metadata = {
+  title: 'All Free Online Tools',
+  description: 'Browse all free online developer, text, generator, and converter tools at QuickToolFlow. No sign-up required.',
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'All Tools' }]} />
+
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">All Tools</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+        {tools.length} free tools and counting. Every tool runs entirely in your browser — no uploads, no sign-ups.
+      </p>
+    </header>
+
+    {categories.map((cat) => {
+      const catTools = getToolsByCategory(cat.slug);
+      if (catTools.length === 0) return null;
+      return (
+        <section id={cat.slug} class="mb-14">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{cat.name}</h2>
+          <p class="text-gray-500 dark:text-gray-400 mb-6">{cat.description}</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {catTools.map((tool) => (
+              <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
+            ))}
+          </div>
+        </section>
+      );
+    })}
+
+    <div class="max-w-4xl mx-auto mt-8">
+      <AdBanner slot="3333333333" format="horizontal" />
+    </div>
+  </section>
+</Layout>

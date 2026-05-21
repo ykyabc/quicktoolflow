@@ -1,0 +1,58 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Word Counter"
+  description="Count words, characters, sentences, paragraphs, and estimate reading time in real time. Free online word counter."
+  slug="word-counter"
+  category="Text Tools"
+>
+  <div class="space-y-6">
+    <div>
+      <label for="wc-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        Enter or paste your text
+      </label>
+      <textarea
+        id="wc-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed placeholder:text-gray-400 min-h-[250px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Start typing or paste your text here..."
+      ></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      {[
+        { id: 'wc-words', label: 'Words' },
+        { id: 'wc-chars', label: 'Characters' },
+        { id: 'wc-chars-ns', label: 'No Spaces' },
+        { id: 'wc-sentences', label: 'Sentences' },
+        { id: 'wc-paragraphs', label: 'Paragraphs' },
+        { id: 'wc-readtime', label: 'Read Time' },
+      ].map((stat) => (
+        <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+          <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</span>
+          <span id={stat.id} class="text-xl font-bold text-gray-900 dark:text-white mt-1">0</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <script is:inline>
+    const input = document.getElementById('wc-input');
+    const $ = (id) => document.getElementById(id);
+
+    function count() {
+      const text = input.value;
+      const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+
+      $('wc-words').textContent = words.toLocaleString();
+      $('wc-chars').textContent = text.length.toLocaleString();
+      $('wc-chars-ns').textContent = text.replace(/\s/g, '').length.toLocaleString();
+      $('wc-sentences').textContent = (text.match(/[.!?]+/g) || []).length.toLocaleString();
+      $('wc-paragraphs').textContent = (text.trim() === '' ? 0 : text.trim().split(/\n\s*\n/).length).toLocaleString();
+      $('wc-readtime').textContent = words === 0 ? '0m' : Math.ceil(words / 200) < 1 ? '<1m' : Math.ceil(words / 200) + 'm';
+    }
+
+    input.addEventListener('input', count);
+  </script>
+</ToolLayout>

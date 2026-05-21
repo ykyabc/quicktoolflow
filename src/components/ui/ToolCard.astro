@@ -1,0 +1,42 @@
+---
+export interface Props {
+  slug: string;
+  name: string;
+  description: string;
+  icon: string;
+  gradient: string;
+  index?: number;
+}
+
+const { slug, name, description, icon, gradient, index = 0 } = Astro.props;
+---
+
+<a
+  href={`/tools/${slug}/`}
+  class="group block rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6
+         hover:shadow-lg hover:-translate-y-1 hover:border-gray-300 dark:hover:border-slate-600
+         transition-all duration-300 ease-out"
+>
+  <div class="flex items-start gap-4">
+    <div
+      class:list={[
+        'w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-white shrink-0 shadow-sm',
+        gradient,
+      ]}
+    >
+      <astro-icon name={icon} class="w-6 h-6" />
+    </div>
+    <div class="min-w-0">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+        {name}
+      </h3>
+      <p class="mt-1.5 text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
+        {description}
+      </p>
+    </div>
+  </div>
+  <div class="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+    Open Tool
+    <astro-icon name="tabler:arrow-right" class="w-4 h-4" />
+  </div>
+</a>

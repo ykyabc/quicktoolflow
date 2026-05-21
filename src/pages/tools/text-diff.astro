@@ -1,0 +1,58 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Text Diff Checker"
+  description="Compare two blocks of text and highlight line-by-line differences instantly. Free online diff tool."
+  slug="text-diff"
+  category="Text Tools"
+>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Original Text</label>
+        <textarea id="td-a" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Paste original text..."></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Modified Text</label>
+        <textarea id="td-b" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Paste modified text..."></textarea>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <button id="td-cmp" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Compare</button>
+      <button id="td-clr" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Clear</button>
+    </div>
+    <div id="td-res" class="hidden">
+      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Differences</h3>
+      <div id="td-out" class="bg-gray-50 dark:bg-slate-800 rounded-xl p-5 border border-gray-200 dark:border-slate-700 overflow-auto max-h-[500px] font-mono text-sm leading-relaxed"></div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    document.getElementById('td-cmp').addEventListener('click', () => {
+      const a = document.getElementById('td-a').value.split('\n');
+      const b = document.getElementById('td-b').value.split('\n');
+      const max = Math.max(a.length, b.length);
+      let html = '';
+      for (let i = 0; i < max; i++) {
+        if (a[i] === b[i]) {
+          html += `<div class="py-0.5 px-2 text-gray-600 dark:text-gray-400">${esc(a[i]||'')}</div>`;
+        } else {
+          if (a[i] !== undefined) html += `<div class="py-0.5 px-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-l-2 border-red-400">- ${esc(a[i])}</div>`;
+          if (b[i] !== undefined) html += `<div class="py-0.5 px-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-l-2 border-green-400">+ ${esc(b[i])}</div>`;
+        }
+      }
+      document.getElementById('td-out').innerHTML = html || '<div class="text-green-700 text-center py-4">✓ Texts are identical.</div>';
+      document.getElementById('td-res').classList.remove('hidden');
+    });
+
+    document.getElementById('td-clr').addEventListener('click', () => {
+      document.getElementById('td-a').value = '';
+      document.getElementById('td-b').value = '';
+      document.getElementById('td-res').classList.add('hidden');
+    });
+  </script>
+</ToolLayout>

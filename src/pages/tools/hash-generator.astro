@@ -1,0 +1,51 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Hash Generator"
+  description="Generate SHA-256, SHA-512, and SHA-1 hashes from any text using the Web Crypto API. Free online hash tool."
+  slug="hash-generator"
+  category="Developer Tools"
+>
+  <div class="space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
+      <textarea id="hg-in" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter text to hash..."></textarea>
+    </div>
+
+    <button id="hg-gen" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate Hashes</button>
+
+    <div class="space-y-4">
+      {['SHA-256','SHA-512','SHA-1'].map((algo) => (
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{algo}</label>
+          <div class="flex gap-2">
+            <input id={`hg-${algo.toLowerCase().replace('-','')}`} type="text" class="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm outline-none" readonly />
+            <button class="hg-copy px-3 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition" data-tgt={`hg-${algo.toLowerCase().replace('-','')}`}>
+              <astro-icon name="tabler:copy" class="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <script is:inline>
+    async function hash(alg, text) {
+      const buf = await crypto.subtle.digest(alg, new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+    document.getElementById('hg-gen').addEventListener('click', async () => {
+      const t = document.getElementById('hg-in').value;
+      if (!t) return;
+      document.getElementById('hg-sha256').value = await hash('SHA-256', t);
+      document.getElementById('hg-sha512').value = await hash('SHA-512', t);
+      document.getElementById('hg-sha1').value = await hash('SHA-1', t);
+    });
+    document.querySelectorAll('.hg-copy').forEach(b => b.addEventListener('click', () => {
+      const el = document.getElementById(b.dataset.tgt);
+      if (el.value) navigator.clipboard.writeText(el.value);
+    }));
+  </script>
+</ToolLayout>
