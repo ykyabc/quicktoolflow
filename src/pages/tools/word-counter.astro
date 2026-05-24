@@ -4,7 +4,7 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
 <ToolLayout
   title="Word Counter"
-  description="Count words, characters, sentences, paragraphs, and estimate reading time in real time. Free online word counter."
+  description="Count words, characters, sentences, paragraphs, and estimate reading time in real time."
   slug="word-counter"
   category="Text Tools"
 >
@@ -20,39 +20,71 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       ></textarea>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-      {[
-        { id: 'wc-words', label: 'Words' },
-        { id: 'wc-chars', label: 'Characters' },
-        { id: 'wc-chars-ns', label: 'No Spaces' },
-        { id: 'wc-sentences', label: 'Sentences' },
-        { id: 'wc-paragraphs', label: 'Paragraphs' },
-        { id: 'wc-readtime', label: 'Read Time' },
-      ].map((stat) => (
-        <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
-          <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</span>
-          <span id={stat.id} class="text-xl font-bold text-gray-900 dark:text-white mt-1">0</span>
-        </div>
-      ))}
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" id="wc-stats">
+      <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Words</span>
+        <span class="wc-stat text-xl font-bold text-gray-900 dark:text-white mt-1" data-type="words">0</span>
+      </div>
+      <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Characters</span>
+        <span class="wc-stat text-xl font-bold text-gray-900 dark:text-white mt-1" data-type="chars">0</span>
+      </div>
+      <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">No Spaces</span>
+        <span class="wc-stat text-xl font-bold text-gray-900 dark:text-white mt-1" data-type="nospace">0</span>
+      </div>
+      <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sentences</span>
+        <span class="wc-stat text-xl font-bold text-gray-900 dark:text-white mt-1" data-type="sentences">0</span>
+      </div>
+      <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Paragraphs</span>
+        <span class="wc-stat text-xl font-bold text-gray-900 dark:text-white mt-1" data-type="paragraphs">0</span>
+      </div>
+      <div class="flex flex-col p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Read Time</span>
+        <span class="wc-stat text-xl font-bold text-gray-900 dark:text-white mt-1" data-type="readtime">0m</span>
+      </div>
     </div>
   </div>
+</ToolLayout>
 
-  <script is:inline>
-    const input = document.getElementById('wc-input');
-    const $ = (id) => document.getElementById(id);
+<script>
+  function initWordCounter() {
+    const textarea = document.getElementById('wc-input') as HTMLTextAreaElement;
+    if (!textarea) return;
 
-    function count() {
-      const text = input.value;
-      const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    const stats = document.querySelectorAll('.wc-stat') as NodeListOf<HTMLElement>;
 
-      $('wc-words').textContent = words.toLocaleString();
-      $('wc-chars').textContent = text.length.toLocaleString();
-      $('wc-chars-ns').textContent = text.replace(/\s/g, '').length.toLocaleString();
-      $('wc-sentences').textContent = (text.match(/[.!?]+/g) || []).length.toLocaleString();
-      $('wc-paragraphs').textContent = (text.trim() === '' ? 0 : text.trim().split(/\n\s*\n/).length).toLocaleString();
-      $('wc-readtime').textContent = words === 0 ? '0m' : Math.ceil(words / 200) < 1 ? '<1m' : Math.ceil(words / 200) + 'm';
+    function updateCounts() {
+      const text = textarea.value;
+      const trimmed = text.trim();
+      const words = trimmed === '' ? 0 : trimmed.split(/\s+/).length;
+
+      const values: Record<string, string> = {
+        words: words.toLocaleString(),
+        chars: text.length.toLocaleString(),
+        nospace: text.replace(/\s/g, '').length.toLocaleString(),
+        sentences: (text.match(/[.!?]+/g) || []).length.toLocaleString(),
+        paragraphs: (trimmed === '' ? 0 : trimmed.split(/\n\s*\n/).length).toLocaleString(),
+        readtime: words === 0 ? '0m' : Math.ceil(words / 200) < 1 ? '<1m' : Math.ceil(words / 200) + 'm',
+      };
+
+      stats.forEach((el) => {
+        const type = el.dataset.type;
+        if (type && values[type] !== undefined) {
+          el.textContent = values[type];
+        }
+      });
     }
 
-    input.addEventListener('input', count);
-  </script>
-</ToolLayout>
+    textarea.addEventListener('input', updateCounts);
+  }
+
+  // Run on initial page load
+  initWordCounter();
+
+  // Re-run after view transitions (if AstroWind uses Swup)
+  document.addEventListener('astro:page-load', initWordCounter);
+  document.addEventListener('swup:contentReplaced', initWordCounter);
+</script>

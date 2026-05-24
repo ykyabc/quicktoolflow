@@ -1,0 +1,107 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Number Base Converter"
+  description="Convert numbers between binary, octal, decimal, and hexadecimal bases instantly."
+  slug="number-base-converter"
+  category="Converters"
+>
+  <div class="space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Number</label>
+      <div class="flex gap-3">
+        <input id="nb-input" type="text" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter a number..." value="255" />
+        <select id="nb-from" class="px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+          <option value="10" selected>Decimal</option>
+          <option value="2">Binary</option>
+          <option value="8">Octal</option>
+          <option value="16">Hex</option>
+        </select>
+      </div>
+    </div>
+
+    <button id="nb-convert" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Convert</button>
+
+    <div id="nb-error" class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200"></div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {[
+        { id: 'nb-dec', label: 'Decimal (Base 10)', btn: 'nb-dec-copy' },
+        { id: 'nb-bin', label: 'Binary (Base 2)', btn: 'nb-bin-copy' },
+        { id: 'nb-oct', label: 'Octal (Base 8)', btn: 'nb-oct-copy' },
+        { id: 'nb-hex', label: 'Hexadecimal (Base 16)', btn: 'nb-hex-copy' },
+      ].map((item) => (
+        <div class="p-4 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs text-gray-500 uppercase tracking-wider">{item.label}</span>
+            <button data-tgt={item.id} class="nb-copy text-xs text-blue-600 hover:text-blue-700 font-medium">Copy</button>
+          </div>
+          <div id={item.id} class="text-lg font-mono font-bold text-gray-900 dark:text-white break-all">—</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initNumberBaseConverter() {
+    const inputEl = document.getElementById('nb-input') as HTMLInputElement;
+    const fromEl = document.getElementById('nb-from') as HTMLSelectElement;
+    const errorEl = document.getElementById('nb-error');
+    const btnConvert = document.getElementById('nb-convert');
+
+    if (!inputEl || !fromEl || !btnConvert) return;
+
+    function convert() {
+      const val = inputEl.value.trim();
+      const base = parseInt(fromEl.value);
+
+      if (errorEl) { errorEl.classList.add('hidden'); errorEl.textContent = ''; }
+
+      if (!val) {
+        ['nb-dec','nb-bin','nb-oct','nb-hex'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '—';
+        });
+        return;
+      }
+
+      const num = parseInt(val, base);
+      if (isNaN(num)) {
+        if (errorEl) { errorEl.textContent = 'Invalid number for the selected base.'; errorEl.classList.remove('hidden'); }
+        return;
+      }
+
+      const dec = document.getElementById('nb-dec');
+      const bin = document.getElementById('nb-bin');
+      const oct = document.getElementById('nb-oct');
+      const hex = document.getElementById('nb-hex');
+      if (dec) dec.textContent = num.toString(10);
+      if (bin) bin.textContent = num.toString(2);
+      if (oct) oct.textContent = num.toString(8);
+      if (hex) hex.textContent = num.toString(16).toUpperCase();
+    }
+
+    btnConvert.addEventListener('click', convert);
+    inputEl.addEventListener('input', convert);
+    fromEl.addEventListener('change', convert);
+
+    document.querySelectorAll('.nb-copy').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tgt = (btn as HTMLElement).dataset.tgt;
+        const el = tgt ? document.getElementById(tgt) : null;
+        if (el && el.textContent && el.textContent !== '—') {
+          navigator.clipboard.writeText(el.textContent);
+        }
+      });
+    });
+
+    convert();
+  }
+
+  initNumberBaseConverter();
+  document.addEventListener('astro:page-load', initNumberBaseConverter);
+  document.addEventListener('swup:contentReplaced', initNumberBaseConverter);
+</script>

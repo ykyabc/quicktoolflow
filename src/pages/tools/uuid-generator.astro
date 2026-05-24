@@ -1,0 +1,109 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="UUID Generator"
+  description="Generate RFC 4122 compliant UUID v4 identifiers. Bulk generate up to 100 UUIDs at once."
+  slug="uuid-generator"
+  category="Generators"
+>
+  <div class="space-y-6">
+    <div class="flex flex-wrap items-end gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Count</label>
+        <input id="uuid-count" type="number" min="1" max="100" value="5" class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+      </div>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input id="uuid-uppercase" type="checkbox" class="w-4 h-4 accent-blue-600" />
+        <span class="text-sm text-gray-700 dark:text-gray-300">Uppercase</span>
+      </label>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input id="uuid-nodash" type="checkbox" class="w-4 h-4 accent-blue-600" />
+        <span class="text-sm text-gray-700 dark:text-gray-300">Remove dashes</span>
+      </label>
+      <button id="uuid-gen" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate</button>
+      <button id="uuid-copy" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy All</button>
+    </div>
+
+    <div id="uuid-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-green-50 text-green-700 border border-green-200"></div>
+
+    <div>
+      <textarea id="uuid-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[250px] resize-y outline-none" readonly placeholder="Generated UUIDs will appear here..." spellcheck="false"></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function generateUUID(): string {
+    // Use crypto.getRandomValues for RFC 4122 v4 UUID
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+
+    // Set version (4) and variant (10xx)
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+    const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+
+    return [
+      hex.slice(0, 8),
+      hex.slice(8, 12),
+      hex.slice(12, 16),
+      hex.slice(16, 20),
+      hex.slice(20, 32),
+    ].join('-');
+  }
+
+  function initUuidGenerator() {
+    const countEl = document.getElementById('uuid-count') as HTMLInputElement;
+    const upperEl = document.getElementById('uuid-uppercase') as HTMLInputElement;
+    const noDashEl = document.getElementById('uuid-nodash') as HTMLInputElement;
+    const outputEl = document.getElementById('uuid-output') as HTMLTextAreaElement;
+    const statusEl = document.getElementById('uuid-status');
+    const btnGen = document.getElementById('uuid-gen');
+    const btnCopy = document.getElementById('uuid-copy');
+
+    if (!countEl || !outputEl || !btnGen) return;
+
+    function run() {
+      const count = Math.min(Math.max(parseInt(countEl.value) || 1, 1), 100);
+      const uuids: string[] = [];
+
+      for (let i = 0; i < count; i++) {
+        let uuid = generateUUID();
+        if (upperEl && upperEl.checked) uuid = uuid.toUpperCase();
+        if (noDashEl && noDashEl.checked) uuid = uuid.replace(/-/g, '');
+        uuids.push(uuid);
+      }
+
+      outputEl.value = uuids.join('\n');
+
+      if (statusEl) {
+        statusEl.textContent = count + ' UUID' + (count > 1 ? 's' : '') + ' generated.';
+        statusEl.classList.remove('hidden');
+        setTimeout(() => statusEl.classList.add('hidden'), 3000);
+      }
+    }
+
+    btnGen.addEventListener('click', run);
+
+    btnCopy?.addEventListener('click', () => {
+      if (outputEl.value) {
+        navigator.clipboard.writeText(outputEl.value);
+        if (statusEl) {
+          statusEl.textContent = 'Copied to clipboard!';
+          statusEl.classList.remove('hidden');
+          setTimeout(() => statusEl.classList.add('hidden'), 2000);
+        }
+      }
+    });
+
+    // Generate initial UUIDs on load
+    run();
+  }
+
+  initUuidGenerator();
+  document.addEventListener('astro:page-load', initUuidGenerator);
+  document.addEventListener('swup:contentReplaced', initUuidGenerator);
+</script>

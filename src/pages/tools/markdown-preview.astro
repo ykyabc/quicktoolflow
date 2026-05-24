@@ -1,0 +1,201 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Markdown Preview"
+  description="Write Markdown on the left and see the rendered HTML preview on the right in real time. Free online Markdown editor."
+  slug="markdown-preview"
+  category="Developer Tools"
+>
+  <div class="space-y-4">
+    <div class="flex gap-2">
+      <button id="md-clear" class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Clear</button>
+      <button id="md-copy-html" class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy HTML</button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Markdown</label>
+        <textarea
+          id="md-input"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[400px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="Write Markdown here..."
+          spellcheck="false"
+        ></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview</label>
+        <div
+          id="md-preview"
+          class="w-full px-5 py-4 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 min-h-[400px] overflow-y-auto prose prose-sm dark:prose-invert max-w-none"
+        ></div>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initMarkdownPreview() {
+    const input = document.getElementById('md-input') as HTMLTextAreaElement;
+    const preview = document.getElementById('md-preview') as HTMLDivElement;
+    const btnClear = document.getElementById('md-clear');
+    const btnCopyHtml = document.getElementById('md-copy-html');
+
+    if (!input || !preview) return;
+
+    if (!input.value) {
+      const defaultLines = [
+        '# Hello World',
+        '',
+        'This is a **bold** statement and this is *italic*.',
+        '',
+        '## Features',
+        '',
+        '- Real-time preview',
+        '- Supports **bold**, *italic*, ~~strikethrough~~',
+        '- [Links](https://example.com)',
+        '- Code blocks',
+        '- Lists and more',
+        '',
+        '### Inline Code',
+        '',
+        'Use `console.log()` to debug.',
+        '',
+        '> This is a blockquote.',
+        '',
+        '| Column 1 | Column 2 |',
+        '|----------|----------|',
+        '| Cell 1   | Cell 2   |',
+        '',
+        '---',
+        '',
+        'End of example.',
+      ];
+      input.value = defaultLines.join('\n');
+    }
+
+    function escapeHtml(str: string): string {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function mdToHtml(md: string): string {
+      let html = md;
+      const lt = '<';
+      const gt = '>';
+
+      // Fenced code blocks
+      html = html.replace(/`{3}(\w*)\n([\s\S]*?)`{3}/g, (_m, _lang, code) => {
+        return lt + 'pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"' + gt +
+               lt + 'code' + gt + escapeHtml(code) + lt + '/code' + gt + lt + '/pre' + gt;
+      });
+
+      // Tables
+      html = html.replace(/^(\|.+\|)\n(\|[-: |]+\|)\n((?:\|.+\|\n?)+)/gm, (_m, header, _sep, body) => {
+        const hdr = header.split('|').filter((c: string) => c.trim()).map((c: string) =>
+          lt + 'th class="border px-3 py-2"' + gt + c.trim() + lt + '/th' + gt
+        ).join('');
+        const rows = body.trim().split('\n').map((row: string) => {
+          const cells = row.split('|').filter((c: string) => c.trim()).map((c: string) =>
+            lt + 'td class="border px-3 py-2"' + gt + c.trim() + lt + '/td' + gt
+          ).join('');
+          return lt + 'tr' + gt + cells + lt + '/tr' + gt;
+        }).join('');
+        return lt + 'table class="border-collapse border w-full"' + gt +
+               lt + 'thead' + gt + lt + 'tr' + gt + hdr + lt + '/tr' + gt + lt + '/thead' + gt +
+               lt + 'tbody' + gt + rows + lt + '/tbody' + gt +
+               lt + '/table' + gt;
+      });
+
+      // Headers
+      html = html.replace(/^###### (.+)$/gm, lt + 'h6' + gt + '$1' + lt + '/h6' + gt);
+      html = html.replace(/^##### (.+)$/gm, lt + 'h5' + gt + '$1' + lt + '/h5' + gt);
+      html = html.replace(/^#### (.+)$/gm, lt + 'h4' + gt + '$1' + lt + '/h4' + gt);
+      html = html.replace(/^### (.+)$/gm, lt + 'h3' + gt + '$1' + lt + '/h3' + gt);
+      html = html.replace(/^## (.+)$/gm, lt + 'h2' + gt + '$1' + lt + '/h2' + gt);
+      html = html.replace(/^# (.+)$/gm, lt + 'h1' + gt + '$1' + lt + '/h1' + gt);
+
+      // Horizontal rule
+      html = html.replace(/^---$/gm, lt + 'hr /' + gt);
+
+      // Blockquotes
+      html = html.replace(/^> (.+)$/gm,
+        lt + 'blockquote class="pl-4 border-l-4 border-gray-300 italic text-gray-600"' + gt + '$1' + lt + '/blockquote' + gt
+      );
+
+      // Bold, italic, strikethrough
+      html = html.replace(/\*\*(.+?)\*\*/g, lt + 'strong' + gt + '$1' + lt + '/strong' + gt);
+      html = html.replace(/\*(.+?)\*/g, lt + 'em' + gt + '$1' + lt + '/em' + gt);
+      html = html.replace(/~~(.+?)~~/g, lt + 'del' + gt + '$1' + lt + '/del' + gt);
+
+      // Inline code
+      html = html.replace(/`([^`]+)`/g,
+        lt + 'code class="bg-gray-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-sm"' + gt + '$1' + lt + '/code' + gt
+      );
+
+      // Images and links
+      html = html.replace(/!$$([^$$]*)\]$$([^)]+)$$/g,
+        lt + 'img src="$2" alt="$1" class="rounded-lg max-w-full" /' + gt
+      );
+      html = html.replace(/$$([^$$]+)\]$$([^)]+)$$/g,
+        lt + 'a href="$2" class="text-blue-600 hover:underline"' + gt + '$1' + lt + '/a' + gt
+      );
+
+      // Unordered lists
+      html = html.replace(/^- (.+)$/gm, lt + 'li' + gt + '$1' + lt + '/li' + gt);
+      html = html.replace(/((?:<li>[\s\S]*?<\/li>\n?)+)/g,
+        lt + 'ul class="list-disc pl-6 space-y-1"' + gt + '$1' + lt + '/ul' + gt
+      );
+
+      // Paragraphs
+      const lines = html.split('\n');
+      const result: string[] = [];
+      const blockTags = ['h1','h2','h3','h4','h5','h6','ul','ol','li','blockquote','pre','hr','table','thead','tbody','tr','img'];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line === '') {
+          result.push('');
+          continue;
+        }
+
+        const isBlock = blockTags.some(tag => line.startsWith(lt + tag));
+        const isClosing = line.startsWith(lt + '/');
+
+        if (isBlock || isClosing) {
+          result.push(line);
+        } else {
+          result.push(lt + 'p' + gt + line + lt + '/p' + gt);
+        }
+      }
+
+      return result.join('\n');
+    }
+
+    function render() {
+      const val = input.value;
+      if (val.trim() === '') {
+        preview.innerHTML = lt + 'p class="text-gray-400 italic"' + gt + 'Start typing Markdown on the left...' + lt + '/p' + gt;
+      } else {
+        preview.innerHTML = mdToHtml(val);
+      }
+    }
+
+    input.addEventListener('input', render);
+
+    btnClear?.addEventListener('click', () => {
+      input.value = '';
+      render();
+    });
+
+    btnCopyHtml?.addEventListener('click', () => {
+      navigator.clipboard.writeText(preview.innerHTML);
+    });
+
+    render();
+  }
+
+  initMarkdownPreview();
+  document.addEventListener('astro:page-load', initMarkdownPreview);
+  document.addEventListener('swup:contentReplaced', initMarkdownPreview);
+</script>
