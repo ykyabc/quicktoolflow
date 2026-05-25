@@ -1,0 +1,87 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Whitespace Remover"
+  description="Remove extra spaces, tabs, line breaks, and leading/trailing whitespace from text. Clean up messy text instantly."
+  slug="whitespace-remover"
+  category="Text Tools"
+>
+  <div class="space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
+      <textarea id="ws-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Paste messy text here...">   Hello    World   .
+  This  is   a   test   with    extra    spaces.
+
+  And   extra   blank   lines.   </textarea>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <button id="ws-all" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Remove All Extra Spaces</button>
+      <button id="ws-trim" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Trim Lines</button>
+      <button id="ws-blank" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Remove Blank Lines</button>
+      <button id="ws-tabs" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Tabs to Spaces</button>
+      <button id="ws-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto">Copy</button>
+    </div>
+
+    <div id="ws-stats" class="hidden flex gap-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-sm">
+      <span class="text-green-700 dark:text-green-400" id="ws-before">Before: 0 chars</span>
+      <span class="text-green-700 dark:text-green-400" id="ws-after">After: 0 chars</span>
+      <span class="text-green-700 dark:text-green-400" id="ws-removed">Removed: 0 chars</span>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Result</label>
+      <textarea id="ws-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none" readonly placeholder="Cleaned text..." spellcheck="false"></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initWhitespaceRemover() {
+    const input = document.getElementById('ws-input') as HTMLTextAreaElement;
+    const output = document.getElementById('ws-output') as HTMLTextAreaElement;
+    const statsEl = document.getElementById('ws-stats');
+    const beforeEl = document.getElementById('ws-before');
+    const afterEl = document.getElementById('ws-after');
+    const removedEl = document.getElementById('ws-removed');
+
+    if (!input || !output) return;
+
+    function showStats(result: string) {
+      if (statsEl) statsEl.classList.remove('hidden');
+      if (beforeEl) beforeEl.textContent = 'Before: ' + input.value.length + ' chars';
+      if (afterEl) afterEl.textContent = 'After: ' + result.length + ' chars';
+      if (removedEl) removedEl.textContent = 'Removed: ' + (input.value.length - result.length) + ' chars';
+    }
+
+    document.getElementById('ws-all')?.addEventListener('click', () => {
+      const r = input.value.replace(/\s+/g, ' ').trim();
+      output.value = r;
+      showStats(r);
+    });
+    document.getElementById('ws-trim')?.addEventListener('click', () => {
+      const r = input.value.split('\n').map(l => l.trim()).join('\n');
+      output.value = r;
+      showStats(r);
+    });
+    document.getElementById('ws-blank')?.addEventListener('click', () => {
+      const r = input.value.replace(/^\s*[\n]/gm, '').replace(/\n{3,}/g, '\n\n');
+      output.value = r;
+      showStats(r);
+    });
+    document.getElementById('ws-tabs')?.addEventListener('click', () => {
+      const r = input.value.replace(/\t/g, '  ');
+      output.value = r;
+      showStats(r);
+    });
+    document.getElementById('ws-copy')?.addEventListener('click', () => {
+      if (output.value) navigator.clipboard.writeText(output.value);
+    });
+  }
+
+  initWhitespaceRemover();
+  document.addEventListener('astro:page-load', initWhitespaceRemover);
+  document.addEventListener('swup:contentReplaced', initWhitespaceRemover);
+</script>

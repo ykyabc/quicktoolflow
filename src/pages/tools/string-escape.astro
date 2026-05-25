@@ -1,0 +1,77 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="String Escape / Unescape"
+  description="Escape special characters for JSON, JavaScript, HTML, and CSV. Or unescape them back to readable text."
+  slug="string-escape"
+  category="Developer Tools"
+>
+  <div class="space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input</label>
+      <textarea id="se-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder='Enter text: He said "Hello" & left.'>He said "Hello World" & it's a test with tabs	and newlines.</textarea>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <button id="se-json" class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Escape JSON</button>
+      <button id="se-js" class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Escape JS</button>
+      <button id="se-html" class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Escape HTML</button>
+      <button id="se-unescape" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Unescape</button>
+      <button id="se-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto">Copy</button>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>
+      <textarea id="se-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y outline-none" readonly placeholder="Escaped result..." spellcheck="false"></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initStringEscape() {
+    const input = document.getElementById('se-input') as HTMLTextAreaElement;
+    const output = document.getElementById('se-output') as HTMLTextAreaElement;
+    if (!input || !output) return;
+
+    document.getElementById('se-json')?.addEventListener('click', () => {
+      output.value = JSON.stringify(input.value).slice(1, -1);
+    });
+
+    document.getElementById('se-js')?.addEventListener('click', () => {
+      output.value = input.value
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r')
+        .replace(/\t/g, '\\t');
+    });
+
+    document.getElementById('se-html')?.addEventListener('click', () => {
+      output.value = input.value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    });
+
+    document.getElementById('se-unescape')?.addEventListener('click', () => {
+      let r = input.value;
+      r = r.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+      r = r.replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\t/g, '\t').replace(/\\\\/g, '\\');
+      try { r = JSON.parse('"' + r + '"'); } catch {}
+      output.value = r;
+    });
+
+    document.getElementById('se-copy')?.addEventListener('click', () => {
+      if (output.value) navigator.clipboard.writeText(output.value);
+    });
+  }
+
+  initStringEscape();
+  document.addEventListener('astro:page-load', initStringEscape);
+  document.addEventListener('swup:contentReplaced', initStringEscape);
+</script>

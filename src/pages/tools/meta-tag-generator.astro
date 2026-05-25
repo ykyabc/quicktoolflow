@@ -1,0 +1,132 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Meta Tag Generator"
+  description="Generate SEO-friendly HTML meta tags, Open Graph tags, and Twitter Card tags for your website."
+  slug="meta-tag-generator"
+  category="SEO Tools"
+>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Page Title</label>
+        <input id="mt-title" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="My Awesome Website" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Site URL</label>
+        <input id="mt-url" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="https://example.com" />
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+      <textarea id="mt-desc" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm min-h-[80px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="A brief description of your page (150-160 characters recommended)"></textarea>
+      <div class="flex justify-between mt-1">
+        <span class="text-xs text-gray-500">Recommended: 150-160 characters</span>
+        <span id="mt-desc-count" class="text-xs text-gray-500">0 / 160</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Keywords</label>
+        <input id="mt-keywords" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="tool, developer, free" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Author</label>
+        <input id="mt-author" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Your Name" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">OG Image URL</label>
+        <input id="mt-image" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="https://example.com/og-image.png" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Twitter Handle</label>
+        <input id="mt-twitter" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="@yourhandle" />
+      </div>
+    </div>
+
+    <button id="mt-gen" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate Meta Tags</button>
+
+    <div>
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Generated HTML</label>
+        <button id="mt-copy" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Copy</button>
+      </div>
+      <textarea id="mt-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-xs min-h-[250px] resize-y outline-none" readonly placeholder="Click Generate..." spellcheck="false"></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initMetaTagGenerator() {
+    const titleEl = document.getElementById('mt-title') as HTMLInputElement;
+    const urlEl = document.getElementById('mt-url') as HTMLInputElement;
+    const descEl = document.getElementById('mt-desc') as HTMLTextAreaElement;
+    const keywordsEl = document.getElementById('mt-keywords') as HTMLInputElement;
+    const authorEl = document.getElementById('mt-author') as HTMLInputElement;
+    const imageEl = document.getElementById('mt-image') as HTMLInputElement;
+    const twitterEl = document.getElementById('mt-twitter') as HTMLInputElement;
+    const outputEl = document.getElementById('mt-output') as HTMLTextAreaElement;
+    const countEl = document.getElementById('mt-desc-count');
+    const btnGen = document.getElementById('mt-gen');
+    const btnCopy = document.getElementById('mt-copy');
+
+    if (!btnGen || !outputEl) return;
+
+    descEl?.addEventListener('input', () => {
+      if (countEl) countEl.textContent = descEl.value.length + ' / 160';
+    });
+
+    function esc(s: string) { return s.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+    btnGen.addEventListener('click', () => {
+      const title = esc(titleEl.value);
+      const url = esc(urlEl.value);
+      const desc = esc(descEl.value);
+      const keywords = esc(keywordsEl.value);
+      const author = esc(authorEl.value);
+      const image = esc(imageEl.value);
+      const twitter = esc(twitterEl.value);
+
+      const lines: string[] = [];
+      lines.push('<!-- Basic Meta Tags -->');
+      if (title) lines.push('<meta name="title" content="' + title + '" />');
+      if (desc) lines.push('<meta name="description" content="' + desc + '" />');
+      if (keywords) lines.push('<meta name="keywords" content="' + keywords + '" />');
+      if (author) lines.push('<meta name="author" content="' + author + '" />');
+      lines.push('<meta name="robots" content="index, follow" />');
+      lines.push('<meta charset="UTF-8" />');
+      lines.push('<meta name="viewport" content="width=device-width, initial-scale=1.0" />');
+      lines.push('');
+      lines.push('<!-- Open Graph / Facebook -->');
+      lines.push('<meta property="og:type" content="website" />');
+      if (url) lines.push('<meta property="og:url" content="' + url + '" />');
+      if (title) lines.push('<meta property="og:title" content="' + title + '" />');
+      if (desc) lines.push('<meta property="og:description" content="' + desc + '" />');
+      if (image) lines.push('<meta property="og:image" content="' + image + '" />');
+      lines.push('');
+      lines.push('<!-- Twitter Card -->');
+      lines.push('<meta name="twitter:card" content="summary_large_image" />');
+      if (twitter) lines.push('<meta name="twitter:site" content="' + twitter + '" />');
+      if (title) lines.push('<meta name="twitter:title" content="' + title + '" />');
+      if (desc) lines.push('<meta name="twitter:description" content="' + desc + '" />');
+      if (image) lines.push('<meta name="twitter:image" content="' + image + '" />');
+
+      outputEl.value = lines.join('\n');
+    });
+
+    btnCopy?.addEventListener('click', () => {
+      if (outputEl.value) navigator.clipboard.writeText(outputEl.value);
+    });
+  }
+
+  initMetaTagGenerator();
+  document.addEventListener('astro:page-load', initMetaTagGenerator);
+  document.addEventListener('swup:contentReplaced', initMetaTagGenerator);
+</script>

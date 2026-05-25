@@ -1,0 +1,102 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="CSS Unit Converter"
+  description="Convert between CSS units: px, em, rem, vw, vh, and percentage. With adjustable base font size."
+  slug="css-unit-converter"
+  category="Converters"
+>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Value</label>
+        <input id="css-val" type="number" value="16" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">From</label>
+        <select id="css-from" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+          <option value="px" selected>px</option>
+          <option value="rem">rem</option>
+          <option value="em">em</option>
+          <option value="vw">vw</option>
+          <option value="vh">vh</option>
+          <option value="percent">%</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Base Font Size</label>
+        <div class="flex items-center gap-2">
+          <input id="css-base" type="number" value="16" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+          <span class="text-sm text-gray-500">px</span>
+        </div>
+      </div>
+    </div>
+
+    <button id="css-convert" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Convert</button>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      {['px','rem','em','vw','vh','percent'].map((unit) => (
+        <div class="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg text-center">
+          <span class="text-xs text-gray-500 uppercase tracking-wider">{unit === 'percent' ? '%' : unit}</span>
+          <div id={'css-' + unit} class="text-lg font-mono font-bold text-gray-900 dark:text-white mt-1">—</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initCssConverter() {
+    const valEl = document.getElementById('css-val') as HTMLInputElement;
+    const fromEl = document.getElementById('css-from') as HTMLSelectElement;
+    const baseEl = document.getElementById('css-base') as HTMLInputElement;
+    const btn = document.getElementById('css-convert');
+
+    if (!valEl || !btn) return;
+
+    function convert() {
+      const val = parseFloat(valEl.value) || 0;
+      const base = parseFloat(baseEl?.value) || 16;
+      const from = fromEl.value;
+      const viewportWidth = 1920;
+      const viewportHeight = 1080;
+
+      let px: number;
+      switch (from) {
+        case 'px': px = val; break;
+        case 'rem': px = val * base; break;
+        case 'em': px = val * base; break;
+        case 'vw': px = (val / 100) * viewportWidth; break;
+        case 'vh': px = (val / 100) * viewportHeight; break;
+        case 'percent': px = (val / 100) * base; break;
+        default: px = val;
+      }
+
+      const results: Record<string, string> = {
+        'px': px.toFixed(2),
+        'rem': (px / base).toFixed(4),
+        'em': (px / base).toFixed(4),
+        'vw': ((px / viewportWidth) * 100).toFixed(4),
+        'vh': ((px / viewportHeight) * 100).toFixed(4),
+        'percent': ((px / base) * 100).toFixed(4),
+      };
+
+      Object.entries(results).forEach(([key, value]) => {
+        const el = document.getElementById('css-' + key);
+        if (el) el.textContent = value;
+      });
+    }
+
+    btn.addEventListener('click', convert);
+    valEl.addEventListener('input', convert);
+    fromEl?.addEventListener('change', convert);
+    baseEl?.addEventListener('input', convert);
+    convert();
+  }
+
+  initCssConverter();
+  document.addEventListener('astro:page-load', initCssConverter);
+  document.addEventListener('swup:contentReplaced', initCssConverter);
+</script>

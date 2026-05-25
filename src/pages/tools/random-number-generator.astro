@@ -1,0 +1,76 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Random Number Generator"
+  description="Generate random numbers within a range. Supports integers, decimals, and bulk generation."
+  slug="random-number-generator"
+  category="Generators"
+>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Minimum</label>
+        <input id="rng-min" type="number" value="1" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Maximum</label>
+        <input id="rng-max" type="number" value="100" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-end gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Count</label>
+        <input id="rng-count" type="number" min="1" max="1000" value="1" class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+      </div>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input id="rng-decimal" type="checkbox" class="w-4 h-4 accent-blue-600" />
+        <span class="text-sm text-gray-700 dark:text-gray-300">Decimal</span>
+      </label>
+      <button id="rng-gen" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate</button>
+      <button id="rng-copy" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy All</button>
+    </div>
+
+    <div>
+      <textarea id="rng-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none" readonly placeholder="Random numbers will appear here..." spellcheck="false"></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initRng() {
+    const minEl = document.getElementById('rng-min') as HTMLInputElement;
+    const maxEl = document.getElementById('rng-max') as HTMLInputElement;
+    const countEl = document.getElementById('rng-count') as HTMLInputElement;
+    const decEl = document.getElementById('rng-decimal') as HTMLInputElement;
+    const output = document.getElementById('rng-output') as HTMLTextAreaElement;
+    const btnGen = document.getElementById('rng-gen');
+    const btnCopy = document.getElementById('rng-copy');
+
+    if (!minEl || !maxEl || !output || !btnGen) return;
+
+    function generate() {
+      const min = parseFloat(minEl.value) || 0;
+      const max = parseFloat(maxEl.value) || 100;
+      const count = Math.min(Math.max(parseInt(countEl?.value) || 1, 1), 1000);
+      const isDecimal = decEl?.checked;
+      const nums: string[] = [];
+
+      for (let i = 0; i < count; i++) {
+        const r = Math.random() * (max - min) + min;
+        nums.push(isDecimal ? r.toFixed(2) : Math.floor(r).toString());
+      }
+      output.value = nums.join('\n');
+    }
+
+    btnGen.addEventListener('click', generate);
+    btnCopy?.addEventListener('click', () => { if (output.value) navigator.clipboard.writeText(output.value); });
+    generate();
+  }
+
+  initRng();
+  document.addEventListener('astro:page-load', initRng);
+  document.addEventListener('swup:contentReplaced', initRng);
+</script>

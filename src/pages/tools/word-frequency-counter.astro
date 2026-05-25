@@ -1,0 +1,102 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Word Frequency Counter"
+  description="Analyze text and count how often each word appears. Identify the most common words instantly."
+  slug="word-frequency-counter"
+  category="Text Tools"
+>
+  <div class="space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
+      <textarea id="wf-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Paste text to analyze...">The quick brown fox jumps over the lazy dog. The dog barked at the fox. The fox ran away from the dog and the quick brown fox was never seen again by the lazy dog.</textarea>
+    </div>
+
+    <div class="flex flex-wrap items-end gap-4">
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input id="wf-ignore" type="checkbox" checked class="w-4 h-4 accent-blue-600" />
+        <span class="text-sm text-gray-700 dark:text-gray-300">Ignore common words (the, a, is, etc.)</span>
+      </label>
+      <button id="wf-analyze" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Analyze</button>
+      <button id="wf-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto">Copy Results</button>
+    </div>
+
+    <div id="wf-results" class="hidden">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">Word Frequency</h3>
+        <span id="wf-total" class="text-xs text-gray-500"></span>
+      </div>
+      <div id="wf-table" class="overflow-x-auto"></div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initWordFrequency() {
+    const input = document.getElementById('wf-input') as HTMLTextAreaElement;
+    const ignoreEl = document.getElementById('wf-ignore') as HTMLInputElement;
+    const results = document.getElementById('wf-results');
+    const tableEl = document.getElementById('wf-table');
+    const totalEl = document.getElementById('wf-total');
+    const btnAnalyze = document.getElementById('wf-analyze');
+    const btnCopy = document.getElementById('wf-copy');
+
+    if (!input || !btnAnalyze || !results || !tableEl) return;
+
+    const stopWords = new Set(['the','a','an','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','shall','should','may','might','must','can','could','to','of','in','for','on','with','at','by','from','as','into','through','during','before','after','above','below','between','out','off','over','under','again','further','then','once','and','but','or','nor','not','so','if','when','where','how','all','each','every','both','few','more','most','other','some','such','no','only','own','same','than','too','very','just','it','its','this','that','these','those','i','me','my','we','our','you','your','he','him','his','she','her','they','them','their']);
+
+    btnAnalyze.addEventListener('click', () => {
+      const text = input.value.toLowerCase();
+      const words = text.match(/[a-z]+(?:'[a-z]+)?/g) || [];
+      const freq: Record<string, number> = {};
+
+      words.forEach(w => {
+        if (ignoreEl.checked && stopWords.has(w)) return;
+        freq[w] = (freq[w] || 0) + 1;
+      });
+
+      const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+      const total = Object.keys(freq).length;
+
+      if (totalEl) totalEl.textContent = total + ' unique words';
+      results.classList.remove('hidden');
+
+      if (sorted.length === 0) {
+        tableEl.innerHTML = '<div class="text-sm text-gray-500">No words found.</div>';
+        return;
+      }
+
+      const maxCount = sorted[0][1];
+      let html = '<table class="w-full text-sm"><thead><tr class="border-b border-gray-200 dark:border-slate-700"><th class="text-left py-2 px-3 font-medium text-gray-500">#</th><th class="text-left py-2 px-3 font-medium text-gray-500">Word</th><th class="text-left py-2 px-3 font-medium text-gray-500">Count</th><th class="text-left py-2 px-3 font-medium text-gray-500">Frequency</th></tr></thead><tbody>';
+
+      sorted.slice(0, 50).forEach(([word, count], i) => {
+        const pct = (count / words.length * 100).toFixed(1);
+        const barW = (count / maxCount * 100).toFixed(0);
+        html += '<tr class="border-b border-gray-100 dark:border-slate-800"><td class="py-2 px-3 text-gray-400">' + (i + 1) + '</td><td class="py-2 px-3 font-medium text-gray-900 dark:text-white">' + word + '</td><td class="py-2 px-3 text-gray-600 dark:text-gray-400">' + count + '</td><td class="py-2 px-3"><div class="flex items-center gap-2"><div class="flex-1 h-2 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:' + barW + '%"></div></div><span class="text-xs text-gray-500 w-10">' + pct + '%</span></div></td></tr>';
+      });
+
+      if (sorted.length > 50) {
+        html += '<tr><td colspan="4" class="py-2 px-3 text-xs text-gray-400 text-center">... and ' + (sorted.length - 50) + ' more words</td></tr>';
+      }
+
+      html += '</tbody></table>';
+      tableEl.innerHTML = html;
+    });
+
+    btnCopy?.addEventListener('click', () => {
+      const rows = tableEl.querySelectorAll('tr');
+      let tsv = 'Rank\tWord\tCount\n';
+      rows.forEach(r => {
+        const cells = r.querySelectorAll('td');
+        if (cells.length >= 3) tsv += cells[0].textContent + '\t' + cells[1].textContent + '\t' + cells[2].textContent + '\n';
+      });
+      navigator.clipboard.writeText(tsv);
+    });
+  }
+
+  initWordFrequency();
+  document.addEventListener('astro:page-load', initWordFrequency);
+  document.addEventListener('swup:contentReplaced', initWordFrequency);
+</script>

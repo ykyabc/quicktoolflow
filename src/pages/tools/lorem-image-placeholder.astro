@@ -1,0 +1,106 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="Lorem Image Placeholder"
+  description="Generate placeholder image URLs with custom dimensions for your designs, mockups, and prototypes."
+  slug="lorem-image-placeholder"
+  category="Generators"
+>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Width (px)</label>
+        <input id="lip-w" type="number" min="1" max="4000" value="800" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Height (px)</label>
+        <input id="lip-h" type="number" min="1" max="4000" value="400" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Background Color</label>
+        <div class="flex gap-2">
+          <input id="lip-color" type="color" value="#cccccc" class="w-12 h-12 rounded-lg border border-gray-300 dark:border-slate-600 cursor-pointer" />
+          <input id="lip-color-text" type="text" value="#cccccc" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        </div>
+      </div>
+    </div>
+
+    <button id="lip-gen" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate</button>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview</label>
+      <div class="rounded-lg border border-gray-200 dark:border-slate-700 overflow-hidden">
+        <img id="lip-preview" alt="Placeholder preview" class="w-full" style="max-height:400px; object-fit:contain;" />
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      {[
+        { id: 'lip-url-img', label: 'Image URL' },
+        { id: 'lip-url-html', label: 'HTML Tag' },
+        { id: 'lip-url-md', label: 'Markdown' },
+        { id: 'lip-url-css', label: 'CSS Background' },
+      ].map((item) => (
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-xs font-medium text-gray-500 uppercase">{item.label}</label>
+            <button class="lip-copy text-xs text-blue-600 hover:text-blue-700 font-medium" data-src={item.id}>Copy</button>
+          </div>
+          <input id={item.id} type="text" class="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-xs outline-none" readonly />
+        </div>
+      ))}
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initLoremImage() {
+    const wEl = document.getElementById('lip-w') as HTMLInputElement;
+    const hEl = document.getElementById('lip-h') as HTMLInputElement;
+    const colorEl = document.getElementById('lip-color') as HTMLInputElement;
+    const colorTextEl = document.getElementById('lip-color-text') as HTMLInputElement;
+    const preview = document.getElementById('lip-preview') as HTMLImageElement;
+    const btn = document.getElementById('lip-gen');
+
+    if (!wEl || !btn) return;
+
+    colorEl?.addEventListener('input', () => { if (colorTextEl) colorTextEl.value = colorEl.value; });
+    colorTextEl?.addEventListener('input', () => { if (colorEl) colorEl.value = colorTextEl.value; });
+
+    function generate() {
+      const w = parseInt(wEl.value) || 800;
+      const h = parseInt(hEl.value) || 400;
+      const bg = (colorTextEl?.value || '#cccccc').replace('#', '');
+      const url = 'https://placehold.co/' + w + 'x' + h + '/' + bg + '/white?text=' + w + 'x' + h;
+
+      if (preview) preview.src = url;
+
+      const urlImg = document.getElementById('lip-url-img') as HTMLInputElement;
+      const urlHtml = document.getElementById('lip-url-html') as HTMLInputElement;
+      const urlMd = document.getElementById('lip-url-md') as HTMLInputElement;
+      const urlCss = document.getElementById('lip-url-css') as HTMLInputElement;
+
+      if (urlImg) urlImg.value = url;
+      if (urlHtml) urlHtml.value = '<img src="' + url + '" alt="Placeholder ' + w + 'x' + h + '" width="' + w + '" height="' + h + '" />';
+      if (urlMd) urlMd.value = '![Placeholder ' + w + 'x' + h + '](' + url + ')';
+      if (urlCss) urlCss.value = "background-image: url('" + url + "');";
+    }
+
+    btn.addEventListener('click', generate);
+    document.querySelectorAll('.lip-copy').forEach(b => {
+      b.addEventListener('click', () => {
+        const src = (b as HTMLElement).dataset.src;
+        const el = src ? document.getElementById(src) as HTMLInputElement : null;
+        if (el?.value) navigator.clipboard.writeText(el.value);
+      });
+    });
+
+    generate();
+  }
+
+  initLoremImage();
+  document.addEventListener('astro:page-load', initLoremImage);
+  document.addEventListener('swup:contentReplaced', initLoremImage);
+</script>
