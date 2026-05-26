@@ -57,7 +57,7 @@ apps:
 analytics:
   vendors:
     googleAnalytics:
-      id: ''
+      id: 'G-YQYEH856F7'
 
 ui:
   theme: system
