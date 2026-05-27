@@ -1,0 +1,237 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import Breadcrumb from "~/components/ui/Breadcrumb.astro";
+import AdBanner from "~/components/ui/AdBanner.astro";
+import ToolCard from "~/components/ui/ToolCard.astro";
+import { tools } from "~/utils/tools-data";
+
+const metadata = {
+  title: "JSON to YAML Converter — Free Online Tool",
+  description: "Convert JSON to YAML and YAML to JSON instantly. Paste your data, get the converted output, and copy or download the result. Free, fast, and private.",
+};
+
+const related = ["json-formatter", "json-to-csv"];
+const relatedTools = tools.filter((t) => related.includes(t.slug));
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <Breadcrumb items={[{ name: "Home", href: "/" }, { name: "Tools", href: "/tools/" }, { name: "JSON to YAML Converter" }]} />
+
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">JSON to YAML Converter</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">Convert between JSON and YAML formats instantly. Paste your data on one side, get the converted output on the other. Copy or download the result.</p>
+    </header>
+
+    <div class="max-w-4xl mx-auto mb-8"><AdBanner slot="2222222222" format="horizontal" /></div>
+
+    <div class="max-w-5xl mx-auto">
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <button id="mode-to-yaml" class="px-5 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition">JSON → YAML</button>
+        <button id="mode-to-json" class="px-5 py-2 text-sm font-semibold rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition">YAML → JSON</button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h2 id="input-label" class="text-lg font-semibold text-gray-900 dark:text-white">JSON Input</h2>
+            <button id="sample-btn" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">Load Sample</button>
+          </div>
+          <textarea id="convert-input" rows="16" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm" placeholder="Paste JSON here..."></textarea>
+          <div id="convert-error" class="hidden mt-2 text-sm text-red-600 dark:text-red-400"></div>
+          <button id="convert-btn" class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Convert to YAML</button>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h2 id="output-label" class="text-lg font-semibold text-gray-900 dark:text-white">YAML Output</h2>
+            <div class="flex gap-2">
+              <button id="output-copy" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">Copy</button>
+              <button id="output-download" class="text-sm text-green-600 hover:text-green-700 dark:text-green-400">Download</button>
+            </div>
+          </div>
+          <textarea id="convert-output" rows="16" readonly class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white outline-none resize-none font-mono text-sm" placeholder="Output will appear here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-8"><AdBanner slot="2222222223" format="horizontal" /></div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">How to Use</h2>
+      <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400">
+        <li>Choose the conversion direction: JSON to YAML or YAML to JSON.</li>
+        <li>Paste your data into the left panel.</li>
+        <li>Click <strong>Convert</strong>.</li>
+        <li>Copy or download the converted output from the right panel.</li>
+      </ol>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">JSON vs YAML</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">JSON</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Uses curly braces, square brackets, and quotes. Universal across all programming languages. Best for APIs, data exchange, and configuration stored in code.</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">YAML</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Uses indentation and minimal syntax. More human-readable than JSON. Best for configuration files like Docker Compose, Kubernetes, GitHub Actions, and Ansible.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Bidirectional</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Convert JSON to YAML and YAML to JSON with a single click. Toggle between modes instantly.</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Preserves Structure</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Nested objects, arrays, null values, booleans, and numbers are all preserved accurately during conversion.</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Download</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Download the output as a .json or .yaml file ready for your project.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12"><AdBanner slot="2222222224" format="horizontal" /></div>
+
+    {relatedTools.length > 0 && (
+      <div class="max-w-4xl mx-auto mt-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {relatedTools.map((tool) => (
+            <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="max-w-3xl mx-auto mt-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
+      <h2 class="text-2xl font-bold mb-3">Convert JSON and YAML for Free</h2>
+      <p class="mb-5 opacity-90">Instant conversion in both directions. No sign-up, no limits, no data collection.</p>
+      <a href="/tools/" class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition">Explore All Tools</a>
+    </div>
+  </section>
+
+    <script is:inline>
+    (function() {
+      function loadScript(url, callback) {
+        var s = document.createElement('script');
+        s.src = url;
+        s.onload = callback;
+        s.onerror = function() { alert('Failed to load js-yaml library. Check your network.'); };
+        document.head.appendChild(s);
+      }
+
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js', function() {
+        var inputEl = document.getElementById('convert-input');
+        var outputEl = document.getElementById('convert-output');
+        var errorEl = document.getElementById('convert-error');
+        var convertBtn = document.getElementById('convert-btn');
+        var copyBtn = document.getElementById('output-copy');
+        var dlBtn = document.getElementById('output-download');
+        var sampleBtn = document.getElementById('sample-btn');
+        var toYamlBtn = document.getElementById('mode-to-yaml');
+        var toJsonBtn = document.getElementById('mode-to-json');
+        var inputLabel = document.getElementById('input-label');
+        var outputLabel = document.getElementById('output-label');
+
+        var mode = 'toYaml';
+
+        var jsonSample = {
+          name: 'QuickToolFlow',
+          version: '1.0',
+          features: ['fast', 'free', 'private'],
+          config: {
+            theme: 'dark',
+            language: 'en'
+          },
+          tools: [
+            { name: 'JSON Formatter', category: 'developer' },
+            { name: 'QR Code Generator', category: 'generator' }
+          ]
+        };
+
+        function setMode(m) {
+          mode = m;
+          inputEl.value = '';
+          outputEl.value = '';
+          errorEl.classList.add('hidden');
+          if (mode === 'toYaml') {
+            toYamlBtn.className = 'px-5 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition';
+            toJsonBtn.className = 'px-5 py-2 text-sm font-semibold rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition';
+            inputLabel.textContent = 'JSON Input';
+            outputLabel.textContent = 'YAML Output';
+            convertBtn.textContent = 'Convert to YAML';
+            inputEl.placeholder = 'Paste JSON here...';
+          } else {
+            toJsonBtn.className = 'px-5 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition';
+            toYamlBtn.className = 'px-5 py-2 text-sm font-semibold rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition';
+            inputLabel.textContent = 'YAML Input';
+            outputLabel.textContent = 'JSON Output';
+            convertBtn.textContent = 'Convert to JSON';
+            inputEl.placeholder = 'Paste YAML here...';
+          }
+        }
+
+        toYamlBtn.addEventListener('click', function() { setMode('toYaml'); });
+        toJsonBtn.addEventListener('click', function() { setMode('toJson'); });
+
+        sampleBtn.addEventListener('click', function() {
+          if (mode === 'toYaml') {
+            inputEl.value = JSON.stringify(jsonSample, null, 2);
+          } else {
+            inputEl.value = jsyaml.dump(jsonSample);
+          }
+          errorEl.classList.add('hidden');
+        });
+
+        convertBtn.addEventListener('click', function() {
+          errorEl.classList.add('hidden');
+          var input = inputEl.value.trim();
+          if (!input) return;
+          try {
+            if (mode === 'toYaml') {
+              var data = JSON.parse(input);
+              outputEl.value = jsyaml.dump(data, { indent: 2, lineWidth: -1, noRefs: true });
+            } else {
+              var data = jsyaml.load(input);
+              outputEl.value = JSON.stringify(data, null, 2);
+            }
+          } catch (e) {
+            errorEl.textContent = 'Error: ' + e.message;
+            errorEl.classList.remove('hidden');
+            outputEl.value = '';
+          }
+        });
+
+        copyBtn.addEventListener('click', function() {
+          if (!outputEl.value) return;
+          navigator.clipboard.writeText(outputEl.value).then(function() {
+            copyBtn.textContent = 'Copied!';
+            setTimeout(function() { copyBtn.textContent = 'Copy'; }, 2000);
+          });
+        });
+
+        dlBtn.addEventListener('click', function() {
+          if (!outputEl.value) return;
+          var ext = mode === 'toYaml' ? 'yaml' : 'json';
+          var mime = mode === 'toYaml' ? 'text/yaml' : 'application/json';
+          var blob = new Blob([outputEl.value], { type: mime });
+          var link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = 'data.' + ext;
+          link.click();
+          URL.revokeObjectURL(link.href);
+        });
+      });
+    })();
+  </script>
+
+</Layout>

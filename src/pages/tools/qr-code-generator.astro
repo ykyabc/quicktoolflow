@@ -1,0 +1,182 @@
+﻿---
+import Layout from "~/layouts/PageLayout.astro";
+import Breadcrumb from "~/components/ui/Breadcrumb.astro";
+import AdBanner from "~/components/ui/AdBanner.astro";
+import ToolCard from "~/components/ui/ToolCard.astro";
+import { tools } from "~/utils/tools-data";
+
+const metadata = {
+  title: "QR Code Generator — Free Online Tool",
+  description: "Generate QR codes instantly for URLs, text, email, phone numbers, and more. Free, fast, and runs entirely in your browser.",
+};
+
+const related = ["password-generator", "uuid-generator"];
+const relatedTools = tools.filter((t) => related.includes(t.slug));
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <Breadcrumb items={[{ name: "Home", href: "/" }, { name: "Tools", href: "/tools/" }, { name: "QR Code Generator" }]} />
+
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">QR Code Generator</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">Generate QR codes instantly for URLs, text, email, phone numbers, and more. Customize size and download as PNG. Runs entirely in your browser — no uploads, no sign-ups.</p>
+    </header>
+
+    <div class="max-w-4xl mx-auto mb-8"><AdBanner slot="2222222222" format="horizontal" /></div>
+
+    <div class="max-w-3xl mx-auto space-y-6">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <label for="qr-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Enter text or URL</label>
+        <textarea id="qr-input" rows="3" placeholder="https://example.com or any text..." class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm"></textarea>
+
+        <div class="flex flex-wrap gap-4 mt-4">
+          <div>
+            <label for="qr-size" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Size (px)</label>
+            <select id="qr-size" class="p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm">
+              <option value="128">128</option>
+              <option value="256" selected>256</option>
+              <option value="512">512</option>
+              <option value="1024">1024</option>
+            </select>
+          </div>
+          <div>
+            <label for="qr-fg" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Foreground</label>
+            <input type="color" id="qr-fg" value="#000000" class="w-10 h-10 rounded cursor-pointer border border-gray-300 dark:border-gray-600" />
+          </div>
+          <div>
+            <label for="qr-bg" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Background</label>
+            <input type="color" id="qr-bg" value="#ffffff" class="w-10 h-10 rounded cursor-pointer border border-gray-300 dark:border-gray-600" />
+          </div>
+        </div>
+
+        <button id="qr-generate" class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Generate QR Code</button>
+      </div>
+
+      <div id="qr-result" class="hidden bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm text-center">
+        <div id="qr-wrapper" class="mx-auto mb-4 inline-block"></div>
+        <button id="qr-download" class="px-6 py-2.5 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">Download PNG</button>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-8"><AdBanner slot="2222222223" format="horizontal" /></div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">How to Use</h2>
+      <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400">
+        <li>Enter any URL, text, email, phone number, or WiFi credentials in the input field.</li>
+        <li>Customize the size and colors if needed.</li>
+        <li>Click <strong>Generate QR Code</strong>.</li>
+        <li>Click <strong>Download PNG</strong> to save the image.</li>
+      </ol>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Instant Generation</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">QR codes are generated instantly on the client side with no server processing.</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Customizable</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Adjust size, foreground color, and background color to match your branding.</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Download as PNG</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Save your QR code as a high-quality PNG image ready for print or digital use.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">What data can I encode in a QR code?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">URLs, plain text, email addresses, phone numbers, SMS messages, WiFi credentials, and more. QR codes can hold up to about 4,296 alphanumeric characters.</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Is there a size limit?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">The more data you encode, the denser the QR code becomes. Very long URLs or text may require a larger size for reliable scanning.</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Is my data sent to a server?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">No. Everything runs entirely in your browser. Your text is never uploaded anywhere.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12"><AdBanner slot="2222222224" format="horizontal" /></div>
+
+    {relatedTools.length > 0 && (
+      <div class="max-w-4xl mx-auto mt-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {relatedTools.map((tool) => (
+            <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="max-w-3xl mx-auto mt-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
+      <h2 class="text-2xl font-bold mb-3">Generate QR Codes for Free</h2>
+      <p class="mb-5 opacity-90">Create QR codes instantly for any purpose. No sign-up, no limits, no data collection.</p>
+      <a href="/tools/" class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition">Explore All Tools</a>
+    </div>
+  </section>
+
+  <script is:inline>
+  (function() {
+    function loadScript(url, callback) {
+      var s = document.createElement('script');
+      s.src = url;
+      s.onload = callback;
+      s.onerror = function() { alert('Failed to load QRCode library. Please check your network.'); };
+      document.head.appendChild(s);
+    }
+
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js', function() {
+      var input = document.getElementById('qr-input');
+      var sizeEl = document.getElementById('qr-size');
+      var fgEl = document.getElementById('qr-fg');
+      var bgEl = document.getElementById('qr-bg');
+      var btn = document.getElementById('qr-generate');
+      var result = document.getElementById('qr-result');
+      var dlBtn = document.getElementById('qr-download');
+      var qrWrap = document.getElementById('qr-wrapper');
+
+      btn.addEventListener('click', function() {
+        var text = input.value.trim();
+        if (!text) { alert('Please enter some text or a URL.'); return; }
+        var size = parseInt(sizeEl.value);
+        qrWrap.innerHTML = '';
+        new QRCode(qrWrap, {
+          text: text,
+          width: size,
+          height: size,
+          colorDark: fgEl.value,
+          colorLight: bgEl.value,
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        result.classList.remove('hidden');
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      dlBtn.addEventListener('click', function() {
+        var img = qrWrap.querySelector('img') || qrWrap.querySelector('canvas');
+        if (!img) return;
+        var link = document.createElement('a');
+        link.download = 'qrcode.png';
+        if (img.tagName === 'CANVAS') {
+          link.href = img.toDataURL('image/png');
+        } else {
+          link.href = img.src;
+        }
+        link.click();
+      });
+    });
+  })();
+</script>
+</Layout>

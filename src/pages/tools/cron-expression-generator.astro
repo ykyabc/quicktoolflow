@@ -1,0 +1,309 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import Breadcrumb from "~/components/ui/Breadcrumb.astro";
+import AdBanner from "~/components/ui/AdBanner.astro";
+import ToolCard from "~/components/ui/ToolCard.astro";
+import { tools } from "~/utils/tools-data";
+
+const metadata = {
+  title: "Cron Expression Generator — Free Online Tool",
+  description: "Generate and understand cron expressions visually. Build schedules for minutes, hours, days, months, and weekdays. See human-readable descriptions and next run times.",
+};
+
+const related = ["timestamp-converter", "uuid-generator"];
+const relatedTools = tools.filter((t) => related.includes(t.slug));
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <Breadcrumb items={[{ name: "Home", href: "/" }, { name: "Tools", href: "/tools/" }, { name: "Cron Expression Generator" }]} />
+
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Cron Expression Generator</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">Build cron expressions visually without memorizing syntax. Set minutes, hours, days, months, and weekdays — then see the human-readable schedule and next run times.</p>
+    </header>
+
+    <div class="max-w-4xl mx-auto mb-8"><AdBanner slot="2222222222" format="horizontal" /></div>
+
+    <div class="max-w-4xl mx-auto space-y-6">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Build Your Schedule</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Minute</label>
+            <input id="cron-min" type="text" value="0" class="w-full p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Hour</label>
+            <input id="cron-hour" type="text" value="*" class="w-full p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Day of Month</label>
+            <input id="cron-dom" type="text" value="*" class="w-full p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Month</label>
+            <input id="cron-month" type="text" value="*" class="w-full p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Day of Week</label>
+            <input id="cron-dow" type="text" value="*" class="w-full p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-2">
+          <button data-cron="0 * * * *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Every minute</button>
+          <button data-cron="0 * * * *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Every hour</button>
+          <button data-cron="0 0 * * *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Daily at midnight</button>
+          <button data-cron="0 9 * * 1-5" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Weekdays 9 AM</button>
+          <button data-cron="0 0 * * 0" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Every Sunday</button>
+          <button data-cron="0 0 1 * *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">First of month</button>
+          <button data-cron="0 0 1 1 *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">New Year</button>
+          <button data-cron="*/5 * * * *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Every 5 min</button>
+          <button data-cron="*/15 * * * *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Every 15 min</button>
+          <button data-cron="0 */2 * * *" class="preset-btn px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Every 2 hours</button>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Expression</h2>
+          <button id="cron-copy" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">Copy</button>
+        </div>
+        <div id="cron-expr" class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-lg font-mono text-gray-900 dark:text-white text-center tracking-widest">0 * * * *</div>
+        <p id="cron-desc" class="mt-3 text-sm text-gray-600 dark:text-gray-400 text-center">At every minute of every hour of every day of every month.</p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Next 5 Runs</h2>
+        <div id="cron-next-runs" class="space-y-2">
+          <p class="text-sm text-gray-500 dark:text-gray-400">Enter values to see next run times.</p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Syntax Reference</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-gray-700">
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">Field</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">Range</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">Special</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-600 dark:text-gray-400">
+              <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3 font-mono">Minute</td><td class="py-2 px-3">0-59</td><td class="py-2 px-3 font-mono">* , - /</td></tr>
+              <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3 font-mono">Hour</td><td class="py-2 px-3">0-23</td><td class="py-2 px-3 font-mono">* , - /</td></tr>
+              <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3 font-mono">Day</td><td class="py-2 px-3">1-31</td><td class="py-2 px-3 font-mono">* , - /</td></tr>
+              <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3 font-mono">Month</td><td class="py-2 px-3">1-12</td><td class="py-2 px-3 font-mono">* , - /</td></tr>
+              <tr><td class="py-2 px-3 font-mono">Day of Week</td><td class="py-2 px-3">0-6 (Sun=0)</td><td class="py-2 px-3 font-mono">* , - /</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-4 text-sm text-gray-600 dark:text-gray-400 space-y-1">
+          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">*</code> — any value</p>
+          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">,</code> — list: 1,3,5</p>
+          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">-</code> — range: 1-5</p>
+          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">/</code> — step: */5 means every 5</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-8"><AdBanner slot="2222222223" format="horizontal" /></div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Common Cron Examples</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <code class="text-sm font-mono text-blue-600 dark:text-blue-400">0 * * * *</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Every hour at minute 0</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <code class="text-sm font-mono text-blue-600 dark:text-blue-400">0 9 * * 1-5</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Weekdays at 9:00 AM</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <code class="text-sm font-mono text-blue-600 dark:text-blue-400">*/5 * * * *</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Every 5 minutes</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <code class="text-sm font-mono text-blue-600 dark:text-blue-400">0 0 1 * *</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">First day of every month at midnight</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <code class="text-sm font-mono text-blue-600 dark:text-blue-400">0 8,12,18 * * *</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">At 8 AM, 12 PM, and 6 PM daily</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <code class="text-sm font-mono text-blue-600 dark:text-blue-400">0 0 * * 0</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Every Sunday at midnight</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12"><AdBanner slot="2222222224" format="horizontal" /></div>
+
+    {relatedTools.length > 0 && (
+      <div class="max-w-4xl mx-auto mt-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {relatedTools.map((tool) => (
+            <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="max-w-3xl mx-auto mt-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
+      <h2 class="text-2xl font-bold mb-3">Generate Cron Expressions for Free</h2>
+      <p class="mb-5 opacity-90">Build schedules visually. No sign-up, no limits, no registration.</p>
+      <a href="/tools/" class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition">Explore All Tools</a>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function() {
+      var minEl = document.getElementById('cron-min');
+      var hourEl = document.getElementById('cron-hour');
+      var domEl = document.getElementById('cron-dom');
+      var monthEl = document.getElementById('cron-month');
+      var dowEl = document.getElementById('cron-dow');
+      var exprEl = document.getElementById('cron-expr');
+      var descEl = document.getElementById('cron-desc');
+      var nextRunsEl = document.getElementById('cron-next-runs');
+      var copyBtn = document.getElementById('cron-copy');
+      var presetBtns = document.querySelectorAll('.preset-btn');
+
+      var fields = [minEl, hourEl, domEl, monthEl, dowEl];
+
+      function getExpr() {
+        return [minEl.value, hourEl.value, domEl.value, monthEl.value, dowEl.value].join(' ');
+      }
+
+      function matchesField(fieldVal, value) {
+        if (fieldVal === '*') return true;
+        var parts = fieldVal.split(',');
+        for (var p = 0; p < parts.length; p++) {
+          var part = parts[p];
+          if (part.indexOf('/') !== -1) {
+            var lr = part.split('/');
+            var step = parseInt(lr[1]);
+            var base = lr[0] === '*' ? 0 : parseInt(lr[0]);
+            if ((value - base) % step === 0) return true;
+          } else if (part.indexOf('-') !== -1) {
+            var range = part.split('-');
+            if (value >= parseInt(range[0]) && value <= parseInt(range[1])) return true;
+          } else {
+            if (parseInt(part) === value) return true;
+          }
+        }
+        return false;
+      }
+
+      function getNextRuns() {
+        var runs = [];
+        var now = new Date();
+        var d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes() + 1, 0, 0);
+        var limit = 525600;
+        var count = 0;
+        while (count < 5 && limit-- > 0) {
+          var min = d.getMinutes();
+          var hour = d.getHours();
+          var dom = d.getDate();
+          var month = d.getMonth() + 1;
+          var dow = d.getDay();
+          if (matchesField(minEl.value, min) && matchesField(hourEl.value, hour) && matchesField(domEl.value, dom) && matchesField(monthEl.value, month) && matchesField(dowEl.value, dow)) {
+            runs.push(new Date(d));
+            count++;
+          }
+          d = new Date(d.getTime() + 60000);
+        }
+        return runs;
+      }
+
+      function describeField(val, names) {
+        if (val === '*') return 'every ' + names[0];
+        if (val.indexOf('*/') === 0) return 'every ' + val.replace('*/', '') + ' ' + names[1];
+        return names[2] + ' ' + val;
+      }
+
+      function generateDescription() {
+        var parts = [];
+        parts.push('At');
+        if (minEl.value === '0') {
+          parts.push('minute 0');
+        } else if (minEl.value.indexOf('*/') === 0) {
+          parts.push('every ' + minEl.value.replace('*/', '') + ' minutes');
+        } else {
+          parts.push('minute ' + minEl.value);
+        }
+        if (hourEl.value === '*') {
+          parts.push('of every hour');
+        } else if (hourEl.value.indexOf('*/') === 0) {
+          parts.push('every ' + hourEl.value.replace('*/', '') + ' hours');
+        } else {
+          parts.push('at hour ' + hourEl.value);
+        }
+        if (domEl.value !== '*') parts.push('on day ' + domEl.value);
+        if (monthEl.value !== '*') parts.push('in month ' + monthEl.value);
+        if (dowEl.value !== '*') {
+          var dayNames = { '0': 'Sunday', '1': 'Monday', '2': 'Tuesday', '3': 'Wednesday', '4': 'Thursday', '5': 'Friday', '6': 'Saturday' };
+          if (dowEl.value.indexOf('-') !== -1) {
+            var range = dowEl.value.split('-');
+            parts.push('on ' + dayNames[range[0]] + ' through ' + dayNames[range[1]]);
+          } else if (dayNames[dowEl.value]) {
+            parts.push('on ' + dayNames[dowEl.value]);
+          }
+        }
+        return parts.join(' ') + '.';
+      }
+
+      function formatRun(d) {
+        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + ':' + String(d.getSeconds()).padStart(2, '0');
+      }
+
+      function update() {
+        var expr = getExpr();
+        exprEl.textContent = expr;
+        descEl.textContent = generateDescription();
+        var runs = getNextRuns();
+        if (runs.length > 0) {
+          nextRunsEl.innerHTML = runs.map(function(d, i) {
+            return '<p class="text-sm text-gray-700 dark:text-gray-300 py-1.5 px-3 bg-gray-50 dark:bg-gray-900 rounded-lg font-mono">' + (i + 1) + '. ' + formatRun(d) + '</p>';
+          }).join('');
+        } else {
+          nextRunsEl.innerHTML = '<p class="text-sm text-gray-500 dark:text-gray-400">No upcoming runs found. Check your expression.</p>';
+        }
+      }
+
+      fields.forEach(function(el) {
+        el.addEventListener('input', update);
+      });
+
+      presetBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var cron = btn.dataset.cron.split(' ');
+          minEl.value = cron[0];
+          hourEl.value = cron[1];
+          domEl.value = cron[2];
+          monthEl.value = cron[3];
+          dowEl.value = cron[4];
+          update();
+        });
+      });
+
+      copyBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(getExpr()).then(function() {
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function() { copyBtn.textContent = 'Copy'; }, 2000);
+        });
+      });
+
+      update();
+    })();
+  </script>
+</Layout>
