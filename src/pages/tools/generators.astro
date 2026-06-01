@@ -1,0 +1,76 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import { tools } from '~/utils/tools-data';
+
+const categoryTools = tools.filter((tool) => tool.categorySlug === 'generator');
+
+const metadata = {
+  title: 'Free Online Generators | QuickToolFlow',
+  description:
+    'Use free online generators to create passwords, UUIDs, QR codes, lorem ipsum text, random numbers, placeholder images, and more.',
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">
+        Generators
+      </p>
+
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+        Free Online Generators
+      </h1>
+
+      <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        QuickToolFlow generators help you create passwords, UUIDs, QR codes,
+        placeholder text, random numbers, and other useful outputs instantly in
+        your browser.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {categoryTools.map((tool) => (
+        <a
+          href={`/tools/${tool.slug}/`}
+          class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+        >
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {tool.name}
+          </h2>
+
+          <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            {tool.description}
+          </p>
+
+          <span class="mt-5 inline-flex text-sm font-semibold text-primary-600">
+            Open tool →
+          </span>
+        </a>
+      ))}
+    </div>
+
+    <div class="prose prose-lg mx-auto mt-16 dark:prose-invert">
+      <h2>Why use online generators?</h2>
+      <p>
+        Online generators are useful when you need quick, repeatable outputs for
+        development, design, writing, testing, or everyday productivity. They help
+        reduce manual work and make common tasks faster.
+      </p>
+
+      <h2>What can you generate with QuickToolFlow?</h2>
+      <p>
+        You can generate secure passwords, UUIDs, QR codes, lorem ipsum text,
+        random numbers, placeholder image URLs, and other practical outputs for
+        websites, apps, documents, and testing workflows.
+      </p>
+
+      <h2>Are these generators easy to use?</h2>
+      <p>
+        Yes. Each generator is designed to be simple, fast, and browser-based. You
+        can adjust the options you need, generate the result, then copy or use it
+        immediately.
+      </p>
+    </div>
+  </section>
+</Layout>
