@@ -9,6 +9,46 @@ const metadata = {
   description:
     'Use free online generators to create passwords, UUIDs, QR codes, lorem ipsum text, random numbers, placeholder images, and more.',
 };
+
+const canonical = 'https://quicktoolflow.com/tools/generators/';
+
+const faqItems = [
+  {
+    question: 'What are online generators?',
+    answer:
+      'Online generators are browser-based tools that create useful outputs such as passwords, UUIDs, QR codes, random numbers, placeholder text, and test data.',
+  },
+  {
+    question: 'Are QuickToolFlow generators free?',
+    answer:
+      'Yes. QuickToolFlow generators are free to use and do not require sign-up.',
+  },
+  {
+    question: 'Can I use these generators for development and design?',
+    answer:
+      'Yes. These generators are useful for developers, designers, writers, testers, and anyone who needs quick reusable outputs.',
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Generators', item: canonical },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
 ---
 
 <Layout metadata={metadata}>
@@ -73,4 +113,6 @@ const metadata = {
       </p>
     </div>
   </section>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
 </Layout>

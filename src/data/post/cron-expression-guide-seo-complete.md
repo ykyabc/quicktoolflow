@@ -19,7 +19,6 @@ seo:
   description: "Learn cron syntax, special characters, examples, best practices, FAQs, and use a free cron expression generator."
 ---
 
-# Cron Expression Guide: Complete Cron Syntax Tutorial + Free Generator
 
 > Learn cron expressions from beginner to advanced with practical examples, syntax explanations, troubleshooting tips, FAQs, and a free cron expression generator.
 

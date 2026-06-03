@@ -9,6 +9,45 @@ const metadata = {
   description:
     'Use free online developer tools to format JSON, encode URLs, test regex, decode JWT tokens, convert data, and speed up coding workflows.',
 };
+const canonical = 'https://quicktoolflow.com/tools/developer/';
+
+const faqItems = [
+  {
+    question: 'What are online developer tools?',
+    answer:
+      'Online developer tools are browser-based utilities that help developers format, validate, encode, decode, test, and convert technical data quickly.',
+  },
+  {
+    question: 'Are QuickToolFlow developer tools free?',
+    answer:
+      'Yes. QuickToolFlow developer tools are free to use and do not require sign-up.',
+  },
+  {
+    question: 'Do these developer tools run in the browser?',
+    answer:
+      'Yes. QuickToolFlow developer tools are designed for fast browser-based workflows.',
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Developer Tools', item: canonical },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
 ---
 
 <Layout metadata={metadata}>
@@ -73,4 +112,6 @@ const metadata = {
       </p>
     </div>
   </section>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
 </Layout>

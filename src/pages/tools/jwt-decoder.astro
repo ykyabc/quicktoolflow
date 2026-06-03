@@ -1,56 +1,88 @@
 ---
-import Layout from "~/layouts/PageLayout.astro";
-import Breadcrumb from "~/components/ui/Breadcrumb.astro";
-import AdBanner from "~/components/ui/AdBanner.astro";
-import ToolCard from "~/components/ui/ToolCard.astro";
-import { tools } from "~/utils/tools-data";
+import RelatedGuides from '~/components/ui/RelatedGuides.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import AdBanner from '~/components/ui/AdBanner.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+import RelatedGuides from "~/components/ui/RelatedGuides.astro";
+import { getRelatedGuides } from "~/utils/related-guides";
 
 const metadata = {
-  title: "JWT Decoder — Free Online Tool",
-  description: "Decode and inspect JSON Web Tokens (JWT) instantly. View the header, payload, and signature. No data is sent to any server.",
+  title: 'JWT Decoder — Free Online Tool',
+  description:
+    'Decode and inspect JSON Web Tokens (JWT) instantly. View the header, payload, and signature. No data is sent to any server.',
 };
 
-const related = ["hash-generator", "base64"];
+const related = ['hash-generator', 'base64'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
+
+const relatedGuides = getRelatedGuides('jwt-decoder');
 ---
 
 <Layout metadata={metadata}>
   <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
-    <Breadcrumb items={[{ name: "Home", href: "/" }, { name: "Tools", href: "/tools/" }, { name: "JWT Decoder" }]} />
+    <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: 'JWT Decoder' }]} />
 
     <header class="mb-8">
       <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">JWT Decoder</h1>
-      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">Paste a JSON Web Token to decode and inspect its header, payload, and signature. View claims, expiration, and all token data instantly.</p>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">
+        Paste a JSON Web Token to decode and inspect its header, payload, and signature. View claims, expiration, and
+        all token data instantly.
+      </p>
     </header>
 
     <div class="max-w-4xl mx-auto mb-8"><AdBanner slot="2222222222" format="horizontal" /></div>
 
     <div class="max-w-4xl mx-auto space-y-6">
       <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-        <label for="jwt-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Paste your JWT</label>
-        <textarea id="jwt-input" rows="6" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm break-all"></textarea>
-        <button id="jwt-decode" class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Decode JWT</button>
+        <label for="jwt-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >Paste your JWT</label
+        >
+        <textarea
+          id="jwt-input"
+          rows="6"
+          placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm break-all"
+        ></textarea>
+        <button
+          id="jwt-decode"
+          class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+          >Decode JWT</button
+        >
       </div>
 
       <div id="jwt-result" class="hidden space-y-6">
-        <div id="jwt-error" class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+        <div
+          id="jwt-error"
+          class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4"
+        >
           <p class="text-sm text-red-600 dark:text-red-400" id="jwt-error-text"></p>
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Header</h2>
-          <pre id="jwt-header" class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap"></pre>
+          <pre
+            id="jwt-header"
+            class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap">
+          </pre>
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Payload</h2>
           <div id="jwt-payload-meta" class="hidden mb-4"></div>
-          <pre id="jwt-payload" class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap"></pre>
+          <pre
+            id="jwt-payload"
+            class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap">
+          </pre>
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Signature</h2>
-          <pre id="jwt-signature" class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto break-all"></pre>
+          <pre
+            id="jwt-signature"
+            class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto break-all">
+          </pre>
         </div>
       </div>
     </div>
@@ -69,8 +101,16 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
 
     <div class="max-w-4xl mx-auto mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">What Is a JWT?</h2>
-      <p class="text-gray-600 dark:text-gray-400 mb-4">A JSON Web Token (JWT) is a compact, URL-safe token format used for securely transmitting information between parties. It consists of three parts separated by dots: Header, Payload, and Signature.</p>
-      <p class="text-gray-600 dark:text-gray-400 mb-4">The <strong>header</strong> typically contains the token type (JWT) and the signing algorithm (e.g., HS256, RS256). The <strong>payload</strong> contains the claims — data about the user and additional metadata. The <strong>signature</strong> is used to verify the token has not been tampered with.</p>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
+        A JSON Web Token (JWT) is a compact, URL-safe token format used for securely transmitting information between
+        parties. It consists of three parts separated by dots: Header, Payload, and Signature.
+      </p>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
+        The <strong>header</strong> typically contains the token type (JWT) and the signing algorithm (e.g., HS256, RS256).
+        The <strong>payload</strong> contains the claims — data about the user and additional metadata. The <strong
+          >signature</strong
+        > is used to verify the token has not been tampered with.
+      </p>
     </div>
 
     <div class="max-w-4xl mx-auto mt-12">
@@ -78,15 +118,21 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Instant Decoding</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Decodes the header and payload from Base64Url and displays them as formatted JSON.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Decodes the header and payload from Base64Url and displays them as formatted JSON.
+          </p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Expiration Check</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Automatically detects and displays expiration time, issued-at time, and whether the token is expired.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Automatically detects and displays expiration time, issued-at time, and whether the token is expired.
+          </p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Client-Side Only</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">All decoding happens in your browser. Your token is never sent to any server.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            All decoding happens in your browser. Your token is never sent to any server.
+          </p>
         </div>
       </div>
     </div>
@@ -96,37 +142,70 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       <div class="space-y-4">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Can I verify the signature?</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">This tool decodes and displays the signature but does not verify it. Signature verification requires the secret key or public key, which you should never paste into online tools.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            This tool decodes and displays the signature but does not verify it. Signature verification requires the
+            secret key or public key, which you should never paste into online tools.
+          </p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Is it safe to paste my token here?</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">The decoding happens entirely in your browser. No data is sent to any server. However, avoid pasting production tokens with sensitive claims.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            The decoding happens entirely in your browser. No data is sent to any server. However, avoid pasting
+            production tokens with sensitive claims.
+          </p>
         </div>
       </div>
     </div>
 
     <div class="max-w-4xl mx-auto mt-12"><AdBanner slot="2222222224" format="horizontal" /></div>
 
-    {relatedTools.length > 0 && (
-      <div class="max-w-4xl mx-auto mt-12">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {relatedTools.map((tool) => (
-            <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
-          ))}
-        </div>
-      </div>
-    )}
+    <div class="max-w-4xl mx-auto">
+      <RelatedGuides
+        guides={[
+          {
+            title: 'JWT Decoder Guide',
+            href: '/blog/jwt-decoder-guide-json-web-token-explained/',
+            description:
+              'Understand JSON Web Tokens, claims, expiration, signatures, and how to inspect JWT payloads safely.',
+          },
+        ]}
+      />
+    </div>
 
-    <div class="max-w-3xl mx-auto mt-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
+    {
+      relatedTools.length > 0 && (
+        <div class="max-w-4xl mx-auto mt-12">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {relatedTools.map((tool) => (
+              <ToolCard
+                slug={tool.slug}
+                name={tool.name}
+                description={tool.description}
+                icon={tool.icon}
+                gradient={tool.gradient}
+              />
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <div
+      class="max-w-3xl mx-auto mt-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white"
+    >
       <h2 class="text-2xl font-bold mb-3">Decode JWT Tokens for Free</h2>
       <p class="mb-5 opacity-90">Inspect JSON Web Tokens instantly. No sign-up, no limits, no data collection.</p>
-      <a href="/tools/" class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition">Explore All Tools</a>
+      <a
+        href="/tools/"
+        class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition"
+        >Explore All Tools</a
+      >
     </div>
   </section>
 
   <script is:inline>
-    (function() {
+    (function () {
       var input = document.getElementById('jwt-input');
       var btn = document.getElementById('jwt-decode');
       var result = document.getElementById('jwt-result');
@@ -140,9 +219,14 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       function base64UrlDecode(str) {
         str = str.replace(/-/g, '+').replace(/_/g, '/');
         while (str.length % 4) str += '=';
-        return decodeURIComponent(atob(str).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
+        return decodeURIComponent(
+          atob(str)
+            .split('')
+            .map(function (c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join('')
+        );
       }
 
       function formatDate(ts) {
@@ -150,7 +234,7 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
         return d.toISOString();
       }
 
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function () {
         errorBox.classList.add('hidden');
         result.classList.add('hidden');
         payloadMeta.classList.add('hidden');
@@ -194,10 +278,13 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
             metaParts.push('Not Before: ' + formatDate(payload.nbf));
           }
           if (metaParts.length > 0) {
-            payloadMeta.innerHTML = metaParts.map(function(m) {
-              var color = m.indexOf('EXPIRED') !== -1 ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400';
-              return '<p class="text-sm font-medium ' + color + '">' + m + '</p>';
-            }).join('');
+            payloadMeta.innerHTML = metaParts
+              .map(function (m) {
+                var color =
+                  m.indexOf('EXPIRED') !== -1 ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400';
+                return '<p class="text-sm font-medium ' + color + '">' + m + '</p>';
+              })
+              .join('');
             payloadMeta.classList.remove('hidden');
           }
         } catch (e) {

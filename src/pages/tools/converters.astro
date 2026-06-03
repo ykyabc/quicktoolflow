@@ -9,6 +9,46 @@ const metadata = {
   description:
     'Use free online converters to convert timestamps, colors, CSS units, number bases, and other common formats directly in your browser.',
 };
+
+const canonical = 'https://quicktoolflow.com/tools/converters/';
+
+const faqItems = [
+  {
+    question: 'What are online converters?',
+    answer:
+      'Online converters are browser-based tools that help you convert values, formats, units, timestamps, colors, and number bases quickly.',
+  },
+  {
+    question: 'Are QuickToolFlow converters free?',
+    answer:
+      'Yes. QuickToolFlow converters are free to use and do not require sign-up.',
+  },
+  {
+    question: 'When should I use an online converter?',
+    answer:
+      'Use an online converter when you need a fast and accurate conversion without installing extra software or doing manual calculations.',
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Converters', item: canonical },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
 ---
 
 <Layout metadata={metadata}>
@@ -72,4 +112,6 @@ const metadata = {
       </p>
     </div>
   </section>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
 </Layout>

@@ -4,6 +4,8 @@ import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
+import RelatedGuides from '~/components/ui/RelatedGuides.astro';
+import { getRelatedGuides } from '~/utils/related-guides';
 
 export interface Props {
   title: string;
@@ -90,9 +92,44 @@ const categoryUrl = currentTool
   ? `/tools/${categoryPageMap[currentTool.categorySlug] || currentTool.categorySlug}/`
   : '/tools/';
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://quicktoolflow.com/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Tools',
+      item: 'https://quicktoolflow.com/tools/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: category,
+      item: currentTool
+        ? `https://quicktoolflow.com${categoryUrl}`
+        : 'https://quicktoolflow.com/tools/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: title,
+      item: canonical,
+    },
+  ],
+};
+
 const otherTools = tools
   .filter((tool) => tool.slug !== slug && tool.categorySlug === currentTool?.categorySlug)
   .slice(0, 6);
+
+const relatedGuides = getRelatedGuides(slug);
 
 const metadata = { title, description, canonical, robots: { index: true, follow: true } };
 ---
@@ -189,6 +226,35 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
       </div>
     </section>
 
+    {relatedGuides.length > 0 && (
+  <section class="mt-12">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+      Related Guides
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {relatedGuides.map((guide) => (
+        <a
+          href={guide.href}
+          class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+        >
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            {guide.title}
+          </h3>
+
+          <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+            {guide.description}
+          </p>
+
+          <span class="mt-4 inline-flex text-sm font-semibold text-blue-600 dark:text-blue-400">
+            Read guide →
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
+
     {/* RELATED TOOLS */}
     <section class="mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
@@ -204,4 +270,5 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
   <script type="application/ld+json" set:html={JSON.stringify(toolSchema)} is:inline />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
 </Layout>

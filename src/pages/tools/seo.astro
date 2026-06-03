@@ -9,6 +9,46 @@ const metadata = {
   description:
     'Use free online SEO tools to generate meta tags, improve page snippets, prepare Open Graph tags, and optimize websites for search engines.',
 };
+
+const canonical = 'https://quicktoolflow.com/tools/seo/';
+
+const faqItems = [
+  {
+    question: 'What are online SEO tools?',
+    answer:
+      'Online SEO tools are browser-based utilities that help website owners create metadata, improve snippets, prepare social tags, and support basic search optimization tasks.',
+  },
+  {
+    question: 'Are QuickToolFlow SEO tools free?',
+    answer:
+      'Yes. QuickToolFlow SEO tools are free to use and do not require sign-up.',
+  },
+  {
+    question: 'Who should use SEO tools?',
+    answer:
+      'SEO tools are useful for bloggers, developers, marketers, website owners, and anyone who wants to improve how pages appear in search results and social previews.',
+  },
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'SEO Tools', item: canonical },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
 ---
 
 <Layout metadata={metadata}>
@@ -73,4 +113,6 @@ const metadata = {
       </p>
     </div>
   </section>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
 </Layout>

@@ -1,28 +1,37 @@
-astro
-astro
 ---
-import Layout from "~/layouts/PageLayout.astro";
-import Breadcrumb from "~/components/ui/Breadcrumb.astro";
-import AdBanner from "~/components/ui/AdBanner.astro";
-import ToolCard from "~/components/ui/ToolCard.astro";
-import { tools } from "~/utils/tools-data";
+import RelatedGuides from '~/components/ui/RelatedGuides.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import AdBanner from '~/components/ui/AdBanner.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+import RelatedGuides from "~/components/ui/RelatedGuides.astro";
+import { getRelatedGuides } from "~/utils/related-guides";
 
 const metadata = {
-  title: "JSON to CSV Converter — Free Online Tool",
-  description: "Convert JSON data to CSV format instantly. Paste your JSON array and download a CSV file. Free, fast, and runs entirely in your browser.",
+  title: 'JSON to CSV Converter — Free Online Tool',
+  description:
+    'Convert JSON data to CSV format instantly. Paste your JSON array and download a CSV file. Free, fast, and runs entirely in your browser.',
 };
 
-const related = ["json-formatter", "string-escape"];
+const related = ['json-formatter', 'string-escape'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
+
+const relatedGuides = getRelatedGuides('json-to-csv');
 ---
 
 <Layout metadata={metadata}>
   <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
-    <Breadcrumb items={[{ name: "Home", href: "/" }, { name: "Tools", href: "/tools/" }, { name: "JSON to CSV Converter" }]} />
+    <Breadcrumb
+      items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: 'JSON to CSV Converter' }]}
+    />
 
     <header class="mb-8">
       <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">JSON to CSV Converter</h1>
-      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">Paste a JSON array of objects and instantly convert it to CSV. Download the result as a file or copy to clipboard. Runs entirely in your browser.</p>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">
+        Paste a JSON array of objects and instantly convert it to CSV. Download the result as a file or copy to
+        clipboard. Runs entirely in your browser.
+      </p>
     </header>
 
     <div class="max-w-4xl mx-auto mb-8"><AdBanner slot="2222222222" format="horizontal" /></div>
@@ -32,11 +41,22 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
           <div class="flex items-center justify-between mb-3">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">JSON Input</h2>
-            <button id="json-sample" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">Load Sample</button>
+            <button id="json-sample" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
+              >Load Sample</button
+            >
           </div>
-          <textarea id="json-input" rows="18" placeholder="Paste JSON array here..." class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm"></textarea>
+          <textarea
+            id="json-input"
+            rows="18"
+            placeholder="Paste JSON array here..."
+            class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm"
+          ></textarea>
           <div id="json-error" class="hidden mt-2 text-sm text-red-600 dark:text-red-400"></div>
-          <button id="convert-btn" class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Convert to CSV</button>
+          <button
+            id="convert-btn"
+            class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+            >Convert to CSV</button
+          >
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
@@ -44,10 +64,17 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">CSV Output</h2>
             <div class="flex gap-2">
               <button id="csv-copy" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">Copy</button>
-              <button id="csv-download" class="text-sm text-green-600 hover:text-green-700 dark:text-green-400">Download</button>
+              <button id="csv-download" class="text-sm text-green-600 hover:text-green-700 dark:text-green-400"
+                >Download</button
+              >
             </div>
           </div>
-          <textarea id="csv-output" rows="18" readonly class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white outline-none resize-none font-mono text-sm" placeholder="CSV output will appear here..."></textarea>
+          <textarea
+            id="csv-output"
+            rows="18"
+            readonly
+            class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white outline-none resize-none font-mono text-sm"
+            placeholder="CSV output will appear here..."></textarea>
         </div>
       </div>
     </div>
@@ -69,15 +96,21 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Flattens Nested Objects</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Nested JSON objects are flattened with dot notation into column headers automatically.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Nested JSON objects are flattened with dot notation into column headers automatically.
+          </p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Handles Arrays</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Array values within objects are joined with semicolons for clean CSV output.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Array values within objects are joined with semicolons for clean CSV output.
+          </p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Download as CSV</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Export the result as a .csv file ready for Excel, Google Sheets, or any spreadsheet app.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Export the result as a .csv file ready for Excel, Google Sheets, or any spreadsheet app.
+          </p>
         </div>
       </div>
     </div>
@@ -87,37 +120,68 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       <div class="space-y-4">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">What JSON format is supported?</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">The tool expects a JSON array of objects. Each object becomes a row in the CSV. Keys become column headers.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            The tool expects a JSON array of objects. Each object becomes a row in the CSV. Keys become column headers.
+          </p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Is my data sent to a server?</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">No. The conversion happens entirely in your browser. Your data is never uploaded anywhere.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            No. The conversion happens entirely in your browser. Your data is never uploaded anywhere.
+          </p>
         </div>
       </div>
     </div>
 
     <div class="max-w-4xl mx-auto mt-12"><AdBanner slot="2222222224" format="horizontal" /></div>
 
-    {relatedTools.length > 0 && (
-      <div class="max-w-4xl mx-auto mt-12">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {relatedTools.map((tool) => (
-            <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
-          ))}
-        </div>
-      </div>
-    )}
+    <div class="max-w-4xl mx-auto">
+      <RelatedGuides
+        guides={[
+          {
+            title: 'JSON to CSV Conversion Guide',
+            href: '/blog/json-to-csv-conversion-guide/',
+            description:
+              'Learn how JSON to CSV conversion works, how nested objects are handled, and when to use CSV output.',
+          },
+        ]}
+      />
+    </div>
 
-    <div class="max-w-3xl mx-auto mt-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
+    {
+      relatedTools.length > 0 && (
+        <div class="max-w-4xl mx-auto mt-12">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {relatedTools.map((tool) => (
+              <ToolCard
+                slug={tool.slug}
+                name={tool.name}
+                description={tool.description}
+                icon={tool.icon}
+                gradient={tool.gradient}
+              />
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <div
+      class="max-w-3xl mx-auto mt-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white"
+    >
       <h2 class="text-2xl font-bold mb-3">Convert JSON to CSV for Free</h2>
       <p class="mb-5 opacity-90">Paste JSON, get CSV. No sign-up, no limits, no data collection.</p>
-      <a href="/tools/" class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition">Explore All Tools</a>
+      <a
+        href="/tools/"
+        class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition"
+        >Explore All Tools</a
+      >
     </div>
   </section>
 
   <script is:inline>
-    (function() {
+    (function () {
       var jsonInput = document.getElementById('json-input');
       var csvOutput = document.getElementById('csv-output');
       var jsonError = document.getElementById('json-error');
@@ -129,10 +193,10 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       var sample = [
         { name: 'Alice', age: 30, city: 'New York' },
         { name: 'Bob', age: 25, city: 'London' },
-        { name: 'Charlie', age: 35, city: 'Tokyo' }
+        { name: 'Charlie', age: 35, city: 'Tokyo' },
       ];
 
-      sampleBtn.addEventListener('click', function() {
+      sampleBtn.addEventListener('click', function () {
         jsonInput.value = JSON.stringify(sample, null, 2);
         jsonError.classList.add('hidden');
       });
@@ -164,23 +228,37 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
         return val;
       }
 
-      convertBtn.addEventListener('click', function() {
+      convertBtn.addEventListener('click', function () {
         jsonError.classList.add('hidden');
         try {
           var data = JSON.parse(jsonInput.value.trim());
           if (!Array.isArray(data)) throw new Error('Input must be a JSON array of objects.');
-          if (data.length === 0) { csvOutput.value = ''; return; }
-          var flat = data.map(function(row) { return flatten(row); });
+          if (data.length === 0) {
+            csvOutput.value = '';
+            return;
+          }
+          var flat = data.map(function (row) {
+            return flatten(row);
+          });
           var headers = [];
           var headerSet = {};
-          flat.forEach(function(row) {
+          flat.forEach(function (row) {
             for (var k in row) {
-              if (!headerSet[k]) { headerSet[k] = true; headers.push(k); }
+              if (!headerSet[k]) {
+                headerSet[k] = true;
+                headers.push(k);
+              }
             }
           });
           var lines = [headers.map(escapeCSV).join(',')];
-          flat.forEach(function(row) {
-            lines.push(headers.map(function(h) { return escapeCSV(row[h] !== undefined ? row[h] : ''); }).join(','));
+          flat.forEach(function (row) {
+            lines.push(
+              headers
+                .map(function (h) {
+                  return escapeCSV(row[h] !== undefined ? row[h] : '');
+                })
+                .join(',')
+            );
           });
           csvOutput.value = lines.join('\n');
         } catch (e) {
@@ -190,15 +268,17 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
         }
       });
 
-      copyBtn.addEventListener('click', function() {
+      copyBtn.addEventListener('click', function () {
         if (!csvOutput.value) return;
-        navigator.clipboard.writeText(csvOutput.value).then(function() {
+        navigator.clipboard.writeText(csvOutput.value).then(function () {
           copyBtn.textContent = 'Copied!';
-          setTimeout(function() { copyBtn.textContent = 'Copy'; }, 2000);
+          setTimeout(function () {
+            copyBtn.textContent = 'Copy';
+          }, 2000);
         });
       });
 
-      dlBtn.addEventListener('click', function() {
+      dlBtn.addEventListener('click', function () {
         if (!csvOutput.value) return;
         var blob = new Blob([csvOutput.value], { type: 'text/csv;charset=utf-8;' });
         var link = document.createElement('a');
