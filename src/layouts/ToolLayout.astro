@@ -176,8 +176,6 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
       }
     </header>
 
-    <AdBanner slot="1234567890" format="horizontal" />
-
     {/* TOOL BODY */}
     <div
       class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm mb-8"
@@ -185,7 +183,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
       <slot />
     </div>
 
-    <AdBanner slot="0987654321" format="auto" />
+    <AdBanner placement="toolBottom" format="auto" />
 
     {
       examples.length > 0 && (

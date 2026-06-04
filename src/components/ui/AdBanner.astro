@@ -2,14 +2,20 @@
 import { ANALYTICS } from 'astrowind:config';
 
 export interface Props {
-  slot: string;
+  slot?: string;
+  placement?: 'homepage' | 'toolsDirectory' | 'toolMiddle' | 'toolBottom' | 'blogBottom';
   format?: 'auto' | 'horizontal' | 'vertical' | 'rectangle';
   className?: string;
 }
 
-const { slot, format = 'auto', className = '' } = Astro.props;
+const { slot, placement, format = 'auto', className = '' } = Astro.props;
 const adClientId = ANALYTICS?.vendors?.googleAdsense?.clientId ? String(ANALYTICS.vendors.googleAdsense.clientId) : '';
-const isConfigured = /^ca-pub-\d+$/.test(adClientId) && /^\d+$/.test(slot);
+const configuredSlot =
+  slot ||
+  (placement && ANALYTICS?.vendors?.googleAdsense?.slots?.[placement]
+    ? String(ANALYTICS.vendors.googleAdsense.slots[placement])
+    : '');
+const isConfigured = /^ca-pub-\d+$/.test(adClientId) && /^\d+$/.test(configuredSlot);
 ---
 
 {
@@ -19,7 +25,7 @@ const isConfigured = /^ca-pub-\d+$/.test(adClientId) && /^\d+$/.test(slot);
         class="adsbygoogle"
         style="display:block"
         data-ad-client={adClientId}
-        data-ad-slot={slot}
+        data-ad-slot={configuredSlot}
         data-ad-format={format}
         data-full-width-responsive="true"
       />

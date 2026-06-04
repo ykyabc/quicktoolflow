@@ -61,6 +61,12 @@ analytics:
       partytown: false
     googleAdsense:
       clientId: ''
+      slots:
+        homepage: ''
+        toolsDirectory: ''
+        toolMiddle: ''
+        toolBottom: ''
+        blogBottom: ''
 
 ui:
   theme: system

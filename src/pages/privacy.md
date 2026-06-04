@@ -1,15 +1,14 @@
 ---
 title: Privacy Policy
 description: 'QuickToolFlow privacy policy: your data never leaves your browser.'
+layout: '~/layouts/MarkdownLayout.astro'
 ---
-
-# Privacy Policy
 
 **Last updated:** June 4, 2026
 
 ## Introduction
 
-QuickToolFlow ("we," "our," "us") operates quicktoolflow.com. This policy describes how we handle your information.
+This policy describes how QuickToolFlow handles information for quicktoolflow.com.
 
 ## Data Processing
 
@@ -41,7 +40,7 @@ We may use Google AdSense. Google may use cookies and web beacons to serve ads, 
 - **Google AdSense:** [Google Privacy Policy](https://policies.google.com/privacy)
 - **Cloudflare:** [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/)
 
-## Children's Privacy
+## Privacy for Children
 
 Our service is not directed to children under 13.
 

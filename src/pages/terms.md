@@ -1,9 +1,8 @@
 ---
 title: Terms of Service
 description: 'QuickToolFlow terms of service: rules for using our free online tools.'
+layout: '~/layouts/MarkdownLayout.astro'
 ---
-
-# Terms of Service
 
 **Last updated:** January 1, 2025
 
@@ -25,7 +24,7 @@ You may use QuickToolFlow for personal and commercial purposes. You may not:
 
 ## 4. Disclaimer
 
-Tools are provided "as is" without warranties. We do not guarantee accuracy or fitness for a particular purpose.
+Tools are provided as is, without warranties. We do not guarantee accuracy or fitness for a particular purpose.
 
 ## 5. Limitations
 

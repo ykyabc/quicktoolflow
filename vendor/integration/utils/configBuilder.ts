@@ -77,6 +77,13 @@ export interface AnalyticsConfig {
     };
     googleAdsense: {
       clientId?: string;
+      slots?: {
+        homepage?: string;
+        toolsDirectory?: string;
+        toolMiddle?: string;
+        toolBottom?: string;
+        blogBottom?: string;
+      };
     };
   };
 }
@@ -192,6 +199,13 @@ const getAnalytics = (config: Config) => {
       },
       googleAdsense: {
         clientId: undefined,
+        slots: {
+          homepage: '',
+          toolsDirectory: '',
+          toolMiddle: '',
+          toolBottom: '',
+          blogBottom: '',
+        },
       },
     },
   };
