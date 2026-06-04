@@ -7,8 +7,8 @@ site:
 
 metadata:
   title:
-    default: QuickToolFlow — Free Online Developer & Productivity Tools
-    template: '%s — QuickToolFlow'
+    default: QuickToolFlow - Free Online Developer & Productivity Tools
+    template: '%s - QuickToolFlow'
   description: >-
     Fast, free, privacy-first online tools for developers.
     JSON formatter, password generator, word counter, Base64 encoder, and more.
