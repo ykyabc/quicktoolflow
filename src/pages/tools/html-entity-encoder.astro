@@ -7,45 +7,126 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Encode special characters to HTML entities or decode HTML entities back to readable text."
   slug="html-entity-encoder"
   category="Developer Tools"
+  features={[
+    'Encodes HTML-sensitive characters such as &, <, >, quotes, and apostrophes',
+    'Decodes common HTML entities back to readable text',
+    'Includes a quick reference for common entities',
+    'Supports swap and copy actions',
+    'Useful for snippets, documentation, examples, and safe display text',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Displaying HTML snippets inside documentation or tutorials',
+    'Escaping user-facing examples before placing them in a page',
+    'Decoding copied entity text from CMS fields or legacy HTML',
+    'Preparing code examples that should be shown as text instead of rendered as HTML',
+  ]}
+  howToSteps={[
+    'Paste text or an HTML snippet into the input field.',
+    'Click Encode to convert special characters into entities.',
+    'Click Decode to turn common entities back into readable characters.',
+    'Copy the output or swap it back into the input for another pass.',
+  ]}
+  examples={[
+    {
+      title: 'Encode an HTML snippet',
+      input: '<div class="hello">Hello & World</div>',
+      output: '&lt;div class=&quot;hello&quot;&gt;Hello &amp; World&lt;/div&gt;',
+      note: 'Encoding lets the snippet appear as text instead of being interpreted as real markup.',
+    },
+  ]}
+  tips={[
+    'HTML entity encoding helps display markup as text, but it is not a complete security system by itself.',
+    'For production user input, use the escaping and sanitization tools provided by your framework.',
+    'Encode code examples before placing them inside HTML documentation pages.',
+  ]}
+  faq={[
+    {
+      question: 'What is an HTML entity?',
+      answer: 'An HTML entity is a text representation of a character, such as &amp;lt; for < or &amp;amp; for &.',
+    },
+    {
+      question: 'Is HTML encoding the same as sanitizing?',
+      answer:
+        'No. Encoding changes characters so they display as text. Sanitizing removes or restricts unsafe markup according to security rules.',
+    },
+    {
+      question: 'When should I encode quotes?',
+      answer:
+        'Encode quotes when text will be placed inside HTML attributes or examples where quote characters could break the markup.',
+    },
+    {
+      question: 'Is my HTML snippet uploaded?',
+      answer: 'No. Encoding and decoding run locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="flex gap-2 flex-wrap">
-      <button id="he-encode" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Encode</button>
-      <button id="he-decode" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Decode</button>
-      <button id="he-swap" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto" title="Swap">
-        <astro-icon name="tabler:arrows-exchange" class="w-4 h-4" />
+      <button
+        id="he-encode"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Encode</button
+      >
+      <button
+        id="he-decode"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Decode</button
+      >
+      <button
+        id="he-swap"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
+        title="Swap"
+      >
+        <astro-icon name="tabler:arrows-exchange" class="w-4 h-4"></astro-icon>
       </button>
-      <button id="he-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy Output</button>
+      <button
+        id="he-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy Output</button
+      >
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input</label>
-      <textarea id="he-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder='Enter text: <div class="hello">Hello & World</div>' spellcheck="false"><div class="hello">Hello & "World" > 5 < 10</div></textarea>
+      <textarea
+        id="he-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder='Enter text: <div class="hello">Hello & World</div>'
+        spellcheck="false">{'<div class="hello">Hello & "World" > 5 < 10</div>'}</textarea
+      >
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>
-      <textarea id="he-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none" readonly placeholder="Result will appear here..." spellcheck="false"></textarea>
+      <textarea
+        id="he-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none"
+        readonly
+        placeholder="Result will appear here..."
+        spellcheck="false"></textarea>
     </div>
 
     <div>
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Common HTML Entities Reference</h3>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-        {[
-          ['&amp;', '&amp;amp;', '&'],
-          ['&lt;', '&amp;lt;', '<'],
-          ['&gt;', '&amp;gt;', '>'],
-          ['&quot;', '&amp;quot;', '"'],
-          ['&#39;', '&amp;#39;', "'"],
-          ['&nbsp;', '&amp;nbsp;', 'space'],
-          ['&copy;', '&amp;copy;', '©'],
-          ['&reg;', '&amp;reg;', '®'],
-        ].map(([entity, code, char]) => (
-          <div class="p-2 bg-gray-50 dark:bg-slate-700 rounded-lg text-center">
-            <div class="font-mono text-gray-900 dark:text-white">{code}</div>
-            <div class="text-gray-500 mt-0.5">{char}</div>
-          </div>
-        ))}
+        {
+          [
+            ['&amp;', '&amp;amp;', '&'],
+            ['&lt;', '&amp;lt;', '<'],
+            ['&gt;', '&amp;gt;', '>'],
+            ['&quot;', '&amp;quot;', '"'],
+            ['&#39;', '&amp;#39;', "'"],
+            ['&nbsp;', '&amp;nbsp;', 'space'],
+            ['&copy;', '&amp;copy;', '©'],
+            ['&reg;', '&amp;reg;', '®'],
+          ].map(([, code, char]) => (
+            <div class="p-2 bg-gray-50 dark:bg-slate-700 rounded-lg text-center">
+              <div class="font-mono text-gray-900 dark:text-white">{code}</div>
+              <div class="text-gray-500 mt-0.5">{char}</div>
+            </div>
+          ))
+        }
       </div>
     </div>
   </div>

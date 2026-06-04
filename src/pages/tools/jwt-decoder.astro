@@ -5,8 +5,6 @@ import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
-import RelatedGuides from "~/components/ui/RelatedGuides.astro";
-import { getRelatedGuides } from "~/utils/related-guides";
 
 const metadata = {
   title: 'JWT Decoder — Free Online Tool',
@@ -14,10 +12,8 @@ const metadata = {
     'Decode and inspect JSON Web Tokens (JWT) instantly. View the header, payload, and signature. No data is sent to any server.',
 };
 
-const related = ['hash-generator', 'base64'];
+const related = ['base64', 'json-formatter', 'hash-generator', 'url-encoder'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
-
-const relatedGuides = getRelatedGuides('jwt-decoder');
 ---
 
 <Layout metadata={metadata}>
@@ -114,6 +110,68 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
     </div>
 
     <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Common JWT Claims</h2>
+      <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
+        <table class="w-full text-sm text-left bg-white dark:bg-gray-800">
+          <thead class="bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300">
+            <tr>
+              <th class="px-4 py-3 font-semibold">Claim</th>
+              <th class="px-4 py-3 font-semibold">Meaning</th>
+              <th class="px-4 py-3 font-semibold">Why it matters</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-gray-600 dark:text-gray-400">
+            <tr>
+              <td class="px-4 py-3 font-mono text-gray-900 dark:text-white">iss</td>
+              <td class="px-4 py-3">Issuer</td>
+              <td class="px-4 py-3">Identifies the system that issued the token.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-mono text-gray-900 dark:text-white">sub</td>
+              <td class="px-4 py-3">Subject</td>
+              <td class="px-4 py-3">Usually identifies the user, account, or entity the token represents.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-mono text-gray-900 dark:text-white">aud</td>
+              <td class="px-4 py-3">Audience</td>
+              <td class="px-4 py-3">Shows which application or API the token is intended for.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-mono text-gray-900 dark:text-white">exp</td>
+              <td class="px-4 py-3">Expiration time</td>
+              <td class="px-4 py-3">A token should not be accepted after this Unix timestamp.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-mono text-gray-900 dark:text-white">iat</td>
+              <td class="px-4 py-3">Issued at</td>
+              <td class="px-4 py-3">Helps you understand when the token was created.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Security Notes</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Decode does not mean verify</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            This page decodes the readable JSON parts of a token. It does not prove that the token is authentic or that
+            the signature is valid.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Avoid sharing live tokens</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Even though decoding runs locally, access tokens and ID tokens can contain sensitive claims. Treat
+            production tokens like credentials.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
@@ -152,6 +210,20 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
           <p class="text-sm text-gray-600 dark:text-gray-400">
             The decoding happens entirely in your browser. No data is sent to any server. However, avoid pasting
             production tokens with sensitive claims.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Why are JWT parts separated by dots?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            A standard signed JWT has three Base64Url-encoded parts: header, payload, and signature. The dots separate
+            those parts so applications can parse them quickly.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">What does an expired token mean?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            If the payload contains an <code>exp</code> claim in the past, a correctly implemented API should reject the token
+            even if the payload can still be decoded.
           </p>
         </div>
       </div>
@@ -206,15 +278,15 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
 
   <script is:inline>
     (function () {
-      var input = document.getElementById('jwt-input');
-      var btn = document.getElementById('jwt-decode');
-      var result = document.getElementById('jwt-result');
-      var errorBox = document.getElementById('jwt-error');
-      var errorText = document.getElementById('jwt-error-text');
-      var headerEl = document.getElementById('jwt-header');
-      var payloadMeta = document.getElementById('jwt-payload-meta');
-      var payloadEl = document.getElementById('jwt-payload');
-      var sigEl = document.getElementById('jwt-signature');
+      const input = document.getElementById('jwt-input');
+      const btn = document.getElementById('jwt-decode');
+      const result = document.getElementById('jwt-result');
+      const errorBox = document.getElementById('jwt-error');
+      const errorText = document.getElementById('jwt-error-text');
+      const headerEl = document.getElementById('jwt-header');
+      const payloadMeta = document.getElementById('jwt-payload-meta');
+      const payloadEl = document.getElementById('jwt-payload');
+      const sigEl = document.getElementById('jwt-signature');
 
       function base64UrlDecode(str) {
         str = str.replace(/-/g, '+').replace(/_/g, '/');
@@ -230,7 +302,7 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
       }
 
       function formatDate(ts) {
-        var d = new Date(ts * 1000);
+        const d = new Date(ts * 1000);
         return d.toISOString();
       }
 
@@ -240,10 +312,10 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
         payloadMeta.classList.add('hidden');
         payloadMeta.innerHTML = '';
 
-        var token = input.value.trim();
+        const token = input.value.trim();
         if (!token) return;
 
-        var parts = token.split('.');
+        const parts = token.split('.');
         if (parts.length < 2 || parts.length > 3) {
           errorText.textContent = 'Invalid JWT format. A JWT should have 2 or 3 parts separated by dots.';
           errorBox.classList.remove('hidden');
@@ -252,7 +324,7 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
         }
 
         try {
-          var header = JSON.parse(base64UrlDecode(parts[0]));
+          const header = JSON.parse(base64UrlDecode(parts[0]));
           headerEl.textContent = JSON.stringify(header, null, 2);
         } catch (e) {
           errorText.textContent = 'Failed to decode header: ' + e.message;
@@ -262,13 +334,13 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
         }
 
         try {
-          var payload = JSON.parse(base64UrlDecode(parts[1]));
+          const payload = JSON.parse(base64UrlDecode(parts[1]));
           payloadEl.textContent = JSON.stringify(payload, null, 2);
 
-          var metaParts = [];
+          const metaParts = [];
           if (payload.exp) {
-            var expDate = formatDate(payload.exp);
-            var isExpired = Date.now() / 1000 > payload.exp;
+            const expDate = formatDate(payload.exp);
+            const isExpired = Date.now() / 1000 > payload.exp;
             metaParts.push('Expires: ' + expDate + (isExpired ? ' (EXPIRED)' : ' (valid)'));
           }
           if (payload.iat) {
@@ -280,7 +352,7 @@ const relatedGuides = getRelatedGuides('jwt-decoder');
           if (metaParts.length > 0) {
             payloadMeta.innerHTML = metaParts
               .map(function (m) {
-                var color =
+                const color =
                   m.indexOf('EXPIRED') !== -1 ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400';
                 return '<p class="text-sm font-medium ' + color + '">' + m + '</p>';
               })

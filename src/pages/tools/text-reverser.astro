@@ -7,23 +7,104 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Reverse text character by character, word by word, or line by line. Fun and useful text transformation tool."
   slug="text-reverser"
   category="Text Tools"
+  features={[
+    'Reverse text by characters, words, or full lines',
+    'Keeps the original input visible while showing the transformed result',
+    'One-click copy for reversed output',
+    'Works with short phrases, multi-line lists, and longer text blocks',
+    'Runs locally in the browser for quick private transformations',
+    'Useful for testing, puzzles, formatting tasks, and text experiments',
+  ]}
+  useCases={[
+    'Reverse a list order without opening a spreadsheet',
+    'Create mirrored text effects for usernames, puzzles, or examples',
+    'Flip word order in a sentence while keeping words readable',
+    'Reverse log lines, notes, or bullet lists from newest to oldest',
+    'Test how software handles unusual or reversed strings',
+  ]}
+  howToSteps={[
+    'Enter or paste the text you want to reverse.',
+    'Choose Reverse Characters, Reverse Words, or Reverse Lines.',
+    'Review the transformed text in the Result box.',
+    'Click Copy when you want to reuse the output elsewhere.',
+  ]}
+  examples={[
+    {
+      title: 'Reverse by different modes',
+      input: 'Hello World\nQuickToolFlow',
+      output:
+        'Characters: wolFloT kciuQ\ndlroW olleH\nWords: QuickToolFlow World Hello\nLines: QuickToolFlow\nHello World',
+      note: 'Character, word, and line reversal are different operations, so choose the mode that matches the structure of your text.',
+    },
+  ]}
+  tips={[
+    'Character reversal can change the appearance of emoji or combined Unicode characters in some browsers.',
+    'Word reversal treats whitespace-separated chunks as words and normalizes them with single spaces.',
+    'Line reversal is often the best option for reordering lists, logs, or rows of text.',
+  ]}
+  faq={[
+    {
+      question: 'What is a text reverser?',
+      answer:
+        'A text reverser transforms text in reverse order. This tool can reverse by character, by word, or by line depending on the result you need.',
+    },
+    {
+      question: 'What is the difference between reversing words and characters?',
+      answer:
+        'Character reversal flips every character in the text, while word reversal keeps each word readable and changes the order of the words.',
+    },
+    {
+      question: 'Can I reverse multiple lines at once?',
+      answer:
+        'Yes. Paste multi-line text and use Reverse Lines to place the last line first, the second-to-last line second, and so on.',
+    },
+    {
+      question: 'Is the reversed text stored anywhere?',
+      answer: 'No. The transformation happens locally in your browser and the text is not uploaded to a server.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
-      <textarea id="tr-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter text to reverse...">Hello World from QuickToolFlow</textarea>
+      <textarea
+        id="tr-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Enter text to reverse...">Hello World from QuickToolFlow</textarea
+      >
     </div>
 
     <div class="flex flex-wrap gap-2">
-      <button id="tr-char" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Reverse Characters</button>
-      <button id="tr-word" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Reverse Words</button>
-      <button id="tr-line" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Reverse Lines</button>
-      <button id="tr-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto">Copy</button>
+      <button
+        id="tr-char"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Reverse Characters</button
+      >
+      <button
+        id="tr-word"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Reverse Words</button
+      >
+      <button
+        id="tr-line"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Reverse Lines</button
+      >
+      <button
+        id="tr-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
+        >Copy</button
+      >
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Result</label>
-      <textarea id="tr-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y outline-none" readonly placeholder="Reversed text..." spellcheck="false"></textarea>
+      <textarea
+        id="tr-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y outline-none"
+        readonly
+        placeholder="Reversed text..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>

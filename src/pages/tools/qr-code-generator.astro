@@ -5,7 +5,6 @@ import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
-import RelatedGuides from '~/components/ui/RelatedGuides.astro';
 import { getRelatedGuides } from '~/utils/related-guides';
 
 const metadata = {
@@ -14,7 +13,7 @@ const metadata = {
     'Generate QR codes instantly for URLs, text, email, phone numbers, and more. Free, fast, and runs entirely in your browser.',
 };
 
-const related = ['password-generator', 'uuid-generator'];
+const related = ['password-generator', 'uuid-generator', 'text-to-slug', 'url-encoder'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
 
 const relatedGuides = getRelatedGuides('qr-code-generator');
@@ -142,6 +141,47 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
     </div>
 
     <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Useful QR Code Formats</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Website URL</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Paste a full URL such as <code>https://quicktoolflow.com</code>. This is the most reliable format for menus,
+            flyers, posters, and product packaging.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Email or phone</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Use <code>mailto:name@example.com</code> for email links or <code>tel:+15551234567</code> for phone links.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">WiFi credentials</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Many camera apps support WiFi strings like <code>WIFI:T:WPA;S:NetworkName;P:Password;;</code>.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Plain text</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Plain text works for short notes, serial numbers, event codes, or internal labels.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Scanning Reliability Tips</h2>
+      <ul class="space-y-3 text-gray-600 dark:text-gray-400">
+        <li>Keep strong contrast between the foreground and background colors.</li>
+        <li>Avoid very long text when the QR code will be printed small.</li>
+        <li>Leave quiet space around the QR code so scanners can detect its edges.</li>
+        <li>Test the downloaded PNG on multiple phones before printing it in bulk.</li>
+      </ul>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
       <div class="space-y-4">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
@@ -162,6 +202,20 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Is my data sent to a server?</h3>
           <p class="text-sm text-gray-600 dark:text-gray-400">
             No. Everything runs entirely in your browser. Your text is never uploaded anywhere.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Can I use custom colors?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Yes, but keep the foreground much darker than the background. Low-contrast QR codes are harder for cameras
+            to scan.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">What size should I download?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Use 256 px or 512 px for most digital uses. For print, choose a larger size and test the final physical
+            output before distribution.
           </p>
         </div>
       </div>
@@ -210,7 +264,7 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
   <script is:inline>
     (function () {
       function loadScript(url, callback) {
-        var s = document.createElement('script');
+        const s = document.createElement('script');
         s.src = url;
         s.onload = callback;
         s.onerror = function () {
@@ -220,22 +274,22 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
       }
 
       loadScript('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js', function () {
-        var input = document.getElementById('qr-input');
-        var sizeEl = document.getElementById('qr-size');
-        var fgEl = document.getElementById('qr-fg');
-        var bgEl = document.getElementById('qr-bg');
-        var btn = document.getElementById('qr-generate');
-        var result = document.getElementById('qr-result');
-        var dlBtn = document.getElementById('qr-download');
-        var qrWrap = document.getElementById('qr-wrapper');
+        const input = document.getElementById('qr-input');
+        const sizeEl = document.getElementById('qr-size');
+        const fgEl = document.getElementById('qr-fg');
+        const bgEl = document.getElementById('qr-bg');
+        const btn = document.getElementById('qr-generate');
+        const result = document.getElementById('qr-result');
+        const dlBtn = document.getElementById('qr-download');
+        const qrWrap = document.getElementById('qr-wrapper');
 
         btn.addEventListener('click', function () {
-          var text = input.value.trim();
+          const text = input.value.trim();
           if (!text) {
             alert('Please enter some text or a URL.');
             return;
           }
-          var size = parseInt(sizeEl.value);
+          const size = parseInt(sizeEl.value);
           qrWrap.innerHTML = '';
           new QRCode(qrWrap, {
             text: text,
@@ -250,9 +304,9 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
         });
 
         dlBtn.addEventListener('click', function () {
-          var img = qrWrap.querySelector('img') || qrWrap.querySelector('canvas');
+          const img = qrWrap.querySelector('img') || qrWrap.querySelector('canvas');
           if (!img) return;
-          var link = document.createElement('a');
+          const link = document.createElement('a');
           link.download = 'qrcode.png';
           if (img.tagName === 'CANVAS') {
             link.href = img.toDataURL('image/png');

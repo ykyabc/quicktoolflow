@@ -1,10 +1,10 @@
 ---
-title: "How to Create Strong Passwords: A Complete Security Guide"
-excerpt: "Learn how to create truly secure passwords. Understand password entropy, common attack methods, and best practices for 2025."
+title: 'How to Create Strong Passwords: A Complete Security Guide'
+excerpt: 'Learn how to create truly secure passwords. Understand password entropy, common attack methods, and best practices for 2025.'
 publishDate: 2025-02-10
-category: "Security"
-tags: ["passwords", "security", "cybersecurity"]
-author: "QuickToolFlow"
+category: 'Security'
+tags: ['passwords', 'security', 'cybersecurity']
+author: 'QuickToolFlow'
 ---
 
 Weak passwords are the #1 cause of data breaches. In this guide, we'll cover everything you need to know about creating strong, secure passwords in 2025.
@@ -13,12 +13,12 @@ Weak passwords are the #1 cause of data breaches. In this guide, we'll cover eve
 
 Password strength is measured in **bits of entropy**. The more entropy, the harder it is to crack:
 
-| Entropy | Strength | Time to Crack |
-|---------|----------|---------------|
-| < 28 bits | Weak | Seconds |
-| 28-35 bits | Fair | Hours |
-| 36-59 bits | Strong | Years |
-| 60+ bits | Very Strong | Centuries |
+| Entropy    | Strength    | Time to Crack |
+| ---------- | ----------- | ------------- |
+| < 28 bits  | Weak        | Seconds       |
+| 28-35 bits | Fair        | Hours         |
+| 36-59 bits | Strong      | Years         |
+| 60+ bits   | Very Strong | Centuries     |
 
 ### The Formula
 
@@ -29,12 +29,15 @@ Where pool size is the number of possible characters. Using uppercase + lowercas
 ## Common Attack Methods
 
 ### Brute Force
+
 Tries every possible combination. A 12-character password with mixed characters has 95^12 combinations — about 540 quintillion.
 
 ### Dictionary Attack
+
 Uses common words and phrases. "password123" and "letmein" are cracked instantly.
 
 ### Credential Stuffing
+
 Reuses leaked passwords from other breaches. Never reuse passwords across sites.
 
 ## Password Best Practices

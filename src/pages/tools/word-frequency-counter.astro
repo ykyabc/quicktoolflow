@@ -7,11 +7,72 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Analyze text and count how often each word appears. Identify the most common words instantly."
   slug="word-frequency-counter"
   category="Text Tools"
+  features={[
+    'Counts repeated words and ranks them by frequency',
+    'Optional stop-word filtering for common words such as the, a, and is',
+    'Shows count and percentage for the most common terms',
+    'Displays a visual frequency bar for quick scanning',
+    'Copies results as tab-separated text for spreadsheets',
+    'Runs locally in your browser without uploading text',
+  ]}
+  useCases={[
+    'Analyze keyword usage in articles, blog posts, and landing pages',
+    'Find repeated words in essays, documentation, or marketing copy',
+    'Review vocabulary patterns in research notes or transcripts',
+    'Prepare simple word frequency data for spreadsheets',
+    'Check whether a page overuses a target keyword before publishing',
+  ]}
+  howToSteps={[
+    'Paste the text you want to analyze into the input box.',
+    'Keep Ignore common words enabled if you want more meaningful keywords.',
+    'Click Analyze to generate the frequency table.',
+    'Review word counts, percentages, and visual frequency bars.',
+    'Copy results if you want to paste them into a spreadsheet or report.',
+  ]}
+  examples={[
+    {
+      title: 'Find repeated terms in website copy',
+      input: 'Free tools help developers save time. These tools run in your browser and keep developer workflows fast.',
+      output: 'tools: 2\ndevelopers: 1\ndeveloper: 1\nfree: 1\nbrowser: 1',
+      note: 'The tool counts exact lowercase word forms. It does not merge plural, singular, or stemmed versions.',
+    },
+  ]}
+  tips={[
+    'Enable stop-word filtering when you care about topic words rather than grammar words.',
+    'Disable stop-word filtering if you are studying writing style, language learning, or exact wording patterns.',
+    'This is a simple frequency counter, not a full SEO scoring tool, so combine it with human review.',
+  ]}
+  faq={[
+    {
+      question: 'What is a word frequency counter?',
+      answer:
+        'A word frequency counter analyzes text and counts how many times each word appears. It helps identify repeated terms, keyword patterns, and common vocabulary.',
+    },
+    {
+      question: 'Does it ignore common words?',
+      answer:
+        'Yes. The Ignore common words option removes many English stop words such as the, a, is, and of so the table focuses on more meaningful terms.',
+    },
+    {
+      question: 'Does it combine similar words?',
+      answer: 'No. The tool counts exact normalized word forms. For example, tool and tools are counted separately.',
+    },
+    {
+      question: 'Can I export the results?',
+      answer: 'Yes. Use Copy Results to copy a tab-separated table that can be pasted into spreadsheets or documents.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
-      <textarea id="wf-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Paste text to analyze...">The quick brown fox jumps over the lazy dog. The dog barked at the fox. The fox ran away from the dog and the quick brown fox was never seen again by the lazy dog.</textarea>
+      <textarea
+        id="wf-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Paste text to analyze..."
+        >The quick brown fox jumps over the lazy dog. The dog barked at the fox. The fox ran away from the dog and the
+        quick brown fox was never seen again by the lazy dog.</textarea
+      >
     </div>
 
     <div class="flex flex-wrap items-end gap-4">
@@ -19,8 +80,16 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         <input id="wf-ignore" type="checkbox" checked class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Ignore common words (the, a, is, etc.)</span>
       </label>
-      <button id="wf-analyze" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Analyze</button>
-      <button id="wf-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto">Copy Results</button>
+      <button
+        id="wf-analyze"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Analyze</button
+      >
+      <button
+        id="wf-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
+        >Copy Results</button
+      >
     </div>
 
     <div id="wf-results" class="hidden">
@@ -45,14 +114,115 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
     if (!input || !btnAnalyze || !results || !tableEl) return;
 
-    const stopWords = new Set(['the','a','an','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','shall','should','may','might','must','can','could','to','of','in','for','on','with','at','by','from','as','into','through','during','before','after','above','below','between','out','off','over','under','again','further','then','once','and','but','or','nor','not','so','if','when','where','how','all','each','every','both','few','more','most','other','some','such','no','only','own','same','than','too','very','just','it','its','this','that','these','those','i','me','my','we','our','you','your','he','him','his','she','her','they','them','their']);
+    const stopWords = new Set([
+      'the',
+      'a',
+      'an',
+      'is',
+      'are',
+      'was',
+      'were',
+      'be',
+      'been',
+      'being',
+      'have',
+      'has',
+      'had',
+      'do',
+      'does',
+      'did',
+      'will',
+      'would',
+      'shall',
+      'should',
+      'may',
+      'might',
+      'must',
+      'can',
+      'could',
+      'to',
+      'of',
+      'in',
+      'for',
+      'on',
+      'with',
+      'at',
+      'by',
+      'from',
+      'as',
+      'into',
+      'through',
+      'during',
+      'before',
+      'after',
+      'above',
+      'below',
+      'between',
+      'out',
+      'off',
+      'over',
+      'under',
+      'again',
+      'further',
+      'then',
+      'once',
+      'and',
+      'but',
+      'or',
+      'nor',
+      'not',
+      'so',
+      'if',
+      'when',
+      'where',
+      'how',
+      'all',
+      'each',
+      'every',
+      'both',
+      'few',
+      'more',
+      'most',
+      'other',
+      'some',
+      'such',
+      'no',
+      'only',
+      'own',
+      'same',
+      'than',
+      'too',
+      'very',
+      'just',
+      'it',
+      'its',
+      'this',
+      'that',
+      'these',
+      'those',
+      'i',
+      'me',
+      'my',
+      'we',
+      'our',
+      'you',
+      'your',
+      'he',
+      'him',
+      'his',
+      'she',
+      'her',
+      'they',
+      'them',
+      'their',
+    ]);
 
     btnAnalyze.addEventListener('click', () => {
       const text = input.value.toLowerCase();
       const words = text.match(/[a-z]+(?:'[a-z]+)?/g) || [];
       const freq: Record<string, number> = {};
 
-      words.forEach(w => {
+      words.forEach((w) => {
         if (ignoreEl.checked && stopWords.has(w)) return;
         freq[w] = (freq[w] || 0) + 1;
       });
@@ -69,16 +239,31 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       }
 
       const maxCount = sorted[0][1];
-      let html = '<table class="w-full text-sm"><thead><tr class="border-b border-gray-200 dark:border-slate-700"><th class="text-left py-2 px-3 font-medium text-gray-500">#</th><th class="text-left py-2 px-3 font-medium text-gray-500">Word</th><th class="text-left py-2 px-3 font-medium text-gray-500">Count</th><th class="text-left py-2 px-3 font-medium text-gray-500">Frequency</th></tr></thead><tbody>';
+      let html =
+        '<table class="w-full text-sm"><thead><tr class="border-b border-gray-200 dark:border-slate-700"><th class="text-left py-2 px-3 font-medium text-gray-500">#</th><th class="text-left py-2 px-3 font-medium text-gray-500">Word</th><th class="text-left py-2 px-3 font-medium text-gray-500">Count</th><th class="text-left py-2 px-3 font-medium text-gray-500">Frequency</th></tr></thead><tbody>';
 
       sorted.slice(0, 50).forEach(([word, count], i) => {
-        const pct = (count / words.length * 100).toFixed(1);
-        const barW = (count / maxCount * 100).toFixed(0);
-        html += '<tr class="border-b border-gray-100 dark:border-slate-800"><td class="py-2 px-3 text-gray-400">' + (i + 1) + '</td><td class="py-2 px-3 font-medium text-gray-900 dark:text-white">' + word + '</td><td class="py-2 px-3 text-gray-600 dark:text-gray-400">' + count + '</td><td class="py-2 px-3"><div class="flex items-center gap-2"><div class="flex-1 h-2 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:' + barW + '%"></div></div><span class="text-xs text-gray-500 w-10">' + pct + '%</span></div></td></tr>';
+        const pct = ((count / words.length) * 100).toFixed(1);
+        const barW = ((count / maxCount) * 100).toFixed(0);
+        html +=
+          '<tr class="border-b border-gray-100 dark:border-slate-800"><td class="py-2 px-3 text-gray-400">' +
+          (i + 1) +
+          '</td><td class="py-2 px-3 font-medium text-gray-900 dark:text-white">' +
+          word +
+          '</td><td class="py-2 px-3 text-gray-600 dark:text-gray-400">' +
+          count +
+          '</td><td class="py-2 px-3"><div class="flex items-center gap-2"><div class="flex-1 h-2 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:' +
+          barW +
+          '%"></div></div><span class="text-xs text-gray-500 w-10">' +
+          pct +
+          '%</span></div></td></tr>';
       });
 
       if (sorted.length > 50) {
-        html += '<tr><td colspan="4" class="py-2 px-3 text-xs text-gray-400 text-center">... and ' + (sorted.length - 50) + ' more words</td></tr>';
+        html +=
+          '<tr><td colspan="4" class="py-2 px-3 text-xs text-gray-400 text-center">... and ' +
+          (sorted.length - 50) +
+          ' more words</td></tr>';
       }
 
       html += '</tbody></table>';
@@ -88,9 +273,10 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     btnCopy?.addEventListener('click', () => {
       const rows = tableEl.querySelectorAll('tr');
       let tsv = 'Rank\tWord\tCount\n';
-      rows.forEach(r => {
+      rows.forEach((r) => {
         const cells = r.querySelectorAll('td');
-        if (cells.length >= 3) tsv += cells[0].textContent + '\t' + cells[1].textContent + '\t' + cells[2].textContent + '\n';
+        if (cells.length >= 3)
+          tsv += cells[0].textContent + '\t' + cells[1].textContent + '\t' + cells[2].textContent + '\n';
       });
       navigator.clipboard.writeText(tsv);
     });

@@ -1,1 +1,3 @@
-google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+# Add your approved Google AdSense publisher ID before enabling ads.
+# Example:
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

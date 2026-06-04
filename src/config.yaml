@@ -59,6 +59,8 @@ analytics:
     googleAnalytics:
       id: 'G-YQYEH856F7'
       partytown: false
+    googleAdsense:
+      clientId: ''
 
 ui:
   theme: system

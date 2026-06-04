@@ -27,57 +27,65 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <article class="px-4 py-12 mx-auto max-w-4xl sm:px-6 lg:px-8">
-    <Breadcrumb items={[
-      { name: 'Home', href: '/' },
-      { name: 'Blog', href: '/blog/' },
-      { name: post.data.title },
-    ]} />
+    <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Blog', href: '/blog/' }, { name: post.data.title }]} />
 
     <header class="mb-10">
-      {post.data.category && (
-        <span class="inline-block text-xs font-medium tracking-wider uppercase text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full px-3 py-1 mb-4">
-          {post.data.category}
-        </span>
-      )}
+      {
+        post.data.category && (
+          <span class="inline-block text-xs font-medium tracking-wider uppercase text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full px-3 py-1 mb-4">
+            {post.data.category}
+          </span>
+        )
+      }
       <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
         {post.data.title}
       </h1>
       <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-        {post.data.publishDate && (
-          <time datetime={String(post.data.publishDate)}>
-            {new Date(post.data.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-        )}
-        {post.data.author && (
-          <>
-            <span>&middot;</span>
-            <span>{post.data.author}</span>
-          </>
-        )}
+        {
+          post.data.publishDate && (
+            <time datetime={String(post.data.publishDate)}>
+              {new Date(post.data.publishDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          )
+        }
+        {
+          post.data.author && (
+            <>
+              <span>&middot;</span>
+              <span>{post.data.author}</span>
+            </>
+          )
+        }
       </div>
-      {post.data.tags && post.data.tags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mt-4">
-          {post.data.tags.map((tag) => (
-            <span class="text-xs bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 px-2.5 py-1 rounded-full">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
+      {
+        post.data.tags && post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {post.data.tags.map((tag) => (
+              <span class="text-xs bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 px-2.5 py-1 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
     </header>
 
     <AdBanner slot="1234567890" format="horizontal" />
 
-    <div class="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:underline prose-code:text-blue-700 prose-code:bg-blue-50 dark:prose-code:bg-blue-900/30 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-slate-900 prose-pre:text-slate-100">
+    <div
+      class="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:underline prose-code:text-blue-700 prose-code:bg-blue-50 dark:prose-code:bg-blue-900/30 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-slate-900 prose-pre:text-slate-100"
+    >
       <Content />
     </div>
 
     <AdBanner slot="0987654321" format="auto" />
 
     <footer class="mt-12 pt-8 border-t border-gray-200 dark:border-slate-700">
-      <a href="/blog/" class="text-blue-600 hover:text-blue-700 font-medium text-sm">
-        &larr; Back to all posts
-      </a>
+      <a href="/blog/" class="text-blue-600 hover:text-blue-700 font-medium text-sm"> &larr; Back to all posts </a>
     </footer>
   </article>
 </Layout>

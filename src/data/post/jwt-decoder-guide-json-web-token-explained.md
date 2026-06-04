@@ -1,15 +1,15 @@
 ---
-title: "JWT Decoder Guide: Understanding JSON Web Tokens"
-excerpt: "Learn what JSON Web Tokens (JWT) are, how they work, and how to decode them. Understand the header, payload, and signature with examples."
+title: 'JWT Decoder Guide: Understanding JSON Web Tokens'
+excerpt: 'Learn what JSON Web Tokens (JWT) are, how they work, and how to decode them. Understand the header, payload, and signature with examples.'
 publishDate: 2026-05-28
-category: "Developer Tools"
+category: 'Developer Tools'
 tags:
   - jwt
   - authentication
   - security
   - web development
   - api
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 ---
 
 JSON Web Tokens are the backbone of modern web authentication. If you work with APIs, single sign-on, or any authentication system, you have encountered JWTs.
@@ -62,15 +62,15 @@ The payload contains the claims — the actual data being transmitted:
 
 Common registered claims:
 
-| Claim | Name | Purpose |
-|-------|------|---------|
-| `sub` | Subject | The user ID or unique identifier |
-| `iss` | Issuer | Who issued the token |
-| `aud` | Audience | Who the token is intended for |
-| `exp` | Expiration | When the token expires (Unix timestamp) |
+| Claim | Name       | Purpose                                       |
+| ----- | ---------- | --------------------------------------------- |
+| `sub` | Subject    | The user ID or unique identifier              |
+| `iss` | Issuer     | Who issued the token                          |
+| `aud` | Audience   | Who the token is intended for                 |
+| `exp` | Expiration | When the token expires (Unix timestamp)       |
 | `nbf` | Not Before | When the token becomes valid (Unix timestamp) |
-| `iat` | Issued At | When the token was issued (Unix timestamp) |
-| `jti` | JWT ID | A unique identifier for the token |
+| `iat` | Issued At  | When the token was issued (Unix timestamp)    |
+| `jti` | JWT ID     | A unique identifier for the token             |
 
 You can also include custom claims like `name`, `email`, `roles`, and `permissions`.
 
@@ -158,6 +158,7 @@ Decoding a JWT does not mean it is valid. Anyone can decode and read a JWT becau
 The signature is the only part that ensures the token is authentic. Use your server's secret key to verify the signature before trusting any claims.
 
 **Use strong algorithms**
+
 - `HS256` (HMAC with SHA-256) — Good for most applications with a strong secret key.
 - `RS256` (RSA with SHA-256) — Better for distributed systems where you need separate signing and verification keys.
 - `none` algorithm — Some older libraries accept tokens with no signature. Always reject these.

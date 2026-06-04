@@ -7,36 +7,117 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Test and debug regular expressions with real-time matching, highlighting, and capture group details."
   slug="regex-tester"
   category="Developer Tools"
+  features={[
+    'Tests JavaScript regular expressions in real time',
+    'Highlights every match in the sample text',
+    'Shows match positions and captured groups',
+    'Supports common flags such as g, i, m, s, u, and y',
+    'Displays syntax errors as you type',
+    'Runs locally without sending your test text to a server',
+  ]}
+  useCases={[
+    'Debugging validation patterns for emails, slugs, IDs, and log lines',
+    'Checking capture groups before using a regex in code',
+    'Learning how flags change matching behavior',
+    'Testing extraction patterns against realistic sample text',
+  ]}
+  howToSteps={[
+    'Enter a regular expression pattern without the surrounding slashes.',
+    'Add flags such as g for global matching or i for case-insensitive matching.',
+    'Paste sample text into the test string field.',
+    'Review highlighted matches, match indexes, and capture group details.',
+  ]}
+  examples={[
+    {
+      title: 'Find email addresses in text',
+      input: 'Pattern: [a-z]+@[a-z]+\\.[a-z]+\nFlags: gi\nText: Contact hello@quicktoolflow.com or support@example.org',
+      output: 'Matches: hello@quicktoolflow.com, support@example.org',
+      note: 'This simple pattern is useful for learning, but production email validation usually needs stricter rules.',
+    },
+  ]}
+  tips={[
+    'Use the g flag when you want to find every match instead of only the first match.',
+    'Parentheses create capture groups. The match details section shows what each group captured.',
+    'If the regex is invalid, the browser will show a syntax error before matching starts.',
+  ]}
+  faq={[
+    {
+      question: 'Which regex flavor does this tester use?',
+      answer:
+        'It uses JavaScript regular expressions through the browser RegExp engine. Some patterns from PCRE, Python, or .NET may behave differently.',
+    },
+    {
+      question: 'What does the g flag do?',
+      answer:
+        'The g flag enables global matching, so the tester finds all matches instead of stopping after the first one.',
+    },
+    {
+      question: 'Why are my capture groups empty?',
+      answer:
+        'A capture group can be empty if that optional part of the pattern did not match. Check optional groups, alternation, and greedy quantifiers.',
+    },
+    {
+      question: 'Is my sample text uploaded?',
+      answer: 'No. The regex is compiled and tested locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <div class="sm:col-span-2">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Regular Expression</label>
-        <div class="flex items-center gap-0 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 focus-within:ring-2 focus-within:ring-blue-500 transition overflow-hidden">
+        <div
+          class="flex items-center gap-0 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 focus-within:ring-2 focus-within:ring-blue-500 transition overflow-hidden"
+        >
           <span class="px-3 text-gray-400 font-mono text-sm select-none">/</span>
-          <input id="rx-pattern" type="text" class="flex-1 py-3 bg-transparent text-gray-900 dark:text-gray-100 font-mono text-sm outline-none" placeholder="[a-z]+@[a-z]+\.[a-z]+" value="[a-z]+@[a-z]+\.[a-z]+" />
+          <input
+            id="rx-pattern"
+            type="text"
+            class="flex-1 py-3 bg-transparent text-gray-900 dark:text-gray-100 font-mono text-sm outline-none"
+            placeholder="[a-z]+@[a-z]+\.[a-z]+"
+            value="[a-z]+@[a-z]+\.[a-z]+"
+          />
           <span class="pr-3 text-gray-400 font-mono text-sm select-none">/</span>
         </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Flags</label>
-        <input id="rx-flags" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm outline-none focus:ring-2 focus:ring-blue-500 transition" value="gi" placeholder="gi" />
+        <input
+          id="rx-flags"
+          type="text"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm outline-none focus:ring-2 focus:ring-blue-500 transition"
+          value="gi"
+          placeholder="gi"
+        />
       </div>
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Test String</label>
-      <textarea id="rx-text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter text to test against...">Contact us at hello@quicktoolflow.com or support@example.org for help.</textarea>
+      <textarea
+        id="rx-text"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Enter text to test against..."
+        >Contact us at hello@quicktoolflow.com or support@example.org for help.</textarea
+      >
     </div>
 
-    <div id="rx-error" class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200"></div>
+    <div
+      id="rx-error"
+      class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200"
+    >
+    </div>
 
     <div>
       <div class="flex items-center justify-between mb-2">
         <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">Highlighted Matches</h3>
         <span id="rx-count" class="text-xs text-gray-500 dark:text-gray-400">0 matches</span>
       </div>
-      <div id="rx-highlighted" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 font-mono text-sm min-h-[80px] leading-relaxed break-all"></div>
+      <div
+        id="rx-highlighted"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 font-mono text-sm min-h-[80px] leading-relaxed break-all"
+      >
+      </div>
     </div>
 
     <div>
@@ -110,7 +191,10 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       let lastIndex = 0;
       matches.forEach((m) => {
         html += escapeHtml(text.slice(lastIndex, m.index));
-        html += '<mark class="bg-yellow-200 dark:bg-yellow-800 text-gray-900 dark:text-yellow-100 rounded px-0.5">' + escapeHtml(m.value) + '</mark>';
+        html +=
+          '<mark class="bg-yellow-200 dark:bg-yellow-800 text-gray-900 dark:text-yellow-100 rounded px-0.5">' +
+          escapeHtml(m.value) +
+          '</mark>';
         lastIndex = m.index + m.length;
       });
       html += escapeHtml(text.slice(lastIndex));
@@ -119,13 +203,24 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       // Match details
       let detailsHtml = '';
       matches.forEach((m, i) => {
-        detailsHtml += '<div class="rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-sm">';
-        detailsHtml += '<div class="flex items-center gap-3 mb-1"><span class="font-semibold text-blue-600 dark:text-blue-400">Match ' + (i + 1) + '</span>';
-        detailsHtml += '<span class="text-gray-500 text-xs">Index ' + m.index + '-' + (m.index + m.length) + '</span></div>';
-        detailsHtml += '<code class="text-gray-900 dark:text-gray-100 font-mono text-xs">' + escapeHtml(m.value) + '</code>';
+        detailsHtml +=
+          '<div class="rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-sm">';
+        detailsHtml +=
+          '<div class="flex items-center gap-3 mb-1"><span class="font-semibold text-blue-600 dark:text-blue-400">Match ' +
+          (i + 1) +
+          '</span>';
+        detailsHtml +=
+          '<span class="text-gray-500 text-xs">Index ' + m.index + '-' + (m.index + m.length) + '</span></div>';
+        detailsHtml +=
+          '<code class="text-gray-900 dark:text-gray-100 font-mono text-xs">' + escapeHtml(m.value) + '</code>';
         if (m.groups.length > 0) {
           m.groups.forEach((g, gi) => {
-            detailsHtml += '<div class="mt-1 text-xs text-gray-500">Group ' + (gi + 1) + ': <code class="text-gray-800 dark:text-gray-200">' + escapeHtml(g || '') + '</code></div>';
+            detailsHtml +=
+              '<div class="mt-1 text-xs text-gray-500">Group ' +
+              (gi + 1) +
+              ': <code class="text-gray-800 dark:text-gray-200">' +
+              escapeHtml(g || '') +
+              '</code></div>';
           });
         }
         detailsHtml += '</div>';

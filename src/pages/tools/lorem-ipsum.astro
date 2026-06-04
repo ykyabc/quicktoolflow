@@ -7,16 +7,82 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Generate Lorem Ipsum placeholder text for designs and layouts. Control paragraph count, sentences, or word count."
   slug="lorem-ipsum"
   category="Generators"
+  features={[
+    'Generate placeholder text by paragraph, sentence, or word count',
+    'Optional classic Lorem ipsum opening phrase',
+    'Supports quick copy for layouts, mockups, and wireframes',
+    'Creates readable pseudo-Latin text without distracting real content',
+    'Useful for testing typography, spacing, and content density',
+    'Runs locally in the browser without sign-up',
+  ]}
+  useCases={[
+    'Fill website mockups before final copy is ready',
+    'Test blog post, card, hero, and product description layouts',
+    'Create placeholder copy for Figma, HTML prototypes, or CMS demos',
+    'Check typography scale, line length, and vertical spacing',
+    'Generate neutral text for screenshots and design reviews',
+  ]}
+  howToSteps={[
+    'Choose how many paragraphs, sentences, or words you need.',
+    'Select the output type from the dropdown.',
+    'Keep Start with Lorem ipsum enabled if you want the classic opening.',
+    'Click Generate to create placeholder text.',
+    'Copy the result into your design, prototype, or content field.',
+  ]}
+  examples={[
+    {
+      title: 'Generate layout filler',
+      input: 'Count: 2\nType: Paragraphs\nStart with Lorem ipsum: on',
+      output: 'Lorem ipsum dolor sit amet, ...\n\nConsectetur adipiscing elit ...',
+      note: 'Use paragraph output when testing article bodies, card descriptions, and long-form content layouts.',
+    },
+  ]}
+  tips={[
+    'Use word count when you need to test a strict text limit.',
+    'Use sentence count for cards, summaries, or teaser blocks.',
+    'Replace placeholder text before publishing so search engines and visitors see real useful content.',
+  ]}
+  faq={[
+    {
+      question: 'What is Lorem Ipsum?',
+      answer:
+        'Lorem Ipsum is placeholder text used in design and publishing to test layout, typography, and spacing before final content is ready.',
+    },
+    {
+      question: 'Can I choose paragraphs, sentences, or words?',
+      answer: 'Yes. Select the output type and count, then generate exactly the kind of placeholder text you need.',
+    },
+    {
+      question: 'Should I publish pages with Lorem Ipsum?',
+      answer:
+        'No. Placeholder text is useful during design, but live pages should use original, helpful content for visitors and search engines.',
+    },
+    {
+      question: 'Is the generated text unique?',
+      answer:
+        'The tool randomly combines words from a classic placeholder vocabulary. It is intended for mockups, not for unique editorial content.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="flex flex-wrap items-end gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Count</label>
-        <input id="lg-count" type="number" min="1" max="100" value="3" class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="lg-count"
+          type="number"
+          min="1"
+          max="100"
+          value="3"
+          class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Type</label>
-        <select id="lg-type" class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+        <select
+          id="lg-type"
+          class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        >
           <option value="paragraphs">Paragraphs</option>
           <option value="sentences">Sentences</option>
           <option value="words">Words</option>
@@ -26,28 +92,60 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         <input id="lg-lorem" type="checkbox" checked class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Start with "Lorem ipsum"</span>
       </label>
-      <button id="lg-gen" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate</button>
-      <button id="lg-copy" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy</button>
+      <button
+        id="lg-gen"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Generate</button
+      >
+      <button
+        id="lg-copy"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy</button
+      >
     </div>
-    <textarea id="lg-out" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 text-sm min-h-[300px] resize-y outline-none" readonly placeholder="Generated text..." spellcheck="false"></textarea>
+    <textarea
+      id="lg-out"
+      class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 text-sm min-h-[300px] resize-y outline-none"
+      readonly
+      placeholder="Generated text..."
+      spellcheck="false"></textarea>
   </div>
 
   <script is:inline>
-    const W='lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(' ');
-    const rw=()=>W[Math.floor(Math.random()*W.length)];
-    const sentence=()=>{const n=Math.floor(Math.random()*12)+8;const w=Array.from({length:n},rw);w[0]=w[0][0].toUpperCase()+w[0].slice(1);return w.join(' ')+'.';};
-    const paragraph=()=>Array.from({length:Math.floor(Math.random()*5)+3},sentence).join(' ');
+    const W =
+      'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(
+        ' '
+      );
+    const rw = () => W[Math.floor(Math.random() * W.length)];
+    const sentence = () => {
+      const n = Math.floor(Math.random() * 12) + 8;
+      const w = Array.from({ length: n }, rw);
+      w[0] = w[0][0].toUpperCase() + w[0].slice(1);
+      return w.join(' ') + '.';
+    };
+    const paragraph = () => Array.from({ length: Math.floor(Math.random() * 5) + 3 }, sentence).join(' ');
 
-    document.getElementById('lg-gen').addEventListener('click',()=>{
-      const n=parseInt(document.getElementById('lg-count').value)||3;
-      const t=document.getElementById('lg-type').value;
-      const sl=document.getElementById('lg-lorem').checked;
+    document.getElementById('lg-gen').addEventListener('click', () => {
+      const n = parseInt(document.getElementById('lg-count').value) || 3;
+      const t = document.getElementById('lg-type').value;
+      const sl = document.getElementById('lg-lorem').checked;
       let r;
-      if(t==='paragraphs'){r=Array.from({length:n},paragraph);if(sl&&r.length)r[0]='Lorem ipsum dolor sit amet, '+r[0].split('. ').slice(1).join('. ');r=r.join('\n\n');}
-      else if(t==='sentences'){r=Array.from({length:n},sentence).join(' ');if(sl)r='Lorem ipsum dolor sit amet. '+r.split('. ').slice(1).join('. ');}
-      else{r=Array.from({length:n},rw).join(' ');if(sl)r='Lorem ipsum '+r.split(' ').slice(2).join(' ');}
-      document.getElementById('lg-out').value=r;
+      if (t === 'paragraphs') {
+        r = Array.from({ length: n }, paragraph);
+        if (sl && r.length) r[0] = 'Lorem ipsum dolor sit amet, ' + r[0].split('. ').slice(1).join('. ');
+        r = r.join('\n\n');
+      } else if (t === 'sentences') {
+        r = Array.from({ length: n }, sentence).join(' ');
+        if (sl) r = 'Lorem ipsum dolor sit amet. ' + r.split('. ').slice(1).join('. ');
+      } else {
+        r = Array.from({ length: n }, rw).join(' ');
+        if (sl) r = 'Lorem ipsum ' + r.split(' ').slice(2).join(' ');
+      }
+      document.getElementById('lg-out').value = r;
     });
-    document.getElementById('lg-copy').addEventListener('click',()=>{const v=document.getElementById('lg-out').value;if(v)navigator.clipboard.writeText(v);});
+    document.getElementById('lg-copy').addEventListener('click', () => {
+      const v = document.getElementById('lg-out').value;
+      if (v) navigator.clipboard.writeText(v);
+    });
   </script>
 </ToolLayout>

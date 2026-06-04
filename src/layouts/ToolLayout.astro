@@ -4,7 +4,6 @@ import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
-import RelatedGuides from '~/components/ui/RelatedGuides.astro';
 import { getRelatedGuides } from '~/utils/related-guides';
 
 export interface Props {
@@ -15,10 +14,24 @@ export interface Props {
   faq?: Array<{ question: string; answer: string }>;
   features?: string[];
   useCases?: string[];
+  howToSteps?: string[];
+  examples?: Array<{ title: string; input?: string; output?: string; note?: string }>;
+  tips?: string[];
 }
 
-const { title, description, slug, category, faq, features, useCases } = Astro.props;
-const canonical = `https://quicktoolflow.com/tools/${slug}`;
+const {
+  title,
+  description,
+  slug,
+  category,
+  faq,
+  features,
+  useCases,
+  howToSteps,
+  examples = [],
+  tips = [],
+} = Astro.props;
+const canonical = `https://quicktoolflow.com/tools/${slug}/`;
 
 const autoFaq = faq || [
   {
@@ -55,6 +68,13 @@ const autoUseCases = useCases || [
   'Professional development',
 ];
 
+const autoHowToSteps = howToSteps || [
+  'Enter or paste your content into the input field above.',
+  'Click the action button to process your data.',
+  'View results instantly in the output area.',
+  'Copy the output to your clipboard with one click.',
+];
+
 const toolSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
@@ -76,7 +96,6 @@ const faqSchema = {
     acceptedAnswer: { '@type': 'Answer', text: item.answer },
   })),
 };
-
 
 const currentTool = tools.find((t) => t.slug === slug);
 
@@ -112,9 +131,7 @@ const breadcrumbSchema = {
       '@type': 'ListItem',
       position: 3,
       name: category,
-      item: currentTool
-        ? `https://quicktoolflow.com${categoryUrl}`
-        : 'https://quicktoolflow.com/tools/',
+      item: currentTool ? `https://quicktoolflow.com${categoryUrl}` : 'https://quicktoolflow.com/tools/',
     },
     {
       '@type': 'ListItem',
@@ -136,14 +153,12 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
 <Layout metadata={metadata}>
   <section class="px-4 py-10 mx-auto max-w-4xl sm:px-6 lg:px-8">
-    <Breadcrumb items={[
-      { name: 'Home', href: '/' },
-      { name: 'Tools', href: '/tools/' },
-      { name: title },
-    ]} />
+    <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: title }]} />
 
     <header class="mb-8">
-      <span class="inline-block text-xs font-medium tracking-wider uppercase text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full px-3 py-1 mb-3">
+      <span
+        class="inline-block text-xs font-medium tracking-wider uppercase text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full px-3 py-1 mb-3"
+      >
         {category}
       </span>
       <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
@@ -152,33 +167,95 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
       <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
         {description}
       </p>
-      {currentTool && (
-        <a
-          href={categoryUrl}
-          class="mt-4 inline-flex text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-        >
-          View all {currentTool.category} →
-       </a>
-      )}
+      {
+        currentTool && (
+          <a
+            href={categoryUrl}
+            class="mt-4 inline-flex text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+          >
+            View all {currentTool.category} →
+          </a>
+        )
+      }
     </header>
 
     <AdBanner slot="1234567890" format="horizontal" />
 
     {/* TOOL BODY */}
-    <div class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm mb-8">
+    <div
+      class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm mb-8"
+    >
       <slot />
     </div>
 
     <AdBanner slot="0987654321" format="auto" />
 
+    {
+      examples.length > 0 && (
+        <section class="mt-12 mb-10">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Example</h2>
+          <div class="space-y-4">
+            {examples.map((example) => (
+              <article class="rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white">{example.title}</h3>
+                {example.note && <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{example.note}</p>}
+                <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {example.input && (
+                    <div>
+                      <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        Input
+                      </p>
+                      <pre class="overflow-x-auto rounded-md bg-gray-50 p-3 text-xs leading-5 text-gray-800 dark:bg-slate-900 dark:text-gray-100">
+                        <code>{example.input}</code>
+                      </pre>
+                    </div>
+                  )}
+                  {example.output && (
+                    <div>
+                      <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        Output
+                      </p>
+                      <pre class="overflow-x-auto rounded-md bg-gray-50 p-3 text-xs leading-5 text-gray-800 dark:bg-slate-900 dark:text-gray-100">
+                        <code>{example.output}</code>
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      tips.length > 0 && (
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Practical Notes</h2>
+          <ul class="space-y-3 text-gray-600 dark:text-gray-400">
+            {tips.map((tip) => (
+              <li class="flex items-start gap-2">
+                <astro-icon name="tabler:info-circle" class="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                <span>{tip}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
     {/* HOW TO USE */}
     <section class="mt-12 mb-10">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">How to Use</h2>
       <ol class="space-y-3 text-gray-600 dark:text-gray-400">
-        <li class="flex gap-3"><span class="font-bold text-blue-600 shrink-0">1.</span> Enter or paste your content into the input field above.</li>
-        <li class="flex gap-3"><span class="font-bold text-blue-600 shrink-0">2.</span> Click the action button to process your data.</li>
-        <li class="flex gap-3"><span class="font-bold text-blue-600 shrink-0">3.</span> View results instantly in the output area.</li>
-        <li class="flex gap-3"><span class="font-bold text-blue-600 shrink-0">4.</span> Copy the output to your clipboard with one click.</li>
+        {
+          autoHowToSteps.map((step, index) => (
+            <li class="flex gap-3">
+              <span class="font-bold text-blue-600 shrink-0">{index + 1}.</span>
+              <span>{step}</span>
+            </li>
+          ))
+        }
       </ol>
     </section>
 
@@ -186,12 +263,14 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     <section class="mb-10">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
       <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {autoFeatures.map((f) => (
-          <li class="flex items-start gap-2 text-gray-600 dark:text-gray-400">
-            <astro-icon name="tabler:check" class="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-            <span>{f}</span>
-          </li>
-        ))}
+        {
+          autoFeatures.map((f) => (
+            <li class="flex items-start gap-2 text-gray-600 dark:text-gray-400">
+              <astro-icon name="tabler:check" class="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+              <span>{f}</span>
+            </li>
+          ))
+        }
       </ul>
     </section>
 
@@ -199,12 +278,14 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     <section class="mb-10">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Use Cases</h2>
       <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-        {autoUseCases.map((uc) => (
-          <li class="flex items-start gap-2">
-            <astro-icon name="tabler:arrow-right" class="w-4 h-4 text-blue-500 shrink-0 mt-1" />
-            <span>{uc}</span>
-          </li>
-        ))}
+        {
+          autoUseCases.map((uc) => (
+            <li class="flex items-start gap-2">
+              <astro-icon name="tabler:arrow-right" class="w-4 h-4 text-blue-500 shrink-0 mt-1" />
+              <span>{uc}</span>
+            </li>
+          ))
+        }
       </ul>
     </section>
 
@@ -212,58 +293,65 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     <section class="mb-10">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Frequently Asked Questions</h2>
       <div class="space-y-4">
-        {autoFaq.map((item) => (
-          <details class="group rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-            <summary class="flex items-center justify-between p-4 cursor-pointer text-gray-900 dark:text-white font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors list-none">
-              <span>{item.question}</span>
-              <astro-icon name="tabler:chevron-down" class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform shrink-0 ml-2" />
-            </summary>
-            <div class="px-4 pb-4 text-gray-600 dark:text-gray-400 leading-relaxed">
-              {item.answer}
-            </div>
-          </details>
-        ))}
+        {
+          autoFaq.map((item) => (
+            <details class="group rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+              <summary class="flex items-center justify-between p-4 cursor-pointer text-gray-900 dark:text-white font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors list-none">
+                <span>{item.question}</span>
+                <astro-icon
+                  name="tabler:chevron-down"
+                  class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform shrink-0 ml-2"
+                />
+              </summary>
+              <div class="px-4 pb-4 text-gray-600 dark:text-gray-400 leading-relaxed">{item.answer}</div>
+            </details>
+          ))
+        }
       </div>
     </section>
 
-    {relatedGuides.length > 0 && (
-  <section class="mt-12">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-      Related Guides
-    </h2>
+    {
+      relatedGuides.length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Guides</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {relatedGuides.map((guide) => (
-        <a
-          href={guide.href}
-          class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-        >
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            {guide.title}
-          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {relatedGuides.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              >
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
 
-          <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-            {guide.description}
-          </p>
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{guide.description}</p>
 
-          <span class="mt-4 inline-flex text-sm font-semibold text-blue-600 dark:text-blue-400">
-            Read guide →
-          </span>
-        </a>
-      ))}
-    </div>
-  </section>
-)}
+                <span class="mt-4 inline-flex text-sm font-semibold text-blue-600 dark:text-blue-400">
+                  Read guide →
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     {/* RELATED TOOLS */}
     <section class="mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-         Related {currentTool?.category || 'Tools'}
+        Related {currentTool?.category || 'Tools'}
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {otherTools.map((tool) => (
-          <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
-        ))}
+        {
+          otherTools.map((tool) => (
+            <ToolCard
+              slug={tool.slug}
+              name={tool.name}
+              description={tool.description}
+              icon={tool.icon}
+              gradient={tool.gradient}
+            />
+          ))
+        }
       </div>
     </section>
   </section>

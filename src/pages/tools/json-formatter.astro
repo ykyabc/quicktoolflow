@@ -7,26 +7,111 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Format, validate, minify, and beautify JSON data instantly with error detection. Free online JSON tool."
   slug="json-formatter"
   category="Developer Tools"
+  features={[
+    'Formats nested JSON with consistent two-space indentation',
+    'Validates JSON before formatting or minifying',
+    'Shows parser errors without sending data to a server',
+    'Minifies JSON for compact API payloads or configuration files',
+    'Works with pasted API responses, config snippets, and local test data',
+    'Runs entirely in your browser for private JSON inspection',
+  ]}
+  useCases={[
+    'Inspecting API responses while debugging frontend or backend code',
+    'Cleaning compact JSON before sharing it in tickets or documentation',
+    'Checking configuration files before committing them',
+    'Minifying JSON payloads for examples, tests, or storage',
+  ]}
+  howToSteps={[
+    'Paste raw JSON, an API response, or a configuration snippet into the input field.',
+    'Choose Format / Beautify to make it readable, Minify to compact it, or Validate to check syntax only.',
+    'Read the status message if the JSON parser finds an error.',
+    'Copy the formatted or minified result when the output looks right.',
+  ]}
+  examples={[
+    {
+      title: 'Beautify a compact API response',
+      input: '{"user":{"id":42,"name":"Alex"},"roles":["admin","editor"],"active":true}',
+      output:
+        '{\n  "user": {\n    "id": 42,\n    "name": "Alex"\n  },\n  "roles": [\n    "admin",\n    "editor"\n  ],\n  "active": true\n}',
+      note: 'Formatting makes nested objects and arrays easier to scan when you are debugging an API response.',
+    },
+  ]}
+  tips={[
+    'JSON does not allow trailing commas, comments, or unquoted object keys. Those are common reasons validation fails.',
+    'This tool parses JSON with the browser JavaScript engine, so the result follows standard JSON.parse behavior.',
+    'Formatting changes whitespace only. It does not change key names, values, array order, or object structure.',
+  ]}
+  faq={[
+    {
+      question: 'Why does my JSON fail validation?',
+      answer:
+        'The most common causes are trailing commas, comments, single-quoted strings, unquoted keys, or missing closing brackets. JSON is stricter than JavaScript object syntax.',
+    },
+    {
+      question: 'Does formatting JSON change the data?',
+      answer:
+        'No. Formatting only changes whitespace and indentation. The object keys, values, arrays, and nesting remain the same after parsing.',
+    },
+    {
+      question: 'Can I paste private API responses here?',
+      answer:
+        'The formatter runs in your browser, so pasted JSON is processed locally. Still, avoid sharing sensitive data in screenshots, browser extensions, or copied outputs.',
+    },
+    {
+      question: 'What is the difference between format and minify?',
+      answer:
+        'Format adds indentation and line breaks for readability. Minify removes unnecessary whitespace to make JSON shorter.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="flex flex-wrap gap-2">
-      <button id="jf-format" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Format / Beautify</button>
-      <button id="jf-minify" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition">Minify</button>
-      <button id="jf-validate" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition">Validate</button>
-      <button id="jf-copy" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition">Copy</button>
-      <button id="jf-clear" class="inline-flex items-center gap-2 px-5 py-2.5 text-red-600 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 transition">Clear</button>
+      <button
+        id="jf-format"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Format / Beautify</button
+      >
+      <button
+        id="jf-minify"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition"
+        >Minify</button
+      >
+      <button
+        id="jf-validate"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition"
+        >Validate</button
+      >
+      <button
+        id="jf-copy"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition"
+        >Copy</button
+      >
+      <button
+        id="jf-clear"
+        class="inline-flex items-center gap-2 px-5 py-2.5 text-red-600 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 transition"
+        >Clear</button
+      >
     </div>
 
     <div id="jf-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input JSON</label>
-      <textarea id="jf-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder='{"name": "QuickToolFlow", "version": 1}' spellcheck="false"></textarea>
+      <textarea
+        id="jf-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder='{"name": "QuickToolFlow", "version": 1}'
+        spellcheck="false"></textarea>
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>
-      <textarea id="jf-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y outline-none" readonly placeholder="Formatted output will appear here..." spellcheck="false"></textarea>
+      <textarea
+        id="jf-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[200px] resize-y outline-none"
+        readonly
+        placeholder="Formatted output will appear here..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 
@@ -44,20 +129,28 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     document.getElementById('jf-format').addEventListener('click', () => {
       try {
         output.value = JSON.stringify(JSON.parse(input.value), null, 2);
-        showStatus('✓ Valid JSON — formatted successfully.', false);
-      } catch (e) { showStatus('✗ ' + e.message, true); }
+        showStatus('Valid JSON - formatted successfully.', false);
+      } catch (e) {
+        showStatus('Invalid JSON: ' + e.message, true);
+      }
     });
 
     document.getElementById('jf-minify').addEventListener('click', () => {
       try {
         output.value = JSON.stringify(JSON.parse(input.value));
-        showStatus('✓ Minified successfully.', false);
-      } catch (e) { showStatus('✗ ' + e.message, true); }
+        showStatus('Minified successfully.', false);
+      } catch (e) {
+        showStatus('Invalid JSON: ' + e.message, true);
+      }
     });
 
     document.getElementById('jf-validate').addEventListener('click', () => {
-      try { JSON.parse(input.value); showStatus('✓ Valid JSON.', false); }
-      catch (e) { showStatus('✗ ' + e.message, true); }
+      try {
+        JSON.parse(input.value);
+        showStatus('Valid JSON.', false);
+      } catch (e) {
+        showStatus('Invalid JSON: ' + e.message, true);
+      }
     });
 
     document.getElementById('jf-copy').addEventListener('click', () => {
@@ -65,7 +158,9 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     });
 
     document.getElementById('jf-clear').addEventListener('click', () => {
-      input.value = ''; output.value = ''; status.classList.add('hidden');
+      input.value = '';
+      output.value = '';
+      status.classList.add('hidden');
     });
   </script>
 </ToolLayout>

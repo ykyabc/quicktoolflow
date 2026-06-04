@@ -7,22 +7,101 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Remove extra spaces, tabs, line breaks, and leading/trailing whitespace from text. Clean up messy text instantly."
   slug="whitespace-remover"
   category="Text Tools"
+  features={[
+    'Remove repeated spaces and normalize text into clean single spacing',
+    'Trim leading and trailing whitespace on each line',
+    'Remove blank lines from pasted text',
+    'Convert tabs into spaces for cleaner plain-text formatting',
+    'Shows before, after, and removed character counts',
+    'Processes everything locally in your browser',
+  ]}
+  useCases={[
+    'Clean copied text from PDFs, emails, documents, or web pages',
+    'Normalize AI-generated drafts before publishing or sending',
+    'Prepare plain text for forms, CMS fields, spreadsheets, or scripts',
+    'Remove accidental blank lines from lists and notes',
+    'Convert tab-heavy snippets into space-based plain text',
+  ]}
+  howToSteps={[
+    'Paste messy text into the input box.',
+    'Choose whether to remove extra spaces, trim lines, remove blank lines, or convert tabs.',
+    'Check the result and character savings in the stats row.',
+    'Copy the cleaned text when it looks right.',
+  ]}
+  examples={[
+    {
+      title: 'Clean copied text spacing',
+      input: 'Hello     world\n\n\n  This line has extra spaces.  ',
+      output: 'Hello world This line has extra spaces.',
+      note: 'Remove All Extra Spaces collapses repeated whitespace into single spaces and trims the result.',
+    },
+  ]}
+  tips={[
+    'Use Trim Lines when you want to preserve line breaks but remove stray spaces at the beginning or end of each line.',
+    'Use Remove Blank Lines for lists, CSV-like text, or copied paragraphs where empty rows are not meaningful.',
+    'Use Remove All Extra Spaces carefully with poetry, code, tables, or formatted text where spacing may carry meaning.',
+  ]}
+  faq={[
+    {
+      question: 'What counts as whitespace?',
+      answer:
+        'Whitespace includes spaces, tabs, new lines, and other invisible characters that separate text. This tool focuses on common spaces, tabs, and line breaks.',
+    },
+    {
+      question: 'Will this tool remove all line breaks?',
+      answer:
+        'Remove All Extra Spaces collapses whitespace into single spaces. Trim Lines and Remove Blank Lines preserve useful line structure depending on the option you choose.',
+    },
+    {
+      question: 'Can I use this for code?',
+      answer:
+        'You can, but be careful. Some programming languages and formats depend on whitespace. For code, Trim Lines or Tabs to Spaces is usually safer than removing all extra spacing.',
+    },
+    {
+      question: 'Is the text processed privately?',
+      answer:
+        'Yes. The cleanup happens in your browser, and your pasted text is not uploaded to QuickToolFlow servers.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
-      <textarea id="ws-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Paste messy text here...">   Hello    World   .
-  This  is   a   test   with    extra    spaces.
-
-  And   extra   blank   lines.   </textarea>
+      <textarea
+        id="ws-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Paste messy text here..."
+      >
+        Hello World . This is a test with extra spaces. And extra blank lines.
+      </textarea>
     </div>
 
     <div class="flex flex-wrap gap-2">
-      <button id="ws-all" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Remove All Extra Spaces</button>
-      <button id="ws-trim" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Trim Lines</button>
-      <button id="ws-blank" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Remove Blank Lines</button>
-      <button id="ws-tabs" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Tabs to Spaces</button>
-      <button id="ws-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto">Copy</button>
+      <button
+        id="ws-all"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Remove All Extra Spaces</button
+      >
+      <button
+        id="ws-trim"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Trim Lines</button
+      >
+      <button
+        id="ws-blank"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Remove Blank Lines</button
+      >
+      <button
+        id="ws-tabs"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Tabs to Spaces</button
+      >
+      <button
+        id="ws-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
+        >Copy</button
+      >
     </div>
 
     <div id="ws-stats" class="hidden flex gap-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-sm">
@@ -33,7 +112,12 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Result</label>
-      <textarea id="ws-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none" readonly placeholder="Cleaned text..." spellcheck="false"></textarea>
+      <textarea
+        id="ws-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none"
+        readonly
+        placeholder="Cleaned text..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>
@@ -62,7 +146,10 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       showStats(r);
     });
     document.getElementById('ws-trim')?.addEventListener('click', () => {
-      const r = input.value.split('\n').map(l => l.trim()).join('\n');
+      const r = input.value
+        .split('\n')
+        .map((l) => l.trim())
+        .join('\n');
       output.value = r;
       showStats(r);
     });

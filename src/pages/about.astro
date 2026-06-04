@@ -12,32 +12,63 @@ const metadata = {
   <section class="px-4 py-12 mx-auto max-w-4xl sm:px-6 lg:px-8">
     <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'About' }]} />
 
-    <article class="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:underline">
+    <article
+      class="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:underline"
+    >
       <h1>About QuickToolFlow</h1>
       <p class="text-xl text-gray-600 dark:text-gray-400 lead">
-        QuickToolFlow is a collection of free online tools designed for developers and productivity enthusiasts.
-        Every tool runs entirely in your browser — no data is ever sent to our servers.
+        QuickToolFlow is a collection of free online tools for developers, writers, marketers, and everyday productivity
+        workflows. Most tools run entirely in your browser, so your input stays on your device.
       </p>
 
       <h2>Our Mission</h2>
-      <p>We believe essential developer and productivity tools should be freely accessible, blazingly fast, and respectful of your privacy. Too many tool sites bombard users with ads, require sign-ups, or harvest personal data. We're building the opposite.</p>
+      <p>
+        We believe essential developer and productivity tools should be freely accessible, fast, and respectful of your
+        privacy. Too many utility sites hide simple tasks behind sign-ups, noisy pages, or unclear data handling.
+        QuickToolFlow is built to keep the tool first.
+      </p>
 
       <h2>Privacy First</h2>
-      <p>Every tool on QuickToolFlow processes data locally in your browser using JavaScript. Your text, passwords, code, and other inputs never leave your device. We don't use analytics that track individual users, and we don't store any of your input data.</p>
+      <p>
+        Tool inputs such as text, JSON, passwords, colors, and generated values are processed locally in your browser
+        whenever possible. We do not store tool inputs on QuickToolFlow servers. Some site-level services, such as
+        analytics and advertising, may use standard browser signals as described in our <a href="/privacy/"
+          >Privacy Policy</a
+        >.
+      </p>
 
       <h2>Open &amp; Free</h2>
-      <p>All tools are free to use with no limits. No premium tiers, no hidden fees, and no sign-up walls. Our tools are supported by non-intrusive advertising that doesn't interfere with your workflow.</p>
+      <p>
+        All tools are free to use with no sign-up wall. The project is maintained in public on <a
+          href="https://github.com/ykyabc/quicktoolflow">GitHub</a
+        >, and the site may be supported by non-intrusive advertising that is placed away from primary tool controls.
+      </p>
 
       <h2>Our Tools</h2>
       <ul>
-        <li><strong>Text Tools</strong> — Word counter, text diff checker</li>
-        <li><strong>Developer Tools</strong> — JSON formatter, Base64 encoder, hash generator, URL encoder</li>
-        <li><strong>Generators</strong> — Password generator, Lorem Ipsum generator</li>
-        <li><strong>Converters</strong> — Color converter (HEX ↔ RGB ↔ HSL)</li>
+        <li>
+          <strong>Text Tools</strong> — Word counter, case converter, text diff checker, slug generator, and cleanup tools
+        </li>
+        <li>
+          <strong>Developer Tools</strong> — JSON formatter, Base64 tools, regex tester, JWT decoder, hash generator, and
+          cron helpers
+        </li>
+        <li>
+          <strong>Generators</strong> — Password generator, UUID generator, QR code generator, random numbers, and placeholder
+          content
+        </li>
+        <li>
+          <strong>Converters</strong> — Color, timestamp, number base, CSS unit, JSON to CSV, and JSON to YAML converters
+        </li>
+        <li><strong>SEO Tools</strong> — Meta tag generator and practical SEO helpers for website previews</li>
       </ul>
 
       <h2>Contact</h2>
-      <p>Have questions, feedback, or partnership inquiries? Visit our <a href="/contact/">Contact page</a> or email <a href="mailto:hello@quicktoolflow.com">hello@quicktoolflow.com</a>.</p>
+      <p>
+        Have questions, feedback, or partnership inquiries? Visit our <a href="/contact/">Contact page</a> or email <a
+          href="mailto:hello@quicktoolflow.com">hello@quicktoolflow.com</a
+        >.
+      </p>
     </article>
   </section>
 </Layout>

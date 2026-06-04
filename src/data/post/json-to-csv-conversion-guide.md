@@ -1,17 +1,16 @@
 ---
-title: "JSON to CSV: How to Convert Data Between Formats"
-excerpt: "Learn how to convert JSON data to CSV format. Understand the differences between JSON and CSV, see conversion examples in code, and use our free online converter."
+title: 'JSON to CSV: How to Convert Data Between Formats'
+excerpt: 'Learn how to convert JSON data to CSV format. Understand the differences between JSON and CSV, see conversion examples in code, and use our free online converter.'
 publishDate: 2026-05-28
-category: "Developer Tools"
+category: 'Developer Tools'
 tags:
   - json
   - csv
   - data conversion
   - developer tools
   - programming
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 ---
-
 
 JSON and CSV are two of the most common data formats. JSON is the standard for APIs and configuration files. CSV is the standard for spreadsheets and data analysis. Converting between them is a task every developer and data analyst encounters regularly.
 
@@ -56,13 +55,13 @@ Bob,25,London,"Java; Go"
 
 ## Key Differences
 
-| Feature | JSON | CSV |
-|---------|------|-----|
-| **Structure** | Hierarchical (nested objects and arrays) | Flat (rows and columns) |
-| **Data types** | Strings, numbers, booleans, null, arrays, objects | Everything is a string |
-| **Readability** | Human-readable with formatting | Very simple, but no hierarchy |
-| **Use case** | APIs, configuration, web apps | Spreadsheets, data import/export, databases |
-| **File size** | Larger (key names repeated per row) | Smaller (headers only once) |
+| Feature         | JSON                                              | CSV                                         |
+| --------------- | ------------------------------------------------- | ------------------------------------------- |
+| **Structure**   | Hierarchical (nested objects and arrays)          | Flat (rows and columns)                     |
+| **Data types**  | Strings, numbers, booleans, null, arrays, objects | Everything is a string                      |
+| **Readability** | Human-readable with formatting                    | Very simple, but no hierarchy               |
+| **Use case**    | APIs, configuration, web apps                     | Spreadsheets, data import/export, databases |
+| **File size**   | Larger (key names repeated per row)               | Smaller (headers only once)                 |
 
 ---
 
@@ -94,9 +93,7 @@ const data = JSON.parse(fs.readFileSync('data.json', 'utf8'));
 
 if (data.length > 0) {
   const headers = Object.keys(data[0]);
-  const rows = data.map(row =>
-    headers.map(h => JSON.stringify(row[h] || '')).join(',')
-  );
+  const rows = data.map((row) => headers.map((h) => JSON.stringify(row[h] || '')).join(','));
   const csv = [headers.join(','), ...rows].join('\n');
   fs.writeFileSync('output.csv', csv);
 }

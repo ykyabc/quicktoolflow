@@ -1,15 +1,15 @@
 ---
-title: "UUID Generator Guide: What Is a UUID and How to Generate One"
-excerpt: "Learn what UUIDs are, understand the different versions, and generate RFC-compliant UUIDs instantly with our free online tool."
+title: 'UUID Generator Guide: What Is a UUID and How to Generate One'
+excerpt: 'Learn what UUIDs are, understand the different versions, and generate RFC-compliant UUIDs instantly with our free online tool.'
 publishDate: 2026-05-26
-category: "Developer Tools"
+category: 'Developer Tools'
 tags:
   - uuid
   - programming
   - web development
   - databases
   - api design
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 ---
 
 When building applications that need unique identifiers — database records, API tokens, file names — you need a way to generate IDs that will not collide. That is exactly what UUIDs solve.
@@ -56,14 +56,14 @@ Or a manual implementation:
 ```javascript
 function uuid() {
   var s = [];
-  var hexDigits = "0123456789abcdef";
+  var hexDigits = '0123456789abcdef';
   for (var i = 0; i < 36; i++) {
     s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
   }
-  s[14] = "4";
+  s[14] = '4';
   s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
-  s[8] = s[13] = s[18] = s[23] = "-";
-  return s.join("");
+  s[8] = s[13] = s[18] = s[23] = '-';
+  return s.join('');
 }
 ```
 
@@ -75,26 +75,26 @@ Generated from a namespace and a name using the SHA-1 hash algorithm. The same n
 
 ## Generating UUIDs in Different Languages
 
-| Language | Method |
-|---|---|
-| JavaScript (browser) | crypto.randomUUID() |
-| Node.js | require('uuid').v4() |
-| Python | import uuid; uuid.uuid4() |
-| Java | UUID.randomUUID() |
-| Go | uuid.New() from github.com/google/uuid |
-| C# | Guid.NewGuid() |
-| Ruby | SecureRandom.uuid |
-| Shell | cat /proc/sys/kernel/random/uuid |
+| Language             | Method                                 |
+| -------------------- | -------------------------------------- |
+| JavaScript (browser) | crypto.randomUUID()                    |
+| Node.js              | require('uuid').v4()                   |
+| Python               | import uuid; uuid.uuid4()              |
+| Java                 | UUID.randomUUID()                      |
+| Go                   | uuid.New() from github.com/google/uuid |
+| C#                   | Guid.NewGuid()                         |
+| Ruby                 | SecureRandom.uuid                      |
+| Shell                | cat /proc/sys/kernel/random/uuid       |
 
 ## UUIDs vs Other ID Strategies
 
-| Strategy | Pros | Cons |
-|---|---|---|
-| Auto-increment integer | Simple, fast, ordered | Predictable, not distributed-safe |
-| UUID v4 | Globally unique, no coordination | Larger (36 chars), not sortable by time |
-| UUID v1 | Time-sortable, unique | Exposes timestamp and MAC address |
-| ULID | Time-sortable and unique | Newer standard, less tooling |
-| Snowflake | Time-sortable and distributed | Requires worker ID coordination |
+| Strategy               | Pros                             | Cons                                    |
+| ---------------------- | -------------------------------- | --------------------------------------- |
+| Auto-increment integer | Simple, fast, ordered            | Predictable, not distributed-safe       |
+| UUID v4                | Globally unique, no coordination | Larger (36 chars), not sortable by time |
+| UUID v1                | Time-sortable, unique            | Exposes timestamp and MAC address       |
+| ULID                   | Time-sortable and unique         | Newer standard, less tooling            |
+| Snowflake              | Time-sortable and distributed    | Requires worker ID coordination         |
 
 ## Best Practices
 

@@ -7,11 +7,74 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Write Markdown on the left and see the rendered HTML preview on the right in real time. Free online Markdown editor."
   slug="markdown-preview"
   category="Developer Tools"
+  features={[
+    'Shows a live HTML preview as you type Markdown',
+    'Includes examples for headings, lists, links, tables, quotes, and code',
+    'Copies generated HTML for quick drafts and prototypes',
+    'Works without an account or document upload',
+    'Runs in your browser for private draft previewing',
+    'Uses a lightweight preview renderer for common Markdown syntax',
+  ]}
+  useCases={[
+    'Drafting README sections before committing them',
+    'Previewing blog snippets, release notes, or support documentation',
+    'Checking tables, lists, and headings before pasting into another editor',
+    'Learning basic Markdown syntax with immediate feedback',
+  ]}
+  howToSteps={[
+    'Write or paste Markdown into the editor on the left.',
+    'Review the live preview on the right.',
+    'Use Clear to start over when needed.',
+    'Use Copy HTML if you want the rendered HTML output.',
+  ]}
+  examples={[
+    {
+      title: 'Preview a short release note',
+      input:
+        '## Release Notes\n\n- Added JSON formatter examples\n- Fixed mobile menu spacing\n- Updated privacy policy',
+      output:
+        '<h2>Release Notes</h2>\n<ul>\n  <li>Added JSON formatter examples</li>\n  <li>Fixed mobile menu spacing</li>\n  <li>Updated privacy policy</li>\n</ul>',
+      note: 'The preview helps catch broken lists, missing headings, and formatting mistakes before publishing.',
+    },
+  ]}
+  tips={[
+    'This preview is designed for common Markdown syntax. Your final publishing platform may support extra extensions.',
+    'Always check code blocks, tables, and HTML output in the system where you will publish the final content.',
+    'Do not paste secrets or private drafts into browser extensions or third-party clipboard tools after copying HTML.',
+  ]}
+  faq={[
+    {
+      question: 'Does this support GitHub-flavored Markdown?',
+      answer:
+        'It supports common syntax such as headings, bold text, links, lists, blockquotes, code blocks, and tables. Some platform-specific extensions may differ.',
+    },
+    {
+      question: 'Can I export Markdown as HTML?',
+      answer: 'Yes. Use the Copy HTML button to copy the rendered HTML from the preview panel.',
+    },
+    {
+      question: 'Why does my final platform render differently?',
+      answer:
+        'Different platforms use different Markdown parsers and extensions. Treat this as a fast preview and verify important content in the final publishing system.',
+    },
+    {
+      question: 'Is my Markdown stored?',
+      answer: 'No. The preview is generated locally in your browser and QuickToolFlow does not store your draft.',
+    },
+  ]}
 >
   <div class="space-y-4">
     <div class="flex gap-2">
-      <button id="md-clear" class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Clear</button>
-      <button id="md-copy-html" class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy HTML</button>
+      <button
+        id="md-clear"
+        class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Clear</button
+      >
+      <button
+        id="md-copy-html"
+        class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy HTML</button
+      >
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -21,15 +84,15 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
           id="md-input"
           class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[400px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
           placeholder="Write Markdown here..."
-          spellcheck="false"
-        ></textarea>
+          spellcheck="false"></textarea>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview</label>
         <div
           id="md-preview"
           class="w-full px-5 py-4 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 min-h-[400px] overflow-y-auto prose prose-sm dark:prose-invert max-w-none"
-        ></div>
+        >
+        </div>
       </div>
     </div>
   </div>
@@ -86,25 +149,70 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
       // Fenced code blocks
       html = html.replace(/`{3}(\w*)\n([\s\S]*?)`{3}/g, (_m, _lang, code) => {
-        return lt + 'pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"' + gt +
-               lt + 'code' + gt + escapeHtml(code) + lt + '/code' + gt + lt + '/pre' + gt;
+        return (
+          lt +
+          'pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"' +
+          gt +
+          lt +
+          'code' +
+          gt +
+          escapeHtml(code) +
+          lt +
+          '/code' +
+          gt +
+          lt +
+          '/pre' +
+          gt
+        );
       });
 
       // Tables
       html = html.replace(/^(\|.+\|)\n(\|[-: |]+\|)\n((?:\|.+\|\n?)+)/gm, (_m, header, _sep, body) => {
-        const hdr = header.split('|').filter((c: string) => c.trim()).map((c: string) =>
-          lt + 'th class="border px-3 py-2"' + gt + c.trim() + lt + '/th' + gt
-        ).join('');
-        const rows = body.trim().split('\n').map((row: string) => {
-          const cells = row.split('|').filter((c: string) => c.trim()).map((c: string) =>
-            lt + 'td class="border px-3 py-2"' + gt + c.trim() + lt + '/td' + gt
-          ).join('');
-          return lt + 'tr' + gt + cells + lt + '/tr' + gt;
-        }).join('');
-        return lt + 'table class="border-collapse border w-full"' + gt +
-               lt + 'thead' + gt + lt + 'tr' + gt + hdr + lt + '/tr' + gt + lt + '/thead' + gt +
-               lt + 'tbody' + gt + rows + lt + '/tbody' + gt +
-               lt + '/table' + gt;
+        const hdr = header
+          .split('|')
+          .filter((c: string) => c.trim())
+          .map((c: string) => lt + 'th class="border px-3 py-2"' + gt + c.trim() + lt + '/th' + gt)
+          .join('');
+        const rows = body
+          .trim()
+          .split('\n')
+          .map((row: string) => {
+            const cells = row
+              .split('|')
+              .filter((c: string) => c.trim())
+              .map((c: string) => lt + 'td class="border px-3 py-2"' + gt + c.trim() + lt + '/td' + gt)
+              .join('');
+            return lt + 'tr' + gt + cells + lt + '/tr' + gt;
+          })
+          .join('');
+        return (
+          lt +
+          'table class="border-collapse border w-full"' +
+          gt +
+          lt +
+          'thead' +
+          gt +
+          lt +
+          'tr' +
+          gt +
+          hdr +
+          lt +
+          '/tr' +
+          gt +
+          lt +
+          '/thead' +
+          gt +
+          lt +
+          'tbody' +
+          gt +
+          rows +
+          lt +
+          '/tbody' +
+          gt +
+          lt +
+          '/table' +
+          gt
+        );
       });
 
       // Headers
@@ -119,8 +227,15 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       html = html.replace(/^---$/gm, lt + 'hr /' + gt);
 
       // Blockquotes
-      html = html.replace(/^> (.+)$/gm,
-        lt + 'blockquote class="pl-4 border-l-4 border-gray-300 italic text-gray-600"' + gt + '$1' + lt + '/blockquote' + gt
+      html = html.replace(
+        /^> (.+)$/gm,
+        lt +
+          'blockquote class="pl-4 border-l-4 border-gray-300 italic text-gray-600"' +
+          gt +
+          '$1' +
+          lt +
+          '/blockquote' +
+          gt
       );
 
       // Bold, italic, strikethrough
@@ -129,28 +244,50 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       html = html.replace(/~~(.+?)~~/g, lt + 'del' + gt + '$1' + lt + '/del' + gt);
 
       // Inline code
-      html = html.replace(/`([^`]+)`/g,
+      html = html.replace(
+        /`([^`]+)`/g,
         lt + 'code class="bg-gray-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-sm"' + gt + '$1' + lt + '/code' + gt
       );
 
       // Images and links
-      html = html.replace(/!$$([^$$]*)\]$$([^)]+)$$/g,
+      html = html.replace(
+        /!$$([^$$]*)\]$$([^)]+)$$/g,
         lt + 'img src="$2" alt="$1" class="rounded-lg max-w-full" /' + gt
       );
-      html = html.replace(/$$([^$$]+)\]$$([^)]+)$$/g,
+      html = html.replace(
+        /$$([^$$]+)\]$$([^)]+)$$/g,
         lt + 'a href="$2" class="text-blue-600 hover:underline"' + gt + '$1' + lt + '/a' + gt
       );
 
       // Unordered lists
       html = html.replace(/^- (.+)$/gm, lt + 'li' + gt + '$1' + lt + '/li' + gt);
-      html = html.replace(/((?:<li>[\s\S]*?<\/li>\n?)+)/g,
+      html = html.replace(
+        /((?:<li>[\s\S]*?<\/li>\n?)+)/g,
         lt + 'ul class="list-disc pl-6 space-y-1"' + gt + '$1' + lt + '/ul' + gt
       );
 
       // Paragraphs
       const lines = html.split('\n');
       const result: string[] = [];
-      const blockTags = ['h1','h2','h3','h4','h5','h6','ul','ol','li','blockquote','pre','hr','table','thead','tbody','tr','img'];
+      const blockTags = [
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'ul',
+        'ol',
+        'li',
+        'blockquote',
+        'pre',
+        'hr',
+        'table',
+        'thead',
+        'tbody',
+        'tr',
+        'img',
+      ];
 
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
@@ -159,7 +296,7 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
           continue;
         }
 
-        const isBlock = blockTags.some(tag => line.startsWith(lt + tag));
+        const isBlock = blockTags.some((tag) => line.startsWith(lt + tag));
         const isClosing = line.startsWith(lt + '/');
 
         if (isBlock || isClosing) {
@@ -175,7 +312,10 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     function render() {
       const val = input.value;
       if (val.trim() === '') {
-        preview.innerHTML = lt + 'p class="text-gray-400 italic"' + gt + 'Start typing Markdown on the left...' + lt + '/p' + gt;
+        const lt = '<';
+        const gt = '>';
+        preview.innerHTML =
+          lt + 'p class="text-gray-400 italic"' + gt + 'Start typing Markdown on the left...' + lt + '/p' + gt;
       } else {
         preview.innerHTML = mdToHtml(val);
       }

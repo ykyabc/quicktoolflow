@@ -1,8 +1,8 @@
 ---
-title: "Cron Expression Guide: Complete Cron Syntax Tutorial + Free Generator"
-excerpt: "Master cron expressions with examples, syntax breakdowns, advanced scheduling patterns, FAQs, and a free cron expression generator."
+title: 'Cron Expression Guide: Complete Cron Syntax Tutorial + Free Generator'
+excerpt: 'Master cron expressions with examples, syntax breakdowns, advanced scheduling patterns, FAQs, and a free cron expression generator.'
 publishDate: 2026-05-28
-category: "Developer Tools"
+category: 'Developer Tools'
 tags:
   - cron
   - cron expression
@@ -12,13 +12,12 @@ tags:
   - linux
   - kubernetes
   - github actions
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 
 seo:
-  title: "Cron Expression Guide & Free Cron Generator"
-  description: "Learn cron syntax, special characters, examples, best practices, FAQs, and use a free cron expression generator."
+  title: 'Cron Expression Guide & Free Cron Generator'
+  description: 'Learn cron syntax, special characters, examples, best practices, FAQs, and use a free cron expression generator.'
 ---
-
 
 > Learn cron expressions from beginner to advanced with practical examples, syntax explanations, troubleshooting tips, FAQs, and a free cron expression generator.
 
@@ -97,13 +96,13 @@ A standard cron expression contains five fields.
 
 ## Field Breakdown
 
-| Field | Allowed Values |
-|---------|---------|
-| Minute | 0-59 |
-| Hour | 0-23 |
-| Day of Month | 1-31 |
-| Month | 1-12 |
-| Day of Week | 0-6 (Sunday=0) |
+| Field        | Allowed Values |
+| ------------ | -------------- |
+| Minute       | 0-59           |
+| Hour         | 0-23           |
+| Day of Month | 1-31           |
+| Month        | 1-12           |
+| Day of Week  | 0-6 (Sunday=0) |
 
 Example:
 
@@ -117,7 +116,7 @@ Runs every day at 2:30 PM.
 
 # Cron Special Characters
 
-## Asterisk (*)
+## Asterisk (\*)
 
 Represents every value.
 
@@ -303,18 +302,18 @@ Some extended schedulers such as Quartz support this feature.
 
 # Where Cron Is Used
 
-| Platform | Usage |
-|----------|--------|
-| Linux | crontab |
-| macOS | cron |
-| Kubernetes | CronJob |
-| GitHub Actions | Scheduled workflows |
-| Jenkins | Scheduled builds |
-| AWS EventBridge | Scheduled events |
-| Azure Scheduler | Automation |
-| Node.js | node-cron |
-| Python | APScheduler |
-| Laravel | Task Scheduler |
+| Platform        | Usage               |
+| --------------- | ------------------- |
+| Linux           | crontab             |
+| macOS           | cron                |
+| Kubernetes      | CronJob             |
+| GitHub Actions  | Scheduled workflows |
+| Jenkins         | Scheduled builds    |
+| AWS EventBridge | Scheduled events    |
+| Azure Scheduler | Automation          |
+| Node.js         | node-cron           |
+| Python          | APScheduler         |
+| Laravel         | Task Scheduler      |
 
 ---
 
@@ -367,7 +366,7 @@ kind: CronJob
 metadata:
   name: database-backup
 spec:
-  schedule: "0 2 * * *"
+  schedule: '0 2 * * *'
 ```
 
 ---
@@ -488,15 +487,15 @@ chmod +x backup.sh
 
 # Cron Cheat Sheet
 
-| Schedule | Expression |
-|-----------|------------|
-| Every minute | `* * * * *` |
+| Schedule        | Expression    |
+| --------------- | ------------- |
+| Every minute    | `* * * * *`   |
 | Every 5 minutes | `*/5 * * * *` |
-| Every hour | `0 * * * *` |
-| Every day | `0 0 * * *` |
-| Every week | `0 0 * * 0` |
-| Every month | `0 0 1 * *` |
-| Every year | `0 0 1 1 *` |
+| Every hour      | `0 * * * *`   |
+| Every day       | `0 0 * * *`   |
+| Every week      | `0 0 * * 0`   |
+| Every month     | `0 0 1 * *`   |
+| Every year      | `0 0 1 1 *`   |
 
 ---
 
@@ -504,26 +503,26 @@ chmod +x backup.sh
 
 ## Cron vs systemd Timers
 
-| Feature | Cron | systemd |
-|----------|----------|----------|
-| Easy to Learn | Yes | Moderate |
-| Logging | Basic | Advanced |
-| Dependencies | No | Yes |
-| Linux Native | Yes | Yes |
+| Feature       | Cron  | systemd  |
+| ------------- | ----- | -------- |
+| Easy to Learn | Yes   | Moderate |
+| Logging       | Basic | Advanced |
+| Dependencies  | No    | Yes      |
+| Linux Native  | Yes   | Yes      |
 
 ## Cron vs Kubernetes CronJob
 
-| Feature | Cron | CronJob |
-|----------|----------|----------|
-| Cloud Native | No | Yes |
-| Scaling | Limited | Excellent |
-| Container Aware | No | Yes |
+| Feature         | Cron    | CronJob   |
+| --------------- | ------- | --------- |
+| Cloud Native    | No      | Yes       |
+| Scaling         | Limited | Excellent |
+| Container Aware | No      | Yes       |
 
 ---
 
 # Frequently Asked Questions
 
-## What does */5 * * * * mean?
+## What does _/5 _ \* \* \* mean?
 
 It runs every five minutes.
 

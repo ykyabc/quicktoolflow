@@ -3,6 +3,35 @@ import Layout from '~/layouts/PageLayout.astro';
 import { tools } from '~/utils/tools-data';
 
 const categoryTools = tools.filter((tool) => tool.categorySlug === 'developer');
+const workflows = [
+  {
+    title: 'Debug API responses',
+    description: 'Format JSON, convert JSON to CSV, and inspect structured payloads before sharing them.',
+    links: [
+      { text: 'JSON Formatter', href: '/tools/json-formatter/' },
+      { text: 'JSON to CSV', href: '/tools/json-to-csv/' },
+      { text: 'JSON to YAML', href: '/tools/json-to-yaml/' },
+    ],
+  },
+  {
+    title: 'Inspect encoded and signed data',
+    description: 'Decode Base64 text, inspect JWT claims, and generate hashes for technical checks.',
+    links: [
+      { text: 'Base64 Encoder', href: '/tools/base64/' },
+      { text: 'JWT Decoder', href: '/tools/jwt-decoder/' },
+      { text: 'Hash Generator', href: '/tools/hash-generator/' },
+    ],
+  },
+  {
+    title: 'Write and test patterns',
+    description: 'Test regex patterns, preview Markdown, and escape strings before using them in code.',
+    links: [
+      { text: 'Regex Tester', href: '/tools/regex-tester/' },
+      { text: 'Markdown Preview', href: '/tools/markdown-preview/' },
+      { text: 'String Escape', href: '/tools/string-escape/' },
+    ],
+  },
+];
 
 const metadata = {
   title: 'Free Online Developer Tools | QuickToolFlow',
@@ -19,13 +48,11 @@ const faqItems = [
   },
   {
     question: 'Are QuickToolFlow developer tools free?',
-    answer:
-      'Yes. QuickToolFlow developer tools are free to use and do not require sign-up.',
+    answer: 'Yes. QuickToolFlow developer tools are free to use and do not require sign-up.',
   },
   {
     question: 'Do these developer tools run in the browser?',
-    answer:
-      'Yes. QuickToolFlow developer tools are designed for fast browser-based workflows.',
+    answer: 'Yes. QuickToolFlow developer tools are designed for fast browser-based workflows.',
   },
 ];
 
@@ -53,62 +80,77 @@ const faqSchema = {
 <Layout metadata={metadata}>
   <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-3xl text-center">
-      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">
-        Developer Tools
-      </p>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">Developer Tools</p>
 
       <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
         Free Online Developer Tools
       </h1>
 
       <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-        QuickToolFlow developer tools help you format data, test expressions, encode
-        strings, inspect tokens, and handle common coding tasks directly in your browser.
+        QuickToolFlow developer tools help you format data, test expressions, encode strings, inspect tokens, and handle
+        common coding tasks directly in your browser.
       </p>
     </div>
 
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {categoryTools.map((tool) => (
-        <a
-          href={`/tools/${tool.slug}/`}
-          class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
-        >
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-            {tool.name}
-          </h2>
+      {
+        categoryTools.map((tool) => (
+          <a
+            href={`/tools/${tool.slug}/`}
+            class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+          >
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{tool.name}</h2>
 
-          <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
-            {tool.description}
-          </p>
+            <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">{tool.description}</p>
 
-          <span class="mt-5 inline-flex text-sm font-semibold text-primary-600">
-            Open tool →
-          </span>
-        </a>
-      ))}
+            <span class="mt-5 inline-flex text-sm font-semibold text-primary-600">Open tool →</span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Popular Developer Workflows</h2>
+      <div class="mt-6 grid gap-6 lg:grid-cols-3">
+        {
+          workflows.map((workflow) => (
+            <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{workflow.title}</h3>
+              <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">{workflow.description}</p>
+              <div class="mt-5 flex flex-wrap gap-2">
+                {workflow.links.map((link) => (
+                  <a
+                    href={link.href}
+                    class="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:bg-primary-50 hover:text-primary-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-700"
+                  >
+                    {link.text}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
     </div>
 
     <div class="prose prose-lg mx-auto mt-16 dark:prose-invert">
       <h2>Why use online developer tools?</h2>
       <p>
-        Online developer tools save time when you need to format, validate, convert,
-        or inspect technical data quickly. Instead of installing a separate app or
-        opening a full development environment, you can complete common coding tasks
-        directly in your browser.
+        Online developer tools save time when you need to format, validate, convert, or inspect technical data quickly.
+        Instead of installing a separate app or opening a full development environment, you can complete common coding
+        tasks directly in your browser.
       </p>
 
       <h2>What can you do with these developer tools?</h2>
       <p>
-        You can format JSON, decode JWT tokens, test regular expressions, convert
-        data formats, encode URLs, generate hashes, preview Markdown, and prepare
-        content for APIs, websites, scripts, and documentation.
+        You can format JSON, decode JWT tokens, test regular expressions, convert data formats, encode URLs, generate
+        hashes, preview Markdown, and prepare content for APIs, websites, scripts, and documentation.
       </p>
 
       <h2>Who are these tools for?</h2>
       <p>
-        These tools are useful for developers, students, technical writers, website
-        owners, SEO specialists, and anyone who works with structured data, web
-        content, or code-related workflows.
+        These tools are useful for developers, students, technical writers, website owners, SEO specialists, and anyone
+        who works with structured data, web content, or code-related workflows.
       </p>
     </div>
   </section>

@@ -7,13 +7,74 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Convert numbers between binary, octal, decimal, and hexadecimal bases instantly."
   slug="number-base-converter"
   category="Converters"
+  features={[
+    'Converts numbers between binary, octal, decimal, and hexadecimal',
+    'Shows all target bases at once',
+    'Validates input against the selected source base',
+    'Supports copy buttons for each output',
+    'Useful for programming, debugging, and computer science practice',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Converting binary values while learning low-level programming',
+    'Checking hexadecimal IDs, color-like values, or bit masks',
+    'Translating decimal numbers into binary for documentation or examples',
+    'Debugging encoded numeric values in logs and scripts',
+  ]}
+  howToSteps={[
+    'Enter a number in the input field.',
+    'Select the base of the input number.',
+    'Click Convert or edit the input to update the results.',
+    'Copy the decimal, binary, octal, or hexadecimal output you need.',
+  ]}
+  examples={[
+    {
+      title: 'Convert decimal 255',
+      input: '255 in decimal',
+      output: 'Binary: 11111111\nOctal: 377\nHexadecimal: FF',
+      note: '255 is a useful example because it is the maximum value of one unsigned byte.',
+    },
+  ]}
+  tips={[
+    'Binary uses digits 0 and 1. Octal uses 0-7. Decimal uses 0-9. Hexadecimal uses 0-9 and A-F.',
+    'This converter is intended for practical integer conversion, not arbitrary precision math.',
+    'Hexadecimal output is shown in uppercase because that is common in docs and debugging output.',
+  ]}
+  faq={[
+    {
+      question: 'What is base 16?',
+      answer: 'Base 16 is hexadecimal. It uses digits 0-9 plus letters A-F to represent values.',
+    },
+    {
+      question: 'Why is 255 equal to FF?',
+      answer: 'In hexadecimal, F represents 15. FF means 15 times 16 plus 15, which equals 255.',
+    },
+    {
+      question: 'Can I convert negative numbers?',
+      answer:
+        'The tool is designed for straightforward integer conversions. Signed binary representations such as two’s complement are not shown.',
+    },
+    {
+      question: 'Is my input uploaded?',
+      answer: 'No. Conversion runs locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Number</label>
       <div class="flex gap-3">
-        <input id="nb-input" type="text" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter a number..." value="255" />
-        <select id="nb-from" class="px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+        <input
+          id="nb-input"
+          type="text"
+          class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="Enter a number..."
+          value="255"
+        />
+        <select
+          id="nb-from"
+          class="px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        >
           <option value="10" selected>Decimal</option>
           <option value="2">Binary</option>
           <option value="8">Octal</option>
@@ -22,25 +83,39 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       </div>
     </div>
 
-    <button id="nb-convert" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Convert</button>
+    <button
+      id="nb-convert"
+      class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+      >Convert</button
+    >
 
-    <div id="nb-error" class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200"></div>
+    <div
+      id="nb-error"
+      class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200"
+    >
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {[
-        { id: 'nb-dec', label: 'Decimal (Base 10)', btn: 'nb-dec-copy' },
-        { id: 'nb-bin', label: 'Binary (Base 2)', btn: 'nb-bin-copy' },
-        { id: 'nb-oct', label: 'Octal (Base 8)', btn: 'nb-oct-copy' },
-        { id: 'nb-hex', label: 'Hexadecimal (Base 16)', btn: 'nb-hex-copy' },
-      ].map((item) => (
-        <div class="p-4 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs text-gray-500 uppercase tracking-wider">{item.label}</span>
-            <button data-tgt={item.id} class="nb-copy text-xs text-blue-600 hover:text-blue-700 font-medium">Copy</button>
+      {
+        [
+          { id: 'nb-dec', label: 'Decimal (Base 10)', btn: 'nb-dec-copy' },
+          { id: 'nb-bin', label: 'Binary (Base 2)', btn: 'nb-bin-copy' },
+          { id: 'nb-oct', label: 'Octal (Base 8)', btn: 'nb-oct-copy' },
+          { id: 'nb-hex', label: 'Hexadecimal (Base 16)', btn: 'nb-hex-copy' },
+        ].map((item) => (
+          <div class="p-4 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs text-gray-500 uppercase tracking-wider">{item.label}</span>
+              <button data-tgt={item.id} class="nb-copy text-xs text-blue-600 hover:text-blue-700 font-medium">
+                Copy
+              </button>
+            </div>
+            <div id={item.id} class="text-lg font-mono font-bold text-gray-900 dark:text-white break-all">
+              —
+            </div>
           </div>
-          <div id={item.id} class="text-lg font-mono font-bold text-gray-900 dark:text-white break-all">—</div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </ToolLayout>
@@ -58,10 +133,13 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       const val = inputEl.value.trim();
       const base = parseInt(fromEl.value);
 
-      if (errorEl) { errorEl.classList.add('hidden'); errorEl.textContent = ''; }
+      if (errorEl) {
+        errorEl.classList.add('hidden');
+        errorEl.textContent = '';
+      }
 
       if (!val) {
-        ['nb-dec','nb-bin','nb-oct','nb-hex'].forEach(id => {
+        ['nb-dec', 'nb-bin', 'nb-oct', 'nb-hex'].forEach((id) => {
           const el = document.getElementById(id);
           if (el) el.textContent = '—';
         });
@@ -70,7 +148,10 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
       const num = parseInt(val, base);
       if (isNaN(num)) {
-        if (errorEl) { errorEl.textContent = 'Invalid number for the selected base.'; errorEl.classList.remove('hidden'); }
+        if (errorEl) {
+          errorEl.textContent = 'Invalid number for the selected base.';
+          errorEl.classList.remove('hidden');
+        }
         return;
       }
 
@@ -88,7 +169,7 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     inputEl.addEventListener('input', convert);
     fromEl.addEventListener('change', convert);
 
-    document.querySelectorAll('.nb-copy').forEach(btn => {
+    document.querySelectorAll('.nb-copy').forEach((btn) => {
       btn.addEventListener('click', () => {
         const tgt = (btn as HTMLElement).dataset.tgt;
         const el = tgt ? document.getElementById(tgt) : null;

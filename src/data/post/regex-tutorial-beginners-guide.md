@@ -1,14 +1,14 @@
 ---
 title: "Regular Expressions (Regex): A Beginner's Guide with Examples"
-excerpt: "Learn regular expressions from scratch. This beginner-friendly guide covers regex syntax, common patterns, and practical examples."
+excerpt: 'Learn regular expressions from scratch. This beginner-friendly guide covers regex syntax, common patterns, and practical examples.'
 publishDate: 2025-04-10
-category: "Developer Tools"
+category: 'Developer Tools'
 tags:
   - regex
   - regular expressions
   - tutorial
   - beginner
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 ---
 
 Regular expressions (regex) are powerful patterns used to match, search, and manipulate text. They look intimidating at first, but once you understand the basics, they become an indispensable tool.
@@ -43,12 +43,12 @@ Most characters match themselves. The pattern `hello` matches the text "hello".
 
 ## Common Patterns
 
-| Pattern | Matches |
-|---------|---------|
-| `\d{3}-\d{4}` | Phone numbers like 123-4567 |
-| Email regex | Standard email addresses |
-| `https?://\S+` | HTTP and HTTPS URLs |
-| `\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b` | IP addresses |
+| Pattern                                  | Matches                     |
+| ---------------------------------------- | --------------------------- |
+| `\d{3}-\d{4}`                            | Phone numbers like 123-4567 |
+| Email regex                              | Standard email addresses    |
+| `https?://\S+`                           | HTTP and HTTPS URLs         |
+| `\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b` | IP addresses                |
 
 ## Quantifiers
 

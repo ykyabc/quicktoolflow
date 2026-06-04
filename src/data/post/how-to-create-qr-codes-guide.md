@@ -1,15 +1,15 @@
 ---
-title: "How to Create QR Codes: A Complete Guide for 2026"
-excerpt: "Learn how to create QR codes for URLs, text, email, WiFi, and more. Understand how QR codes work, best practices, and use our free QR code generator tool."
+title: 'How to Create QR Codes: A Complete Guide for 2026'
+excerpt: 'Learn how to create QR codes for URLs, text, email, WiFi, and more. Understand how QR codes work, best practices, and use our free QR code generator tool.'
 publishDate: 2026-05-27
-category: "Generators"
+category: 'Generators'
 tags:
   - qr code
   - generator
   - marketing
   - design
   - business
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 ---
 
 QR codes are everywhere — restaurant menus, business cards, event tickets, and product packaging. If you need to create one, this guide covers everything you need to know.

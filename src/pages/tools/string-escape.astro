@@ -7,24 +7,109 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Escape special characters for JSON, JavaScript, HTML, and CSV. Or unescape them back to readable text."
   slug="string-escape"
   category="Developer Tools"
+  features={[
+    'Escape strings for JSON, JavaScript, and HTML contexts',
+    'Unescape common HTML entities and escaped newline, tab, and quote sequences',
+    'Keeps input and output separate for easy comparison',
+    'One-click copy for generated escaped strings',
+    'Useful for debugging API payloads, templates, and code snippets',
+    'Runs locally in your browser without sending text to a server',
+  ]}
+  useCases={[
+    'Prepare a string value before pasting it into JSON',
+    'Escape quotes and line breaks for JavaScript examples',
+    'Convert visible characters into safe HTML entities for documentation',
+    'Inspect escaped API strings during debugging',
+    'Turn escaped text back into readable text for review',
+  ]}
+  howToSteps={[
+    'Paste the text or escaped string into the input box.',
+    'Choose Escape JSON, Escape JS, Escape HTML, or Unescape.',
+    'Review the output and confirm it matches the target context.',
+    'Copy the result into your code, API payload, documentation, or template.',
+  ]}
+  examples={[
+    {
+      title: 'Escape quotes for JSON',
+      input: 'He said "Hello World"',
+      output: 'He said \\"Hello World\\"',
+      note: 'Escaping quotes lets the text be safely used inside a JSON string value.',
+    },
+  ]}
+  tips={[
+    'Escaping is context-specific. JSON, JavaScript, HTML, and URL encoding are not interchangeable.',
+    'HTML escaping helps display characters safely, but it is not a complete replacement for server-side sanitization.',
+    'When building real applications, escape output at the final rendering boundary for the exact context being rendered.',
+  ]}
+  faq={[
+    {
+      question: 'What does string escaping mean?',
+      answer:
+        'String escaping converts special characters such as quotes, line breaks, tabs, and angle brackets into sequences that can be safely represented in a specific format.',
+    },
+    {
+      question: 'Is JSON escaping the same as HTML escaping?',
+      answer:
+        'No. JSON escaping is designed for JSON string values, while HTML escaping is designed for displaying text inside HTML. Use the option that matches your target context.',
+    },
+    {
+      question: 'Can this prevent XSS attacks?',
+      answer:
+        'HTML escaping can reduce risk when displaying text, but XSS prevention requires context-aware escaping, validation, and secure application design. Treat this as a utility, not a security audit.',
+    },
+    {
+      question: 'Is my text uploaded?',
+      answer: 'No. Escape and unescape operations run locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input</label>
-      <textarea id="se-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder='Enter text: He said "Hello" & left.'>He said "Hello World" & it's a test with tabs	and newlines.</textarea>
+      <textarea
+        id="se-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder='Enter text: He said "Hello" & left.'
+        >He said "Hello World" & it's a test with tabs and newlines.</textarea
+      >
     </div>
 
     <div class="flex flex-wrap gap-2">
-      <button id="se-json" class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Escape JSON</button>
-      <button id="se-js" class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Escape JS</button>
-      <button id="se-html" class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Escape HTML</button>
-      <button id="se-unescape" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Unescape</button>
-      <button id="se-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto">Copy</button>
+      <button
+        id="se-json"
+        class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Escape JSON</button
+      >
+      <button
+        id="se-js"
+        class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Escape JS</button
+      >
+      <button
+        id="se-html"
+        class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Escape HTML</button
+      >
+      <button
+        id="se-unescape"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Unescape</button
+      >
+      <button
+        id="se-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
+        >Copy</button
+      >
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>
-      <textarea id="se-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y outline-none" readonly placeholder="Escaped result..." spellcheck="false"></textarea>
+      <textarea
+        id="se-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y outline-none"
+        readonly
+        placeholder="Escaped result..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>
@@ -60,9 +145,18 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
     document.getElementById('se-unescape')?.addEventListener('click', () => {
       let r = input.value;
-      r = r.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+      r = r
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
       r = r.replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\t/g, '\t').replace(/\\\\/g, '\\');
-      try { r = JSON.parse('"' + r + '"'); } catch {}
+      try {
+        r = JSON.parse('"' + r + '"');
+      } catch {
+        void 0;
+      }
       output.value = r;
     });
 

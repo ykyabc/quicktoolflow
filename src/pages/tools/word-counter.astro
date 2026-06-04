@@ -7,6 +7,59 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Count words, characters, sentences, paragraphs, and estimate reading time in real time."
   slug="word-counter"
   category="Text Tools"
+  features={[
+    'Counts words, characters, characters without spaces, sentences, and paragraphs',
+    'Estimates reading time using a practical words-per-minute baseline',
+    'Updates instantly as you type or paste content',
+    'Works for drafts, essays, articles, social posts, and documentation',
+    'Runs locally in your browser without uploading your text',
+    'Supports long-form content with a clean resizable editor',
+  ]}
+  useCases={[
+    'Checking essay, article, or blog post length before publishing',
+    'Keeping meta descriptions, titles, and social posts within rough limits',
+    'Estimating reading time for newsletters, documentation, and landing pages',
+    'Cleaning up drafts before sending them to an editor or CMS',
+  ]}
+  howToSteps={[
+    'Paste or type your text into the editor.',
+    'Review the live word, character, sentence, paragraph, and reading time counts.',
+    'Edit the text until it fits your target length.',
+    'Use the counts as a writing guide before publishing or submitting the content.',
+  ]}
+  examples={[
+    {
+      title: 'Estimate reading time for a short article',
+      input: 'A 1,000-word article is usually around five minutes of reading time.',
+      output: 'Words: 11\nCharacters: 72\nRead time: 1m',
+      note: 'The reading time estimate is intentionally simple. It is best used as a quick planning signal.',
+    },
+  ]}
+  tips={[
+    'Word count is based on whitespace-separated terms, so unusual punctuation or languages without spaces may count differently.',
+    'Reading time is estimated at about 200 words per minute, which is a common baseline for general web content.',
+    'Character counts include punctuation and spaces. Use the no-spaces count when you need a stricter text-length measure.',
+  ]}
+  faq={[
+    {
+      question: 'How does the word counter calculate words?',
+      answer:
+        'It trims the text and counts groups separated by whitespace. This works well for most English drafts, articles, and web content.',
+    },
+    {
+      question: 'Does the character count include spaces?',
+      answer:
+        'Yes. The Characters metric includes spaces and punctuation. The No Spaces metric removes whitespace before counting.',
+    },
+    {
+      question: 'How is reading time estimated?',
+      answer: 'Reading time is estimated from the word count using about 200 words per minute.',
+    },
+    {
+      question: 'Is my text stored?',
+      answer: 'No. The text is counted locally in your browser and is not uploaded to QuickToolFlow.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
@@ -16,8 +69,7 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       <textarea
         id="wc-input"
         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed placeholder:text-gray-400 min-h-[250px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-        placeholder="Start typing or paste your text here..."
-      ></textarea>
+        placeholder="Start typing or paste your text here..."></textarea>
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" id="wc-stats">

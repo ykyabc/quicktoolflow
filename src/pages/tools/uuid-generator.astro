@@ -7,12 +7,71 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Generate RFC 4122 compliant UUID v4 identifiers. Bulk generate up to 100 UUIDs at once."
   slug="uuid-generator"
   category="Generators"
+  features={[
+    'Generates RFC 4122-style UUID v4 identifiers',
+    'Uses crypto.getRandomValues for browser-based randomness',
+    'Bulk generates up to 100 UUIDs at once',
+    'Supports uppercase output and dashless UUIDs',
+    'Copies all generated UUIDs with one click',
+    'Runs locally without sending generated identifiers to a server',
+  ]}
+  useCases={[
+    'Creating test IDs for databases, APIs, and fixtures',
+    'Generating unique identifiers for demos and local development',
+    'Preparing mock data for documentation or sample payloads',
+    'Creating temporary correlation IDs for logs and debugging',
+  ]}
+  howToSteps={[
+    'Choose how many UUIDs to generate.',
+    'Select uppercase or dashless output if your system expects that format.',
+    'Click Generate to create new random UUIDs.',
+    'Copy all values and paste them into your database, code, or test data.',
+  ]}
+  examples={[
+    {
+      title: 'Standard UUID v4 format',
+      input: 'Generate 1 UUID',
+      output: '550e8400-e29b-41d4-a716-446655440000',
+      note: 'The exact value changes every time. The 4 in the third group indicates version 4 format.',
+    },
+  ]}
+  tips={[
+    'UUID v4 values are designed to be unique enough for most application identifiers, but they are not meant to be human-readable.',
+    'Use dashless UUIDs only when a system specifically requires that format.',
+    'Do not use UUIDs as secrets. They are identifiers, not passwords or authentication tokens.',
+  ]}
+  faq={[
+    {
+      question: 'What is a UUID v4?',
+      answer: 'A UUID v4 is a randomly generated identifier with a standard 8-4-4-4-12 hexadecimal structure.',
+    },
+    {
+      question: 'Are UUIDs guaranteed to be unique?',
+      answer:
+        'UUID v4 values are not mathematically guaranteed, but the random space is large enough that collisions are extremely unlikely in normal applications.',
+    },
+    {
+      question: 'Can I use UUIDs as passwords?',
+      answer: 'No. UUIDs are identifiers. Use a password generator or secure token generator for secrets.',
+    },
+    {
+      question: 'Are generated UUIDs stored?',
+      answer: 'No. UUID generation happens locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="flex flex-wrap items-end gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Count</label>
-        <input id="uuid-count" type="number" min="1" max="100" value="5" class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="uuid-count"
+          type="number"
+          min="1"
+          max="100"
+          value="5"
+          class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
       <label class="flex items-center gap-2 cursor-pointer">
         <input id="uuid-uppercase" type="checkbox" class="w-4 h-4 accent-blue-600" />
@@ -22,14 +81,31 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         <input id="uuid-nodash" type="checkbox" class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Remove dashes</span>
       </label>
-      <button id="uuid-gen" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate</button>
-      <button id="uuid-copy" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy All</button>
+      <button
+        id="uuid-gen"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Generate</button
+      >
+      <button
+        id="uuid-copy"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy All</button
+      >
     </div>
 
-    <div id="uuid-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-green-50 text-green-700 border border-green-200"></div>
+    <div
+      id="uuid-status"
+      class="hidden rounded-lg px-4 py-3 text-sm font-medium bg-green-50 text-green-700 border border-green-200"
+    >
+    </div>
 
     <div>
-      <textarea id="uuid-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[250px] resize-y outline-none" readonly placeholder="Generated UUIDs will appear here..." spellcheck="false"></textarea>
+      <textarea
+        id="uuid-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[250px] resize-y outline-none"
+        readonly
+        placeholder="Generated UUIDs will appear here..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>
@@ -44,15 +120,9 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     bytes[6] = (bytes[6] & 0x0f) | 0x40;
     bytes[8] = (bytes[8] & 0x3f) | 0x80;
 
-    const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
 
-    return [
-      hex.slice(0, 8),
-      hex.slice(8, 12),
-      hex.slice(12, 16),
-      hex.slice(16, 20),
-      hex.slice(20, 32),
-    ].join('-');
+    return [hex.slice(0, 8), hex.slice(8, 12), hex.slice(12, 16), hex.slice(16, 20), hex.slice(20, 32)].join('-');
   }
 
   function initUuidGenerator() {

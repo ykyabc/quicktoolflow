@@ -7,35 +7,160 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Encode text to Base64 or decode Base64 strings back to readable text. Free, instant, and private."
   slug="base64"
   category="Developer Tools"
+  features={[
+    'Encodes Unicode text to Base64 safely',
+    'Decodes Base64 strings back to readable text',
+    'Uses modern TextEncoder and TextDecoder APIs',
+    'Shows clear errors for invalid Base64 input',
+    'Supports quick swap between input and output',
+    'Processes data locally in your browser',
+  ]}
+  useCases={[
+    'Encoding small text snippets for API examples or configuration values',
+    'Decoding Base64 text found in logs, tokens, or data URLs',
+    'Checking whether copied Base64 content decodes to readable text',
+    'Preparing simple examples for documentation and tests',
+  ]}
+  howToSteps={[
+    'Paste plain text or a Base64 string into the input field.',
+    'Click Encode to convert text to Base64, or Decode to convert Base64 back to text.',
+    'Use Swap when you want to run the opposite conversion on the result.',
+    'Copy the output when the result looks correct.',
+  ]}
+  examples={[
+    {
+      title: 'Encode a short text value',
+      input: 'QuickToolFlow',
+      output: 'UXVpY2tUb29sRmxvdw==',
+      note: 'Base64 is often used when text needs to travel through systems that expect plain ASCII characters.',
+    },
+  ]}
+  tips={[
+    'Base64 is encoding, not encryption. Anyone can decode it without a password or secret key.',
+    'Base64 output is usually larger than the original text because it represents binary-safe data as text.',
+    'If decoding fails, check for missing padding characters, copied whitespace, or characters that are not part of the Base64 alphabet.',
+  ]}
+  faq={[
+    {
+      question: 'Is Base64 secure?',
+      answer:
+        'No. Base64 is not encryption and should not be used to hide secrets. It only changes how data is represented.',
+    },
+    {
+      question: 'Why does Base64 sometimes end with equals signs?',
+      answer:
+        'The equals signs are padding characters. They help align the encoded output to the correct byte boundary.',
+    },
+    {
+      question: 'Can this encode non-English text?',
+      answer:
+        'Yes. This tool uses UTF-8 encoding through TextEncoder and TextDecoder, so Unicode text is handled correctly.',
+    },
+    {
+      question: 'Is my input uploaded when I encode or decode?',
+      answer:
+        'No. The conversion runs locally in your browser. QuickToolFlow does not receive the text you paste into this tool.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="flex gap-2 flex-wrap">
-      <button id="b64-enc" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Encode →</button>
-      <button id="b64-dec" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">← Decode</button>
-      <button id="b64-swap" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto" title="Swap">
-        <astro-icon name="tabler:arrows-exchange" class="w-4 h-4" />
+      <button
+        id="b64-enc"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Encode →</button
+      >
+      <button
+        id="b64-dec"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >← Decode</button
+      >
+      <button
+        id="b64-swap"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
+        title="Swap"
+      >
+        <astro-icon name="tabler:arrows-exchange" class="w-4 h-4"></astro-icon>
       </button>
-      <button id="b64-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy Output</button>
+      <button
+        id="b64-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy Output</button
+      >
     </div>
 
     <div id="b64-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input</label>
-      <textarea id="b64-in" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[180px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter text or Base64..." spellcheck="false"></textarea>
+      <textarea
+        id="b64-in"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[180px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Enter text or Base64..."
+        spellcheck="false"></textarea>
     </div>
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>
-      <textarea id="b64-out" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[180px] resize-y outline-none" readonly placeholder="Result..." spellcheck="false"></textarea>
+      <textarea
+        id="b64-out"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[180px] resize-y outline-none"
+        readonly
+        placeholder="Result..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 
   <script is:inline>
-    const i = document.getElementById('b64-in'), o = document.getElementById('b64-out'), s = document.getElementById('b64-status');
-    function show(m, e) { s.textContent = m; s.className = `rounded-lg px-4 py-3 text-sm font-medium ${e ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`; s.classList.remove('hidden'); }
-    document.getElementById('b64-enc').addEventListener('click', () => { try { o.value = btoa(unescape(encodeURIComponent(i.value))); show('✓ Encoded.', false); } catch(e) { show('✗ '+e.message, true); } });
-    document.getElementById('b64-dec').addEventListener('click', () => { try { o.value = decodeURIComponent(escape(atob(i.value))); show('✓ Decoded.', false); } catch(e) { show('✗ Invalid Base64.', true); } });
-    document.getElementById('b64-swap').addEventListener('click', () => { [i.value, o.value] = [o.value, i.value]; s.classList.add('hidden'); });
-    document.getElementById('b64-copy').addEventListener('click', () => { if (o.value) navigator.clipboard.writeText(o.value); });
+    const i = document.getElementById('b64-in'),
+      o = document.getElementById('b64-out'),
+      s = document.getElementById('b64-status');
+
+    function bytesToBase64(bytes) {
+      let binary = '';
+      const chunkSize = 0x8000;
+      for (let index = 0; index < bytes.length; index += chunkSize) {
+        const chunk = bytes.subarray(index, index + chunkSize);
+        binary += String.fromCharCode.apply(null, chunk);
+      }
+      return btoa(binary);
+    }
+
+    function base64ToBytes(value) {
+      const binary = atob(value.replace(/\s+/g, ''));
+      const bytes = new Uint8Array(binary.length);
+      for (let index = 0; index < binary.length; index++) {
+        bytes[index] = binary.charCodeAt(index);
+      }
+      return bytes;
+    }
+
+    function show(m, e) {
+      s.textContent = m;
+      s.className = `rounded-lg px-4 py-3 text-sm font-medium ${e ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`;
+      s.classList.remove('hidden');
+    }
+    document.getElementById('b64-enc').addEventListener('click', () => {
+      try {
+        o.value = bytesToBase64(new TextEncoder().encode(i.value));
+        show('Encoded successfully.', false);
+      } catch (e) {
+        show('Encoding failed: ' + e.message, true);
+      }
+    });
+    document.getElementById('b64-dec').addEventListener('click', () => {
+      try {
+        o.value = new TextDecoder('utf-8', { fatal: true }).decode(base64ToBytes(i.value));
+        show('Decoded successfully.', false);
+      } catch {
+        show('Invalid Base64 or invalid UTF-8 text.', true);
+      }
+    });
+    document.getElementById('b64-swap').addEventListener('click', () => {
+      [i.value, o.value] = [o.value, i.value];
+      s.classList.add('hidden');
+    });
+    document.getElementById('b64-copy').addEventListener('click', () => {
+      if (o.value) navigator.clipboard.writeText(o.value);
+    });
   </script>
 </ToolLayout>

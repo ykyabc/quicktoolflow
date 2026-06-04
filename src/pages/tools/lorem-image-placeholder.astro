@@ -7,27 +7,113 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Generate placeholder image URLs with custom dimensions for your designs, mockups, and prototypes."
   slug="lorem-image-placeholder"
   category="Generators"
+  features={[
+    'Generate placeholder image URLs with custom width and height',
+    'Choose a background color with color picker or HEX input',
+    'Live preview of the generated placeholder image',
+    'Outputs image URL, HTML tag, Markdown, and CSS background snippets',
+    'Useful for layouts, mockups, wireframes, and prototypes',
+    'Copy any generated snippet with one click',
+  ]}
+  useCases={[
+    'Reserve image space in a website layout before final assets are ready',
+    'Create mock product cards, blog thumbnails, hero images, or gallery blocks',
+    'Test responsive image dimensions in prototypes',
+    'Share placeholder image snippets with designers or developers',
+    'Build quick Markdown or HTML demos with predictable image sizes',
+  ]}
+  howToSteps={[
+    'Enter the placeholder width and height in pixels.',
+    'Choose a background color or type a HEX color value.',
+    'Click Generate to update the preview and snippets.',
+    'Copy the image URL, HTML tag, Markdown, or CSS background code.',
+    'Replace the placeholder with a real optimized image before publishing.',
+  ]}
+  examples={[
+    {
+      title: 'Create a blog thumbnail placeholder',
+      input: 'Width: 1200\nHeight: 630\nBackground: #cccccc',
+      output:
+        'https://placehold.co/1200x630/cccccc/white?text=1200x630\n<img src="..." alt="Placeholder 1200x630" width="1200" height="630" />',
+      note: 'A 1200x630 placeholder is useful when planning social preview or blog card image areas.',
+    },
+  ]}
+  tips={[
+    'Use real images before production when the image conveys important product, place, or article meaning.',
+    'Keep placeholder dimensions close to your final asset size to avoid layout shifts later.',
+    'External placeholder URLs depend on the placeholder provider being available, so avoid relying on them for final live content.',
+  ]}
+  faq={[
+    {
+      question: 'What is a placeholder image?',
+      answer:
+        'A placeholder image is a temporary image used to reserve layout space while a design, prototype, or page is still being built.',
+    },
+    {
+      question: 'Can I generate HTML and Markdown snippets?',
+      answer:
+        'Yes. The tool creates an image URL, HTML img tag, Markdown image syntax, and CSS background-image snippet.',
+    },
+    {
+      question: 'Should I use placeholder images on a live website?',
+      answer:
+        'Usually no. Placeholder images are best for drafts and prototypes. Live pages should use real, relevant, optimized images.',
+    },
+    {
+      question: 'Why does the preview use an external URL?',
+      answer:
+        'The generated placeholder uses placehold.co so you can copy a usable URL immediately. The rest of the tool still runs in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Width (px)</label>
-        <input id="lip-w" type="number" min="1" max="4000" value="800" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="lip-w"
+          type="number"
+          min="1"
+          max="4000"
+          value="800"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Height (px)</label>
-        <input id="lip-h" type="number" min="1" max="4000" value="400" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="lip-h"
+          type="number"
+          min="1"
+          max="4000"
+          value="400"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Background Color</label>
         <div class="flex gap-2">
-          <input id="lip-color" type="color" value="#cccccc" class="w-12 h-12 rounded-lg border border-gray-300 dark:border-slate-600 cursor-pointer" />
-          <input id="lip-color-text" type="text" value="#cccccc" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+          <input
+            id="lip-color"
+            type="color"
+            value="#cccccc"
+            class="w-12 h-12 rounded-lg border border-gray-300 dark:border-slate-600 cursor-pointer"
+          />
+          <input
+            id="lip-color-text"
+            type="text"
+            value="#cccccc"
+            class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          />
         </div>
       </div>
     </div>
 
-    <button id="lip-gen" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate</button>
+    <button
+      id="lip-gen"
+      class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+      >Generate</button
+    >
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview</label>
@@ -37,20 +123,29 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     </div>
 
     <div class="space-y-3">
-      {[
-        { id: 'lip-url-img', label: 'Image URL' },
-        { id: 'lip-url-html', label: 'HTML Tag' },
-        { id: 'lip-url-md', label: 'Markdown' },
-        { id: 'lip-url-css', label: 'CSS Background' },
-      ].map((item) => (
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="text-xs font-medium text-gray-500 uppercase">{item.label}</label>
-            <button class="lip-copy text-xs text-blue-600 hover:text-blue-700 font-medium" data-src={item.id}>Copy</button>
+      {
+        [
+          { id: 'lip-url-img', label: 'Image URL' },
+          { id: 'lip-url-html', label: 'HTML Tag' },
+          { id: 'lip-url-md', label: 'Markdown' },
+          { id: 'lip-url-css', label: 'CSS Background' },
+        ].map((item) => (
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-medium text-gray-500 uppercase">{item.label}</label>
+              <button class="lip-copy text-xs text-blue-600 hover:text-blue-700 font-medium" data-src={item.id}>
+                Copy
+              </button>
+            </div>
+            <input
+              id={item.id}
+              type="text"
+              class="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-xs outline-none"
+              readonly
+            />
           </div>
-          <input id={item.id} type="text" class="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-xs outline-none" readonly />
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </ToolLayout>
@@ -66,8 +161,12 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
     if (!wEl || !btn) return;
 
-    colorEl?.addEventListener('input', () => { if (colorTextEl) colorTextEl.value = colorEl.value; });
-    colorTextEl?.addEventListener('input', () => { if (colorEl) colorEl.value = colorTextEl.value; });
+    colorEl?.addEventListener('input', () => {
+      if (colorTextEl) colorTextEl.value = colorEl.value;
+    });
+    colorTextEl?.addEventListener('input', () => {
+      if (colorEl) colorEl.value = colorTextEl.value;
+    });
 
     function generate() {
       const w = parseInt(wEl.value) || 800;
@@ -83,16 +182,18 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       const urlCss = document.getElementById('lip-url-css') as HTMLInputElement;
 
       if (urlImg) urlImg.value = url;
-      if (urlHtml) urlHtml.value = '<img src="' + url + '" alt="Placeholder ' + w + 'x' + h + '" width="' + w + '" height="' + h + '" />';
+      if (urlHtml)
+        urlHtml.value =
+          '<img src="' + url + '" alt="Placeholder ' + w + 'x' + h + '" width="' + w + '" height="' + h + '" />';
       if (urlMd) urlMd.value = '![Placeholder ' + w + 'x' + h + '](' + url + ')';
       if (urlCss) urlCss.value = "background-image: url('" + url + "');";
     }
 
     btn.addEventListener('click', generate);
-    document.querySelectorAll('.lip-copy').forEach(b => {
+    document.querySelectorAll('.lip-copy').forEach((b) => {
       b.addEventListener('click', () => {
         const src = (b as HTMLElement).dataset.src;
-        const el = src ? document.getElementById(src) as HTMLInputElement : null;
+        const el = src ? (document.getElementById(src) as HTMLInputElement) : null;
         if (el?.value) navigator.clipboard.writeText(el.value);
       });
     });

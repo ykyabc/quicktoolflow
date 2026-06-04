@@ -5,8 +5,6 @@ import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
-import RelatedGuides from "~/components/ui/RelatedGuides.astro";
-import { getRelatedGuides } from "~/utils/related-guides";
 
 const metadata = {
   title: 'JSON to YAML Converter — Free Online Tool',
@@ -16,8 +14,6 @@ const metadata = {
 
 const related = ['json-formatter', 'json-to-csv'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
-
-const relatedGuides = getRelatedGuides('json-to-yaml');
 ---
 
 <Layout metadata={metadata}>
@@ -198,7 +194,7 @@ const relatedGuides = getRelatedGuides('json-to-yaml');
   <script is:inline>
     (function () {
       function loadScript(url, callback) {
-        var s = document.createElement('script');
+        const s = document.createElement('script');
         s.src = url;
         s.onload = callback;
         s.onerror = function () {
@@ -208,21 +204,21 @@ const relatedGuides = getRelatedGuides('json-to-yaml');
       }
 
       loadScript('https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js', function () {
-        var inputEl = document.getElementById('convert-input');
-        var outputEl = document.getElementById('convert-output');
-        var errorEl = document.getElementById('convert-error');
-        var convertBtn = document.getElementById('convert-btn');
-        var copyBtn = document.getElementById('output-copy');
-        var dlBtn = document.getElementById('output-download');
-        var sampleBtn = document.getElementById('sample-btn');
-        var toYamlBtn = document.getElementById('mode-to-yaml');
-        var toJsonBtn = document.getElementById('mode-to-json');
-        var inputLabel = document.getElementById('input-label');
-        var outputLabel = document.getElementById('output-label');
+        const inputEl = document.getElementById('convert-input');
+        const outputEl = document.getElementById('convert-output');
+        const errorEl = document.getElementById('convert-error');
+        const convertBtn = document.getElementById('convert-btn');
+        const copyBtn = document.getElementById('output-copy');
+        const dlBtn = document.getElementById('output-download');
+        const sampleBtn = document.getElementById('sample-btn');
+        const toYamlBtn = document.getElementById('mode-to-yaml');
+        const toJsonBtn = document.getElementById('mode-to-json');
+        const inputLabel = document.getElementById('input-label');
+        const outputLabel = document.getElementById('output-label');
 
-        var mode = 'toYaml';
+        let mode = 'toYaml';
 
-        var jsonSample = {
+        const jsonSample = {
           name: 'QuickToolFlow',
           version: '1.0',
           features: ['fast', 'free', 'private'],
@@ -278,14 +274,14 @@ const relatedGuides = getRelatedGuides('json-to-yaml');
 
         convertBtn.addEventListener('click', function () {
           errorEl.classList.add('hidden');
-          var input = inputEl.value.trim();
+          const input = inputEl.value.trim();
           if (!input) return;
           try {
             if (mode === 'toYaml') {
-              var data = JSON.parse(input);
+              const data = JSON.parse(input);
               outputEl.value = jsyaml.dump(data, { indent: 2, lineWidth: -1, noRefs: true });
             } else {
-              var data = jsyaml.load(input);
+              const data = jsyaml.load(input);
               outputEl.value = JSON.stringify(data, null, 2);
             }
           } catch (e) {
@@ -307,10 +303,10 @@ const relatedGuides = getRelatedGuides('json-to-yaml');
 
         dlBtn.addEventListener('click', function () {
           if (!outputEl.value) return;
-          var ext = mode === 'toYaml' ? 'yaml' : 'json';
-          var mime = mode === 'toYaml' ? 'text/yaml' : 'application/json';
-          var blob = new Blob([outputEl.value], { type: mime });
-          var link = document.createElement('a');
+          const ext = mode === 'toYaml' ? 'yaml' : 'json';
+          const mime = mode === 'toYaml' ? 'text/yaml' : 'application/json';
+          const blob = new Blob([outputEl.value], { type: mime });
+          const link = document.createElement('a');
           link.href = URL.createObjectURL(blob);
           link.download = 'data.' + ext;
           link.click();

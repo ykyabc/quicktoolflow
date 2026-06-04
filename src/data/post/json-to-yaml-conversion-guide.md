@@ -1,15 +1,15 @@
 ---
-title: "JSON to YAML: How to Convert Between Data Formats"
-excerpt: "Learn the differences between JSON and YAML, when to use each format, and how to convert between them."
+title: 'JSON to YAML: How to Convert Between Data Formats'
+excerpt: 'Learn the differences between JSON and YAML, when to use each format, and how to convert between them.'
 publishDate: 2026-05-29
-category: "Developer Tools"
+category: 'Developer Tools'
 tags:
   - json
   - yaml
   - configuration
   - devops
   - developer tools
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 ---
 
 JSON and YAML are two of the most widely used data serialization formats. JSON dominates APIs and data exchange, while YAML has become the standard for configuration files in modern DevOps tooling.
@@ -61,15 +61,15 @@ database:
 
 ## Key Differences
 
-| Feature | JSON | YAML |
-|---------|------|------|
-| **Syntax** | Curly braces, square brackets, quotes | Indentation-based, minimal punctuation |
-| **Comments** | Not supported | Supported with `#` |
-| **Data types** | Strings, numbers, booleans, null, arrays, objects | Same, plus dates, binary, and more |
-| **Multiline strings** | Escape with `\n` | Native support (`\|` and `>`) |
-| **File extension** | `.json` | `.yaml` or `.yml` |
-| **Parsing speed** | Faster (simpler grammar) | Slower (more complex grammar) |
-| **Primary use** | APIs, data exchange, web apps | Configuration files, DevOps tools |
+| Feature               | JSON                                              | YAML                                   |
+| --------------------- | ------------------------------------------------- | -------------------------------------- |
+| **Syntax**            | Curly braces, square brackets, quotes             | Indentation-based, minimal punctuation |
+| **Comments**          | Not supported                                     | Supported with `#`                     |
+| **Data types**        | Strings, numbers, booleans, null, arrays, objects | Same, plus dates, binary, and more     |
+| **Multiline strings** | Escape with `\n`                                  | Native support (`\|` and `>`)          |
+| **File extension**    | `.json`                                           | `.yaml` or `.yml`                      |
+| **Parsing speed**     | Faster (simpler grammar)                          | Slower (more complex grammar)          |
+| **Primary use**       | APIs, data exchange, web apps                     | Configuration files, DevOps tools      |
 
 ---
 
@@ -172,14 +172,16 @@ Tabs cause parsing errors. Stick to 2 spaces per indent level.
 
 **2. Colons inside values need quotes**
 If a value contains a colon, wrap it in quotes:
+
 ```yaml
-url: "https://example.com"
+url: 'https://example.com'
 ```
 
 **3. Strings that look like other types**
 Values like `true`, `false`, `null`, `yes`, `no`, and bare numbers are parsed as their native types — not strings. Quote them to keep them as strings:
+
 ```yaml
-enabled: "yes"   # string, not boolean true
+enabled: 'yes' # string, not boolean true
 ```
 
 **4. Trailing spaces**
@@ -220,17 +222,17 @@ In JSON, the same content requires `\n` escape sequences, making it much harder 
 
 ## Popular Tools That Use YAML
 
-| Tool | File |
-|------|------|
-| Docker Compose | `docker-compose.yml` |
-| Kubernetes | All resource manifests |
-| GitHub Actions | `.github/workflows/*.yml` |
-| GitLab CI | `.gitlab-ci.yml` |
-| Ansible | Playbooks and roles |
-| Travis CI | `.travis.yml` |
-| Hugo | `config.yaml` and frontmatter |
-| ESLint | `.eslintrc.yml` |
-| Prettier | `.prettierrc.yaml` |
+| Tool           | File                          |
+| -------------- | ----------------------------- |
+| Docker Compose | `docker-compose.yml`          |
+| Kubernetes     | All resource manifests        |
+| GitHub Actions | `.github/workflows/*.yml`     |
+| GitLab CI      | `.gitlab-ci.yml`              |
+| Ansible        | Playbooks and roles           |
+| Travis CI      | `.travis.yml`                 |
+| Hugo           | `config.yaml` and frontmatter |
+| ESLint         | `.eslintrc.yml`               |
+| Prettier       | `.prettierrc.yaml`            |
 
 ---
 

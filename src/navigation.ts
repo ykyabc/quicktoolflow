@@ -1,5 +1,3 @@
-import { getPermalink } from './utils/permalinks';
-
 export const headerData = {
   links: [
     { text: 'Home', href: '/' },
@@ -89,7 +87,14 @@ export const footerData = {
   secondaryLinks: [
     { text: 'Privacy Policy', href: '/privacy/' },
     { text: 'Terms of Service', href: '/terms/' },
+    { text: 'GitHub', href: 'https://github.com/ykyabc/quicktoolflow' },
   ],
-  socialLinks: [],
+  socialLinks: [
+    {
+      ariaLabel: 'QuickToolFlow on GitHub',
+      icon: 'tabler:brand-github',
+      href: 'https://github.com/ykyabc/quicktoolflow',
+    },
+  ],
   footNote: `<span class="text-sm text-gray-500 dark:text-gray-400">&copy; ${new Date().getFullYear()} QuickToolFlow. All rights reserved.</span>`,
 };

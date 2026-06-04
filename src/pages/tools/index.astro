@@ -3,11 +3,27 @@ import Layout from '~/layouts/PageLayout.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
-import { tools, categories, getToolsByCategory } from '~/utils/tools-data';
+import { tools, categories, getFeaturedTools, getToolsByCategory } from '~/utils/tools-data';
+
+const popularTools = getFeaturedTools();
+const canonical = 'https://quicktoolflow.com/tools/';
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'QuickToolFlow free online tools',
+  itemListElement: tools.map((tool, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: tool.name,
+    url: `https://quicktoolflow.com/tools/${tool.slug}/`,
+  })),
+};
 
 const metadata = {
   title: 'All Free Online Tools',
-  description: 'Browse all free online developer, text, generator, and converter tools at QuickToolFlow. No sign-up required.',
+  description:
+    'Browse all free online developer, text, generator, and converter tools at QuickToolFlow. No sign-up required.',
+  canonical,
 };
 ---
 
@@ -22,9 +38,50 @@ const metadata = {
       </p>
     </header>
 
+    <div class="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        popularTools.map((tool) => (
+          <a
+            href={`/tools/${tool.slug}/`}
+            class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+          >
+            <div
+              class:list={[
+                'mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white',
+                tool.gradient,
+              ]}
+            >
+              <astro-icon name={tool.icon} class="h-5 w-5" />
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{tool.name}</h2>
+            <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{tool.description}</p>
+          </a>
+        ))
+      }
+    </div>
+
+    <nav class="mb-10 flex flex-wrap gap-2" aria-label="Tool categories">
+      {
+        categories.map((cat) => (
+          <a
+            href={`/tools/${cat.slug === 'generator' ? 'generators' : cat.slug === 'converter' ? 'converters' : cat.slug}/`}
+            class="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-primary-300 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+          >
+            {cat.name}
+          </a>
+        ))
+      }
+    </nav>
+
     <div class="relative mb-10 max-w-xl">
       <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          ><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg
+        >
       </div>
       <input
         type="text"
@@ -35,26 +92,49 @@ const metadata = {
       <p id="search-count" class="mt-2 text-sm text-gray-500 dark:text-gray-400 hidden"></p>
     </div>
 
-    {categories.map((cat) => {
-      const catTools = getToolsByCategory(cat.slug);
-      if (catTools.length === 0) return null;
-      return (
-        <section id={cat.slug} class="mb-14 cat-section" data-category={cat.slug}>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 cat-title">{cat.name}</h2>
-          <p class="text-gray-500 dark:text-gray-400 mb-6 cat-desc">{cat.description}</p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 tool-grid">
-            {catTools.map((tool) => (
-              <div class="tool-card" data-name={tool.name.toLowerCase()} data-desc={tool.description.toLowerCase()} data-slug={tool.slug}>
-                <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
-              </div>
-            ))}
-          </div>
-        </section>
-      );
-    })}
+    {
+      categories.map((cat) => {
+        const catTools = getToolsByCategory(cat.slug);
+        if (catTools.length === 0) return null;
+        return (
+          <section id={cat.slug} class="mb-14 cat-section" data-category={cat.slug}>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 cat-title">{cat.name}</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-6 cat-desc">{cat.description}</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 tool-grid">
+              {catTools.map((tool) => (
+                <div
+                  class="tool-card"
+                  data-name={tool.name.toLowerCase()}
+                  data-desc={tool.description.toLowerCase()}
+                  data-slug={tool.slug}
+                >
+                  <ToolCard
+                    slug={tool.slug}
+                    name={tool.name}
+                    description={tool.description}
+                    icon={tool.icon}
+                    gradient={tool.gradient}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })
+    }
 
     <div id="no-results" class="hidden text-center py-16">
-      <svg class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <svg
+        class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        ><path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg
+      >
       <p class="text-xl font-semibold text-gray-700 dark:text-gray-300">No tools found</p>
       <p class="mt-2 text-gray-500 dark:text-gray-400">Try a different search term</p>
     </div>
@@ -64,45 +144,52 @@ const metadata = {
     </div>
   </section>
 
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} is:inline />
+
   <script>
-    (function() {
-      const input = document.getElementById('tool-search');
+    (function () {
+      const input = document.getElementById('tool-search') as HTMLInputElement | null;
       const countEl = document.getElementById('search-count');
-      const sections = document.querySelectorAll('.cat-section');
-      const cards = document.querySelectorAll('.tool-card');
+      const sections = document.querySelectorAll<HTMLElement>('.cat-section');
+      const cards = document.querySelectorAll<HTMLElement>('.tool-card');
       const noResults = document.getElementById('no-results');
 
-      let debounceTimer;
+      if (!input || !countEl || !noResults) return;
+
+      const searchInput = input;
+      const resultCount = countEl;
+      const emptyState = noResults;
+      let debounceTimer: ReturnType<typeof setTimeout>;
 
       function doSearch() {
-        const query = input.value.trim().toLowerCase();
+        const query = searchInput.value.trim().toLowerCase();
         let visible = 0;
 
-        cards.forEach(card => {
-          const name = card.dataset.name;
-          const desc = card.dataset.desc;
-          const slug = card.dataset.slug;
+        cards.forEach((card) => {
+          const name = card.dataset.name || '';
+          const desc = card.dataset.desc || '';
+          const slug = card.dataset.slug || '';
           const match = !query || name.includes(query) || desc.includes(query) || slug.includes(query);
           card.style.display = match ? '' : 'none';
           if (match) visible++;
         });
 
-        sections.forEach(sec => {
+        sections.forEach((sec) => {
           const visibleCards = sec.querySelectorAll('.tool-card:not([style*="display: none"])');
           sec.style.display = visibleCards.length === 0 ? 'none' : '';
         });
 
-        noResults.style.display = visible === 0 ? '' : 'none';
+        emptyState.style.display = visible === 0 ? '' : 'none';
 
         if (query.length > 0) {
-          countEl.textContent = visible + ' tool' + (visible !== 1 ? 's' : '') + ' found';
-          countEl.classList.remove('hidden');
+          resultCount.textContent = visible + ' tool' + (visible !== 1 ? 's' : '') + ' found';
+          resultCount.classList.remove('hidden');
         } else {
-          countEl.classList.add('hidden');
+          resultCount.classList.add('hidden');
         }
       }
 
-      input.addEventListener('input', function() {
+      searchInput.addEventListener('input', function () {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(doSearch, 150);
       });
@@ -111,7 +198,7 @@ const metadata = {
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
       if (q) {
-        input.value = q;
+        searchInput.value = q;
         doSearch();
       }
     })();

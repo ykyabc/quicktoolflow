@@ -7,34 +7,120 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Generate random numbers within a range. Supports integers, decimals, and bulk generation."
   slug="random-number-generator"
   category="Generators"
+  features={[
+    'Generate one number or up to 1000 random values at once',
+    'Set custom minimum and maximum range values',
+    'Choose integer or two-decimal output',
+    'Copy all generated numbers with one click',
+    'Works well for samples, tests, classroom examples, and quick decisions',
+    'Runs instantly in the browser with no sign-up',
+  ]}
+  useCases={[
+    'Create sample numbers for spreadsheets or mock data',
+    'Pick random values for games, classroom activities, or exercises',
+    'Generate quick test inputs for forms and scripts',
+    'Create a numbered random list within a defined range',
+    'Produce decimal values for lightweight demos and examples',
+  ]}
+  howToSteps={[
+    'Enter the minimum and maximum values for the range.',
+    'Choose how many numbers to generate.',
+    'Enable Decimal if you want values with two decimal places.',
+    'Click Generate to create the list.',
+    'Copy all values if you want to paste them elsewhere.',
+  ]}
+  examples={[
+    {
+      title: 'Generate sample test values',
+      input: 'Minimum: 1\nMaximum: 100\nCount: 5\nDecimal: off',
+      output: '17\n42\n68\n3\n91',
+      note: 'Your actual output will vary each time because the values are randomly generated.',
+    },
+  ]}
+  tips={[
+    'Integer mode uses whole numbers and does not include decimal places.',
+    'Decimal mode returns values with two decimal places, which is useful for simple mock data.',
+    'This tool uses browser randomness for convenience, not cryptographic randomness for security tokens or passwords.',
+  ]}
+  faq={[
+    {
+      question: 'Can I generate multiple random numbers?',
+      answer:
+        'Yes. Set the Count field to any value from 1 to 1000, then click Generate to create a list of random numbers.',
+    },
+    {
+      question: 'Are the minimum and maximum values included?',
+      answer:
+        'Yes. In integer mode, the generator can include both the minimum and maximum values. Decimal mode can generate values within the selected range.',
+    },
+    {
+      question: 'Can I use these numbers for passwords or tokens?',
+      answer:
+        'No. This tool is intended for simple random samples and mock data, not cryptographic secrets. Use the Password Generator for passwords.',
+    },
+    {
+      question: 'Does it work offline after loading?',
+      answer: 'Yes. The generation logic runs in your browser after the page is loaded.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Minimum</label>
-        <input id="rng-min" type="number" value="1" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="rng-min"
+          type="number"
+          value="1"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Maximum</label>
-        <input id="rng-max" type="number" value="100" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="rng-max"
+          type="number"
+          value="100"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
     </div>
 
     <div class="flex flex-wrap items-end gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Count</label>
-        <input id="rng-count" type="number" min="1" max="1000" value="1" class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="rng-count"
+          type="number"
+          min="1"
+          max="1000"
+          value="1"
+          class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
       <label class="flex items-center gap-2 cursor-pointer">
         <input id="rng-decimal" type="checkbox" class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Decimal</span>
       </label>
-      <button id="rng-gen" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate</button>
-      <button id="rng-copy" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy All</button>
+      <button
+        id="rng-gen"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Generate</button
+      >
+      <button
+        id="rng-copy"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy All</button
+      >
     </div>
 
     <div>
-      <textarea id="rng-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none" readonly placeholder="Random numbers will appear here..." spellcheck="false"></textarea>
+      <textarea
+        id="rng-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none"
+        readonly
+        placeholder="Random numbers will appear here..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>
@@ -60,13 +146,15 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
       for (let i = 0; i < count; i++) {
         const r = Math.random() * (max - min) + min;
-        nums.push(isDecimal ? r.toFixed(2) : Math.floor(r).toString());
+        nums.push(isDecimal ? r.toFixed(2) : Math.floor(Math.random() * (max - min + 1) + min).toString());
       }
       output.value = nums.join('\n');
     }
 
     btnGen.addEventListener('click', generate);
-    btnCopy?.addEventListener('click', () => { if (output.value) navigator.clipboard.writeText(output.value); });
+    btnCopy?.addEventListener('click', () => {
+      if (output.value) navigator.clipboard.writeText(output.value);
+    });
     generate();
   }
 

@@ -1,4 +1,6 @@
 ---
+import { ANALYTICS } from 'astrowind:config';
+
 export interface Props {
   slot: string;
   format?: 'auto' | 'horizontal' | 'vertical' | 'rectangle';
@@ -6,22 +8,35 @@ export interface Props {
 }
 
 const { slot, format = 'auto', className = '' } = Astro.props;
-const adClientId = 'ca-pub-XXXXXXXXXXXXXXXX';
+const adClientId = ANALYTICS?.vendors?.googleAdsense?.clientId ? String(ANALYTICS.vendors.googleAdsense.clientId) : '';
+const isConfigured = /^ca-pub-\d+$/.test(adClientId) && /^\d+$/.test(slot);
 ---
 
-<div class:list={['ad-container my-8 text-center', className]}>
-  <ins
-    class="adsbygoogle"
-    style="display:block"
-    data-ad-client={adClientId}
-    data-ad-slot={slot}
-    data-ad-format={format}
-    data-full-width-responsive="true"
-  ></ins>
-</div>
+{
+  isConfigured && (
+    <div class:list={['ad-container my-8 text-center', className]} aria-label="Advertisement">
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={adClientId}
+        data-ad-slot={slot}
+        data-ad-format={format}
+        data-full-width-responsive="true"
+      />
+    </div>
+  )
+}
 
-<script is:inline>
-  try {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  } catch (e) {}
-</script>
+{
+  isConfigured && (
+    <script
+      is:inline
+      set:html={`try {
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+      } catch {
+        // Ad blockers may prevent AdSense from loading.
+      }`}
+    />
+  )
+}

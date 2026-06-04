@@ -5,8 +5,6 @@ import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
-import RelatedGuides from "~/components/ui/RelatedGuides.astro";
-import { getRelatedGuides } from "~/utils/related-guides";
 
 const metadata = {
   title: 'JSON to CSV Converter — Free Online Tool',
@@ -14,10 +12,8 @@ const metadata = {
     'Convert JSON data to CSV format instantly. Paste your JSON array and download a CSV file. Free, fast, and runs entirely in your browser.',
 };
 
-const related = ['json-formatter', 'string-escape'];
+const related = ['json-formatter', 'json-to-yaml', 'string-escape', 'markdown-preview'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
-
-const relatedGuides = getRelatedGuides('json-to-csv');
 ---
 
 <Layout metadata={metadata}>
@@ -92,6 +88,58 @@ const relatedGuides = getRelatedGuides('json-to-csv');
     </div>
 
     <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Example Conversion</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-3">JSON input</h3>
+          <pre
+            class="overflow-x-auto rounded-lg bg-gray-50 dark:bg-gray-900 p-4 text-xs leading-5 text-gray-800 dark:text-gray-200"><code>{`[{
+  "name": "Alice",
+  "profile": { "city": "New York" },
+  "skills": ["JSON", "CSV"]
+}]`}</code></pre>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-3">CSV output</h3>
+          <pre
+            class="overflow-x-auto rounded-lg bg-gray-50 dark:bg-gray-900 p-4 text-xs leading-5 text-gray-800 dark:text-gray-200"><code>{`name,profile.city,skills
+Alice,New York,JSON; CSV`}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Conversion Rules</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Objects become rows</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            The input should be a JSON array. Each object in the array becomes one CSV row, and object keys become
+            column headers.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Nested keys use dot notation</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Nested objects are flattened into headers such as <code>user.name</code> or <code>profile.city</code>.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Arrays are joined</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Array values are joined with semicolons so the result remains a simple CSV cell.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">CSV values are escaped</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Values containing commas, quotes, or line breaks are wrapped and escaped using standard CSV quoting rules.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
@@ -128,6 +176,20 @@ const relatedGuides = getRelatedGuides('json-to-csv');
           <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Is my data sent to a server?</h3>
           <p class="text-sm text-gray-600 dark:text-gray-400">
             No. The conversion happens entirely in your browser. Your data is never uploaded anywhere.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Can I open the CSV in Excel?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Yes. Download the result as a <code>.csv</code> file, then open it in Excel, Google Sheets, Numbers, or any spreadsheet
+            application.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">What happens if objects have different keys?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            The converter builds a combined header list from every row. Missing values are left blank in rows where a
+            key does not exist.
           </p>
         </div>
       </div>
@@ -182,15 +244,15 @@ const relatedGuides = getRelatedGuides('json-to-csv');
 
   <script is:inline>
     (function () {
-      var jsonInput = document.getElementById('json-input');
-      var csvOutput = document.getElementById('csv-output');
-      var jsonError = document.getElementById('json-error');
-      var convertBtn = document.getElementById('convert-btn');
-      var copyBtn = document.getElementById('csv-copy');
-      var dlBtn = document.getElementById('csv-download');
-      var sampleBtn = document.getElementById('json-sample');
+      const jsonInput = document.getElementById('json-input');
+      const csvOutput = document.getElementById('csv-output');
+      const jsonError = document.getElementById('json-error');
+      const convertBtn = document.getElementById('convert-btn');
+      const copyBtn = document.getElementById('csv-copy');
+      const dlBtn = document.getElementById('csv-download');
+      const sampleBtn = document.getElementById('json-sample');
 
-      var sample = [
+      const sample = [
         { name: 'Alice', age: 30, city: 'New York' },
         { name: 'Bob', age: 25, city: 'London' },
         { name: 'Charlie', age: 35, city: 'Tokyo' },
@@ -203,14 +265,14 @@ const relatedGuides = getRelatedGuides('json-to-csv');
 
       function flatten(obj, prefix) {
         prefix = prefix || '';
-        var result = {};
-        for (var key in obj) {
-          if (!obj.hasOwnProperty(key)) continue;
-          var newKey = prefix ? prefix + '.' + key : key;
-          var val = obj[key];
+        const result = {};
+        for (const key in obj) {
+          if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+          const newKey = prefix ? prefix + '.' + key : key;
+          const val = obj[key];
           if (val && typeof val === 'object' && !Array.isArray(val) && !(val instanceof Date)) {
-            var nested = flatten(val, newKey);
-            for (var k in nested) result[k] = nested[k];
+            const nested = flatten(val, newKey);
+            for (const k in nested) result[k] = nested[k];
           } else if (Array.isArray(val)) {
             result[newKey] = val.join('; ');
           } else {
@@ -231,26 +293,26 @@ const relatedGuides = getRelatedGuides('json-to-csv');
       convertBtn.addEventListener('click', function () {
         jsonError.classList.add('hidden');
         try {
-          var data = JSON.parse(jsonInput.value.trim());
+          const data = JSON.parse(jsonInput.value.trim());
           if (!Array.isArray(data)) throw new Error('Input must be a JSON array of objects.');
           if (data.length === 0) {
             csvOutput.value = '';
             return;
           }
-          var flat = data.map(function (row) {
+          const flat = data.map(function (row) {
             return flatten(row);
           });
-          var headers = [];
-          var headerSet = {};
+          const headers = [];
+          const headerSet = {};
           flat.forEach(function (row) {
-            for (var k in row) {
+            for (const k in row) {
               if (!headerSet[k]) {
                 headerSet[k] = true;
                 headers.push(k);
               }
             }
           });
-          var lines = [headers.map(escapeCSV).join(',')];
+          const lines = [headers.map(escapeCSV).join(',')];
           flat.forEach(function (row) {
             lines.push(
               headers
@@ -280,8 +342,8 @@ const relatedGuides = getRelatedGuides('json-to-csv');
 
       dlBtn.addEventListener('click', function () {
         if (!csvOutput.value) return;
-        var blob = new Blob([csvOutput.value], { type: 'text/csv;charset=utf-8;' });
-        var link = document.createElement('a');
+        const blob = new Blob([csvOutput.value], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = 'data.csv';
         link.click();

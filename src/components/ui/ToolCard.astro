@@ -8,7 +8,7 @@ export interface Props {
   index?: number;
 }
 
-const { slug, name, description, icon, gradient, index = 0 } = Astro.props;
+const { slug, name, description, icon, gradient } = Astro.props;
 ---
 
 <a
@@ -24,10 +24,12 @@ const { slug, name, description, icon, gradient, index = 0 } = Astro.props;
         gradient,
       ]}
     >
-      <astro-icon name={icon} class="w-6 h-6" />
+      <astro-icon name={icon} class="w-6 h-6"></astro-icon>
     </div>
     <div class="min-w-0">
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+      <h3
+        class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+      >
         {name}
       </h3>
       <p class="mt-1.5 text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
@@ -35,8 +37,10 @@ const { slug, name, description, icon, gradient, index = 0 } = Astro.props;
       </p>
     </div>
   </div>
-  <div class="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+  <div
+    class="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+  >
     Open Tool
-    <astro-icon name="tabler:arrow-right" class="w-4 h-4" />
+    <astro-icon name="tabler:arrow-right" class="w-4 h-4"></astro-icon>
   </div>
 </a>

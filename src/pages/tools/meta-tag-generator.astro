@@ -7,22 +7,94 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Generate SEO-friendly HTML meta tags, Open Graph tags, and Twitter Card tags for your website."
   slug="meta-tag-generator"
   category="SEO Tools"
+  features={[
+    'Generates basic HTML meta tags for title, description, author, and robots',
+    'Creates Open Graph tags for social sharing previews',
+    'Creates Twitter Card tags with optional site handle and image',
+    'Live description character count for quick copy tuning',
+    'Escapes generated values before outputting HTML snippets',
+    'One-click copy for the generated meta tag block',
+  ]}
+  useCases={[
+    'Create a starter meta tag block for a new landing page',
+    'Prepare Open Graph tags before sharing a page on social platforms',
+    'Draft title and description markup for static sites',
+    'Generate consistent snippets for documentation or client handoff',
+    'Check whether a page description is close to common SEO length guidance',
+  ]}
+  howToSteps={[
+    'Enter your page title, URL, and description.',
+    'Optionally add keywords, author, Open Graph image URL, and Twitter handle.',
+    'Click Generate Meta Tags.',
+    'Review the generated HTML and adjust the inputs if needed.',
+    'Copy the output into your page head or framework metadata configuration.',
+  ]}
+  examples={[
+    {
+      title: 'Generate social preview tags',
+      input:
+        'Title: Free JSON Formatter\nURL: https://example.com/tools/json-formatter/\nDescription: Format and validate JSON online.',
+      output:
+        '<meta name="description" content="Format and validate JSON online." />\n<meta property="og:title" content="Free JSON Formatter" />',
+      note: 'The full output also includes robots, viewport, Open Graph, and Twitter Card lines where matching inputs are provided.',
+    },
+  ]}
+  tips={[
+    'Meta descriptions are not guaranteed to appear in search results, but clear descriptions can improve how pages are understood.',
+    'Open Graph images should be absolute URLs and should be large enough for social previews.',
+    'Modern search engines largely ignore the keywords meta tag, so focus more on useful page content and titles.',
+  ]}
+  faq={[
+    {
+      question: 'What meta tags does this generator create?',
+      answer:
+        'It creates common HTML meta tags, Open Graph tags, and Twitter Card tags for page titles, descriptions, URLs, images, authors, and social previews.',
+    },
+    {
+      question: 'Do meta tags guarantee higher rankings?',
+      answer:
+        'No. Meta tags help search engines and social platforms understand a page, but rankings depend on content quality, relevance, links, performance, and many other signals.',
+    },
+    {
+      question: 'Should I still use meta keywords?',
+      answer:
+        'The keywords meta tag is included for compatibility, but major search engines generally do not use it as a ranking signal. It is optional.',
+    },
+    {
+      question: 'Where should I put the generated tags?',
+      answer:
+        'Place them inside the head section of your HTML page, or map the values into your framework SEO metadata configuration.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Page Title</label>
-        <input id="mt-title" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="My Awesome Website" />
+        <input
+          id="mt-title"
+          type="text"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="My Awesome Website"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Site URL</label>
-        <input id="mt-url" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="https://example.com" />
+        <input
+          id="mt-url"
+          type="text"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="https://example.com"
+        />
       </div>
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
-      <textarea id="mt-desc" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm min-h-[80px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="A brief description of your page (150-160 characters recommended)"></textarea>
+      <textarea
+        id="mt-desc"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm min-h-[80px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="A brief description of your page (150-160 characters recommended)"></textarea>
       <div class="flex justify-between mt-1">
         <span class="text-xs text-gray-500">Recommended: 150-160 characters</span>
         <span id="mt-desc-count" class="text-xs text-gray-500">0 / 160</span>
@@ -32,33 +104,62 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Keywords</label>
-        <input id="mt-keywords" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="tool, developer, free" />
+        <input
+          id="mt-keywords"
+          type="text"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="tool, developer, free"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Author</label>
-        <input id="mt-author" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Your Name" />
+        <input
+          id="mt-author"
+          type="text"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="Your Name"
+        />
       </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">OG Image URL</label>
-        <input id="mt-image" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="https://example.com/og-image.png" />
+        <input
+          id="mt-image"
+          type="text"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="https://example.com/og-image.png"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Twitter Handle</label>
-        <input id="mt-twitter" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="@yourhandle" />
+        <input
+          id="mt-twitter"
+          type="text"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          placeholder="@yourhandle"
+        />
       </div>
     </div>
 
-    <button id="mt-gen" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate Meta Tags</button>
+    <button
+      id="mt-gen"
+      class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+      >Generate Meta Tags</button
+    >
 
     <div>
       <div class="flex items-center justify-between mb-2">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Generated HTML</label>
         <button id="mt-copy" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Copy</button>
       </div>
-      <textarea id="mt-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-xs min-h-[250px] resize-y outline-none" readonly placeholder="Click Generate..." spellcheck="false"></textarea>
+      <textarea
+        id="mt-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-xs min-h-[250px] resize-y outline-none"
+        readonly
+        placeholder="Click Generate..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>
@@ -83,7 +184,9 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       if (countEl) countEl.textContent = descEl.value.length + ' / 160';
     });
 
-    function esc(s: string) { return s.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function esc(s: string) {
+      return s.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
     btnGen.addEventListener('click', () => {
       const title = esc(titleEl.value);

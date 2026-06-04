@@ -1,15 +1,15 @@
 ﻿---
-title: "Markdown Cheat Sheet: Complete Syntax Guide with Live Preview"
-excerpt: "Master Markdown syntax with this comprehensive cheat sheet. Learn headings, lists, tables, code blocks, and more with a free live preview tool."
+title: 'Markdown Cheat Sheet: Complete Syntax Guide with Live Preview'
+excerpt: 'Master Markdown syntax with this comprehensive cheat sheet. Learn headings, lists, tables, code blocks, and more with a free live preview tool.'
 publishDate: 2026-05-26
-category: "Developer Tools"
+category: 'Developer Tools'
 tags:
   - markdown
   - writing
   - documentation
   - developer tools
   - cheatsheet
-author: "QuickToolFlow"
+author: 'QuickToolFlow'
 ---
 
 Markdown is the standard writing format for developers, technical writers, and content creators. GitHub, Stack Overflow, Reddit, and countless documentation platforms all use Markdown.
@@ -23,8 +23,8 @@ Use hash symbols for headings. More symbols mean smaller headings.
 ## Text Formatting
 
 Use double asterisks for **bold text**.
-Use single asterisks for *italic text*.
-Use triple asterisks for ***bold and italic***.
+Use single asterisks for _italic text_.
+Use triple asterisks for **_bold and italic_**.
 Use double tildes for ~~strikethrough~~.
 Use backticks for inline code.
 
@@ -70,15 +70,15 @@ Use a backslash before a character to display it literally instead of interpreti
 
 ## Where Markdown Is Used
 
-| Platform | Supports |
-|---|---|
-| GitHub | Full GFM with tables, task lists, syntax highlighting |
-| Stack Overflow | GFM subset |
-| Reddit | Basic Markdown |
-| Discord | Basic plus code blocks |
-| VS Code | Full Markdown with preview |
-| Notion | Markdown shortcuts |
-| Documentation sites | Full Markdown (Docusaurus, MkDocs, Astro) |
+| Platform            | Supports                                              |
+| ------------------- | ----------------------------------------------------- |
+| GitHub              | Full GFM with tables, task lists, syntax highlighting |
+| Stack Overflow      | GFM subset                                            |
+| Reddit              | Basic Markdown                                        |
+| Discord             | Basic plus code blocks                                |
+| VS Code             | Full Markdown with preview                            |
+| Notion              | Markdown shortcuts                                    |
+| Documentation sites | Full Markdown (Docusaurus, MkDocs, Astro)             |
 
 ## Preview Markdown in Real Time
 

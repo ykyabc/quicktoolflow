@@ -7,27 +7,105 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Encode or decode URL strings using standard percent-encoding. Free online URL tool."
   slug="url-encoder"
   category="Developer Tools"
+  features={[
+    'Encodes text with standard URL percent-encoding',
+    'Decodes percent-encoded URL strings back to readable text',
+    'Shows clear errors for invalid encoded input',
+    'Supports swap and copy actions for fast workflows',
+    'Useful for query strings, redirect URLs, API parameters, and debugging',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Encoding query parameter values that contain spaces or special characters',
+    'Decoding copied URLs from logs, analytics, or browser redirects',
+    'Preparing redirect URLs for OAuth, tracking, or testing flows',
+    'Checking whether an API parameter has been encoded correctly',
+  ]}
+  howToSteps={[
+    'Paste a URL or text value into the input field.',
+    'Click Encode to percent-encode special characters.',
+    'Click Decode to turn encoded text back into readable text.',
+    'Use Swap or Copy Output to continue working with the result.',
+  ]}
+  examples={[
+    {
+      title: 'Encode a query value',
+      input: 'hello world & tools',
+      output: 'hello%20world%20%26%20tools',
+      note: 'Spaces, ampersands, and other special characters must be encoded when used inside query values.',
+    },
+  ]}
+  tips={[
+    'encodeURIComponent is best for individual query parameter values.',
+    'A full URL should not always be encoded as one string unless it is being nested inside another URL.',
+    'If decoding fails, the input may contain an incomplete percent escape such as % without two hex digits.',
+  ]}
+  faq={[
+    {
+      question: 'What is URL encoding?',
+      answer:
+        'URL encoding replaces unsafe or reserved characters with percent-encoded sequences so they can safely appear in URLs.',
+    },
+    {
+      question: 'Should I encode an entire URL?',
+      answer:
+        'Usually you encode individual parts such as query parameter values. Encode a full URL only when it is being passed as a value inside another URL.',
+    },
+    {
+      question: 'Why does a space become %20?',
+      answer: 'A raw space is not safe in URLs, so percent-encoding represents it as %20.',
+    },
+    {
+      question: 'Is my URL sent anywhere?',
+      answer: 'No. Encoding and decoding run locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="flex gap-2 flex-wrap">
-      <button id="ue-enc" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Encode</button>
-      <button id="ue-dec" class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Decode</button>
-      <button id="ue-swap" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto" title="Swap">
-        <astro-icon name="tabler:arrows-exchange" class="w-4 h-4" />
+      <button
+        id="ue-enc"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Encode</button
+      >
+      <button
+        id="ue-dec"
+        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Decode</button
+      >
+      <button
+        id="ue-swap"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
+        title="Swap"
+      >
+        <astro-icon name="tabler:arrows-exchange" class="w-4 h-4"></astro-icon>
       </button>
-      <button id="ue-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy Output</button>
+      <button
+        id="ue-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy Output</button
+      >
     </div>
 
     <div id="ue-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input</label>
-      <textarea id="ue-in" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="https://example.com/path?name=hello world" spellcheck="false"></textarea>
+      <textarea
+        id="ue-in"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="https://example.com/path?name=hello world"
+        spellcheck="false"></textarea>
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>
-      <textarea id="ue-out" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none" readonly placeholder="Result will appear here..." spellcheck="false"></textarea>
+      <textarea
+        id="ue-out"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[150px] resize-y outline-none"
+        readonly
+        placeholder="Result will appear here..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>
@@ -46,7 +124,9 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
     function showStatus(msg: string, isError: boolean) {
       status.textContent = msg;
-      status.className = 'rounded-lg px-4 py-3 text-sm font-medium ' + (isError ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' +
+        (isError ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
       status.classList.remove('hidden');
     }
 
@@ -71,7 +151,7 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       try {
         output.value = decodeURIComponent(input.value);
         showStatus('Decoded successfully.', false);
-      } catch (e) {
+      } catch {
         showStatus('Decoding failed: invalid encoded string.', true);
       }
     });

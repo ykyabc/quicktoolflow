@@ -7,16 +7,77 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Convert between CSS units: px, em, rem, vw, vh, and percentage. With adjustable base font size."
   slug="css-unit-converter"
   category="Converters"
+  features={[
+    'Converts px, rem, em, vw, vh, and percentage values',
+    'Supports adjustable base font size',
+    'Shows all converted values at once',
+    'Updates live when values or units change',
+    'Useful for responsive design and typography work',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Converting pixel values into rem for accessible typography',
+    'Checking viewport units for responsive layouts',
+    'Translating design specs into CSS values',
+    'Comparing px, em, and rem before choosing a layout unit',
+  ]}
+  howToSteps={[
+    'Enter the value you want to convert.',
+    'Choose the source CSS unit.',
+    'Set the base font size used for rem, em, and percentage calculations.',
+    'Review the converted px, rem, em, vw, vh, and percentage values.',
+  ]}
+  examples={[
+    {
+      title: 'Convert pixels to rem',
+      input: '16px with a 16px base font size',
+      output: '1rem\n1em\n100%',
+      note: 'A 16px browser base is common, but your project may use a different root font size.',
+    },
+  ]}
+  tips={[
+    'rem is based on the root font size, while em is based on the current element context.',
+    'Viewport units depend on screen size. This converter uses common 1920x1080 reference dimensions for vw and vh.',
+    'For production CSS, test responsive values in the actual layout, not only in a converter.',
+  ]}
+  faq={[
+    {
+      question: 'What is the difference between rem and em?',
+      answer: 'rem is relative to the root font size. em is relative to the current element or inherited font size.',
+    },
+    {
+      question: 'Why does base font size matter?',
+      answer:
+        'rem, em, and percentage conversions depend on a reference size. Changing the base changes the converted result.',
+    },
+    {
+      question: 'Are vw and vh exact for every screen?',
+      answer:
+        'vw and vh are viewport-based units. This tool uses reference viewport dimensions, so always test final values in your real layout.',
+    },
+    {
+      question: 'Is this conversion done on a server?',
+      answer: 'No. CSS unit conversion runs locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Value</label>
-        <input id="css-val" type="number" value="16" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="css-val"
+          type="number"
+          value="16"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">From</label>
-        <select id="css-from" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+        <select
+          id="css-from"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        >
           <option value="px" selected>px</option>
           <option value="rem">rem</option>
           <option value="em">em</option>
@@ -28,21 +89,34 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Base Font Size</label>
         <div class="flex items-center gap-2">
-          <input id="css-base" type="number" value="16" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+          <input
+            id="css-base"
+            type="number"
+            value="16"
+            class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+          />
           <span class="text-sm text-gray-500">px</span>
         </div>
       </div>
     </div>
 
-    <button id="css-convert" class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Convert</button>
+    <button
+      id="css-convert"
+      class="w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+      >Convert</button
+    >
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-      {['px','rem','em','vw','vh','percent'].map((unit) => (
-        <div class="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg text-center">
-          <span class="text-xs text-gray-500 uppercase tracking-wider">{unit === 'percent' ? '%' : unit}</span>
-          <div id={'css-' + unit} class="text-lg font-mono font-bold text-gray-900 dark:text-white mt-1">—</div>
-        </div>
-      ))}
+      {
+        ['px', 'rem', 'em', 'vw', 'vh', 'percent'].map((unit) => (
+          <div class="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg text-center">
+            <span class="text-xs text-gray-500 uppercase tracking-wider">{unit === 'percent' ? '%' : unit}</span>
+            <div id={'css-' + unit} class="text-lg font-mono font-bold text-gray-900 dark:text-white mt-1">
+              —
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </ToolLayout>
@@ -65,22 +139,35 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
       let px: number;
       switch (from) {
-        case 'px': px = val; break;
-        case 'rem': px = val * base; break;
-        case 'em': px = val * base; break;
-        case 'vw': px = (val / 100) * viewportWidth; break;
-        case 'vh': px = (val / 100) * viewportHeight; break;
-        case 'percent': px = (val / 100) * base; break;
-        default: px = val;
+        case 'px':
+          px = val;
+          break;
+        case 'rem':
+          px = val * base;
+          break;
+        case 'em':
+          px = val * base;
+          break;
+        case 'vw':
+          px = (val / 100) * viewportWidth;
+          break;
+        case 'vh':
+          px = (val / 100) * viewportHeight;
+          break;
+        case 'percent':
+          px = (val / 100) * base;
+          break;
+        default:
+          px = val;
       }
 
       const results: Record<string, string> = {
-        'px': px.toFixed(2),
-        'rem': (px / base).toFixed(4),
-        'em': (px / base).toFixed(4),
-        'vw': ((px / viewportWidth) * 100).toFixed(4),
-        'vh': ((px / viewportHeight) * 100).toFixed(4),
-        'percent': ((px / base) * 100).toFixed(4),
+        px: px.toFixed(2),
+        rem: (px / base).toFixed(4),
+        em: (px / base).toFixed(4),
+        vw: ((px / viewportWidth) * 100).toFixed(4),
+        vh: ((px / viewportHeight) * 100).toFixed(4),
+        percent: ((px / base) * 100).toFixed(4),
       };
 
       Object.entries(results).forEach(([key, value]) => {

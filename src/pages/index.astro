@@ -8,9 +8,40 @@ import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { getFeaturedTools, categories, getToolsByCategory } from '~/utils/tools-data';
 
+const workflows = [
+  {
+    title: 'Clean and convert API data',
+    description: 'Format JSON, convert arrays to CSV, or move configuration between JSON and YAML.',
+    links: [
+      { text: 'JSON Formatter', href: '/tools/json-formatter/' },
+      { text: 'JSON to CSV', href: '/tools/json-to-csv/' },
+      { text: 'JSON to YAML', href: '/tools/json-to-yaml/' },
+    ],
+  },
+  {
+    title: 'Inspect tokens and encoded text',
+    description: 'Decode JWT claims, inspect Base64 text, and generate hashes for quick checks.',
+    links: [
+      { text: 'JWT Decoder', href: '/tools/jwt-decoder/' },
+      { text: 'Base64 Encoder', href: '/tools/base64/' },
+      { text: 'Hash Generator', href: '/tools/hash-generator/' },
+    ],
+  },
+  {
+    title: 'Create secure shareable assets',
+    description: 'Generate strong passwords, QR codes, UUIDs, and clean URL slugs in seconds.',
+    links: [
+      { text: 'Password Generator', href: '/tools/password-generator/' },
+      { text: 'QR Code Generator', href: '/tools/qr-code-generator/' },
+      { text: 'UUID Generator', href: '/tools/uuid-generator/' },
+    ],
+  },
+];
+
 const metadata = {
   title: 'QuickToolFlow — Free Online Developer & Productivity Tools',
-  description: 'Fast, free, privacy-first online tools for developers. JSON formatter, password generator, word counter, Base64 encoder, and more. No sign-up.',
+  description:
+    'Fast, free, privacy-first online tools for developers. JSON formatter, password generator, word counter, Base64 encoder, and more. No sign-up.',
 };
 ---
 
@@ -25,7 +56,9 @@ const metadata = {
       Every tool you need, <span class="text-accent dark:text-white highlight"> one click away.</span>
     </Fragment>
     <Fragment slot="subtitle">
-      <span class="hidden sm:inline">Developer utilities, text processors, and productivity tools that run entirely in your browser.</span>
+      <span class="hidden sm:inline"
+        >Developer utilities, text processors, and productivity tools that run entirely in your browser.</span
+      >
       No data leaves your device. No accounts. No limits.
     </Fragment>
   </Hero>
@@ -33,12 +66,53 @@ const metadata = {
   <section class="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
     <div class="text-center mb-12">
       <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Featured Tools</h2>
-      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Hand-picked essentials for developers, writers, and designers. All free, all instant.</p>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Hand-picked essentials for developers, writers, and designers. All free, all instant.
+      </p>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {getFeaturedTools().map((tool) => (
-        <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} gradient={tool.gradient} />
-      ))}
+      {
+        getFeaturedTools().map((tool) => (
+          <ToolCard
+            slug={tool.slug}
+            name={tool.name}
+            description={tool.description}
+            icon={tool.icon}
+            gradient={tool.gradient}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Start with a common workflow</h2>
+      <p class="mt-3 max-w-2xl text-gray-600 dark:text-gray-400">
+        QuickToolFlow is organized around practical tasks, not just isolated utilities. Pick a workflow and jump into
+        the tools that usually belong together.
+      </p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      {
+        workflows.map((workflow) => (
+          <article class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{workflow.title}</h3>
+            <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">{workflow.description}</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              {workflow.links.map((link) => (
+                <a
+                  href={link.href}
+                  class="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:bg-primary-50 hover:text-primary-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  {link.text}
+                </a>
+              ))}
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
 
@@ -53,7 +127,16 @@ const metadata = {
     items={categories.map((cat) => ({
       title: cat.name,
       description: cat.description + ' ' + getToolsByCategory(cat.slug).length + ' tools available.',
-      icon: cat.slug === 'text' ? 'tabler:letter-case' : cat.slug === 'developer' ? 'tabler:code' : cat.slug === 'generator' ? 'tabler:sparkles' : cat.slug === 'converter' ? 'tabler:arrows-exchange' : 'tabler:tags',
+      icon:
+        cat.slug === 'text'
+          ? 'tabler:letter-case'
+          : cat.slug === 'developer'
+            ? 'tabler:code'
+            : cat.slug === 'generator'
+              ? 'tabler:sparkles'
+              : cat.slug === 'converter'
+                ? 'tabler:arrows-exchange'
+                : 'tabler:tags',
       callToAction: { text: 'View Tools', href: '/tools/#' + cat.slug },
     }))}
   />
@@ -63,13 +146,57 @@ const metadata = {
     subtitle="We build tools differently. Here's what sets us apart."
     isReversed
     items={[
-      { title: 'Lightning Fast', description: 'All tools run 100% client-side. Zero server round-trips means instant results every time.', icon: 'tabler:bolt' },
-      { title: 'Privacy First', description: 'Your data never leaves your browser. No tracking, no server storage, no third-party data sharing.', icon: 'tabler:shield-lock' },
-      { title: 'Zero Sign-Up', description: 'Jump straight in. No accounts, no email walls, no freemium upsells. Tools should be free.', icon: 'tabler:user-off' },
-      { title: 'Fully Responsive', description: 'Every tool works flawlessly on desktop, tablet, and mobile. Use them anywhere.', icon: 'tabler:device-mobile' },
+      {
+        title: 'Lightning Fast',
+        description: 'All tools run 100% client-side. Zero server round-trips means instant results every time.',
+        icon: 'tabler:bolt',
+      },
+      {
+        title: 'Privacy First',
+        description:
+          'Your data never leaves your browser. No tracking, no server storage, no third-party data sharing.',
+        icon: 'tabler:shield-lock',
+      },
+      {
+        title: 'Zero Sign-Up',
+        description: 'Jump straight in. No accounts, no email walls, no freemium upsells. Tools should be free.',
+        icon: 'tabler:user-off',
+      },
+      {
+        title: 'Fully Responsive',
+        description: 'Every tool works flawlessly on desktop, tablet, and mobile. Use them anywhere.',
+        icon: 'tabler:device-mobile',
+      },
     ]}
     image={{ src: '~/assets/images/hero-image.png', alt: 'QuickToolFlow' }}
   />
+
+  <section class="px-4 py-14 mx-auto max-w-6xl sm:px-6 lg:px-8">
+    <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8">
+      <div class="grid gap-8 md:grid-cols-3">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Privacy at a glance</h2>
+          <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            Most tools process your input directly in the browser. QuickToolFlow is designed for quick utility tasks,
+            not account collection.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900 dark:text-white">No sign-up wall</h3>
+          <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            You can open a tool, run the task, and leave. No account is required for core functionality.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900 dark:text-white">Clear advertising boundary</h3>
+          <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            Ads, when enabled, are placed away from primary tool controls such as generate, copy, download, and format
+            buttons.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <CallToAction
     actions={[{ variant: 'primary', text: "Get Started — It's Free", href: '/tools/', icon: 'tabler:arrow-right' }]}

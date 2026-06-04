@@ -1,10 +1,10 @@
 ---
-title: "JSON Formatting Best Practices Every Developer Should Know"
-excerpt: "Master JSON formatting with these best practices. Learn about indentation, validation, minification, and common mistakes to avoid."
+title: 'JSON Formatting Best Practices Every Developer Should Know'
+excerpt: 'Master JSON formatting with these best practices. Learn about indentation, validation, minification, and common mistakes to avoid.'
 publishDate: 2025-03-05
-category: "Developer Tools"
-tags: ["json", "formatting", "best practices", "api"]
-author: "QuickToolFlow"
+category: 'Developer Tools'
+tags: ['json', 'formatting', 'best practices', 'api']
+author: 'QuickToolFlow'
 ---
 
 JSON (JavaScript Object Notation) is the most widely used data format on the web. Whether you're building APIs, configuring tools, or storing data, proper JSON formatting is essential.
@@ -32,3 +32,4 @@ Choose 2-space or 4-space indentation and stick with it. Most style guides recom
     "zip": "10001"
   }
 }
+```

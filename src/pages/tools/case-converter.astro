@@ -7,29 +7,93 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Convert text between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case, and more."
   slug="case-converter"
   category="Text Tools"
+  features={[
+    'Converts text to uppercase, lowercase, title case, and sentence case',
+    'Creates developer-friendly formats such as camelCase, PascalCase, snake_case, kebab-case, and CONSTANT_CASE',
+    'Works instantly with pasted titles, labels, variables, headings, and filenames',
+    'Keeps conversion local in your browser',
+    'Includes one-click copy for the converted output',
+    'Useful for both writing and coding workflows',
+  ]}
+  useCases={[
+    'Converting article titles into title case or sentence case',
+    'Creating variable names from plain English phrases',
+    'Turning headings into kebab-case file names or URL segments',
+    'Normalizing copied text before using it in a CMS, spreadsheet, or codebase',
+  ]}
+  howToSteps={[
+    'Enter or paste text into the input field.',
+    'Choose the target case style from the buttons.',
+    'Review the converted output.',
+    'Copy the result if you want to paste it into code, content, or a document.',
+  ]}
+  examples={[
+    {
+      title: 'Convert a phrase into code-friendly names',
+      input: 'quick tool flow',
+      output:
+        'camelCase: quickToolFlow\nPascalCase: QuickToolFlow\nsnake_case: quick_tool_flow\nkebab-case: quick-tool-flow',
+      note: 'Different projects use different naming conventions. This tool helps switch between them quickly.',
+    },
+  ]}
+  tips={[
+    'camelCase is common for JavaScript variables and object properties.',
+    'kebab-case is often used for URLs, filenames, and CSS class names.',
+    'Title case rules vary by style guide, so review important headlines manually before publishing.',
+  ]}
+  faq={[
+    {
+      question: 'What is camelCase used for?',
+      answer:
+        'camelCase is commonly used for variable names and object properties in JavaScript and many other programming workflows.',
+    },
+    {
+      question: 'What is the difference between kebab-case and snake_case?',
+      answer:
+        'kebab-case uses hyphens between words, while snake_case uses underscores. URLs usually prefer kebab-case.',
+    },
+    {
+      question: 'Does title case follow a specific style guide?',
+      answer:
+        'The converter capitalizes each word in a simple way. For editorial work, compare the result with your required style guide.',
+    },
+    {
+      question: 'Is the conversion processed on a server?',
+      answer: 'No. Case conversion runs locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
-      <textarea id="cc-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter text to convert...">hello world from quick tool flow</textarea>
+      <textarea
+        id="cc-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Enter text to convert...">hello world from quick tool flow</textarea
+      >
     </div>
 
     <div class="flex flex-wrap gap-2">
-      {[
-        { id: 'cc-upper', label: 'UPPER CASE' },
-        { id: 'cc-lower', label: 'lower case' },
-        { id: 'cc-title', label: 'Title Case' },
-        { id: 'cc-sentence', label: 'Sentence case' },
-        { id: 'cc-camel', label: 'camelCase' },
-        { id: 'cc-pascal', label: 'PascalCase' },
-        { id: 'cc-snake', label: 'snake_case' },
-        { id: 'cc-kebab', label: 'kebab-case' },
-        { id: 'cc-constant', label: 'CONSTANT_CASE' },
-      ].map((btn) => (
-        <button id={btn.id} class="cc-btn px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 hover:border-blue-400 transition">
-          {btn.label}
-        </button>
-      ))}
+      {
+        [
+          { id: 'cc-upper', label: 'UPPER CASE' },
+          { id: 'cc-lower', label: 'lower case' },
+          { id: 'cc-title', label: 'Title Case' },
+          { id: 'cc-sentence', label: 'Sentence case' },
+          { id: 'cc-camel', label: 'camelCase' },
+          { id: 'cc-pascal', label: 'PascalCase' },
+          { id: 'cc-snake', label: 'snake_case' },
+          { id: 'cc-kebab', label: 'kebab-case' },
+          { id: 'cc-constant', label: 'CONSTANT_CASE' },
+        ].map((btn) => (
+          <button
+            id={btn.id}
+            class="cc-btn px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 hover:border-blue-400 transition"
+          >
+            {btn.label}
+          </button>
+        ))
+      }
     </div>
 
     <div>
@@ -37,7 +101,12 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Result</label>
         <button id="cc-copy" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Copy</button>
       </div>
-      <textarea id="cc-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y outline-none" readonly placeholder="Select a case style above..." spellcheck="false"></textarea>
+      <textarea
+        id="cc-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[120px] resize-y outline-none"
+        readonly
+        placeholder="Select a case style above..."
+        spellcheck="false"></textarea>
     </div>
   </div>
 </ToolLayout>
@@ -51,21 +120,43 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
 
     if (!input || !output || !buttons.length) return;
 
-    const words = () => input.value.trim().split(/[\s_\-]+/).filter(w => w.length > 0);
+    const words = () =>
+      input.value
+        .trim()
+        .split(/[\s_-]+/)
+        .filter((w) => w.length > 0);
 
     const converters: Record<string, () => string> = {
       'cc-upper': () => input.value.toUpperCase(),
       'cc-lower': () => input.value.toLowerCase(),
-      'cc-title': () => words().map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '),
+      'cc-title': () =>
+        words()
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+          .join(' '),
       'cc-sentence': () => {
         const s = input.value.toLowerCase();
         return s.charAt(0).toUpperCase() + s.slice(1);
       },
-      'cc-camel': () => words().map((w, i) => i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(''),
-      'cc-pascal': () => words().map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(''),
-      'cc-snake': () => words().map(w => w.toLowerCase()).join('_'),
-      'cc-kebab': () => words().map(w => w.toLowerCase()).join('-'),
-      'cc-constant': () => words().map(w => w.toUpperCase()).join('_'),
+      'cc-camel': () =>
+        words()
+          .map((w, i) => (i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()))
+          .join(''),
+      'cc-pascal': () =>
+        words()
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+          .join(''),
+      'cc-snake': () =>
+        words()
+          .map((w) => w.toLowerCase())
+          .join('_'),
+      'cc-kebab': () =>
+        words()
+          .map((w) => w.toLowerCase())
+          .join('-'),
+      'cc-constant': () =>
+        words()
+          .map((w) => w.toUpperCase())
+          .join('_'),
     };
 
     buttons.forEach((btn) => {

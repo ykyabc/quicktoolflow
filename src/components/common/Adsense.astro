@@ -1,0 +1,17 @@
+---
+import { ANALYTICS } from 'astrowind:config';
+
+const clientId = ANALYTICS?.vendors?.googleAdsense?.clientId ? String(ANALYTICS.vendors.googleAdsense.clientId) : '';
+const isConfigured = /^ca-pub-\d+$/.test(clientId);
+---
+
+{
+  isConfigured && (
+    <script
+      is:inline
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${clientId}`}
+      crossorigin="anonymous"
+    />
+  )
+}

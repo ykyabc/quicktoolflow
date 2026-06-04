@@ -263,17 +263,19 @@ export const tools: Tool[] = [
   {
     slug: 'qr-code-generator',
     name: 'QR Code Generator',
-    description: 'Generate QR codes for URLs, text, email, phone numbers, and WiFi credentials. Customize size and colors, download as PNG.',
+    description:
+      'Generate QR codes for URLs, text, email, phone numbers, and WiFi credentials. Customize size and colors, download as PNG.',
     category: 'Generators',
     categorySlug: 'generator',
     icon: 'tabler:qrcode',
     gradient: 'from-indigo-500 to-violet-600',
     featured: true,
   },
-    {
+  {
     slug: 'json-to-csv',
     name: 'JSON to CSV Converter',
-    description: 'Convert JSON arrays to CSV format. Flatten nested objects, handle arrays, and download as a CSV file.',
+    description:
+      'Convert JSON arrays to CSV format. Flatten nested objects, handle arrays, and download as a CSV file.',
     category: 'Developer Tools',
     categorySlug: 'developer',
     icon: 'tabler:file-type-csv',
@@ -293,7 +295,8 @@ export const tools: Tool[] = [
   {
     slug: 'cron-expression-generator',
     name: 'Cron Expression Generator',
-    description: 'Build and understand cron expressions visually. Set schedules with presets, see next run times, and copy expressions.',
+    description:
+      'Build and understand cron expressions visually. Set schedules with presets, see next run times, and copy expressions.',
     category: 'Developer Tools',
     categorySlug: 'developer',
     icon: 'tabler:clock-code',
@@ -303,14 +306,14 @@ export const tools: Tool[] = [
   {
     slug: 'json-to-yaml',
     name: 'JSON to YAML Converter',
-    description: 'Convert between JSON and YAML formats instantly. Bidirectional conversion with copy and download support.',
+    description:
+      'Convert between JSON and YAML formats instantly. Bidirectional conversion with copy and download support.',
     category: 'Developer Tools',
     categorySlug: 'developer',
     icon: 'tabler:arrows-left-right',
     gradient: 'from-rose-500 to-pink-600',
     featured: false,
   },
-
 ];
 
 export const categories = [

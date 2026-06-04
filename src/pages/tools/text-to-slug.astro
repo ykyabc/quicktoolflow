@@ -7,37 +7,118 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   description="Convert any text into a clean, SEO-friendly URL slug. Supports custom separators and character limits."
   slug="text-to-slug"
   category="Text Tools"
+  features={[
+    'Creates lowercase SEO-friendly slugs from titles and phrases',
+    'Removes accents, punctuation, and unsafe URL characters',
+    'Supports hyphen or underscore separators',
+    'Includes optional maximum length control',
+    'Shows character count, word count, and preview URL',
+    'Runs locally without sending draft titles to a server',
+  ]}
+  useCases={[
+    'Creating blog post slugs from article headlines',
+    'Preparing product, category, or documentation URLs',
+    'Normalizing filenames and page identifiers',
+    'Shortening long titles before publishing them in a CMS',
+  ]}
+  howToSteps={[
+    'Paste a page title, article headline, or phrase into the input field.',
+    'Choose a hyphen or underscore separator.',
+    'Set a maximum length if your CMS or URL structure needs one.',
+    'Copy the generated slug and use it in your URL, filename, or route.',
+  ]}
+  examples={[
+    {
+      title: 'Turn a headline into a URL slug',
+      input: 'How to Build a Great Website in 2025 - The Ultimate Guide!',
+      output: 'how-to-build-a-great-website-in-2025-the-ultimate-guide',
+      note: 'Clean slugs are easier to read, share, and maintain than raw page titles.',
+    },
+  ]}
+  tips={[
+    'Hyphen-separated slugs are usually easier to read in URLs than underscores.',
+    'Keep important keywords near the beginning of the slug and avoid unnecessary filler words.',
+    'Changing a published slug can break links unless you add a redirect.',
+  ]}
+  faq={[
+    {
+      question: 'What makes a slug SEO-friendly?',
+      answer:
+        'A good slug is short, readable, lowercase, and uses words that describe the page content. Hyphens are usually preferred between words.',
+    },
+    {
+      question: 'Should I use hyphens or underscores?',
+      answer:
+        'Hyphens are the common choice for URLs. Underscores can be useful for filenames or systems that require them.',
+    },
+    {
+      question: 'Can I change a slug after publishing?',
+      answer:
+        'You can, but you should add a redirect from the old URL to the new URL so users and search engines do not hit a broken page.',
+    },
+    {
+      question: 'Is my title uploaded?',
+      answer: 'No. Slug generation runs locally in your browser.',
+    },
+  ]}
 >
   <div class="space-y-6">
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input Text</label>
-      <textarea id="sl-input" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[100px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Enter a title or phrase to convert...">How to Build a Great Website in 2025 — The Ultimate Guide!</textarea>
+      <textarea
+        id="sl-input"
+        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[100px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        placeholder="Enter a title or phrase to convert..."
+        >How to Build a Great Website in 2025 — The Ultimate Guide!</textarea
+      >
     </div>
 
     <div class="flex flex-wrap items-end gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Separator</label>
-        <select id="sl-sep" class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+        <select
+          id="sl-sep"
+          class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        >
           <option value="-" selected>Hyphen (-)</option>
           <option value="_">Underscore (_)</option>
         </select>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Max Length</label>
-        <input id="sl-max" type="number" min="0" max="500" value="0" class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" />
+        <input
+          id="sl-max"
+          type="number"
+          min="0"
+          max="500"
+          value="0"
+          class="w-24 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+        />
         <span class="text-xs text-gray-500 ml-1">0 = no limit</span>
       </div>
       <label class="flex items-center gap-2 cursor-pointer">
         <input id="sl-lower" type="checkbox" checked class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Lowercase</span>
       </label>
-      <button id="sl-gen" class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Generate Slug</button>
-      <button id="sl-copy" class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition">Copy</button>
+      <button
+        id="sl-gen"
+        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+        >Generate Slug</button
+      >
+      <button
+        id="sl-copy"
+        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+        >Copy</button
+      >
     </div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Generated Slug</label>
-      <div id="sl-output" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[50px] break-all"></div>
+      <div
+        id="sl-output"
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[50px] break-all"
+      >
+      </div>
     </div>
 
     <div class="grid grid-cols-3 gap-3">
@@ -80,12 +161,13 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       if (lowerEl.checked) text = text.toLowerCase();
 
       let slug = text
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // Remove diacritics
-        .replace(/[^a-zA-Z0-9\s\-]/g, '')                  // Remove special chars
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special chars
         .trim()
-        .replace(/[\s\-]+/g, sep)                           // Replace spaces/dashes with separator
-        .replace(new RegExp(`[${sep}]+`, 'g'), sep)         // Deduplicate separators
-        .replace(new RegExp(`^${sep}|${sep}$`, 'g'), '');   // Trim separators from edges
+        .replace(/[\s-]+/g, sep) // Replace spaces/dashes with separator
+        .replace(new RegExp(`[${sep}]+`, 'g'), sep) // Deduplicate separators
+        .replace(new RegExp(`^${sep}|${sep}$`, 'g'), ''); // Trim separators from edges
 
       if (maxLen > 0) {
         slug = slug.slice(0, maxLen);
