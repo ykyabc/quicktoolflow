@@ -60,8 +60,14 @@ Use the base64 module with b64encode and b64decode functions.
 
 ## Try It Yourself
 
-Use our free Base64 Encoder and Decoder to encode and decode Base64 strings instantly in your browser.
+Use our free [Base64 Encoder and Decoder](/tools/base64/) to encode and decode Base64 strings instantly in your browser. If you are inspecting token data, the [JWT Decoder](/tools/jwt-decoder/) is a better fit because it separates the header, payload, and signature.
 
 ## Conclusion
 
 Base64 is a fundamental encoding scheme for web development. Understanding it helps you work with APIs, data URIs, and authentication tokens more effectively.
+
+## Related QuickToolFlow Tools
+
+- [Base64 Encoder and Decoder](/tools/base64/) for quick encode/decode tasks.
+- [JWT Decoder](/tools/jwt-decoder/) for Base64Url-encoded token payloads.
+- [URL Encoder & Decoder](/tools/url-encoder/) when text needs to be safe inside URLs.

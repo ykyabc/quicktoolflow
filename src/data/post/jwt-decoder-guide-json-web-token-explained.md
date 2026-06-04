@@ -16,6 +16,8 @@ JSON Web Tokens are the backbone of modern web authentication. If you work with 
 
 This guide explains what JWTs are, how they are structured, how to decode them, and what to look out for.
 
+To inspect a real token while following along, use the [JWT Decoder](/tools/jwt-decoder/). For the underlying encoding layer, the [Base64 Encoder and Decoder](/tools/base64/) can help you understand how token sections are represented as text.
+
 ---
 
 ## What Is a JWT?
@@ -170,6 +172,12 @@ Access tokens should expire quickly (15 minutes to 1 hour). Use refresh tokens f
 `localStorage` is vulnerable to XSS attacks. For sensitive applications, store tokens in `HttpOnly` cookies that JavaScript cannot access.
 
 ---
+
+## Related QuickToolFlow Tools
+
+- [JWT Decoder](/tools/jwt-decoder/) for inspecting token headers, payloads, claims, and expiration.
+- [Base64 Encoder and Decoder](/tools/base64/) for learning how encoded token sections work.
+- [Timestamp Converter](/tools/timestamp-converter/) for checking `exp`, `iat`, and `nbf` claim values.
 
 ## Conclusion
 

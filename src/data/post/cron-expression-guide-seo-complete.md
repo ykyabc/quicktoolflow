@@ -86,12 +86,12 @@ A standard cron expression contains five fields.
 
 ```text
 * * * * *
-│ │ │ │ │
-│ │ │ │ └── Day of Week (0-6)
-│ │ │ └──── Month (1-12)
-│ │ └────── Day of Month (1-31)
-│ └──────── Hour (0-23)
-└────────── Minute (0-59)
+| | | | |
+| | | | +-- Day of Week (0-6)
+| | | +---- Month (1-12)
+| | +------ Day of Month (1-31)
+| +-------- Hour (0-23)
++---------- Minute (0-59)
 ```
 
 ## Field Breakdown
@@ -556,7 +556,7 @@ Common causes:
 
 Need help building cron schedules?
 
-Use our Cron Expression Generator to:
+Use our [Cron Expression Generator](/tools/cron-expression-generator/) to:
 
 - Build schedules visually
 - Validate cron syntax
@@ -568,12 +568,10 @@ Use our Cron Expression Generator to:
 
 # Related Tools
 
-- Cron Expression Generator
-- Cron Expression Validator
-- Cron Parser
-- Unix Timestamp Converter
-- Time Zone Converter
-- Date Difference Calculator
+- [Cron Expression Generator](/tools/cron-expression-generator/)
+- [Unix Timestamp Converter](/tools/timestamp-converter/)
+- [UUID Generator](/tools/uuid-generator/)
+- [JSON Formatter & Validator](/tools/json-formatter/)
 
 ---
 

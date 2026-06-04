@@ -35,7 +35,7 @@ QR codes are extremely versatile. Common uses include:
 
 ## How to Create a QR Code
 
-The simplest way is to use a free online tool. Our QR Code Generator lets you create QR codes in seconds:
+The simplest way is to use a free online tool. Our [QR Code Generator](/tools/qr-code-generator/) lets you create QR codes in seconds:
 
 1. Enter your text or URL in the input field
 2. Choose a size (128px, 256px, 512px, or 1024px)
@@ -88,8 +88,14 @@ For most personal and small business uses, static QR codes are the better choice
 
 ## Generate QR Codes for Free
 
-Use our free QR Code Generator to create QR codes for any purpose. Customize colors and size, then download as PNG. Everything runs in your browser with no uploads.
+Use our free [QR Code Generator](/tools/qr-code-generator/) to create QR codes for any purpose. Customize colors and size, then download as PNG. Everything runs in your browser with no uploads.
 
 ## Conclusion
 
 QR codes are a simple yet powerful tool for bridging the physical and digital worlds. Whether you are creating marketing materials, sharing WiFi credentials, or building a contactless experience, a free QR code generator gives you everything you need in seconds.
+
+## Related QuickToolFlow Tools
+
+- [QR Code Generator](/tools/qr-code-generator/) for creating downloadable QR codes.
+- [URL Encoder & Decoder](/tools/url-encoder/) for preparing complex URLs before encoding them.
+- [Meta Tag Generator](/tools/meta-tag-generator/) for preparing landing page metadata before sharing links.

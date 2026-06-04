@@ -331,3 +331,66 @@ export function getToolsByCategory(categorySlug: string): Tool[] {
 export function getFeaturedTools(): Tool[] {
   return tools.filter((t) => t.featured);
 }
+
+export const relatedToolSlugsMap: Record<string, string[]> = {
+  'word-counter': ['word-frequency-counter', 'whitespace-remover', 'case-converter', 'text-to-slug', 'text-diff'],
+  'word-frequency-counter': ['word-counter', 'whitespace-remover', 'text-diff', 'case-converter', 'text-to-slug'],
+  'whitespace-remover': ['word-counter', 'word-frequency-counter', 'case-converter', 'text-diff', 'string-escape'],
+  'case-converter': ['text-to-slug', 'whitespace-remover', 'word-counter', 'word-frequency-counter', 'text-reverser'],
+  'text-to-slug': ['case-converter', 'meta-tag-generator', 'word-counter', 'url-encoder', 'whitespace-remover'],
+  'text-diff': ['word-counter', 'whitespace-remover', 'json-formatter', 'markdown-preview', 'string-escape'],
+  'text-reverser': ['case-converter', 'whitespace-remover', 'word-counter', 'random-number-generator', 'text-diff'],
+
+  'json-formatter': ['json-to-csv', 'json-to-yaml', 'jwt-decoder', 'string-escape', 'text-diff', 'url-encoder'],
+  'json-to-csv': ['json-formatter', 'json-to-yaml', 'text-diff', 'whitespace-remover', 'markdown-preview'],
+  'json-to-yaml': ['json-formatter', 'json-to-csv', 'text-diff', 'string-escape', 'markdown-preview'],
+  base64: ['jwt-decoder', 'url-encoder', 'string-escape', 'hash-generator', 'json-formatter'],
+  'jwt-decoder': ['base64', 'json-formatter', 'hash-generator', 'timestamp-converter', 'string-escape'],
+  'url-encoder': ['base64', 'html-entity-encoder', 'string-escape', 'text-to-slug', 'json-formatter'],
+  'html-entity-encoder': ['string-escape', 'url-encoder', 'markdown-preview', 'text-diff', 'json-formatter'],
+  'string-escape': ['html-entity-encoder', 'url-encoder', 'json-formatter', 'base64', 'regex-tester'],
+  'hash-generator': ['string-escape', 'base64', 'jwt-decoder', 'password-generator', 'uuid-generator'],
+  'regex-tester': ['string-escape', 'text-diff', 'markdown-preview', 'json-formatter', 'whitespace-remover'],
+  'markdown-preview': ['text-diff', 'html-entity-encoder', 'word-counter', 'string-escape', 'regex-tester'],
+  'cron-expression-generator': ['timestamp-converter', 'uuid-generator', 'json-formatter', 'random-number-generator'],
+
+  'password-generator': ['uuid-generator', 'random-number-generator', 'hash-generator', 'qr-code-generator'],
+  'uuid-generator': ['password-generator', 'hash-generator', 'random-number-generator', 'timestamp-converter'],
+  'random-number-generator': ['uuid-generator', 'password-generator', 'lorem-ipsum', 'lorem-image-placeholder'],
+  'qr-code-generator': ['url-encoder', 'text-to-slug', 'meta-tag-generator', 'lorem-image-placeholder'],
+  'lorem-ipsum': ['lorem-image-placeholder', 'word-counter', 'whitespace-remover', 'random-number-generator'],
+  'lorem-image-placeholder': ['lorem-ipsum', 'color-converter', 'css-unit-converter', 'meta-tag-generator'],
+
+  'color-converter': ['css-unit-converter', 'lorem-image-placeholder', 'html-entity-encoder', 'meta-tag-generator'],
+  'css-unit-converter': ['color-converter', 'lorem-image-placeholder', 'number-base-converter', 'meta-tag-generator'],
+  'number-base-converter': ['hash-generator', 'color-converter', 'css-unit-converter', 'timestamp-converter'],
+  'timestamp-converter': ['cron-expression-generator', 'uuid-generator', 'jwt-decoder', 'number-base-converter'],
+
+  'meta-tag-generator': [
+    'text-to-slug',
+    'word-counter',
+    'lorem-image-placeholder',
+    'html-entity-encoder',
+    'url-encoder',
+  ],
+};
+
+export function getRelatedTools(slug: string, limit = 6): Tool[] {
+  const currentTool = tools.find((tool) => tool.slug === slug);
+  const mappedTools = (relatedToolSlugsMap[slug] || [])
+    .map((relatedSlug) => tools.find((tool) => tool.slug === relatedSlug))
+    .filter((tool): tool is Tool => Boolean(tool));
+
+  if (mappedTools.length >= limit || !currentTool) {
+    return mappedTools.slice(0, limit);
+  }
+
+  const fallbackTools = tools.filter(
+    (tool) =>
+      tool.slug !== slug &&
+      tool.categorySlug === currentTool.categorySlug &&
+      !mappedTools.some((mappedTool) => mappedTool.slug === tool.slug)
+  );
+
+  return [...mappedTools, ...fallbackTools].slice(0, limit);
+}

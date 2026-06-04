@@ -1,6 +1,6 @@
 ---
 title: Terms of Service
-description: QuickToolFlow terms of service — rules for using our free online tools.
+description: 'QuickToolFlow terms of service: rules for using our free online tools.'
 ---
 
 # Terms of Service

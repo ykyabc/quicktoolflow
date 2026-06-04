@@ -17,6 +17,8 @@ Unformatted JSON is hard to read and debug. Consider this:
 
 Versus the formatted version with proper indentation. Formatted JSON is easier to read, debug, and maintain.
 
+If you need a quick browser-based check while reading this guide, open the [JSON Formatter & Validator](/tools/json-formatter/) and paste a sample response before applying the best practices below.
+
 ## Formatting Best Practices
 
 ### 1. Use Consistent Indentation
@@ -33,3 +35,9 @@ Choose 2-space or 4-space indentation and stick with it. Most style guides recom
   }
 }
 ```
+
+## Related QuickToolFlow Tools
+
+- [JSON Formatter & Validator](/tools/json-formatter/) for formatting, validating, and minifying JSON.
+- [JSON to CSV Converter](/tools/json-to-csv/) when you need spreadsheet-friendly output.
+- [JSON to YAML Converter](/tools/json-to-yaml/) when moving API data into configuration files.

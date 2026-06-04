@@ -109,8 +109,14 @@ Named colors are convenient, but HEX, RGB, or HSL are usually better for product
 
 ## Convert Colors Instantly
 
-Use the [Color Converter](/tools/color-converter/) to convert between HEX, RGB, and HSL formats with a live preview.
+Use the [Color Converter](/tools/color-converter/) to convert between HEX, RGB, and HSL formats with a live preview. When you are planning layouts around those colors, the [CSS Unit Converter](/tools/css-unit-converter/) can help translate spacing and sizing values too.
 
 ## Conclusion
 
 Use HEX for simple web colors, RGB when you need channel values or transparency, HSL for design systems, and CMYK for print. Knowing how the formats relate makes it much easier to move between design tools, CSS, and production assets.
+
+## Related QuickToolFlow Tools
+
+- [Color Converter](/tools/color-converter/) for HEX, RGB, and HSL conversion.
+- [CSS Unit Converter](/tools/css-unit-converter/) for px, rem, em, vw, and vh calculations.
+- [Lorem Image Placeholder](/tools/lorem-image-placeholder/) for testing image blocks with custom placeholder colors.

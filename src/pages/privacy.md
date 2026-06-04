@@ -1,6 +1,6 @@
 ---
 title: Privacy Policy
-description: QuickToolFlow privacy policy — your data never leaves your browser.
+description: 'QuickToolFlow privacy policy: your data never leaves your browser.'
 ---
 
 # Privacy Policy

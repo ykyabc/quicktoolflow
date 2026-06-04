@@ -79,8 +79,14 @@ Use `(?:...)` for non-capturing groups when you need grouping without capturing.
 
 ## Test Your Regex
 
-Use our free Regex Tester with real-time highlighting and match details to debug your expressions before deploying them.
+Use our free [Regex Tester](/tools/regex-tester/) with real-time highlighting and match details to debug your expressions before deploying them.
 
 ## Conclusion
 
 Regex is a skill that pays dividends throughout your development career. Start with the basics, practice with real-world patterns, and use a regex tester to debug your expressions.
+
+## Related QuickToolFlow Tools
+
+- [Regex Tester](/tools/regex-tester/) for testing patterns with real-time matches.
+- [String Escape / Unescape](/tools/string-escape/) for preparing strings before using them in code.
+- [Text Diff Checker](/tools/text-diff/) for comparing regex output or edited text.

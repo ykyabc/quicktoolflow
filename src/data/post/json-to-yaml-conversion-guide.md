@@ -16,6 +16,8 @@ JSON and YAML are two of the most widely used data serialization formats. JSON d
 
 This guide compares both formats, shows conversion examples in code, and explains when to use each one.
 
+If you want to test a conversion while reading, try the [JSON to YAML Converter](/tools/json-to-yaml/) and use the [JSON Formatter & Validator](/tools/json-formatter/) first when your input needs cleanup.
+
 ---
 
 ## What Is JSON?
@@ -241,3 +243,9 @@ In JSON, the same content requires `\n` escape sequences, making it much harder 
 JSON and YAML each have their strengths. Use JSON for APIs and data exchange where machine parsing speed matters. Use YAML for configuration files where human readability is the priority.
 
 Understanding both formats is essential for modern web development and DevOps workflows.
+
+## Related QuickToolFlow Tools
+
+- [JSON to YAML Converter](/tools/json-to-yaml/) for converting configuration data between both formats.
+- [JSON Formatter & Validator](/tools/json-formatter/) for validating JSON before conversion.
+- [Whitespace Remover](/tools/whitespace-remover/) for cleaning copied configuration snippets.

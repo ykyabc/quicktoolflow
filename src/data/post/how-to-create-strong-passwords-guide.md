@@ -22,7 +22,7 @@ Password strength is measured in **bits of entropy**. The more entropy, the hard
 
 ### The Formula
 
-**Entropy = Length × log₂(Pool Size)**
+**Entropy = Length x log2(Pool Size)**
 
 Where pool size is the number of possible characters. Using uppercase + lowercase + numbers + symbols gives a pool of 95 characters.
 
@@ -50,7 +50,7 @@ Reuses leaked passwords from other breaches. Never reuse passwords across sites.
 
 ## Generate a Strong Password
 
-The easiest way to create a secure password is to use a [cryptographic password generator](https://quicktoolflow.com/tools/password-generator/) that runs entirely in your browser.
+The easiest way to create a secure password is to use a [cryptographic password generator](/tools/password-generator/) that runs entirely in your browser.
 
 A good generator uses `crypto.getRandomValues()` — the same API used by browsers for TLS — ensuring true randomness.
 
@@ -63,3 +63,9 @@ A good generator uses `crypto.getRandomValues()` — the same API used by browse
 ## Conclusion
 
 Strong passwords are your first line of defense. Use a password manager, enable two-factor authentication, and generate passwords with a cryptographically secure tool.
+
+## Related QuickToolFlow Tools
+
+- [Password Generator](/tools/password-generator/) for creating strong random passwords.
+- [UUID Generator](/tools/uuid-generator/) for non-secret unique identifiers.
+- [Hash Generator](/tools/hash-generator/) for learning how one-way hashes differ from passwords.
