@@ -1,0 +1,180 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="JSON Minifier"
+  description="Minify JSON by removing whitespace, indentation, and line breaks. Validate JSON and copy compact output."
+  slug="json-minifier"
+  category="Developer Tools"
+  features={[
+    'Removes unnecessary JSON whitespace and indentation',
+    'Validates JSON before creating compact output',
+    'Shows original and minified character counts',
+    'Can reformat minified JSON back into readable pretty JSON',
+    'Useful for API payloads, configs, logs, and test fixtures',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Reducing JSON payload size before embedding it in examples',
+    'Checking whether copied JSON is valid before using it in code',
+    'Turning pretty JSON into one-line JSON for environment variables',
+    'Cleaning generated JSON before sharing it in tickets or docs',
+  ]}
+  howToSteps={[
+    'Paste JSON into the input field.',
+    'Click Minify JSON to validate and compact it.',
+    'Review the size reduction summary.',
+    'Copy the minified result or click Pretty Print to format it again.',
+  ]}
+  examples={[
+    {
+      title: 'Minify formatted JSON',
+      input: '{\n  "name": "QuickToolFlow",\n  "free": true\n}',
+      output: '{"name":"QuickToolFlow","free":true}',
+      note: 'The output keeps the same data but removes unnecessary spaces and line breaks.',
+    },
+  ]}
+  tips={[
+    'Minification does not change JSON values; it only changes whitespace.',
+    'If validation fails, paste the same input into the JSON Formatter for easier debugging.',
+    'One-line JSON is convenient for variables and logs, but pretty JSON is easier to review.',
+  ]}
+  faq={[
+    {
+      question: 'What does JSON minify mean?',
+      answer:
+        'JSON minification removes whitespace, indentation, and line breaks while preserving the same data structure.',
+    },
+    {
+      question: 'Does minifying JSON make it faster?',
+      answer:
+        'It can reduce transfer size when JSON is sent over the network, but it does not change the meaning of the data.',
+    },
+    {
+      question: 'Will this tool change my JSON values?',
+      answer: 'No. It parses the JSON and serializes it again without formatting whitespace.',
+    },
+    {
+      question: 'Is my JSON uploaded?',
+      answer: 'No. Validation and minification happen inside your browser.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="flex flex-wrap gap-2">
+      <button
+        id="jm-minify"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+      >
+        Minify JSON
+      </button>
+      <button
+        id="jm-pretty"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Pretty Print
+      </button>
+      <button
+        id="jm-sample"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Load Sample
+      </button>
+      <button
+        id="jm-copy"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Copy Output
+      </button>
+    </div>
+
+    <div id="jm-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">JSON Input</label>
+        <textarea
+          id="jm-input"
+          class="min-h-[280px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder='{"name":"QuickToolFlow"}'
+          spellcheck="false"></textarea>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Output</label>
+        <textarea
+          id="jm-output"
+          class="min-h-[280px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-sm text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+          readonly
+          placeholder="Minified JSON will appear here..."
+          spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initJsonMinifier() {
+    const input = document.getElementById('jm-input') as HTMLTextAreaElement;
+    const output = document.getElementById('jm-output') as HTMLTextAreaElement;
+    const status = document.getElementById('jm-status') as HTMLDivElement;
+    const minify = document.getElementById('jm-minify');
+    const pretty = document.getElementById('jm-pretty');
+    const sample = document.getElementById('jm-sample');
+    const copy = document.getElementById('jm-copy');
+
+    if (!input || !output || !minify) return;
+
+    function showStatus(message: string, error = false) {
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function parseInput() {
+      if (!input.value.trim()) {
+        throw new Error('Please paste JSON first.');
+      }
+      return JSON.parse(input.value);
+    }
+
+    minify.addEventListener('click', () => {
+      try {
+        const original = input.value.length;
+        output.value = JSON.stringify(parseInput());
+        const saved = original - output.value.length;
+        showStatus(
+          `Valid JSON. Minified from ${original} to ${output.value.length} characters (${Math.max(saved, 0)} saved).`
+        );
+      } catch (error) {
+        output.value = '';
+        showStatus((error as Error).message, true);
+      }
+    });
+
+    pretty?.addEventListener('click', () => {
+      try {
+        output.value = JSON.stringify(parseInput(), null, 2);
+        showStatus('Valid JSON. Pretty output generated.');
+      } catch (error) {
+        output.value = '';
+        showStatus((error as Error).message, true);
+      }
+    });
+
+    sample?.addEventListener('click', () => {
+      input.value = '{\n  "site": "QuickToolFlow",\n  "tools": ["JSON Formatter", "JSON Minifier"],\n  "free": true\n}';
+      status.classList.add('hidden');
+    });
+
+    copy?.addEventListener('click', () => {
+      if (!output.value) return;
+      navigator.clipboard.writeText(output.value);
+      showStatus('Copied output to clipboard.');
+    });
+  }
+
+  initJsonMinifier();
+  document.addEventListener('astro:page-load', initJsonMinifier);
+</script>

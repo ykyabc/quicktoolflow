@@ -74,7 +74,7 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
             post.author && (
               <>
                 {' '}
-                · <Icon name="tabler:user" class="w-3.5 h-3.5 inline-block -mt-0.5 dark:text-gray-400" />
+                &middot; <Icon name="tabler:user" class="w-3.5 h-3.5 inline-block -mt-0.5 dark:text-gray-400" />
                 <span>{post.author.replaceAll('-', ' ')}</span>
               </>
             )
@@ -83,7 +83,7 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
             post.category && (
               <>
                 {' '}
-                ·{' '}
+                &middot;{' '}
                 <a class="hover:underline" href={getPermalink(post.category.slug, 'category')}>
                   {post.category.title}
                 </a>

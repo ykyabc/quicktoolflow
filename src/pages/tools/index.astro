@@ -92,6 +92,29 @@ const metadata = {
       <p id="search-count" class="mt-2 text-sm text-gray-500 dark:text-gray-400 hidden"></p>
     </div>
 
+    <section
+      class="mb-12 rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20"
+    >
+      <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+            Featured collection
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Structured Data Tools</h2>
+          <p class="mt-3 max-w-3xl text-sm leading-6 text-gray-600 dark:text-gray-300">
+            A focused toolkit for JSON, CSV, YAML, and XML workflows: format data, convert between formats, minify
+            payloads, and query nested JSON responses.
+          </p>
+        </div>
+        <a
+          href="/tools/structured-data/"
+          class="inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Open collection
+        </a>
+      </div>
+    </section>
+
     {
       categories.map((cat) => {
         const catTools = getToolsByCategory(cat.slug);

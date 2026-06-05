@@ -1,0 +1,260 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="CSV Formatter"
+  description="Format, validate, and normalize CSV data online. Clean delimiters, quote values, and preview rows."
+  slug="csv-formatter"
+  category="Developer Tools"
+  features={[
+    'Parses CSV with quoted values, commas, and line breaks',
+    'Normalizes output using comma, semicolon, tab, or pipe delimiters',
+    'Trims values and skips empty rows when needed',
+    'Quotes values only when required by CSV rules',
+    'Shows row and column counts after formatting',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Cleaning spreadsheet exports before importing them elsewhere',
+    'Converting semicolon or tab-delimited data to comma-separated CSV',
+    'Checking whether quoted CSV values are parsed correctly',
+    'Preparing CSV samples for docs, tests, or support tickets',
+  ]}
+  howToSteps={[
+    'Paste CSV or delimited text into the input field.',
+    'Choose the input and output delimiters.',
+    'Click Format CSV.',
+    'Copy or download the normalized CSV output.',
+  ]}
+  examples={[
+    {
+      title: 'Normalize CSV spacing and quotes',
+      input: 'name, note\nAlice, "Hello, world"\nBob, Example',
+      output: 'name,note\nAlice,"Hello, world"\nBob,Example',
+      note: 'The formatter trims values and keeps quotes where they are required.',
+    },
+  ]}
+  tips={[
+    'CSV values containing delimiters, quotes, or line breaks should be quoted.',
+    'Choose Tab as the input delimiter for TSV exports.',
+    'Use the CSV to JSON Converter when you need structured JSON output.',
+  ]}
+  faq={[
+    {
+      question: 'Does this CSV formatter upload my data?',
+      answer: 'No. CSV parsing and formatting happen in your browser.',
+    },
+    {
+      question: 'Can it handle quoted CSV fields?',
+      answer: 'Yes. The parser supports quoted values with delimiters, quotes, and line breaks.',
+    },
+    {
+      question: 'Can I convert TSV to CSV?',
+      answer: 'Yes. Choose Tab as the input delimiter and Comma as the output delimiter.',
+    },
+    {
+      question: 'Does it change my data?',
+      answer:
+        'It normalizes whitespace and quoting based on your options. Review the output before using it in production imports.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Input delimiter
+        <select
+          id="csvfmt-input-delimiter"
+          class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
+        >
+          <option value=",">Comma</option>
+          <option value=";">Semicolon</option>
+          <option value="	">Tab</option>
+          <option value="|">Pipe</option>
+        </select>
+      </label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Output delimiter
+        <select
+          id="csvfmt-output-delimiter"
+          class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
+        >
+          <option value=",">Comma</option>
+          <option value=";">Semicolon</option>
+          <option value="	">Tab</option>
+          <option value="|">Pipe</option>
+        </select>
+      </label>
+      <label
+        class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 dark:border-slate-700 dark:text-gray-300"
+      >
+        <input id="csvfmt-trim" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        Trim values
+      </label>
+      <label
+        class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 dark:border-slate-700 dark:text-gray-300"
+      >
+        <input id="csvfmt-skip-empty" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        Skip empty rows
+      </label>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <button
+        id="csvfmt-format"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+      >
+        Format CSV
+      </button>
+      <button
+        id="csvfmt-sample"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Load Sample
+      </button>
+      <button
+        id="csvfmt-copy"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Copy CSV
+      </button>
+      <button
+        id="csvfmt-download"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Download
+      </button>
+    </div>
+
+    <div id="csvfmt-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">CSV Input</label>
+        <textarea
+          id="csvfmt-input"
+          class="min-h-[260px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder='name, note
+Alice, "Hello, world"'
+          spellcheck="false"></textarea>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Formatted CSV</label>
+        <textarea
+          id="csvfmt-output"
+          class="min-h-[260px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-sm text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+          readonly
+          placeholder="Formatted CSV will appear here..."
+          spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initCsvFormatter() {
+    const input = document.getElementById('csvfmt-input') as HTMLTextAreaElement;
+    const output = document.getElementById('csvfmt-output') as HTMLTextAreaElement;
+    const inputDelimiter = document.getElementById('csvfmt-input-delimiter') as HTMLSelectElement;
+    const outputDelimiter = document.getElementById('csvfmt-output-delimiter') as HTMLSelectElement;
+    const trimValues = document.getElementById('csvfmt-trim') as HTMLInputElement;
+    const skipEmpty = document.getElementById('csvfmt-skip-empty') as HTMLInputElement;
+    const status = document.getElementById('csvfmt-status') as HTMLDivElement;
+    const format = document.getElementById('csvfmt-format');
+    const sample = document.getElementById('csvfmt-sample');
+    const copy = document.getElementById('csvfmt-copy');
+    const download = document.getElementById('csvfmt-download');
+
+    if (!input || !output || !format) return;
+
+    function showStatus(message: string, error = false) {
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function parseCsv(text: string, sep: string) {
+      const rows: string[][] = [];
+      let row: string[] = [];
+      let cell = '';
+      let quoted = false;
+
+      for (let i = 0; i < text.length; i += 1) {
+        const char = text[i];
+        const next = text[i + 1];
+        if (char === '"') {
+          if (quoted && next === '"') {
+            cell += '"';
+            i += 1;
+          } else {
+            quoted = !quoted;
+          }
+        } else if (char === sep && !quoted) {
+          row.push(cell);
+          cell = '';
+        } else if ((char === '\n' || char === '\r') && !quoted) {
+          if (char === '\r' && next === '\n') i += 1;
+          row.push(cell);
+          rows.push(row);
+          row = [];
+          cell = '';
+        } else {
+          cell += char;
+        }
+      }
+      row.push(cell);
+      rows.push(row);
+      return rows;
+    }
+
+    function escapeCsv(value: string, sep: string) {
+      if (value.includes('"') || value.includes('\n') || value.includes('\r') || value.includes(sep)) {
+        return `"${value.replace(/"/g, '""')}"`;
+      }
+      return value;
+    }
+
+    format.addEventListener('click', () => {
+      if (!input.value.trim()) {
+        showStatus('Please paste CSV data first.', true);
+        return;
+      }
+      let rows = parseCsv(input.value, inputDelimiter.value);
+      if (trimValues.checked) rows = rows.map((row) => row.map((value) => value.trim()));
+      if (skipEmpty.checked) rows = rows.filter((row) => row.some((value) => value.trim() !== ''));
+      const columnCount = rows.reduce((max, row) => Math.max(max, row.length), 0);
+      output.value = rows
+        .map((row) => row.map((value) => escapeCsv(value, outputDelimiter.value)).join(outputDelimiter.value))
+        .join('\n');
+      showStatus(
+        `Formatted ${rows.length} row${rows.length === 1 ? '' : 's'} with up to ${columnCount} column${columnCount === 1 ? '' : 's'}.`
+      );
+    });
+
+    sample?.addEventListener('click', () => {
+      input.value = 'name, note\nAlice, "Hello, world"\nBob, Example\nCharlie, "Line one\nLine two"';
+      status.classList.add('hidden');
+    });
+
+    copy?.addEventListener('click', () => {
+      if (!output.value) return;
+      navigator.clipboard.writeText(output.value);
+      showStatus('Copied CSV to clipboard.');
+    });
+
+    download?.addEventListener('click', () => {
+      if (!output.value) return;
+      const blob = new Blob([output.value], { type: 'text/csv;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'formatted.csv';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+  }
+
+  initCsvFormatter();
+  document.addEventListener('astro:page-load', initCsvFormatter);
+</script>

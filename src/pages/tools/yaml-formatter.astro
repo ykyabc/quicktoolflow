@@ -1,0 +1,179 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="YAML Formatter"
+  description="Format, validate, and clean YAML documents online. Paste YAML and get readable, normalized output."
+  slug="yaml-formatter"
+  category="Developer Tools"
+  features={[
+    'Formats YAML into clean, readable indentation',
+    'Validates YAML syntax and reports parser errors',
+    'Converts YAML through a safe parse and dump cycle',
+    'Supports common YAML used in configs, CI files, and docs',
+    'Copy formatted YAML with one click',
+    'Runs in your browser',
+  ]}
+  useCases={[
+    'Cleaning YAML configuration files before committing changes',
+    'Validating CI, Docker Compose, or static site config snippets',
+    'Normalizing indentation after copying YAML from documentation',
+    'Checking whether YAML can be parsed before converting to JSON',
+  ]}
+  howToSteps={[
+    'Paste YAML into the input field.',
+    'Click Format YAML.',
+    'Fix any syntax error shown by the validator.',
+    'Copy the formatted YAML output.',
+  ]}
+  examples={[
+    {
+      title: 'Format a YAML config',
+      input: 'site:\n name: QuickToolFlow\n tools:\n  - JSON Formatter\n  - YAML Formatter',
+      output: 'site:\n  name: QuickToolFlow\n  tools:\n    - JSON Formatter\n    - YAML Formatter\n',
+      note: 'Consistent indentation makes YAML configuration easier to review and maintain.',
+    },
+  ]}
+  tips={[
+    'YAML is indentation-sensitive, so spaces matter.',
+    'Use spaces instead of tabs in YAML files.',
+    'If a value looks like a boolean or number but should stay text, wrap it in quotes.',
+  ]}
+  faq={[
+    {
+      question: 'Does this YAML formatter upload my content?',
+      answer: 'No. YAML parsing and formatting happen in your browser.',
+    },
+    {
+      question: 'Why does YAML indentation matter?',
+      answer:
+        'YAML uses indentation to represent nested objects and arrays. Incorrect indentation can change the structure or cause parse errors.',
+    },
+    {
+      question: 'Can this format Docker Compose or GitHub Actions YAML?',
+      answer:
+        'Yes, it can format common YAML documents, including configuration files. Always review the final config before using it in production.',
+    },
+    {
+      question: 'Does formatting preserve comments?',
+      answer:
+        'This formatter parses and re-dumps YAML, so comments may not be preserved. Use it for cleanup and validation, not comment-preserving edits.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="flex flex-wrap gap-2">
+      <button
+        id="yaml-format"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+      >
+        Format YAML
+      </button>
+      <button
+        id="yaml-sample"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Load Sample
+      </button>
+      <button
+        id="yaml-copy"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Copy Output
+      </button>
+    </div>
+
+    <div id="yaml-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">YAML Input</label>
+        <textarea
+          id="yaml-input"
+          class="min-h-[280px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="site:
+  name: QuickToolFlow"
+          spellcheck="false"></textarea>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Formatted YAML</label>
+        <textarea
+          id="yaml-output"
+          class="min-h-[280px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-sm text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+          readonly
+          placeholder="Formatted YAML will appear here..."
+          spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  (function () {
+    function loadYamlLibrary(callback) {
+      if (window.jsyaml) {
+        callback();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js';
+      script.onload = callback;
+      script.onerror = function () {
+        showStatus('Failed to load the YAML parser. Please check your connection and try again.', true);
+      };
+      document.head.appendChild(script);
+    }
+
+    function showStatus(message, error) {
+      const status = document.getElementById('yaml-status');
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function initYamlFormatter() {
+      const input = document.getElementById('yaml-input');
+      const output = document.getElementById('yaml-output');
+      const format = document.getElementById('yaml-format');
+      const sample = document.getElementById('yaml-sample');
+      const copy = document.getElementById('yaml-copy');
+      const status = document.getElementById('yaml-status');
+
+      if (!input || !output || !format) return;
+
+      format.addEventListener('click', function () {
+        if (!input.value.trim()) {
+          showStatus('Please paste YAML first.', true);
+          return;
+        }
+        loadYamlLibrary(function () {
+          try {
+            const data = window.jsyaml.load(input.value);
+            output.value = window.jsyaml.dump(data, { indent: 2, lineWidth: 100, noRefs: true });
+            showStatus('YAML is valid and formatted.', false);
+          } catch (error) {
+            output.value = '';
+            showStatus(error.message || 'Invalid YAML.', true);
+          }
+        });
+      });
+
+      sample?.addEventListener('click', function () {
+        input.value = 'site:\n name: QuickToolFlow\n tools:\n  - JSON Formatter\n  - YAML Formatter\n privacy: true';
+        status?.classList.add('hidden');
+      });
+
+      copy?.addEventListener('click', function () {
+        if (!output.value) return;
+        navigator.clipboard.writeText(output.value);
+        showStatus('Copied formatted YAML to clipboard.', false);
+      });
+    }
+
+    initYamlFormatter();
+    document.addEventListener('astro:page-load', initYamlFormatter);
+  })();
+</script>

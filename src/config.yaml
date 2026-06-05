@@ -44,10 +44,11 @@ apps:
         index: true
         follow: true
     category:
-      isEnabled: false
+      isEnabled: true
+      pathname: 'blog/category'
       robots:
-        index: false
-        follow: false
+        index: true
+        follow: true
     tag:
       isEnabled: false
       robots:

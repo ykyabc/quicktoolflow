@@ -11,11 +11,18 @@ import { getFeaturedTools, categories, getToolsByCategory } from '~/utils/tools-
 const workflows = [
   {
     title: 'Clean and convert API data',
-    description: 'Format JSON, convert arrays to CSV, or move configuration between JSON and YAML.',
+    description: 'Format, minify, and convert structured data between JSON, CSV, and YAML.',
     links: [
+      { text: 'Structured Data Hub', href: '/tools/structured-data/' },
       { text: 'JSON Formatter', href: '/tools/json-formatter/' },
+      { text: 'JSON Minifier', href: '/tools/json-minifier/' },
+      { text: 'JSON Path Tester', href: '/tools/json-path-tester/' },
       { text: 'JSON to CSV', href: '/tools/json-to-csv/' },
+      { text: 'CSV to JSON', href: '/tools/csv-to-json/' },
+      { text: 'CSV Formatter', href: '/tools/csv-formatter/' },
       { text: 'JSON to YAML', href: '/tools/json-to-yaml/' },
+      { text: 'YAML Formatter', href: '/tools/yaml-formatter/' },
+      { text: 'XML Formatter', href: '/tools/xml-formatter/' },
     ],
   },
   {
@@ -113,6 +120,40 @@ const metadata = {
           </article>
         ))
       }
+    </div>
+  </section>
+
+  <section class="px-4 py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <div
+      class="rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20 sm:p-8"
+    >
+      <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+            Featured toolkit
+          </p>
+          <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Structured Data Toolkit</h2>
+          <p class="mt-4 max-w-3xl text-base leading-7 text-gray-600 dark:text-gray-300">
+            Format, convert, minify, and inspect JSON, CSV, YAML, and XML in one focused workflow for API debugging,
+            spreadsheet cleanup, and configuration work.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            {
+              ['JSON', 'CSV', 'YAML', 'XML', 'JSON Path'].map((label) => (
+                <span class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-primary-700 dark:bg-gray-900 dark:text-primary-300">
+                  {label}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+        <a
+          href="/tools/structured-data/"
+          class="inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Open toolkit
+        </a>
+      </div>
     </div>
   </section>
 

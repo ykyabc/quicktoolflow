@@ -1,0 +1,70 @@
+---
+import type { Page } from 'astro';
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import List from '~/components/blog/List.astro';
+import Pagination from '~/components/blog/Pagination.astro';
+import { blogPostsPerPage, fetchPosts } from '~/utils/blog';
+import type { Post, Taxonomy } from '~/types';
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await fetchPosts();
+  const categories = new Map<string, Taxonomy>();
+
+  posts.forEach((post) => {
+    if (post.category) {
+      categories.set(post.category.slug, post.category);
+    }
+  });
+
+  return Array.from(categories.entries()).flatMap(([categorySlug, category]) =>
+    paginate(
+      posts.filter((post) => post.category?.slug === categorySlug),
+      {
+        params: { category: categorySlug },
+        pageSize: blogPostsPerPage,
+        props: { category },
+      }
+    )
+  );
+}
+
+interface Props {
+  page: Page<Post>;
+  category: Taxonomy;
+}
+
+const { page, category } = Astro.props;
+const currentPage = page.currentPage ?? 1;
+const pageTitle = currentPage > 1 ? `${category.title} Articles - Page ${currentPage}` : `${category.title} Articles`;
+
+const metadata = {
+  title: pageTitle,
+  description: `Read ${category.title.toLowerCase()} tutorials, tool guides, and practical workflow articles from QuickToolFlow.`,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-12 mx-auto max-w-5xl sm:px-6 lg:px-8">
+    <Breadcrumb
+      items={[
+        { name: 'Home', href: '/' },
+        { name: 'Blog', href: '/blog/' },
+        { name: 'Categories', href: '/blog/category/' },
+        { name: category.title },
+      ]}
+    />
+
+    <header class="mb-10">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Blog category</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">{pageTitle}</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+        Practical guides and tutorials about {category.title.toLowerCase()}.
+      </p>
+    </header>
+
+    <List posts={page.data} />
+
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+  </section>
+</Layout>

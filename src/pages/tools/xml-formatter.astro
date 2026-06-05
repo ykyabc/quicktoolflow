@@ -1,0 +1,195 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="XML Formatter"
+  description="Format, validate, and minify XML documents online. Paste XML and get clean, readable output instantly."
+  slug="xml-formatter"
+  category="Developer Tools"
+  features={[
+    'Formats XML with readable indentation',
+    'Validates XML syntax before formatting',
+    'Minifies XML by removing unnecessary whitespace',
+    'Shows clear parser errors for invalid XML',
+    'Works with API responses, feeds, sitemaps, and config files',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Formatting XML API responses before debugging them',
+    'Checking whether copied XML is well-formed',
+    'Cleaning RSS, sitemap, SOAP, SVG, or configuration snippets',
+    'Minifying XML before embedding or sharing compact examples',
+  ]}
+  howToSteps={[
+    'Paste XML into the input field.',
+    'Click Format XML to validate and indent it.',
+    'Use Minify XML when you need compact output.',
+    'Copy the formatted or minified result.',
+  ]}
+  examples={[
+    {
+      title: 'Format a compact XML snippet',
+      input: '<site><name>QuickToolFlow</name><tool>XML Formatter</tool></site>',
+      output: '<site>\n  <name>QuickToolFlow</name>\n  <tool>XML Formatter</tool>\n</site>',
+      note: 'Readable XML is easier to inspect when debugging APIs, feeds, and configuration files.',
+    },
+  ]}
+  tips={[
+    'XML must have one root element.',
+    'Attribute values should be quoted.',
+    'If formatting fails, look for an unclosed tag or an unescaped ampersand.',
+  ]}
+  faq={[
+    {
+      question: 'Does this XML formatter upload my XML?',
+      answer: 'No. XML validation, formatting, and minification happen inside your browser.',
+    },
+    {
+      question: 'Can it format RSS feeds and sitemaps?',
+      answer: 'Yes. It can format well-formed XML including RSS, Atom, sitemap, SVG, SOAP, and config snippets.',
+    },
+    {
+      question: 'What does minifying XML do?',
+      answer:
+        'XML minification removes formatting whitespace between tags while keeping the same elements and attributes.',
+    },
+    {
+      question: 'Why is my XML invalid?',
+      answer:
+        'Common causes include missing closing tags, multiple root elements, unquoted attributes, or raw ampersands that should be escaped.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="flex flex-wrap gap-2">
+      <button
+        id="xml-format"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+      >
+        Format XML
+      </button>
+      <button
+        id="xml-minify"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Minify XML
+      </button>
+      <button
+        id="xml-sample"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Load Sample
+      </button>
+      <button
+        id="xml-copy"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Copy Output
+      </button>
+    </div>
+
+    <div id="xml-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">XML Input</label>
+        <textarea
+          id="xml-input"
+          class="min-h-[280px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="<site><name>QuickToolFlow</name></site>"
+          spellcheck="false"></textarea>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Output</label>
+        <textarea
+          id="xml-output"
+          class="min-h-[280px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-sm text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+          readonly
+          placeholder="Formatted XML will appear here..."
+          spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initXmlFormatter() {
+    const input = document.getElementById('xml-input') as HTMLTextAreaElement;
+    const output = document.getElementById('xml-output') as HTMLTextAreaElement;
+    const status = document.getElementById('xml-status') as HTMLDivElement;
+    const format = document.getElementById('xml-format');
+    const minify = document.getElementById('xml-minify');
+    const sample = document.getElementById('xml-sample');
+    const copy = document.getElementById('xml-copy');
+
+    if (!input || !output || !format || !minify) return;
+
+    function showStatus(message: string, error = false) {
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function parseXml(text: string) {
+      const documentXml = new DOMParser().parseFromString(text, 'application/xml');
+      const parserError = documentXml.querySelector('parsererror');
+      if (parserError) {
+        throw new Error(parserError.textContent?.trim().split('\n')[0] || 'Invalid XML.');
+      }
+      return documentXml;
+    }
+
+    function prettyPrint(xml: string) {
+      const tokens = xml.replace(/>\s*</g, '><').replace(/</g, '\n<').trim().split('\n');
+      let depth = 0;
+      return tokens
+        .map((token) => {
+          if (/^<\/.+>/.test(token)) depth = Math.max(depth - 1, 0);
+          const line = `${'  '.repeat(depth)}${token}`;
+          if (/^<[^!?/][^>]*[^/]?>$/.test(token) && !/^<[^>]+>[^<]+<\/[^>]+>$/.test(token)) depth += 1;
+          return line;
+        })
+        .join('\n');
+    }
+
+    format.addEventListener('click', () => {
+      try {
+        if (!input.value.trim()) throw new Error('Please paste XML first.');
+        const serialized = new XMLSerializer().serializeToString(parseXml(input.value));
+        output.value = prettyPrint(serialized);
+        showStatus('XML is valid and formatted.');
+      } catch (error) {
+        output.value = '';
+        showStatus((error as Error).message, true);
+      }
+    });
+
+    minify.addEventListener('click', () => {
+      try {
+        if (!input.value.trim()) throw new Error('Please paste XML first.');
+        output.value = new XMLSerializer().serializeToString(parseXml(input.value)).replace(/>\s+</g, '><').trim();
+        showStatus('XML is valid and minified.');
+      } catch (error) {
+        output.value = '';
+        showStatus((error as Error).message, true);
+      }
+    });
+
+    sample?.addEventListener('click', () => {
+      input.value =
+        '<site><name>QuickToolFlow</name><tools><tool>XML Formatter</tool><tool>JSON Formatter</tool></tools></site>';
+      status.classList.add('hidden');
+    });
+
+    copy?.addEventListener('click', () => {
+      if (!output.value) return;
+      navigator.clipboard.writeText(output.value);
+      showStatus('Copied output to clipboard.');
+    });
+  }
+
+  initXmlFormatter();
+  document.addEventListener('astro:page-load', initXmlFormatter);
+</script>

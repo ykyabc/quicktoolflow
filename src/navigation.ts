@@ -12,7 +12,17 @@ export const headerData = {
         { text: 'SEO Tools', href: '/tools/seo/' },
       ],
     },
-    { text: 'Blog', href: '/blog/' },
+    {
+      text: 'Blog',
+      href: '/blog/',
+      links: [
+        { text: 'All Articles', href: '/blog/' },
+        { text: 'Blog Categories', href: '/blog/category/' },
+        { text: 'Developer Tools', href: '/blog/category/developer-tools/' },
+        { text: 'Generators', href: '/blog/category/generators/' },
+        { text: 'Security', href: '/blog/category/security/' },
+      ],
+    },
     { text: 'About', href: '/about/' },
     { text: 'Contact', href: '/contact/' },
   ],

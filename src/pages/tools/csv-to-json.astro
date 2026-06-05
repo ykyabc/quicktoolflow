@@ -1,0 +1,262 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="CSV to JSON Converter"
+  description="Convert CSV data to JSON arrays instantly. Paste CSV, choose parsing options, and copy clean JSON output."
+  slug="csv-to-json"
+  category="Developer Tools"
+  features={[
+    'Converts CSV rows into a JSON array of objects',
+    'Uses the first row as object keys by default',
+    'Supports comma, semicolon, tab, and pipe delimiters',
+    'Handles quoted CSV values with commas and line breaks',
+    'Optionally trims whitespace and skips empty rows',
+    'Runs locally in your browser with no upload',
+  ]}
+  useCases={[
+    'Turning spreadsheet exports into JSON test data',
+    'Preparing CSV reports for API mockups or front-end prototypes',
+    'Converting simple datasets before importing into developer tools',
+    'Checking how CSV headers map to JSON object keys',
+  ]}
+  howToSteps={[
+    'Paste CSV data into the input area.',
+    'Choose the delimiter and parsing options.',
+    'Click Convert to JSON.',
+    'Copy or download the generated JSON array.',
+  ]}
+  examples={[
+    {
+      title: 'Convert a small CSV table',
+      input: 'name,role\nAlice,Developer\nBob,Designer',
+      output:
+        '[\n  {\n    "name": "Alice",\n    "role": "Developer"\n  },\n  {\n    "name": "Bob",\n    "role": "Designer"\n  }\n]',
+      note: 'Header names become object keys, and each following row becomes one JSON object.',
+    },
+  ]}
+  tips={[
+    'Use clear header names before converting so the JSON keys are easy to understand.',
+    'If your data contains commas inside values, make sure those values are wrapped in quotes.',
+    'For tab-separated exports, choose the Tab delimiter before converting.',
+  ]}
+  faq={[
+    {
+      question: 'Does this CSV to JSON converter upload my file?',
+      answer: 'No. The conversion runs entirely in your browser. Your CSV data is not uploaded to any server.',
+    },
+    {
+      question: 'Can it handle quoted CSV fields?',
+      answer: 'Yes. Quoted fields with commas, quotes, and line breaks are parsed using standard CSV quoting rules.',
+    },
+    {
+      question: 'What JSON format does it create?',
+      answer:
+        'By default it creates an array of objects where the first CSV row becomes the property names. You can also output arrays of values.',
+    },
+    {
+      question: 'Can I download the JSON result?',
+      answer: 'Yes. After conversion, use the Download button to save the result as a .json file.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Delimiter
+        <select
+          id="csv-json-delimiter"
+          class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
+        >
+          <option value=",">Comma</option>
+          <option value=";">Semicolon</option>
+          <option value="	">Tab</option>
+          <option value="|">Pipe</option>
+        </select>
+      </label>
+
+      <label
+        class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 dark:border-slate-700 dark:text-gray-300"
+      >
+        <input id="csv-json-header" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        First row is header
+      </label>
+
+      <label
+        class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 dark:border-slate-700 dark:text-gray-300"
+      >
+        <input id="csv-json-trim" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        Trim values
+      </label>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <button
+        id="csv-json-convert"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+      >
+        Convert to JSON
+      </button>
+      <button
+        id="csv-json-sample"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Load Sample
+      </button>
+      <button
+        id="csv-json-copy"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Copy JSON
+      </button>
+      <button
+        id="csv-json-download"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Download
+      </button>
+    </div>
+
+    <div id="csv-json-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">CSV Input</label>
+        <textarea
+          id="csv-json-input"
+          class="min-h-[260px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="name,role
+Alice,Developer
+Bob,Designer"
+          spellcheck="false"></textarea>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">JSON Output</label>
+        <textarea
+          id="csv-json-output"
+          class="min-h-[260px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-sm text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+          readonly
+          placeholder="JSON result will appear here..."
+          spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initCsvToJson() {
+    const input = document.getElementById('csv-json-input') as HTMLTextAreaElement;
+    const output = document.getElementById('csv-json-output') as HTMLTextAreaElement;
+    const delimiter = document.getElementById('csv-json-delimiter') as HTMLSelectElement;
+    const hasHeader = document.getElementById('csv-json-header') as HTMLInputElement;
+    const trimValues = document.getElementById('csv-json-trim') as HTMLInputElement;
+    const status = document.getElementById('csv-json-status') as HTMLDivElement;
+    const convert = document.getElementById('csv-json-convert');
+    const sample = document.getElementById('csv-json-sample');
+    const copy = document.getElementById('csv-json-copy');
+    const download = document.getElementById('csv-json-download');
+
+    if (!input || !output || !delimiter || !convert) return;
+
+    function showStatus(message: string, error = false) {
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function parseCsv(text: string, sep: string) {
+      const rows: string[][] = [];
+      let row: string[] = [];
+      let cell = '';
+      let quoted = false;
+
+      for (let i = 0; i < text.length; i += 1) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"') {
+          if (quoted && next === '"') {
+            cell += '"';
+            i += 1;
+          } else {
+            quoted = !quoted;
+          }
+        } else if (char === sep && !quoted) {
+          row.push(cell);
+          cell = '';
+        } else if ((char === '\n' || char === '\r') && !quoted) {
+          if (char === '\r' && next === '\n') i += 1;
+          row.push(cell);
+          rows.push(row);
+          row = [];
+          cell = '';
+        } else {
+          cell += char;
+        }
+      }
+
+      row.push(cell);
+      rows.push(row);
+      return rows.filter((items) => items.some((item) => item.trim() !== ''));
+    }
+
+    function convertCsv() {
+      const raw = input.value;
+      if (!raw.trim()) {
+        showStatus('Please paste CSV data first.', true);
+        return;
+      }
+
+      const rows = parseCsv(raw, delimiter.value).map((row) =>
+        trimValues.checked ? row.map((value) => value.trim()) : row
+      );
+
+      if (rows.length === 0) {
+        showStatus('No CSV rows found.', true);
+        return;
+      }
+
+      let result: unknown[];
+      if (hasHeader.checked) {
+        const headers = rows[0].map((header, index) => header || `column_${index + 1}`);
+        result = rows.slice(1).map((row) => {
+          const item: Record<string, string> = {};
+          headers.forEach((header, index) => {
+            item[header] = row[index] || '';
+          });
+          return item;
+        });
+      } else {
+        result = rows;
+      }
+
+      output.value = JSON.stringify(result, null, 2);
+      showStatus(`Converted ${result.length} row${result.length === 1 ? '' : 's'} to JSON.`);
+    }
+
+    convert.addEventListener('click', convertCsv);
+    sample?.addEventListener('click', () => {
+      input.value = 'name,role,city\nAlice,Developer,New York\nBob,Designer,London\nCharlie,Product Manager,Sydney';
+      status.classList.add('hidden');
+    });
+    copy?.addEventListener('click', () => {
+      if (!output.value) return;
+      navigator.clipboard.writeText(output.value);
+      showStatus('Copied JSON to clipboard.');
+    });
+    download?.addEventListener('click', () => {
+      if (!output.value) return;
+      const blob = new Blob([output.value], { type: 'application/json;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'data.json';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+  }
+
+  initCsvToJson();
+  document.addEventListener('astro:page-load', initCsvToJson);
+</script>

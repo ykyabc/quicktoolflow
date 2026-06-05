@@ -1,0 +1,276 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+
+const canonical = 'https://quicktoolflow.com/tools/structured-data/';
+
+const toolGroups = [
+  {
+    title: 'Format and validate data',
+    description: 'Clean up raw payloads, configuration files, and copied snippets before debugging or sharing them.',
+    slugs: ['json-formatter', 'json-minifier', 'yaml-formatter', 'xml-formatter', 'csv-formatter'],
+  },
+  {
+    title: 'Convert between formats',
+    description: 'Move data between API-friendly, spreadsheet-friendly, and configuration-friendly formats.',
+    slugs: ['json-to-csv', 'csv-to-json', 'json-to-yaml'],
+  },
+  {
+    title: 'Query and inspect JSON',
+    description: 'Validate structured payloads and extract the exact values you need from nested objects and arrays.',
+    slugs: ['json-path-tester', 'jwt-decoder', 'base64'],
+  },
+];
+
+const guideLinks = [
+  {
+    title: 'CSV to JSON Conversion Guide',
+    href: '/blog/csv-to-json-conversion-guide/',
+    description: 'Learn how headers become JSON keys and how quoted CSV fields should be parsed.',
+  },
+  {
+    title: 'CSV Formatting Guide',
+    href: '/blog/csv-formatting-guide/',
+    description: 'Clean delimiters, quotes, rows, and spreadsheet exports before conversion.',
+  },
+  {
+    title: 'JSON Minifier Guide',
+    href: '/blog/json-minifier-guide/',
+    description: 'Understand when compact JSON helps and what minification does not change.',
+  },
+  {
+    title: 'JSON Path Tester Guide',
+    href: '/blog/json-path-tester-guide/',
+    description: 'Query nested API responses with dot notation, indexes, and wildcards.',
+  },
+  {
+    title: 'YAML Formatting Guide',
+    href: '/blog/yaml-formatting-guide/',
+    description: 'Avoid indentation, quoting, and config mistakes in YAML files.',
+  },
+  {
+    title: 'XML Formatting Guide',
+    href: '/blog/xml-formatting-guide/',
+    description: 'Format well-formed XML for APIs, feeds, sitemaps, and config files.',
+  },
+  {
+    title: 'JSON Formatting Best Practices',
+    href: '/blog/json-formatting-best-practices/',
+    description: 'Format and validate JSON before converting, querying, or minifying it.',
+  },
+  {
+    title: 'JSON to YAML Conversion Guide',
+    href: '/blog/json-to-yaml-conversion-guide/',
+    description: 'Compare JSON and YAML when moving data into configuration workflows.',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'What are structured data tools?',
+    answer:
+      'Structured data tools help you format, validate, convert, and inspect machine-readable data formats such as JSON, CSV, YAML, and XML.',
+  },
+  {
+    question: 'Which data format should I use?',
+    answer:
+      'Use JSON for APIs and application data, CSV for spreadsheets and flat tables, YAML for human-edited configuration, and XML for feeds, sitemaps, legacy APIs, and document-style integrations.',
+  },
+  {
+    question: 'Do these tools upload my data?',
+    answer:
+      'No. QuickToolFlow structured data tools are designed to run in your browser, so common formatting and conversion tasks happen locally.',
+  },
+  {
+    question: 'Should I format data before converting it?',
+    answer:
+      'Yes. Validating and formatting data first helps catch broken JSON, malformed XML, inconsistent CSV rows, or YAML indentation problems before conversion.',
+  },
+];
+
+const getTool = (slug: string) => tools.find((tool) => tool.slug === slug);
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Structured data tools',
+  itemListElement: toolGroups
+    .flatMap((group) => group.slugs)
+    .map((slug, index) => {
+      const tool = getTool(slug);
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        name: tool?.name || slug,
+        url: `https://quicktoolflow.com/tools/${slug}/`,
+      };
+    }),
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Structured Data Tools', item: canonical },
+  ],
+};
+
+const metadata = {
+  title: 'Structured Data Tools',
+  description:
+    'Free online structured data tools for JSON, CSV, YAML, and XML. Format, validate, convert, minify, and query data in your browser.',
+  canonical,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <Breadcrumb
+      items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: 'Structured Data' }]}
+    />
+
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">Data Format Toolkit</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Structured Data Tools</h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        Format, validate, convert, minify, and inspect JSON, CSV, YAML, and XML data. These tools are built for API
+        debugging, spreadsheet cleanup, configuration work, and everyday developer data tasks.
+      </p>
+    </header>
+
+    <div class="mt-12 grid gap-4 md:grid-cols-4">
+      <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">JSON</h2>
+        <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          Best for APIs, app state, logs, test fixtures, and machine-readable data exchange.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">CSV</h2>
+        <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          Best for spreadsheets, exports, imports, reports, and flat table-shaped datasets.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">YAML</h2>
+        <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          Best for human-edited config files, CI pipelines, docs, and deployment settings.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">XML</h2>
+        <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          Best for feeds, sitemaps, SOAP, SVG, document formats, and legacy integrations.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-16 space-y-14">
+      {
+        toolGroups.map((group) => (
+          <section>
+            <div class="mb-6 max-w-3xl">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{group.title}</h2>
+              <p class="mt-3 text-gray-600 dark:text-gray-300">{group.description}</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {group.slugs.map((slug) => {
+                const tool = getTool(slug);
+                if (!tool) return null;
+                return (
+                  <ToolCard
+                    slug={tool.slug}
+                    name={tool.name}
+                    description={tool.description}
+                    icon={tool.icon}
+                    gradient={tool.gradient}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">A practical data cleanup workflow</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          <li>
+            <strong class="text-gray-900 dark:text-white">1. Validate first.</strong> Format JSON, XML, YAML, or CSV before
+            converting it.
+          </li>
+          <li>
+            <strong class="text-gray-900 dark:text-white">2. Normalize shape.</strong> Clean delimiters, headers, indentation,
+            or whitespace so the structure is predictable.
+          </li>
+          <li>
+            <strong class="text-gray-900 dark:text-white">3. Convert only after cleanup.</strong> Move between JSON, CSV,
+            and YAML once the source is valid.
+          </li>
+          <li>
+            <strong class="text-gray-900 dark:text-white">4. Inspect the result.</strong> Use JSON Path, diff tools, or formatters
+            to verify important values.
+          </li>
+        </ol>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Related guides</h2>
+        <div class="mt-5 grid gap-3">
+          {
+            guideLinks.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-16 max-w-4xl">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+      <div class="mt-6 space-y-4">
+        {
+          faqItems.map((item) => (
+            <details class="group rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+              <summary class="flex cursor-pointer items-center justify-between p-4 font-medium text-gray-900 transition hover:text-primary-700 dark:text-white dark:hover:text-primary-300">
+                <span>{item.question}</span>
+                <astro-icon
+                  name="tabler:chevron-down"
+                  class="ml-3 h-5 w-5 shrink-0 text-gray-400 transition group-open:rotate-180"
+                />
+              </summary>
+              <p class="px-4 pb-4 text-sm leading-6 text-gray-600 dark:text-gray-300">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+</Layout>

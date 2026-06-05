@@ -1,0 +1,229 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+---
+
+<ToolLayout
+  title="JSON Path Tester"
+  description="Test JSON paths against JSON data online. Query nested objects, arrays, indexes, and wildcard matches."
+  slug="json-path-tester"
+  category="Developer Tools"
+  features={[
+    'Tests JSON paths against pasted JSON data',
+    'Supports dot notation, bracket notation, array indexes, and wildcards',
+    'Outputs matching values as formatted JSON',
+    'Shows match counts and validation errors',
+    'Includes sample JSON and common path examples',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Finding nested values in API responses',
+    'Testing paths before writing code or documentation',
+    'Checking array indexes and wildcard selections',
+    'Extracting values from logs, configs, and sample payloads',
+  ]}
+  howToSteps={[
+    'Paste JSON into the input field.',
+    'Enter a path such as $.users[0].name or $.users[*].email.',
+    'Click Test Path.',
+    'Review the matched values in the output panel.',
+  ]}
+  examples={[
+    {
+      title: 'Select values from an array',
+      input: '$.users[*].email',
+      output: '[\n  "alice@example.com",\n  "bob@example.com"\n]',
+      note: 'The wildcard selects the email property from every item in the users array.',
+    },
+  ]}
+  tips={[
+    'Start paths with $ to represent the root JSON value.',
+    'Use [0] to select the first array item.',
+    'Use [*] to select all items in an array or all values in an object.',
+  ]}
+  faq={[
+    {
+      question: 'What JSON Path syntax is supported?',
+      answer:
+        'This tester supports common dot notation, bracket notation, array indexes, and wildcards such as $.users[*].name.',
+    },
+    {
+      question: 'Does it support filters?',
+      answer:
+        'This lightweight tester focuses on common lookup paths and does not support advanced filter expressions.',
+    },
+    {
+      question: 'Is my JSON uploaded?',
+      answer: 'No. JSON parsing and path testing happen locally in your browser.',
+    },
+    {
+      question: 'Why does my path return no matches?',
+      answer:
+        'Check property names, array indexes, and whether the path starts from the correct root object. JSON paths are case-sensitive.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">JSON Path</label>
+      <input
+        id="jpt-path"
+        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        value="$.users[*].email"
+        spellcheck="false"
+      />
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <button
+        id="jpt-test"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+      >
+        Test Path
+      </button>
+      <button
+        id="jpt-sample"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Load Sample
+      </button>
+      <button
+        id="jpt-copy"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
+      >
+        Copy Results
+      </button>
+    </div>
+
+    <div id="jpt-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">JSON Input</label>
+        <textarea
+          id="jpt-json"
+          class="min-h-[300px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder='{"users":[{"name":"Alice"}]}'
+          spellcheck="false"></textarea>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Matches</label>
+        <textarea
+          id="jpt-output"
+          class="min-h-[300px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-sm text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+          readonly
+          placeholder="Matching values will appear here..."
+          spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  function initJsonPathTester() {
+    const pathInput = document.getElementById('jpt-path') as HTMLInputElement;
+    const jsonInput = document.getElementById('jpt-json') as HTMLTextAreaElement;
+    const output = document.getElementById('jpt-output') as HTMLTextAreaElement;
+    const status = document.getElementById('jpt-status') as HTMLDivElement;
+    const test = document.getElementById('jpt-test');
+    const sample = document.getElementById('jpt-sample');
+    const copy = document.getElementById('jpt-copy');
+
+    if (!pathInput || !jsonInput || !output || !test) return;
+
+    function showStatus(message: string, error = false) {
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function tokenize(path: string) {
+      const tokens: string[] = [];
+      let index = path.startsWith('$') ? 1 : 0;
+      while (index < path.length) {
+        if (path[index] === '.') {
+          index += 1;
+          if (path[index] === '*') {
+            tokens.push('*');
+            index += 1;
+            continue;
+          }
+          const match = /^[A-Za-z_$][\w$-]*/.exec(path.slice(index));
+          if (!match) throw new Error('Invalid dot notation segment.');
+          tokens.push(match[0]);
+          index += match[0].length;
+        } else if (path[index] === '[') {
+          const end = path.indexOf(']', index);
+          if (end === -1) throw new Error('Missing closing bracket.');
+          const raw = path.slice(index + 1, end).trim();
+          if (raw === '*') tokens.push('*');
+          else if (/^\d+$/.test(raw)) tokens.push(raw);
+          else if (/^(['"]).*\1$/.test(raw)) tokens.push(raw.slice(1, -1));
+          else throw new Error('Unsupported bracket segment.');
+          index = end + 1;
+        } else {
+          throw new Error('Path must use dot or bracket notation.');
+        }
+      }
+      return tokens;
+    }
+
+    function applyTokens(root: unknown, tokens: string[]) {
+      let current = [root];
+      tokens.forEach((token) => {
+        const next: unknown[] = [];
+        current.forEach((value) => {
+          if (token === '*') {
+            if (Array.isArray(value)) next.push(...value);
+            else if (value && typeof value === 'object') next.push(...Object.values(value as Record<string, unknown>));
+          } else if (Array.isArray(value) && /^\d+$/.test(token)) {
+            if (Number(token) < value.length) next.push(value[Number(token)]);
+          } else if (value && typeof value === 'object' && token in (value as Record<string, unknown>)) {
+            next.push((value as Record<string, unknown>)[token]);
+          }
+        });
+        current = next;
+      });
+      return current;
+    }
+
+    test.addEventListener('click', () => {
+      try {
+        if (!jsonInput.value.trim()) throw new Error('Please paste JSON first.');
+        if (!pathInput.value.trim()) throw new Error('Please enter a JSON path.');
+        const data = JSON.parse(jsonInput.value);
+        const matches = applyTokens(data, tokenize(pathInput.value.trim()));
+        output.value = JSON.stringify(matches.length === 1 ? matches[0] : matches, null, 2);
+        showStatus(`Found ${matches.length} match${matches.length === 1 ? '' : 'es'}.`);
+      } catch (error) {
+        output.value = '';
+        showStatus((error as Error).message, true);
+      }
+    });
+
+    sample?.addEventListener('click', () => {
+      jsonInput.value = JSON.stringify(
+        {
+          users: [
+            { name: 'Alice', email: 'alice@example.com', roles: ['admin', 'editor'] },
+            { name: 'Bob', email: 'bob@example.com', roles: ['viewer'] },
+          ],
+          meta: { total: 2 },
+        },
+        null,
+        2
+      );
+      pathInput.value = '$.users[*].email';
+      status.classList.add('hidden');
+    });
+
+    copy?.addEventListener('click', () => {
+      if (!output.value) return;
+      navigator.clipboard.writeText(output.value);
+      showStatus('Copied results to clipboard.');
+    });
+  }
+
+  initJsonPathTester();
+  document.addEventListener('astro:page-load', initJsonPathTester);
+</script>

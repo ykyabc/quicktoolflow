@@ -17,6 +17,25 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'See how formatted JSON can be prepared for spreadsheets, reporting, and CSV export.',
     },
   ],
+  'json-minifier': [
+    {
+      title: 'JSON Minifier Guide',
+      href: '/blog/json-minifier-guide/',
+      description: 'Learn what JSON minification changes, when compact JSON is useful, and what mistakes to avoid.',
+    },
+    {
+      title: 'JSON Formatting Best Practices',
+      href: '/blog/json-formatting-best-practices/',
+      description: 'Understand when to keep JSON readable and when to produce compact output.',
+    },
+  ],
+  'json-path-tester': [
+    {
+      title: 'JSON Path Tester Guide',
+      href: '/blog/json-path-tester-guide/',
+      description: 'Learn how to query nested JSON objects, arrays, indexes, and wildcard matches.',
+    },
+  ],
   'json-to-csv': [
     {
       title: 'JSON to CSV Conversion Guide',
@@ -30,6 +49,30 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'Clean and validate JSON before converting it to CSV or another structured format.',
     },
   ],
+  'csv-formatter': [
+    {
+      title: 'CSV Formatting Guide',
+      href: '/blog/csv-formatting-guide/',
+      description: 'Learn how CSV delimiters, quoting, line breaks, and row cleanup work.',
+    },
+    {
+      title: 'CSV to JSON Conversion Guide',
+      href: '/blog/csv-to-json-conversion-guide/',
+      description: 'See why clean CSV headers and fields produce better JSON output.',
+    },
+  ],
+  'csv-to-json': [
+    {
+      title: 'CSV to JSON Conversion Guide',
+      href: '/blog/csv-to-json-conversion-guide/',
+      description: 'Learn how headers become JSON keys and how quoted CSV fields should be parsed.',
+    },
+    {
+      title: 'CSV Formatting Guide',
+      href: '/blog/csv-formatting-guide/',
+      description: 'Clean CSV delimiters, quotes, rows, and whitespace before converting to JSON.',
+    },
+  ],
   'json-to-yaml': [
     {
       title: 'JSON to YAML Conversion Guide',
@@ -40,6 +83,25 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       title: 'JSON Formatting Best Practices',
       href: '/blog/json-formatting-best-practices/',
       description: 'Validate JSON first so configuration conversion is easier to debug.',
+    },
+  ],
+  'yaml-formatter': [
+    {
+      title: 'YAML Formatting Guide',
+      href: '/blog/yaml-formatting-guide/',
+      description: 'Learn why YAML indentation matters and how to avoid common configuration mistakes.',
+    },
+    {
+      title: 'JSON to YAML Conversion Guide',
+      href: '/blog/json-to-yaml-conversion-guide/',
+      description: 'Understand how YAML and JSON differ when moving structured configuration data.',
+    },
+  ],
+  'xml-formatter': [
+    {
+      title: 'XML Formatting Guide',
+      href: '/blog/xml-formatting-guide/',
+      description: 'Learn what well-formed XML means and how to format APIs, feeds, and sitemaps.',
     },
   ],
   'password-generator': [
