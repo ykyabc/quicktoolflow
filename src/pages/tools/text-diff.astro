@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -82,18 +84,10 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
           placeholder="Paste modified text..."></textarea>
       </div>
     </div>
-    <div class="flex gap-2">
-      <button
-        id="td-cmp"
-        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Compare</button
-      >
-      <button
-        id="td-clr"
-        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Clear</button
-      >
-    </div>
+    <ToolActionBar>
+      <ToolActionButton id="td-cmp" variant="primary" icon="tabler:git-compare">Compare</ToolActionButton>
+      <ToolActionButton id="td-clr" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
     <div id="td-res" class="hidden">
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Differences</h3>
       <div

@@ -1,5 +1,6 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -80,16 +81,8 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         <input id="wf-ignore" type="checkbox" checked class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Ignore common words (the, a, is, etc.)</span>
       </label>
-      <button
-        id="wf-analyze"
-        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Analyze</button
-      >
-      <button
-        id="wf-copy"
-        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
-        >Copy Results</button
-      >
+      <ToolActionButton id="wf-analyze" variant="primary" icon="tabler:chart-bar">Analyze</ToolActionButton>
+      <ToolActionButton id="wf-copy" icon="tabler:copy">Copy Results</ToolActionButton>
     </div>
 
     <div id="wf-results" class="hidden">

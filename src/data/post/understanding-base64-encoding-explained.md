@@ -1,13 +1,13 @@
 ---
-title: Understanding Base64 Encoding
-excerpt: A beginner-friendly guide to Base64 encoding. Learn what it is, why it exists, and how to encode and decode Base64 strings.
+title: 'Understanding Base64 Encoding'
+excerpt: 'A beginner-friendly guide to Base64 encoding. Learn what it is, why it exists, and how to encode and decode Base64 strings.'
 publishDate: 2025-03-20
-category: Developer Tools
+category: 'Security'
 tags:
   - base64
   - encoding
   - web development
-author: QuickToolFlow
+author: 'QuickToolFlow'
 ---
 
 Base64 encoding is one of those things every developer encounters but few truly understand. Let us break it down.

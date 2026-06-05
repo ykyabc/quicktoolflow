@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -91,32 +93,14 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       </label>
     </div>
 
-    <div class="flex flex-wrap gap-2">
-      <button
-        id="csv-json-convert"
-        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-      >
+    <ToolActionBar>
+      <ToolActionButton id="csv-json-convert" variant="primary" icon="tabler:database-export">
         Convert to JSON
-      </button>
-      <button
-        id="csv-json-sample"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Load Sample
-      </button>
-      <button
-        id="csv-json-copy"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Copy JSON
-      </button>
-      <button
-        id="csv-json-download"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Download
-      </button>
-    </div>
+      </ToolActionButton>
+      <ToolActionButton id="csv-json-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="csv-json-copy" icon="tabler:copy">Copy JSON</ToolActionButton>
+      <ToolActionButton id="csv-json-download" icon="tabler:download">Download</ToolActionButton>
+    </ToolActionBar>
 
     <div id="csv-json-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 

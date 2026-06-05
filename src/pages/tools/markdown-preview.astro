@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -64,18 +66,10 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   ]}
 >
   <div class="space-y-4">
-    <div class="flex gap-2">
-      <button
-        id="md-clear"
-        class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Clear</button
-      >
-      <button
-        id="md-copy-html"
-        class="px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Copy HTML</button
-      >
-    </div>
+    <ToolActionBar>
+      <ToolActionButton id="md-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+      <ToolActionButton id="md-copy-html" icon="tabler:copy">Copy HTML</ToolActionButton>
+    </ToolActionBar>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div>

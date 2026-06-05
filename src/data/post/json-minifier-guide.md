@@ -1,6 +1,6 @@
 ---
 title: 'JSON Minifier Guide: When and How to Minify JSON'
-excerpt: 'Understand JSON minification, when compact JSON is useful, what it changes, what it does not change, and how to avoid common mistakes with API payloads and config values.'
+excerpt: 'Understand JSON minification, when compact JSON is useful, what it changes, and how to avoid mistakes with API payloads and config values.'
 publishDate: 2026-06-05
 category: 'Developer Tools'
 tags:

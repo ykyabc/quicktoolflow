@@ -106,9 +106,19 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'password-generator': [
     {
+      title: 'Password Entropy Explained',
+      href: '/blog/password-entropy-explained/',
+      description: 'Learn how length, character pools, and randomness affect password strength.',
+    },
+    {
       title: 'How to Create Strong Passwords',
       href: '/blog/how-to-create-strong-passwords-guide/',
       description: 'Learn what makes a password secure and how to avoid common password mistakes.',
+    },
+    {
+      title: 'UUID vs Random String',
+      href: '/blog/uuid-vs-random-string-guide/',
+      description: 'Understand when random strings should be treated as secrets and when UUIDs are enough.',
     },
   ],
   'qr-code-generator': [
@@ -119,6 +129,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'jwt-decoder': [
+    {
+      title: 'JWT Security Best Practices',
+      href: '/blog/jwt-security-best-practices/',
+      description: 'Learn how to inspect JWTs safely without confusing decoding with verification.',
+    },
     {
       title: 'JWT Decoder Guide',
       href: '/blog/jwt-decoder-guide-json-web-token-explained/',
@@ -147,6 +162,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   base64: [
     {
+      title: 'Base64 vs URL Encoding',
+      href: '/blog/base64-vs-url-encoding-guide/',
+      description: 'Compare Base64, Base64Url, and URL encoding in practical web development workflows.',
+    },
+    {
       title: 'Understanding Base64 Encoding',
       href: '/blog/understanding-base64-encoding-explained/',
       description: 'Learn what Base64 encoding is, how it works, and when to use it.',
@@ -166,9 +186,57 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'uuid-generator': [
     {
+      title: 'UUID vs Random String',
+      href: '/blog/uuid-vs-random-string-guide/',
+      description: 'Learn when to use UUIDs, random strings, public IDs, and secret tokens.',
+    },
+    {
       title: 'UUID Generator Guide for Developers',
       href: '/blog/uuid-generator-guide-for-developers/',
       description: 'Learn what UUIDs are and when to use them in applications and databases.',
+    },
+  ],
+  'hash-generator': [
+    {
+      title: 'SHA-256 vs SHA-512',
+      href: '/blog/sha-256-vs-sha-512-guide/',
+      description: 'Compare SHA-256 and SHA-512 and learn what cryptographic hashes should and should not be used for.',
+    },
+    {
+      title: 'Password Entropy Explained',
+      href: '/blog/password-entropy-explained/',
+      description: 'Understand why fast hashes are not enough for password storage by themselves.',
+    },
+  ],
+  'url-encoder': [
+    {
+      title: 'Base64 vs URL Encoding',
+      href: '/blog/base64-vs-url-encoding-guide/',
+      description: 'Learn the difference between reversible binary encoding and URL-safe percent encoding.',
+    },
+    {
+      title: 'String Escaping Guide',
+      href: '/blog/string-escaping-guide-json-javascript-html-csv/',
+      description: 'Understand when URL encoding differs from JSON, JavaScript, HTML, and CSV escaping.',
+    },
+  ],
+  'string-escape': [
+    {
+      title: 'String Escaping Guide',
+      href: '/blog/string-escaping-guide-json-javascript-html-csv/',
+      description: 'Learn how escaping differs across JSON, JavaScript, HTML, CSV, and URL contexts.',
+    },
+    {
+      title: 'Base64 vs URL Encoding',
+      href: '/blog/base64-vs-url-encoding-guide/',
+      description: 'Compare encoding and escaping workflows that often appear together in APIs.',
+    },
+  ],
+  'html-entity-encoder': [
+    {
+      title: 'String Escaping Guide',
+      href: '/blog/string-escaping-guide-json-javascript-html-csv/',
+      description: 'Learn when to use HTML entities and how HTML escaping differs from JSON or CSV escaping.',
     },
   ],
   'cron-expression-generator': [
@@ -191,6 +259,20 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       title: 'Color Conversion Guide for Web Designers',
       href: '/blog/color-conversion-guide-for-web-designers/',
       description: 'Learn how HEX, RGB, and HSL color formats work in web design.',
+    },
+  ],
+  'meta-tag-generator': [
+    {
+      title: 'SERP Snippet Preview Guide',
+      href: '/blog/serp-snippet-preview-guide/',
+      description: 'Learn how to write clearer page titles and meta descriptions for search result snippets.',
+    },
+  ],
+  'serp-snippet-preview': [
+    {
+      title: 'SERP Snippet Preview Guide',
+      href: '/blog/serp-snippet-preview-guide/',
+      description: 'Learn how search snippets work and how to tune titles, URLs, and meta descriptions.',
     },
   ],
 };

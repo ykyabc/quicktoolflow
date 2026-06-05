@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -74,33 +76,13 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       >
     </div>
 
-    <div class="flex flex-wrap gap-2">
-      <button
-        id="se-json"
-        class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Escape JSON</button
-      >
-      <button
-        id="se-js"
-        class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Escape JS</button
-      >
-      <button
-        id="se-html"
-        class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Escape HTML</button
-      >
-      <button
-        id="se-unescape"
-        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Unescape</button
-      >
-      <button
-        id="se-copy"
-        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
-        >Copy</button
-      >
-    </div>
+    <ToolActionBar>
+      <ToolActionButton id="se-json" variant="primary" icon="tabler:braces">Escape JSON</ToolActionButton>
+      <ToolActionButton id="se-js" variant="primary" icon="tabler:script">Escape JS</ToolActionButton>
+      <ToolActionButton id="se-html" variant="primary" icon="tabler:code">Escape HTML</ToolActionButton>
+      <ToolActionButton id="se-unescape" icon="tabler:code-minus">Unescape</ToolActionButton>
+      <ToolActionButton id="se-copy" icon="tabler:copy">Copy</ToolActionButton>
+    </ToolActionBar>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>

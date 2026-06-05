@@ -1,0 +1,295 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+
+const canonical = 'https://quicktoolflow.com/tools/security-encoding/';
+
+const toolGroups = [
+  {
+    title: 'Decode and inspect data',
+    description: 'Read encoded strings and token payloads before debugging APIs, headers, or copied technical data.',
+    slugs: ['base64', 'jwt-decoder', 'url-encoder'],
+  },
+  {
+    title: 'Generate secure values',
+    description: 'Create strong passwords, UUIDs, and hashes for development, testing, and security checks.',
+    slugs: ['password-generator', 'uuid-generator', 'hash-generator'],
+  },
+  {
+    title: 'Prepare strings safely',
+    description: 'Escape text for code, URLs, JSON, HTML, and other contexts where special characters matter.',
+    slugs: ['string-escape', 'html-entity-encoder', 'qr-code-generator'],
+  },
+];
+
+const guideLinks = [
+  {
+    title: 'Base64 vs URL Encoding',
+    href: '/blog/base64-vs-url-encoding-guide/',
+    description: 'Compare Base64, Base64Url, and URL encoding in practical web and API workflows.',
+  },
+  {
+    title: 'SHA-256 vs SHA-512',
+    href: '/blog/sha-256-vs-sha-512-guide/',
+    description: 'Understand cryptographic hash choices and why hashes are not encryption.',
+  },
+  {
+    title: 'JWT Security Best Practices',
+    href: '/blog/jwt-security-best-practices/',
+    description: 'Decode tokens safely, validate claims, and avoid common JWT security mistakes.',
+  },
+  {
+    title: 'Password Entropy Explained',
+    href: '/blog/password-entropy-explained/',
+    description: 'Learn how length, randomness, and character pools affect password strength.',
+  },
+  {
+    title: 'UUID vs Random String',
+    href: '/blog/uuid-vs-random-string-guide/',
+    description: 'Choose between identifiers, random strings, public IDs, and secret values.',
+  },
+  {
+    title: 'String Escaping Guide',
+    href: '/blog/string-escaping-guide-json-javascript-html-csv/',
+    description: 'Escape strings correctly for JSON, JavaScript, HTML, CSV, and URLs.',
+  },
+  {
+    title: 'How to Create Strong Passwords',
+    href: '/blog/how-to-create-strong-passwords-guide/',
+    description: 'Understand password entropy, attack methods, and practical password generation settings.',
+  },
+  {
+    title: 'JWT Decoder Guide',
+    href: '/blog/jwt-decoder-guide-json-web-token-explained/',
+    description: 'Learn how JWT headers, payloads, claims, expiration, and signatures fit together.',
+  },
+  {
+    title: 'Understanding Base64 Encoding',
+    href: '/blog/understanding-base64-encoding-explained/',
+    description: 'See what Base64 encoding does, why it exists, and where it appears in web development.',
+  },
+  {
+    title: 'UUID Generator Guide',
+    href: '/blog/uuid-generator-guide-for-developers/',
+    description: 'Learn when UUIDs are useful and how random identifiers differ from sequential IDs.',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'What are security and encoding tools?',
+    answer:
+      'Security and encoding tools help you generate secure values, decode technical strings, inspect tokens, escape special characters, and prepare data for web or API workflows.',
+  },
+  {
+    question: 'Do these tools encrypt my data?',
+    answer:
+      'No. Encoding, hashing, token decoding, and escaping are different from encryption. For example, Base64 is reversible encoding, while SHA hashes are one-way digests.',
+  },
+  {
+    question: 'Can I decode a JWT without verifying it?',
+    answer:
+      'Yes. Decoding a JWT only reads its header and payload. It does not prove the token is trusted. Signature verification requires the correct secret or public key.',
+  },
+  {
+    question: 'Do these tools upload passwords, tokens, or strings?',
+    answer:
+      'QuickToolFlow tools are designed to process common tasks in your browser. Still, avoid pasting production secrets, private keys, or live access tokens into any online tool unless you fully understand the risk.',
+  },
+];
+
+const concepts = [
+  {
+    title: 'Encoding',
+    description:
+      'Transforms data into another representation for transport or compatibility. Base64 and URL encoding are reversible.',
+  },
+  {
+    title: 'Hashing',
+    description:
+      'Creates a fixed-length digest from input text. Hashes are useful for checks, fingerprints, and comparisons, but they are not encryption.',
+  },
+  {
+    title: 'Escaping',
+    description:
+      'Adds backslashes or entities so special characters are interpreted safely inside JSON, JavaScript, HTML, CSV, or URLs.',
+  },
+  {
+    title: 'Token inspection',
+    description:
+      'Reads structured token data, such as JWT claims and expiration times, so developers can debug authentication flows.',
+  },
+];
+
+const getTool = (slug: string) => tools.find((tool) => tool.slug === slug);
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Security and encoding tools',
+  itemListElement: toolGroups
+    .flatMap((group) => group.slugs)
+    .map((slug, index) => {
+      const tool = getTool(slug);
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        name: tool?.name || slug,
+        url: `https://quicktoolflow.com/tools/${slug}/`,
+      };
+    }),
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Security & Encoding Tools', item: canonical },
+  ],
+};
+
+const metadata = {
+  title: 'Security & Encoding Tools',
+  description:
+    'Free online security and encoding tools for passwords, hashes, JWTs, Base64, URL encoding, string escaping, UUIDs, and QR codes.',
+  canonical,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <Breadcrumb
+      items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: 'Security & Encoding' }]}
+    />
+
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">Security Toolkit</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+        Security & Encoding Tools
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        Generate secure values, decode tokens, inspect encoded strings, and escape text for web development. This
+        toolkit brings together practical utilities for authentication debugging, API work, and safer string handling.
+      </p>
+    </header>
+
+    <div class="mt-12 grid gap-4 md:grid-cols-4">
+      {
+        concepts.map((concept) => (
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{concept.title}</h2>
+            <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{concept.description}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 space-y-14">
+      {
+        toolGroups.map((group) => (
+          <section>
+            <div class="mb-6 max-w-3xl">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{group.title}</h2>
+              <p class="mt-3 text-gray-600 dark:text-gray-300">{group.description}</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {group.slugs.map((slug) => {
+                const tool = getTool(slug);
+                if (!tool) return null;
+                return (
+                  <ToolCard
+                    slug={tool.slug}
+                    name={tool.name}
+                    description={tool.description}
+                    icon={tool.icon}
+                    gradient={tool.gradient}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">A practical security debugging workflow</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          <li>
+            <strong class="text-gray-900 dark:text-white">1. Identify the data type.</strong> Decide whether you are working
+            with encoded text, a token, a hash, or a string that needs escaping.
+          </li>
+          <li>
+            <strong class="text-gray-900 dark:text-white">2. Decode only when appropriate.</strong> Base64, URL-encoded strings,
+            and JWT payloads can be decoded for inspection, but decoding does not prove trust.
+          </li>
+          <li>
+            <strong class="text-gray-900 dark:text-white">3. Generate values with enough randomness.</strong> Use strong passwords
+            and UUIDs when examples, test data, or identifiers need to be hard to guess.
+          </li>
+          <li>
+            <strong class="text-gray-900 dark:text-white">4. Escape before embedding.</strong> Prepare strings for JSON, JavaScript,
+            HTML, CSV, or URLs before pasting them into code or configuration.
+          </li>
+        </ol>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Related guides</h2>
+        <div class="mt-5 grid gap-3">
+          {
+            guideLinks.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-16 max-w-4xl">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+      <div class="mt-6 space-y-4">
+        {
+          faqItems.map((item) => (
+            <details class="group rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+              <summary class="flex cursor-pointer items-center justify-between p-4 font-medium text-gray-900 transition hover:text-primary-700 dark:text-white dark:hover:text-primary-300">
+                <span>{item.question}</span>
+                <astro-icon
+                  name="tabler:chevron-down"
+                  class="ml-3 h-5 w-5 shrink-0 text-gray-400 transition group-open:rotate-180"
+                />
+              </summary>
+              <p class="px-4 pb-4 text-sm leading-6 text-gray-600 dark:text-gray-300">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+</Layout>

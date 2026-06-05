@@ -1,6 +1,6 @@
 ---
 title: 'Unix Timestamp Explained: A Complete Guide with Conversion Examples'
-excerpt: 'What is a Unix timestamp and how does it work? Learn the fundamentals, see conversion examples in every programming language, and use our free timestamp converter tool.'
+excerpt: 'Learn what Unix timestamps are, how epoch time works, and how to convert timestamps across common programming languages.'
 publishDate: 2026-05-26
 category: 'Developer Tools'
 tags:

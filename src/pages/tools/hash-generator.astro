@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -73,11 +75,9 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         placeholder="Enter text to hash..."></textarea>
     </div>
 
-    <button
-      id="hg-gen"
-      class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-      >Generate Hashes</button
-    >
+    <ToolActionBar>
+      <ToolActionButton id="hg-gen" variant="primary" icon="tabler:fingerprint">Generate Hashes</ToolActionButton>
+    </ToolActionBar>
 
     <div class="space-y-4">
       {
@@ -93,12 +93,14 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
                 class="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-mono text-sm outline-none"
                 readonly
               />
-              <button
-                class="hg-copy px-3 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
+              <ToolActionButton
+                class="hg-copy"
                 data-tgt={`hg-${algo.toLowerCase().replace('-', '')}`}
+                icon="tabler:copy"
+                title={`Copy ${algo} hash`}
               >
-                <astro-icon name="tabler:copy" class="w-4 h-4" />
-              </button>
+                Copy
+              </ToolActionButton>
             </div>
           </div>
         ))

@@ -1,6 +1,6 @@
 ---
 title: 'CSV to JSON Conversion Guide for Developers'
-excerpt: 'Learn how CSV to JSON conversion works, how headers become object keys, how quoted fields are parsed, and how to avoid data loss when converting spreadsheet exports.'
+excerpt: 'Learn how CSV to JSON conversion works, how headers become object keys, how quoted fields are parsed, and how to avoid data loss.'
 publishDate: 2026-06-05
 category: 'Developer Tools'
 tags:

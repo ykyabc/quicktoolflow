@@ -3,7 +3,10 @@ title: 'How to Create Strong Passwords: A Complete Security Guide'
 excerpt: 'Learn how to create truly secure passwords. Understand password entropy, common attack methods, and best practices for 2025.'
 publishDate: 2025-02-10
 category: 'Security'
-tags: ['passwords', 'security', 'cybersecurity']
+tags:
+  - passwords
+  - security
+  - cybersecurity
 author: 'QuickToolFlow'
 ---
 

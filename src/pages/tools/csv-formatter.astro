@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -100,32 +102,12 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       </label>
     </div>
 
-    <div class="flex flex-wrap gap-2">
-      <button
-        id="csvfmt-format"
-        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-      >
-        Format CSV
-      </button>
-      <button
-        id="csvfmt-sample"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Load Sample
-      </button>
-      <button
-        id="csvfmt-copy"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Copy CSV
-      </button>
-      <button
-        id="csvfmt-download"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Download
-      </button>
-    </div>
+    <ToolActionBar>
+      <ToolActionButton id="csvfmt-format" variant="primary" icon="tabler:table-options">Format CSV</ToolActionButton>
+      <ToolActionButton id="csvfmt-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="csvfmt-copy" icon="tabler:copy">Copy CSV</ToolActionButton>
+      <ToolActionButton id="csvfmt-download" icon="tabler:download">Download</ToolActionButton>
+    </ToolActionBar>
 
     <div id="csvfmt-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 

@@ -3,6 +3,7 @@ import RelatedGuides from '~/components/ui/RelatedGuides.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
 
@@ -27,7 +28,7 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
         Cron Expression Generator
       </h1>
       <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl">
-        Build cron expressions visually without memorizing syntax. Set minutes, hours, days, months, and weekdays — then
+        Build cron expressions visually without memorizing syntax. Set minutes, hours, days, months, and weekdays, then
         see the human-readable schedule and next run times.
       </p>
     </header>
@@ -141,7 +142,8 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Expression</h2>
-          <button id="cron-copy" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">Copy</button>
+          <ToolActionButton id="cron-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton
+          >
         </div>
         <div
           id="cron-expr"
@@ -202,11 +204,13 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
           </table>
         </div>
         <div class="mt-4 text-sm text-gray-600 dark:text-gray-400 space-y-1">
-          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">*</code> — any value</p>
-          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">,</code> — list: 1,3,5</p>
-          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">-</code> — range: 1-5</p>
+          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">*</code> 鈥?any value</p>
           <p>
-            <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">/</code> — step: */5 means every
+            <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">,</code> 鈥?list: 1,3,5
+          </p>
+          <p><code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">-</code> 鈥?range: 1-5</p>
+          <p>
+            <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">/</code> 鈥?step: */5 means every
             5
           </p>
         </div>

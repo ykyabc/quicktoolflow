@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -63,26 +65,11 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
   ]}
 >
   <div class="space-y-6">
-    <div class="flex flex-wrap gap-2">
-      <button
-        id="yaml-format"
-        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-      >
-        Format YAML
-      </button>
-      <button
-        id="yaml-sample"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Load Sample
-      </button>
-      <button
-        id="yaml-copy"
-        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200"
-      >
-        Copy Output
-      </button>
-    </div>
+    <ToolActionBar>
+      <ToolActionButton id="yaml-format" variant="primary" icon="tabler:wand">Format YAML</ToolActionButton>
+      <ToolActionButton id="yaml-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="yaml-copy" icon="tabler:copy">Copy Output</ToolActionButton>
+    </ToolActionBar>
 
     <div id="yaml-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 

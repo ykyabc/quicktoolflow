@@ -1,6 +1,6 @@
 ---
 title: 'JSON to CSV: How to Convert Data Between Formats'
-excerpt: 'Learn how to convert JSON data to CSV format. Understand the differences between JSON and CSV, see conversion examples in code, and use our free online converter.'
+excerpt: 'Learn how to convert JSON data to CSV format, handle nested data, and avoid common conversion mistakes.'
 publishDate: 2026-05-28
 category: 'Developer Tools'
 tags:

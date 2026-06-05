@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -76,33 +78,13 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       </textarea>
     </div>
 
-    <div class="flex flex-wrap gap-2">
-      <button
-        id="ws-all"
-        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Remove All Extra Spaces</button
-      >
-      <button
-        id="ws-trim"
-        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Trim Lines</button
-      >
-      <button
-        id="ws-blank"
-        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Remove Blank Lines</button
-      >
-      <button
-        id="ws-tabs"
-        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Tabs to Spaces</button
-      >
-      <button
-        id="ws-copy"
-        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
-        >Copy</button
-      >
-    </div>
+    <ToolActionBar>
+      <ToolActionButton id="ws-all" variant="primary" icon="tabler:space">Remove All Extra Spaces</ToolActionButton>
+      <ToolActionButton id="ws-trim" icon="tabler:align-left">Trim Lines</ToolActionButton>
+      <ToolActionButton id="ws-blank" icon="tabler:line-dashed">Remove Blank Lines</ToolActionButton>
+      <ToolActionButton id="ws-tabs" icon="tabler:indent-increase">Tabs to Spaces</ToolActionButton>
+      <ToolActionButton id="ws-copy" icon="tabler:copy">Copy</ToolActionButton>
+    </ToolActionBar>
 
     <div id="ws-stats" class="hidden flex gap-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-sm">
       <span class="text-green-700 dark:text-green-400" id="ws-before">Before: 0 chars</span>

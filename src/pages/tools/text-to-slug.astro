@@ -1,5 +1,6 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -69,7 +70,7 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         id="sl-input"
         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[100px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
         placeholder="Enter a title or phrase to convert..."
-        >How to Build a Great Website in 2025 — The Ultimate Guide!</textarea
+        >How to Build a Great Website in 2025 - The Ultimate Guide!</textarea
       >
     </div>
 
@@ -100,16 +101,8 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
         <input id="sl-lower" type="checkbox" checked class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Lowercase</span>
       </label>
-      <button
-        id="sl-gen"
-        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Generate Slug</button
-      >
-      <button
-        id="sl-copy"
-        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Copy</button
-      >
+      <ToolActionButton id="sl-gen" variant="primary" icon="tabler:link">Generate Slug</ToolActionButton>
+      <ToolActionButton id="sl-copy" icon="tabler:copy">Copy</ToolActionButton>
     </div>
 
     <div>
@@ -132,71 +125,71 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       </div>
       <div class="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg text-center">
         <span class="text-xs text-gray-500 uppercase">Preview URL</span>
-        <div id="sl-url" class="text-xs font-mono text-gray-600 dark:text-gray-300 mt-1 break-all">—</div>
+        <div id="sl-url" class="text-xs font-mono text-gray-600 dark:text-gray-300 mt-1 break-all">-</div>
       </div>
     </div>
   </div>
-</ToolLayout>
 
-<script>
-  function initSlugGenerator() {
-    const input = document.getElementById('sl-input') as HTMLTextAreaElement;
-    const sepEl = document.getElementById('sl-sep') as HTMLSelectElement;
-    const maxEl = document.getElementById('sl-max') as HTMLInputElement;
-    const lowerEl = document.getElementById('sl-lower') as HTMLInputElement;
-    const output = document.getElementById('sl-output') as HTMLDivElement;
-    const lenEl = document.getElementById('sl-len');
-    const wordsEl = document.getElementById('sl-words');
-    const urlEl = document.getElementById('sl-url');
-    const btnGen = document.getElementById('sl-gen');
-    const btnCopy = document.getElementById('sl-copy');
+  <script>
+    function initSlugGenerator() {
+      const input = document.getElementById('sl-input') as HTMLTextAreaElement;
+      const sepEl = document.getElementById('sl-sep') as HTMLSelectElement;
+      const maxEl = document.getElementById('sl-max') as HTMLInputElement;
+      const lowerEl = document.getElementById('sl-lower') as HTMLInputElement;
+      const output = document.getElementById('sl-output') as HTMLDivElement;
+      const lenEl = document.getElementById('sl-len');
+      const wordsEl = document.getElementById('sl-words');
+      const urlEl = document.getElementById('sl-url');
+      const btnGen = document.getElementById('sl-gen');
+      const btnCopy = document.getElementById('sl-copy');
 
-    if (!input || !btnGen || !output) return;
+      if (!input || !btnGen || !output) return;
 
-    function generate() {
-      let text = input.value;
-      const sep = sepEl.value;
-      const maxLen = parseInt(maxEl.value) || 0;
+      function generate() {
+        let text = input.value;
+        const sep = sepEl.value;
+        const maxLen = parseInt(maxEl.value) || 0;
 
-      if (lowerEl.checked) text = text.toLowerCase();
+        if (lowerEl.checked) text = text.toLowerCase();
 
-      let slug = text
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-        .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special chars
-        .trim()
-        .replace(/[\s-]+/g, sep) // Replace spaces/dashes with separator
-        .replace(new RegExp(`[${sep}]+`, 'g'), sep) // Deduplicate separators
-        .replace(new RegExp(`^${sep}|${sep}$`, 'g'), ''); // Trim separators from edges
+        let slug = text
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+          .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special chars
+          .trim()
+          .replace(/[\s-]+/g, sep) // Replace spaces/dashes with separator
+          .replace(new RegExp(`[${sep}]+`, 'g'), sep) // Deduplicate separators
+          .replace(new RegExp(`^${sep}|${sep}$`, 'g'), ''); // Trim separators from edges
 
-      if (maxLen > 0) {
-        slug = slug.slice(0, maxLen);
-        // Don't cut in the middle of a word
-        const lastSep = slug.lastIndexOf(sep);
-        if (lastSep > maxLen * 0.7) slug = slug.slice(0, lastSep);
+        if (maxLen > 0) {
+          slug = slug.slice(0, maxLen);
+          // Don't cut in the middle of a word
+          const lastSep = slug.lastIndexOf(sep);
+          if (lastSep > maxLen * 0.7) slug = slug.slice(0, lastSep);
+        }
+
+        output.textContent = slug;
+        if (lenEl) lenEl.textContent = slug.length.toString();
+        if (wordsEl) wordsEl.textContent = (slug ? slug.split(sep).length : 0).toString();
+        if (urlEl) urlEl.textContent = slug ? 'https://quicktoolflow.com/blog/' + slug : '-';
       }
 
-      output.textContent = slug;
-      if (lenEl) lenEl.textContent = slug.length.toString();
-      if (wordsEl) wordsEl.textContent = (slug ? slug.split(sep).length : 0).toString();
-      if (urlEl) urlEl.textContent = slug ? 'https://quicktoolflow.com/blog/' + slug : '—';
+      btnGen.addEventListener('click', generate);
+      input.addEventListener('input', generate);
+      sepEl.addEventListener('change', generate);
+      lowerEl.addEventListener('change', generate);
+      maxEl.addEventListener('input', generate);
+
+      btnCopy?.addEventListener('click', () => {
+        const text = output.textContent;
+        if (text) navigator.clipboard.writeText(text);
+      });
+
+      generate();
     }
 
-    btnGen.addEventListener('click', generate);
-    input.addEventListener('input', generate);
-    sepEl.addEventListener('change', generate);
-    lowerEl.addEventListener('change', generate);
-    maxEl.addEventListener('input', generate);
-
-    btnCopy?.addEventListener('click', () => {
-      const text = output.textContent;
-      if (text) navigator.clipboard.writeText(text);
-    });
-
-    generate();
-  }
-
-  initSlugGenerator();
-  document.addEventListener('astro:page-load', initSlugGenerator);
-  document.addEventListener('swup:contentReplaced', initSlugGenerator);
-</script>
+    initSlugGenerator();
+    document.addEventListener('astro:page-load', initSlugGenerator);
+    document.addEventListener('swup:contentReplaced', initSlugGenerator);
+  </script>
+</ToolLayout>

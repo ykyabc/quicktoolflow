@@ -144,6 +144,16 @@ const breadcrumbSchema = {
 
 const relatedTools = getRelatedTools(slug, 6);
 const relatedGuides = getRelatedGuides(slug);
+const quickLinks = [
+  { text: 'Tool', href: '#tool-workspace', show: true },
+  { text: 'Example', href: '#example', show: examples.length > 0 },
+  { text: 'Notes', href: '#practical-notes', show: tips.length > 0 },
+  { text: 'How to Use', href: '#how-to-use', show: autoHowToSteps.length > 0 },
+  { text: 'Features', href: '#features', show: autoFeatures.length > 0 },
+  { text: 'FAQ', href: '#faq', show: autoFaq.length > 0 },
+  { text: 'Guides', href: '#related-guides', show: relatedGuides.length > 0 },
+  { text: 'Related Tools', href: '#related-tools', show: relatedTools.length > 0 },
+].filter((link) => link.show);
 
 const metadata = { title, description, canonical, robots: { index: true, follow: true } };
 ---
@@ -164,6 +174,29 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
       <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
         {description}
       </p>
+      <div class="mt-5 grid gap-3 sm:grid-cols-3">
+        <div class="rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-800">
+          <div class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+            <astro-icon name="tabler:device-laptop" class="h-4 w-4 text-blue-600 dark:text-blue-400"></astro-icon>
+            Browser-based
+          </div>
+          <p class="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">Use it instantly with no installation.</p>
+        </div>
+        <div class="rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-800">
+          <div class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+            <astro-icon name="tabler:shield-lock" class="h-4 w-4 text-blue-600 dark:text-blue-400"></astro-icon>
+            Local processing
+          </div>
+          <p class="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">Your input stays in your browser.</p>
+        </div>
+        <div class="rounded-lg border border-gray-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-800">
+          <div class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+            <astro-icon name="tabler:user-off" class="h-4 w-4 text-blue-600 dark:text-blue-400"></astro-icon>
+            No sign-up
+          </div>
+          <p class="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">Open the tool and get results.</p>
+        </div>
+      </div>
       {
         currentTool && (
           <a
@@ -176,8 +209,27 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
       }
     </header>
 
+    {
+      quickLinks.length > 0 && (
+        <nav
+          aria-label="Tool page sections"
+          class="mb-6 flex gap-2 overflow-x-auto rounded-xl border border-gray-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-800"
+        >
+          {quickLinks.map((link) => (
+            <a
+              href={link.href}
+              class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-blue-300"
+            >
+              {link.text}
+            </a>
+          ))}
+        </nav>
+      )
+    }
+
     {/* TOOL BODY */}
     <div
+      id="tool-workspace"
       class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm mb-8"
     >
       <slot />
@@ -187,7 +239,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
     {
       examples.length > 0 && (
-        <section class="mt-12 mb-10">
+        <section id="example" class="mt-12 mb-10 scroll-mt-24">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Example</h2>
           <div class="space-y-4">
             {examples.map((example) => (
@@ -225,7 +277,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
     {
       tips.length > 0 && (
-        <section class="mb-10">
+        <section id="practical-notes" class="mb-10 scroll-mt-24">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Practical Notes</h2>
           <ul class="space-y-3 text-gray-600 dark:text-gray-400">
             {tips.map((tip) => (
@@ -240,7 +292,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     }
 
     {/* HOW TO USE */}
-    <section class="mt-12 mb-10">
+    <section id="how-to-use" class="mt-12 mb-10 scroll-mt-24">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">How to Use</h2>
       <ol class="space-y-3 text-gray-600 dark:text-gray-400">
         {
@@ -255,7 +307,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     </section>
 
     {/* FEATURES */}
-    <section class="mb-10">
+    <section id="features" class="mb-10 scroll-mt-24">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
       <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {
@@ -270,7 +322,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     </section>
 
     {/* USE CASES */}
-    <section class="mb-10">
+    <section id="use-cases" class="mb-10 scroll-mt-24">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Use Cases</h2>
       <ul class="space-y-2 text-gray-600 dark:text-gray-400">
         {
@@ -285,7 +337,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     </section>
 
     {/* FAQ */}
-    <section class="mb-10">
+    <section id="faq" class="mb-10 scroll-mt-24">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Frequently Asked Questions</h2>
       <div class="space-y-4">
         {
@@ -307,7 +359,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
     {
       relatedGuides.length > 0 && (
-        <section class="mt-12">
+        <section id="related-guides" class="mt-12 scroll-mt-24">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Guides</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -331,7 +383,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     {/* RELATED TOOLS */}
     {
       relatedTools.length > 0 && (
-        <section class="mt-12">
+        <section id="related-tools" class="mt-12 scroll-mt-24">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {relatedTools.map((tool) => (
@@ -352,4 +404,29 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
   <script type="application/ld+json" set:html={JSON.stringify(toolSchema)} is:inline />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+  <script is:inline>
+    function initCopyFeedback() {
+      document.querySelectorAll('[data-copy-feedback="true"]').forEach((button) => {
+        if (button.dataset.copyFeedbackReady === 'true') return;
+        button.dataset.copyFeedbackReady = 'true';
+        button.addEventListener('click', () => {
+          const label = button.querySelector('span:last-child');
+          if (!label || button.dataset.copyFeedbackActive === 'true') return;
+
+          const original = label.textContent;
+          button.dataset.copyFeedbackActive = 'true';
+          window.setTimeout(() => {
+            label.textContent = 'Copied';
+            window.setTimeout(() => {
+              label.textContent = original;
+              button.dataset.copyFeedbackActive = 'false';
+            }, 1200);
+          }, 80);
+        });
+      });
+    }
+
+    initCopyFeedback();
+    document.addEventListener('astro:page-load', initCopyFeedback);
+  </script>
 </Layout>

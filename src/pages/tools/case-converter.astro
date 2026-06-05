@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -73,7 +75,7 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       >
     </div>
 
-    <div class="flex flex-wrap gap-2">
+    <ToolActionBar>
       {
         [
           { id: 'cc-upper', label: 'UPPER CASE' },
@@ -86,20 +88,17 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
           { id: 'cc-kebab', label: 'kebab-case' },
           { id: 'cc-constant', label: 'CONSTANT_CASE' },
         ].map((btn) => (
-          <button
-            id={btn.id}
-            class="cc-btn px-4 py-2 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 hover:border-blue-400 transition"
-          >
+          <ToolActionButton id={btn.id} class="cc-btn" icon="tabler:letter-case">
             {btn.label}
-          </button>
+          </ToolActionButton>
         ))
       }
-    </div>
+    </ToolActionBar>
 
     <div>
       <div class="flex items-center justify-between mb-2">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Result</label>
-        <button id="cc-copy" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Copy</button>
+        <ToolActionButton id="cc-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
       </div>
       <textarea
         id="cc-output"

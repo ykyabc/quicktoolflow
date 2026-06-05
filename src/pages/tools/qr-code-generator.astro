@@ -3,6 +3,7 @@ import RelatedGuides from '~/components/ui/RelatedGuides.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
 import { getRelatedGuides } from '~/utils/related-guides';
@@ -82,11 +83,9 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
           </div>
         </div>
 
-        <button
-          id="qr-generate"
-          class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-          >Generate QR Code</button
-        >
+        <ToolActionButton id="qr-generate" variant="primary" icon="tabler:qrcode" class="mt-4 w-full py-3">
+          Generate QR Code
+        </ToolActionButton>
       </div>
 
       <div
@@ -94,11 +93,7 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
         class="hidden bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm text-center"
       >
         <div id="qr-wrapper" class="mx-auto mb-4 inline-block"></div>
-        <button
-          id="qr-download"
-          class="px-6 py-2.5 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition"
-          >Download PNG</button
-        >
+        <ToolActionButton id="qr-download" variant="primary" icon="tabler:download">Download PNG</ToolActionButton>
       </div>
     </div>
 

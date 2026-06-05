@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -99,11 +101,9 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       </div>
     </div>
 
-    <button
-      id="cc-copy"
-      class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-      >Copy HEX</button
-    >
+    <ToolActionBar>
+      <ToolActionButton id="cc-copy" icon="tabler:copy">Copy HEX</ToolActionButton>
+    </ToolActionBar>
   </div>
 
   <script is:inline>

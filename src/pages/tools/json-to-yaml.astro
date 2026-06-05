@@ -3,6 +3,7 @@ import RelatedGuides from '~/components/ui/RelatedGuides.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
 
@@ -48,9 +49,9 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
           <div class="flex items-center justify-between mb-3">
             <h2 id="input-label" class="text-lg font-semibold text-gray-900 dark:text-white">JSON Input</h2>
-            <button id="sample-btn" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
-              >Load Sample</button
-            >
+            <ToolActionButton id="sample-btn" icon="tabler:file-code" class="min-h-0 px-3 py-1.5 text-xs">
+              Load Sample
+            </ToolActionButton>
           </div>
           <textarea
             id="convert-input"
@@ -58,22 +59,21 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
             class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm"
             placeholder="Paste JSON here..."></textarea>
           <div id="convert-error" class="hidden mt-2 text-sm text-red-600 dark:text-red-400"></div>
-          <button
-            id="convert-btn"
-            class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-            >Convert to YAML</button
-          >
+          <ToolActionButton id="convert-btn" variant="primary" icon="tabler:arrows-exchange" class="mt-4 w-full py-3">
+            Convert to YAML
+          </ToolActionButton>
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
           <div class="flex items-center justify-between mb-3">
             <h2 id="output-label" class="text-lg font-semibold text-gray-900 dark:text-white">YAML Output</h2>
             <div class="flex gap-2">
-              <button id="output-copy" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">Copy</button
-              >
-              <button id="output-download" class="text-sm text-green-600 hover:text-green-700 dark:text-green-400"
-                >Download</button
-              >
+              <ToolActionButton id="output-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">
+                Copy
+              </ToolActionButton>
+              <ToolActionButton id="output-download" icon="tabler:download" class="min-h-0 px-3 py-1.5 text-xs">
+                Download
+              </ToolActionButton>
             </div>
           </div>
           <textarea

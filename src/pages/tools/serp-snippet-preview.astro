@@ -1,0 +1,194 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+---
+
+<ToolLayout
+  title="SERP Snippet Preview Tool"
+  description="Preview how a page title, URL, and meta description may appear in Google-style search results."
+  slug="serp-snippet-preview"
+  category="SEO Tools"
+  features={[
+    'Preview a Google-style desktop search result snippet',
+    'Check title and meta description character counts in real time',
+    'Highlight common title and description length ranges',
+    'Edit page URL, title, and description side by side',
+    'Generate a clean meta description tag for quick copy',
+    'Runs in your browser with no sign-up or uploads',
+  ]}
+  useCases={[
+    'Drafting titles and descriptions before publishing a new page',
+    'Reviewing whether a page snippet is too short, too vague, or too long',
+    'Preparing SEO handoff notes for static sites, blogs, and landing pages',
+    'Comparing title and description options before updating metadata',
+  ]}
+  howToSteps={[
+    'Enter the page title you want searchers to see.',
+    'Add the page URL or path.',
+    'Write a concise meta description.',
+    'Review the live snippet preview and length hints.',
+    'Copy the generated description tag if you want a starter HTML snippet.',
+  ]}
+  examples={[
+    {
+      title: 'Preview a tool page snippet',
+      input:
+        'Title: Free JSON Formatter & Validator\nURL: https://quicktoolflow.com/tools/json-formatter/\nDescription: Format, validate, and minify JSON online with instant browser-based feedback.',
+      output: 'A search-style result card with title, URL, and description.',
+      note: 'The preview helps you catch vague titles and descriptions before publishing a page.',
+    },
+  ]}
+  tips={[
+    'Search engines may rewrite titles and descriptions when they think another snippet better matches the query.',
+    'Write descriptions for humans first. The goal is clarity and relevance, not just hitting a character count.',
+    'Avoid repeating the same title template across many pages because duplicate snippets are less useful.',
+  ]}
+  faq={[
+    {
+      question: 'Does this show exactly what Google will display?',
+      answer:
+        'No. It is an approximation. Search engines can rewrite snippets based on the query, device, page content, and search context.',
+    },
+    {
+      question: 'What is a good meta description length?',
+      answer:
+        'There is no guaranteed length, but many practical descriptions are around 120 to 160 characters. Clear relevance matters more than a fixed number.',
+    },
+    {
+      question: 'Can a better snippet improve SEO?',
+      answer:
+        'A better snippet can improve clarity and clicks, but rankings also depend on content quality, relevance, links, performance, and many other signals.',
+    },
+    {
+      question: 'Should every page have a unique title and description?',
+      answer:
+        'Yes. Unique, specific titles and descriptions help search engines and users understand what each page is about.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="grid gap-4 md:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Page Title</label>
+        <input
+          id="serp-title"
+          type="text"
+          value="Free JSON Formatter & Validator"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        />
+        <p id="serp-title-count" class="mt-1 text-xs text-gray-500">0 characters</p>
+      </div>
+
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Page URL</label>
+        <input
+          id="serp-url"
+          type="text"
+          value="https://quicktoolflow.com/tools/json-formatter/"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        />
+        <p class="mt-1 text-xs text-gray-500">Use the canonical page URL when possible.</p>
+      </div>
+    </div>
+
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description</label>
+      <textarea
+        id="serp-description"
+        class="min-h-[110px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        >Format, validate, and minify JSON online with instant browser-based feedback. No sign-up required.</textarea
+      >
+      <div class="mt-1 flex flex-wrap items-center justify-between gap-2">
+        <p id="serp-description-count" class="text-xs text-gray-500">0 characters</p>
+        <p id="serp-hint" class="text-xs font-medium text-gray-500">Ready</p>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+      <p class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Search Result Preview</p>
+      <div class="max-w-2xl font-sans">
+        <div id="serp-preview-url" class="mb-1 truncate text-sm text-[#202124] dark:text-gray-300">
+          quicktoolflow.com/tools/json-formatter/
+        </div>
+        <div id="serp-preview-title" class="cursor-default text-xl leading-6 text-[#1a0dab] dark:text-blue-300">
+          Free JSON Formatter &amp; Validator
+        </div>
+        <div id="serp-preview-description" class="mt-1 text-sm leading-5 text-[#4d5156] dark:text-gray-300">
+          Format, validate, and minify JSON online with instant browser-based feedback. No sign-up required.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description Tag</label>
+        <ToolActionButton id="serp-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
+      </div>
+      <textarea
+        id="serp-output"
+        class="min-h-[70px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+        readonly></textarea>
+    </div>
+  </div>
+
+  <script is:inline>
+    const titleInput = document.getElementById('serp-title');
+    const urlInput = document.getElementById('serp-url');
+    const descriptionInput = document.getElementById('serp-description');
+    const titleCount = document.getElementById('serp-title-count');
+    const descriptionCount = document.getElementById('serp-description-count');
+    const hint = document.getElementById('serp-hint');
+    const previewUrl = document.getElementById('serp-preview-url');
+    const previewTitle = document.getElementById('serp-preview-title');
+    const previewDescription = document.getElementById('serp-preview-description');
+    const output = document.getElementById('serp-output');
+    const copyButton = document.getElementById('serp-copy');
+
+    function escapeHtml(value) {
+      return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function displayUrl(value) {
+      try {
+        const url = new URL(value);
+        return url.hostname + url.pathname;
+      } catch {
+        return value.replace(/^https?:\/\//, '');
+      }
+    }
+
+    function lengthHint(titleLength, descriptionLength) {
+      if (titleLength < 30) return { text: 'Title may be too short', className: 'text-amber-600' };
+      if (titleLength > 65) return { text: 'Title may be too long', className: 'text-amber-600' };
+      if (descriptionLength < 80) return { text: 'Description may be too short', className: 'text-amber-600' };
+      if (descriptionLength > 165) return { text: 'Description may be too long', className: 'text-amber-600' };
+      return { text: 'Looks balanced', className: 'text-green-600' };
+    }
+
+    function updatePreview() {
+      const title = titleInput.value.trim() || 'Untitled page';
+      const url = urlInput.value.trim() || 'https://example.com/';
+      const description = descriptionInput.value.trim() || 'Write a clear description for this page.';
+      const status = lengthHint(title.length, description.length);
+
+      previewTitle.textContent = title;
+      previewUrl.textContent = displayUrl(url);
+      previewDescription.textContent = description;
+      titleCount.textContent = title.length + ' characters';
+      descriptionCount.textContent = description.length + ' characters';
+      hint.textContent = status.text;
+      hint.className = 'text-xs font-medium ' + status.className;
+      output.value = '<meta name="description" content="' + escapeHtml(description) + '" />';
+    }
+
+    [titleInput, urlInput, descriptionInput].forEach((input) => {
+      input.addEventListener('input', updatePreview);
+    });
+
+    copyButton.addEventListener('click', () => {
+      if (output.value) navigator.clipboard.writeText(output.value);
+    });
+
+    updatePreview();
+  </script>
+</ToolLayout>

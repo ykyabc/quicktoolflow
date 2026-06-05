@@ -4,6 +4,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 import { tools } from '~/utils/tools-data';
 
 const metadata = {
@@ -39,11 +40,9 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
           placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
           class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm break-all"
         ></textarea>
-        <button
-          id="jwt-decode"
-          class="mt-4 w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-          >Decode JWT</button
-        >
+        <ToolActionButton id="jwt-decode" variant="primary" icon="tabler:key" class="mt-4 w-full py-3">
+          Decode JWT
+        </ToolActionButton>
       </div>
 
       <div id="jwt-result" class="hidden space-y-6">

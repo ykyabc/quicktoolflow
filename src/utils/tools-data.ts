@@ -221,6 +221,16 @@ export const tools: Tool[] = [
     featured: false,
   },
   {
+    slug: 'serp-snippet-preview',
+    name: 'SERP Snippet Preview',
+    description: 'Preview Google-style search snippets and tune page titles, URLs, and meta descriptions.',
+    category: 'SEO Tools',
+    categorySlug: 'seo',
+    icon: 'tabler:search',
+    gradient: 'from-blue-500 to-cyan-600',
+    featured: false,
+  },
+  {
     slug: 'lorem-image-placeholder',
     name: 'Lorem Image Placeholder',
     description: 'Generate placeholder image URLs with custom dimensions for your designs and mockups.',
@@ -440,11 +450,19 @@ export const relatedToolSlugsMap: Record<string, string[]> = {
   'timestamp-converter': ['cron-expression-generator', 'uuid-generator', 'jwt-decoder', 'number-base-converter'],
 
   'meta-tag-generator': [
+    'serp-snippet-preview',
     'text-to-slug',
     'word-counter',
     'lorem-image-placeholder',
     'html-entity-encoder',
     'url-encoder',
+  ],
+  'serp-snippet-preview': [
+    'meta-tag-generator',
+    'text-to-slug',
+    'word-counter',
+    'word-frequency-counter',
+    'lorem-image-placeholder',
   ],
 };
 

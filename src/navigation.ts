@@ -7,6 +7,7 @@ export const headerData = {
       links: [
         { text: 'Text Tools', href: '/tools/text/' },
         { text: 'Developer Tools', href: '/tools/developer/' },
+        { text: 'Security & Encoding', href: '/tools/security-encoding/' },
         { text: 'Generators', href: '/tools/generators/' },
         { text: 'Converters', href: '/tools/converters/' },
         { text: 'SEO Tools', href: '/tools/seo/' },
@@ -19,6 +20,7 @@ export const headerData = {
         { text: 'All Articles', href: '/blog/' },
         { text: 'Blog Categories', href: '/blog/category/' },
         { text: 'Developer Tools', href: '/blog/category/developer-tools/' },
+        { text: 'SEO', href: '/blog/category/seo/' },
         { text: 'Generators', href: '/blog/category/generators/' },
         { text: 'Security', href: '/blog/category/security/' },
       ],
@@ -58,6 +60,7 @@ export const footerData = {
       links: [
         { text: 'JSON Formatter', href: '/tools/json-formatter/' },
         { text: 'Base64 Encoder', href: '/tools/base64/' },
+        { text: 'Security & Encoding', href: '/tools/security-encoding/' },
         { text: 'Regex Tester', href: '/tools/regex-tester/' },
         { text: 'Hash Generator', href: '/tools/hash-generator/' },
         { text: 'URL Encoder', href: '/tools/url-encoder/' },
@@ -82,6 +85,7 @@ export const footerData = {
     {
       title: 'SEO Tools',
       links: [
+        { text: 'SERP Snippet Preview', href: '/tools/serp-snippet-preview/' },
         { text: 'Meta Tag Generator', href: '/tools/meta-tag-generator/' },
         { text: 'Lorem Image Placeholder', href: '/tools/lorem-image-placeholder/' },
       ],

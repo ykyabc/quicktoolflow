@@ -1,5 +1,7 @@
 ---
 import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 ---
 
 <ToolLayout
@@ -74,28 +76,12 @@ import ToolLayout from '~/layouts/ToolLayout.astro';
       >
     </div>
 
-    <div class="flex flex-wrap gap-2">
-      <button
-        id="tr-char"
-        class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-        >Reverse Characters</button
-      >
-      <button
-        id="tr-word"
-        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Reverse Words</button
-      >
-      <button
-        id="tr-line"
-        class="px-5 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition"
-        >Reverse Lines</button
-      >
-      <button
-        id="tr-copy"
-        class="px-4 py-2.5 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg border border-gray-300 dark:border-slate-600 hover:bg-gray-50 transition ml-auto"
-        >Copy</button
-      >
-    </div>
+    <ToolActionBar>
+      <ToolActionButton id="tr-char" variant="primary" icon="tabler:arrows-sort">Reverse Characters</ToolActionButton>
+      <ToolActionButton id="tr-word" icon="tabler:sort-descending-letters">Reverse Words</ToolActionButton>
+      <ToolActionButton id="tr-line" icon="tabler:list">Reverse Lines</ToolActionButton>
+      <ToolActionButton id="tr-copy" icon="tabler:copy">Copy</ToolActionButton>
+    </ToolActionBar>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Result</label>
