@@ -1,0 +1,227 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+---
+
+<ToolLayout
+  title="UTM Builder"
+  description="Build campaign URLs with UTM source, medium, campaign, term, and content parameters."
+  slug="utm-builder"
+  category="SEO Tools"
+  features={[
+    'Creates campaign URLs with standard UTM parameters',
+    'Encodes query values safely for sharing and analytics tracking',
+    'Supports source, medium, campaign, term, content, and custom parameters',
+    'Shows the final URL in a copy-ready output field',
+    'Includes a sample campaign for quick testing',
+    'Runs locally in your browser with no account required',
+  ]}
+  useCases={[
+    'Preparing links for newsletter campaigns',
+    'Tracking social media posts in analytics tools',
+    'Creating tagged links for paid search or affiliate campaigns',
+    'Standardizing campaign URLs before sharing them with a team',
+  ]}
+  howToSteps={[
+    'Enter the destination URL for your campaign.',
+    'Fill in source, medium, and campaign name.',
+    'Optionally add term, content, or a custom parameter.',
+    'Click Build URL and copy the generated campaign link.',
+  ]}
+  examples={[
+    {
+      title: 'Newsletter campaign URL',
+      input: 'URL: https://example.com/pricing\nSource: newsletter\nMedium: email\nCampaign: spring_launch',
+      output: 'https://example.com/pricing?utm_source=newsletter&utm_medium=email&utm_campaign=spring_launch',
+      note: 'Consistent UTM values make campaign reports easier to group and compare.',
+    },
+  ]}
+  tips={[
+    'Use lowercase and consistent naming for source, medium, and campaign values.',
+    'Avoid changing UTM naming conventions halfway through a campaign.',
+    'Do not tag internal links with UTM parameters because they can overwrite attribution data.',
+  ]}
+  faq={[
+    {
+      question: 'What are UTM parameters?',
+      answer:
+        'UTM parameters are query parameters added to URLs so analytics tools can identify campaign source, medium, name, term, and content.',
+    },
+    {
+      question: 'Which UTM fields are required?',
+      answer:
+        'Most campaign workflows use at least utm_source, utm_medium, and utm_campaign. Term and content are optional.',
+    },
+    {
+      question: 'Does this shorten URLs?',
+      answer:
+        'No. It builds the tagged URL. You can paste the generated result into your preferred shortener if needed.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Destination URL</label>
+      <input
+        id="utm-url"
+        type="url"
+        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        placeholder="https://example.com/page"
+      />
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Campaign Source</label>
+        <input
+          id="utm-source"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="newsletter, google, linkedin"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Campaign Medium</label>
+        <input
+          id="utm-medium"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="email, cpc, social"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Campaign Name</label>
+        <input
+          id="utm-campaign"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="spring_launch"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Campaign Term</label>
+        <input
+          id="utm-term"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="running shoes"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Campaign Content</label>
+        <input
+          id="utm-content"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="hero_button"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Custom Parameter</label>
+        <input
+          id="utm-custom"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="ref=partner"
+        />
+      </div>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="utm-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="utm-build" variant="primary" icon="tabler:link">Build URL</ToolActionButton>
+      <ToolActionButton id="utm-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+    <div id="utm-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div>
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Campaign URL</label>
+        <ToolActionButton id="utm-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
+      </div>
+      <textarea
+        id="utm-output"
+        class="min-h-[120px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+        readonly
+        placeholder="Your tagged URL will appear here..."></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  const fields = {
+    url: document.getElementById('utm-url'),
+    source: document.getElementById('utm-source'),
+    medium: document.getElementById('utm-medium'),
+    campaign: document.getElementById('utm-campaign'),
+    term: document.getElementById('utm-term'),
+    content: document.getElementById('utm-content'),
+    custom: document.getElementById('utm-custom'),
+  };
+  const output = document.getElementById('utm-output');
+  const status = document.getElementById('utm-status');
+
+  function showUtmStatus(message, type) {
+    const styles = {
+      success:
+        'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+      error:
+        'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+      info: 'rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+    };
+    status.className = styles[type || 'success'];
+    status.textContent = message;
+  }
+
+  function buildUtmUrl() {
+    try {
+      const url = new URL(fields.url.value.trim());
+      const params = [
+        ['utm_source', fields.source.value],
+        ['utm_medium', fields.medium.value],
+        ['utm_campaign', fields.campaign.value],
+        ['utm_term', fields.term.value],
+        ['utm_content', fields.content.value],
+      ];
+      params.forEach(([key, value]) => {
+        if (value.trim()) url.searchParams.set(key, value.trim());
+      });
+      const custom = fields.custom.value.trim();
+      if (custom) {
+        const index = custom.indexOf('=');
+        if (index === -1) throw new Error('Custom parameter must use key=value format.');
+        url.searchParams.set(custom.slice(0, index).trim(), custom.slice(index + 1).trim());
+      }
+      if (!fields.source.value.trim() || !fields.medium.value.trim() || !fields.campaign.value.trim()) {
+        showUtmStatus('URL built. Add source, medium, and campaign for cleaner analytics reporting.', 'info');
+      } else {
+        showUtmStatus('Campaign URL built and ready to copy.', 'success');
+      }
+      output.value = url.toString();
+    } catch (error) {
+      output.value = '';
+      showUtmStatus(error.message || 'Enter a valid destination URL.', 'error');
+    }
+  }
+
+  document.getElementById('utm-build').addEventListener('click', buildUtmUrl);
+  document.getElementById('utm-sample').addEventListener('click', () => {
+    fields.url.value = 'https://quicktoolflow.com/tools/json-formatter/';
+    fields.source.value = 'newsletter';
+    fields.medium.value = 'email';
+    fields.campaign.value = 'developer_tools_launch';
+    fields.term.value = '';
+    fields.content.value = 'hero_button';
+    fields.custom.value = 'audience=developers';
+    buildUtmUrl();
+    showUtmStatus('Sample campaign loaded.', 'info');
+  });
+  document.getElementById('utm-clear').addEventListener('click', () => {
+    Object.values(fields).forEach((field) => (field.value = ''));
+    output.value = '';
+    showUtmStatus('Form cleared.', 'info');
+  });
+  document.getElementById('utm-copy').addEventListener('click', () => {
+    if (!output.value) {
+      showUtmStatus('Build a campaign URL before copying.', 'error');
+      return;
+    }
+    navigator.clipboard.writeText(output.value);
+    showUtmStatus('Campaign URL copied.', 'success');
+  });
+</script>

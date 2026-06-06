@@ -1,0 +1,218 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+---
+
+<ToolLayout
+  title="URL Parser"
+  description="Parse any URL into protocol, host, path, query parameters, hash, and decoded components."
+  slug="url-parser"
+  category="Developer Tools"
+  features={[
+    'Breaks a URL into protocol, hostname, port, path, query string, and hash',
+    'Extracts query parameters into a readable table',
+    'Decodes percent-encoded values for easier inspection',
+    'Exports parsed components as JSON',
+    'Works well with campaign URLs, API endpoints, and redirect links',
+    'Runs in your browser without sending URLs to a server',
+  ]}
+  useCases={[
+    'Inspecting long campaign URLs before sharing them',
+    'Debugging API endpoint paths and query parameters',
+    'Checking redirect URLs, hash fragments, and tracking parameters',
+    'Turning URL parts into a copy-ready JSON object',
+  ]}
+  howToSteps={[
+    'Paste a full URL into the input box.',
+    'Click Parse URL to split it into components.',
+    'Review query parameters and decoded values.',
+    'Copy the JSON output if you need to use the parsed data elsewhere.',
+  ]}
+  examples={[
+    {
+      title: 'Parse a campaign URL',
+      input: 'https://example.com/pricing?utm_source=newsletter&utm_medium=email#plans',
+      output: 'Protocol: https:\nHost: example.com\nPath: /pricing\nHash: #plans\nutm_source = newsletter',
+      note: 'Parsing makes long URLs easier to audit before publishing or tracking.',
+    },
+  ]}
+  tips={[
+    'Use a full URL with protocol, such as https://example.com/path, for the most reliable parsing.',
+    'Query parameters can appear more than once. This parser keeps repeated values as arrays in the JSON output.',
+    'Use URL Encoder & Decoder when you need to encode or decode individual URL components.',
+  ]}
+  faq={[
+    {
+      question: 'What does a URL parser do?',
+      answer:
+        'A URL parser splits a URL into its components so you can inspect the protocol, hostname, path, query parameters, and hash fragment.',
+    },
+    {
+      question: 'Can this parse UTM parameters?',
+      answer:
+        'Yes. UTM parameters are ordinary query parameters, so they appear in the parameter table and JSON output.',
+    },
+    {
+      question: 'Is my URL uploaded?',
+      answer: 'No. Parsing runs locally in your browser.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">URL</label>
+      <textarea
+        id="url-input"
+        class="min-h-[110px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        placeholder="https://example.com/path?utm_source=newsletter#section"></textarea>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="url-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="url-parse" variant="primary" icon="tabler:route">Parse URL</ToolActionButton>
+      <ToolActionButton id="url-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+    <div id="url-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Components</h3>
+        <dl id="url-components" class="mt-3 space-y-2 text-sm"></dl>
+      </div>
+      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Query Parameters</h3>
+        <div id="url-params" class="mt-3 overflow-x-auto text-sm text-gray-600 dark:text-gray-300">
+          No parameters yet.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Parsed JSON</label>
+        <ToolActionButton id="url-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
+      </div>
+      <textarea
+        id="url-output"
+        class="min-h-[180px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+        readonly></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  const urlInput = document.getElementById('url-input');
+  const componentsEl = document.getElementById('url-components');
+  const paramsEl = document.getElementById('url-params');
+  const outputEl = document.getElementById('url-output');
+  const statusEl = document.getElementById('url-status');
+
+  function showUrlStatus(message, type) {
+    const styles = {
+      success:
+        'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+      error:
+        'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+      info: 'rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+    };
+    statusEl.className = styles[type || 'success'];
+    statusEl.textContent = message;
+  }
+
+  function esc(value) {
+    return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function parseUrl() {
+    try {
+      const raw = urlInput.value.trim();
+      if (!raw) throw new Error('Paste a URL before parsing.');
+      const parsed = new URL(raw);
+      const params = {};
+      parsed.searchParams.forEach((value, key) => {
+        if (params[key] === undefined) params[key] = value;
+        else if (Array.isArray(params[key])) params[key].push(value);
+        else params[key] = [params[key], value];
+      });
+      const result = {
+        href: parsed.href,
+        protocol: parsed.protocol,
+        username: parsed.username,
+        password: parsed.password ? '(present)' : '',
+        hostname: parsed.hostname,
+        port: parsed.port,
+        origin: parsed.origin,
+        pathname: parsed.pathname,
+        search: parsed.search,
+        hash: parsed.hash,
+        queryParameters: params,
+      };
+
+      componentsEl.innerHTML = [
+        ['Protocol', parsed.protocol],
+        ['Origin', parsed.origin],
+        ['Hostname', parsed.hostname],
+        ['Port', parsed.port || '-'],
+        ['Path', parsed.pathname || '/'],
+        ['Hash', parsed.hash || '-'],
+      ]
+        .map(
+          ([label, value]) =>
+            '<div><dt class="font-semibold text-gray-700 dark:text-gray-200">' +
+            label +
+            '</dt><dd class="break-all text-gray-600 dark:text-gray-400">' +
+            esc(value) +
+            '</dd></div>'
+        )
+        .join('');
+
+      const rows = Object.entries(params);
+      paramsEl.innerHTML =
+        rows.length === 0
+          ? 'No query parameters found.'
+          : '<table class="w-full text-left"><thead><tr><th class="pb-2 pr-3 font-semibold">Name</th><th class="pb-2 font-semibold">Value</th></tr></thead><tbody>' +
+            rows
+              .map(
+                ([key, value]) =>
+                  '<tr class="border-t border-gray-200 dark:border-slate-700"><td class="py-2 pr-3 font-mono">' +
+                  esc(key) +
+                  '</td><td class="py-2 break-all font-mono">' +
+                  esc(Array.isArray(value) ? value.join(', ') : value) +
+                  '</td></tr>'
+              )
+              .join('') +
+            '</tbody></table>';
+      outputEl.value = JSON.stringify(result, null, 2);
+      showUrlStatus('URL parsed successfully.', 'success');
+    } catch (error) {
+      componentsEl.innerHTML = '';
+      paramsEl.textContent = 'No parameters yet.';
+      outputEl.value = '';
+      showUrlStatus(error.message || 'Enter a valid absolute URL.', 'error');
+    }
+  }
+
+  document.getElementById('url-parse').addEventListener('click', parseUrl);
+  document.getElementById('url-sample').addEventListener('click', () => {
+    urlInput.value =
+      'https://quicktoolflow.com/tools/json-formatter/?utm_source=newsletter&utm_medium=email&utm_campaign=developer_tools#examples';
+    parseUrl();
+    showUrlStatus('Sample URL loaded and parsed.', 'info');
+  });
+  document.getElementById('url-clear').addEventListener('click', () => {
+    urlInput.value = '';
+    componentsEl.innerHTML = '';
+    paramsEl.textContent = 'No parameters yet.';
+    outputEl.value = '';
+    showUrlStatus('Parser cleared.', 'info');
+  });
+  document.getElementById('url-copy').addEventListener('click', () => {
+    if (!outputEl.value) {
+      showUrlStatus('Parse a URL before copying JSON.', 'error');
+      return;
+    }
+    navigator.clipboard.writeText(outputEl.value);
+    showUrlStatus('Parsed JSON copied.', 'success');
+  });
+</script>

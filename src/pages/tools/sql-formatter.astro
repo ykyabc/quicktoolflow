@@ -1,0 +1,191 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+---
+
+<ToolLayout
+  title="SQL Formatter"
+  description="Format and minify SQL queries for easier reading, sharing, debugging, and documentation."
+  slug="sql-formatter"
+  category="Developer Tools"
+  features={[
+    'Formats common SQL clauses onto readable lines',
+    'Highlights SELECT, FROM, JOIN, WHERE, GROUP BY, ORDER BY, and LIMIT structure',
+    'Minifies SQL into a compact single-line query',
+    'Supports quick sample loading and copy output',
+    'Useful for debugging queries before sharing them',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Cleaning long SQL queries from logs or dashboards',
+    'Preparing readable SQL for tickets, docs, and code reviews',
+    'Minifying SQL snippets for compact examples',
+    'Reviewing joins, filters, grouping, and ordering at a glance',
+  ]}
+  howToSteps={[
+    'Paste a SQL query into the input box.',
+    'Click Format SQL to make the query easier to read.',
+    'Use Minify when you need a compact single-line query.',
+    'Copy the output when ready.',
+  ]}
+  examples={[
+    {
+      title: 'Format a compact SELECT query',
+      input:
+        'select u.id,u.email,count(o.id) from users u left join orders o on o.user_id=u.id where u.active=1 group by u.id,u.email order by count(o.id) desc',
+      output:
+        'SELECT u.id, u.email, count(o.id)\nFROM users u\nLEFT JOIN orders o ON o.user_id = u.id\nWHERE u.active = 1\nGROUP BY u.id, u.email\nORDER BY count(o.id) DESC',
+      note: 'Readable SQL helps reviewers understand query intent faster.',
+    },
+  ]}
+  tips={[
+    'This lightweight formatter handles common SQL patterns and is not a full database-specific parser.',
+    'Always test formatted SQL in your database before using it in production.',
+    'Database dialects differ, especially around functions, quoting, JSON operators, and procedural syntax.',
+  ]}
+  faq={[
+    {
+      question: 'Which SQL dialects are supported?',
+      answer:
+        'The formatter is designed for common SQL syntax used across many databases. Dialect-specific syntax may need manual review.',
+    },
+    {
+      question: 'Does formatting change query behavior?',
+      answer:
+        'It should only change whitespace and line breaks, but you should still test important queries in your database environment.',
+    },
+    {
+      question: 'Is my SQL sent to a server?',
+      answer: 'No. Formatting runs locally in your browser.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">SQL Input</label>
+      <textarea
+        id="sql-input"
+        class="min-h-[220px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        placeholder="Paste SQL here..."></textarea>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="sql-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="sql-format" variant="primary" icon="tabler:align-left">Format SQL</ToolActionButton>
+      <ToolActionButton id="sql-minify" icon="tabler:arrows-minimize">Minify</ToolActionButton>
+      <ToolActionButton id="sql-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+    <div id="sql-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div>
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Output</label>
+        <ToolActionButton id="sql-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
+      </div>
+      <textarea
+        id="sql-output"
+        class="min-h-[260px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+        readonly></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  const sqlInput = document.getElementById('sql-input');
+  const sqlOutput = document.getElementById('sql-output');
+  const sqlStatus = document.getElementById('sql-status');
+
+  function showSqlStatus(message, error) {
+    sqlStatus.className =
+      'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+    sqlStatus.textContent = message;
+  }
+
+  function normalizeOperators(sql) {
+    return sql
+      .replace(/\s*=\s*/g, ' = ')
+      .replace(/\s*,\s*/g, ', ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function formatSql(sql) {
+    let formatted = normalizeOperators(sql);
+    const clauses = [
+      'SELECT',
+      'FROM',
+      'LEFT JOIN',
+      'RIGHT JOIN',
+      'INNER JOIN',
+      'FULL JOIN',
+      'JOIN',
+      'WHERE',
+      'GROUP BY',
+      'HAVING',
+      'ORDER BY',
+      'LIMIT',
+      'OFFSET',
+      'UNION',
+    ];
+    clauses.forEach((clause) => {
+      const pattern = new RegExp('\\s+(' + clause.replace(' ', '\\s+') + ')\\s+', 'gi');
+      formatted = formatted.replace(pattern, '\n$1 ');
+    });
+    formatted = formatted.replace(/\s+(AND|OR)\s+/gi, '\n  $1 ');
+    formatted = formatted.replace(/^\n/, '');
+    return formatted
+      .split('\n')
+      .map((line) =>
+        line
+          .trim()
+          .replace(
+            /^(select|from|left join|right join|inner join|full join|join|where|group by|having|order by|limit|offset|union)\b/i,
+            (m) => m.toUpperCase()
+          )
+      )
+      .join('\n');
+  }
+
+  document.getElementById('sql-format').addEventListener('click', () => {
+    const value = sqlInput.value.trim();
+    if (!value) {
+      sqlOutput.value = '';
+      showSqlStatus('Paste SQL before formatting.', true);
+      return;
+    }
+    sqlOutput.value = formatSql(value);
+    showSqlStatus('SQL formatted.', false);
+  });
+
+  document.getElementById('sql-minify').addEventListener('click', () => {
+    const value = sqlInput.value.trim();
+    if (!value) {
+      sqlOutput.value = '';
+      showSqlStatus('Paste SQL before minifying.', true);
+      return;
+    }
+    sqlOutput.value = value.replace(/\s+/g, ' ').trim();
+    showSqlStatus('SQL minified.', false);
+  });
+
+  document.getElementById('sql-sample').addEventListener('click', () => {
+    sqlInput.value =
+      "select u.id,u.email,count(o.id) from users u left join orders o on o.user_id=u.id where u.active=1 and u.created_at>='2026-01-01' group by u.id,u.email order by count(o.id) desc limit 20";
+    sqlOutput.value = '';
+    showSqlStatus('Sample SQL loaded.', false);
+  });
+  document.getElementById('sql-clear').addEventListener('click', () => {
+    sqlInput.value = '';
+    sqlOutput.value = '';
+    showSqlStatus('Editor cleared.', false);
+  });
+  document.getElementById('sql-copy').addEventListener('click', () => {
+    if (!sqlOutput.value) {
+      showSqlStatus('Generate output before copying.', true);
+      return;
+    }
+    navigator.clipboard.writeText(sqlOutput.value);
+    showSqlStatus('Output copied.', false);
+  });
+</script>

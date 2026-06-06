@@ -6,7 +6,22 @@ import Steps from '~/components/widgets/Steps.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
-import { getFeaturedTools, categories, getToolsByCategory } from '~/utils/tools-data';
+import { tools, getFeaturedTools, categories, getToolsByCategory, type Tool } from '~/utils/tools-data';
+
+const quickAccessTools = [
+  'json-formatter',
+  'base64',
+  'password-generator',
+  'qr-code-generator',
+  'timestamp-converter',
+  'utm-builder',
+  'open-graph-preview',
+  'serp-snippet-preview',
+  'csv-to-json',
+  'jwt-decoder',
+]
+  .map((slug) => tools.find((tool) => tool.slug === slug))
+  .filter((tool): tool is Tool => Boolean(tool));
 
 const workflows = [
   {
@@ -14,6 +29,7 @@ const workflows = [
     description: 'Format, minify, and convert structured data between JSON, CSV, and YAML.',
     links: [
       { text: 'Structured Data Hub', href: '/tools/structured-data/' },
+      { text: 'Code Formatting Hub', href: '/tools/code-formatting/' },
       { text: 'JSON Formatter', href: '/tools/json-formatter/' },
       { text: 'JSON Minifier', href: '/tools/json-minifier/' },
       { text: 'JSON Path Tester', href: '/tools/json-path-tester/' },
@@ -37,11 +53,26 @@ const workflows = [
   },
   {
     title: 'Create secure shareable assets',
-    description: 'Generate strong passwords, QR codes, UUIDs, and clean URL slugs in seconds.',
+    description: 'Generate strong passwords, QR codes, UUIDs, campaign links, and clean URL slugs in seconds.',
     links: [
       { text: 'Password Generator', href: '/tools/password-generator/' },
       { text: 'QR Code Generator', href: '/tools/qr-code-generator/' },
       { text: 'UUID Generator', href: '/tools/uuid-generator/' },
+      { text: 'UTM Builder', href: '/tools/utm-builder/' },
+      { text: 'URL Parser', href: '/tools/url-parser/' },
+    ],
+  },
+  {
+    title: 'Prepare pages for publishing',
+    description: 'Preview snippets, generate meta tags, create robots.txt, and build campaign-ready URLs.',
+    links: [
+      { text: 'SEO Tools Hub', href: '/tools/seo/' },
+      { text: 'Web Publishing Toolkit', href: '/tools/web-publishing/' },
+      { text: 'SERP Snippet Preview', href: '/tools/serp-snippet-preview/' },
+      { text: 'Meta Tag Generator', href: '/tools/meta-tag-generator/' },
+      { text: 'Robots.txt Generator', href: '/tools/robots-txt-generator/' },
+      { text: 'UTM Builder', href: '/tools/utm-builder/' },
+      { text: 'Open Graph Preview', href: '/tools/open-graph-preview/' },
     ],
   },
 ];
@@ -70,6 +101,49 @@ const metadata = {
       No data leaves your device. No accounts. No limits.
     </Fragment>
   </Hero>
+
+  <section class="px-4 pb-8 mx-auto -mt-4 max-w-5xl sm:px-6 lg:px-8">
+    <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5">
+      <div class="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+            <astro-icon name="tabler:search" class="h-5 w-5 text-gray-400"></astro-icon>
+          </div>
+          <input
+            id="home-tool-search"
+            type="search"
+            autocomplete="off"
+            placeholder="Search tools: JSON, Base64, QR, timestamp..."
+            class="w-full rounded-xl border border-gray-300 bg-white py-3.5 pl-12 pr-4 text-base text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+          />
+          <div
+            id="home-search-results"
+            class="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 hidden overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
+          >
+          </div>
+        </div>
+        <a
+          href="/tools/"
+          class="inline-flex min-h-12 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white transition hover:bg-blue-700"
+        >
+          Browse all {tools.length} tools
+        </a>
+      </div>
+
+      <div class="mt-4 flex gap-2 overflow-x-auto pb-1">
+        {
+          quickAccessTools.map((tool) => (
+            <a
+              href={`/tools/${tool.slug}/`}
+              class="shrink-0 rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              {tool.name.replace(' & Validator', '').replace(' Encoder & Decoder', '')}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
   <section class="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
     <div class="text-center mb-12">
@@ -125,7 +199,7 @@ const metadata = {
   </section>
 
   <section class="px-4 py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
-    <div class="grid gap-5 lg:grid-cols-2">
+    <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
       <div
         class="rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20 sm:p-8"
       >
@@ -148,6 +222,61 @@ const metadata = {
         </div>
         <a
           href="/tools/structured-data/"
+          class="mt-6 inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Open toolkit
+        </a>
+      </div>
+
+      <div
+        class="rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20 sm:p-8"
+      >
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+          Formatting toolkit
+        </p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Code Formatting Tools</h2>
+        <p class="mt-4 text-base leading-7 text-gray-600 dark:text-gray-300">
+          Format JSON, CSV, YAML, XML, HTML, SQL, and Markdown, then minify payloads or test JSON paths before sharing.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {
+            ['JSON', 'CSV', 'HTML', 'SQL', 'Markdown'].map((label) => (
+              <span class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-primary-700 dark:bg-gray-900 dark:text-primary-300">
+                {label}
+              </span>
+            ))
+          }
+        </div>
+        <a
+          href="/tools/code-formatting/"
+          class="mt-6 inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Open toolkit
+        </a>
+      </div>
+
+      <div
+        class="rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20 sm:p-8"
+      >
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+          Publishing toolkit
+        </p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Web Publishing Tools</h2>
+        <p class="mt-4 text-base leading-7 text-gray-600 dark:text-gray-300">
+          Prepare metadata, social cards, robots.txt, campaign URLs, QR codes, and clean HTML before launching or
+          updating a page.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {
+            ['SEO', 'Open Graph', 'Robots.txt', 'UTM', 'QR'].map((label) => (
+              <span class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-primary-700 dark:bg-gray-900 dark:text-primary-300">
+                {label}
+              </span>
+            ))
+          }
+        </div>
+        <a
+          href="/tools/web-publishing/"
           class="mt-6 inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
         >
           Open toolkit
@@ -272,4 +401,64 @@ const metadata = {
     <Fragment slot="title">Ready to be more productive?</Fragment>
     <Fragment slot="subtitle">Start using our free tools right now. No sign-up, no credit card, no limits.</Fragment>
   </CallToAction>
+
+  <script define:vars={{ tools }} is:inline>
+    (function () {
+      const input = document.getElementById('home-tool-search');
+      const results = document.getElementById('home-search-results');
+      if (!input || !results) return;
+
+      const allTools = tools;
+
+      function renderResults(query) {
+        const q = query.trim().toLowerCase();
+        if (!q) {
+          results.classList.add('hidden');
+          results.innerHTML = '';
+          return;
+        }
+
+        const matches = allTools
+          .filter((tool) => {
+            return (
+              tool.name.toLowerCase().includes(q) ||
+              tool.description.toLowerCase().includes(q) ||
+              tool.slug.toLowerCase().includes(q) ||
+              tool.category.toLowerCase().includes(q)
+            );
+          })
+          .slice(0, 6);
+
+        if (matches.length === 0) {
+          results.innerHTML =
+            '<div class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">No matching tools found.</div>';
+          results.classList.remove('hidden');
+          return;
+        }
+
+        results.innerHTML = matches
+          .map(
+            (tool) =>
+              '<a href="/tools/' +
+              tool.slug +
+              '/" class="flex items-start gap-3 border-b border-gray-100 px-4 py-3 last:border-0 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800">' +
+              '<span class="mt-1 inline-flex h-2.5 w-2.5 shrink-0 rounded-full bg-blue-500"></span>' +
+              '<span><span class="block text-sm font-semibold text-gray-900 dark:text-white">' +
+              tool.name +
+              '</span><span class="mt-0.5 block text-xs leading-5 text-gray-500 dark:text-gray-400">' +
+              tool.description +
+              '</span></span></a>'
+          )
+          .join('');
+        results.classList.remove('hidden');
+      }
+
+      input.addEventListener('input', () => renderResults(input.value));
+      document.addEventListener('click', (event) => {
+        if (!results.contains(event.target) && event.target !== input) {
+          results.classList.add('hidden');
+        }
+      });
+    })();
+  </script>
 </Layout>

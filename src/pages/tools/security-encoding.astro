@@ -1,6 +1,7 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import RelatedToolkits from '~/components/ui/RelatedToolkits.astro';
 import ToolCard from '~/components/ui/ToolCard.astro';
 import { tools } from '~/utils/tools-data';
 
@@ -287,6 +288,8 @@ const metadata = {
         }
       </div>
     </section>
+
+    <RelatedToolkits current="security-encoding" />
   </section>
 
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} is:inline />

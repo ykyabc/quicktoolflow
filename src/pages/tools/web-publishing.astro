@@ -1,0 +1,280 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import RelatedToolkits from '~/components/ui/RelatedToolkits.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+
+const canonical = 'https://quicktoolflow.com/tools/web-publishing/';
+
+const toolGroups = [
+  {
+    title: 'Prepare search metadata',
+    description: 'Draft titles, descriptions, meta tags, and search result snippets before a page goes live.',
+    slugs: ['serp-snippet-preview', 'meta-tag-generator', 'text-to-slug'],
+  },
+  {
+    title: 'Create social and sharing assets',
+    description: 'Preview social cards, build campaign URLs, parse long links, and generate QR codes for distribution.',
+    slugs: ['open-graph-preview', 'utm-builder', 'url-parser', 'qr-code-generator'],
+  },
+  {
+    title: 'Finish technical publishing files',
+    description: 'Generate crawler rules, format HTML snippets, and clean text before publishing.',
+    slugs: ['robots-txt-generator', 'html-formatter', 'whitespace-remover'],
+  },
+];
+
+const guideLinks = [
+  {
+    title: 'SERP Snippet Preview Guide',
+    href: '/blog/serp-snippet-preview-guide/',
+    description: 'Write clearer page titles and descriptions before publishing.',
+  },
+  {
+    title: 'Open Graph Preview Guide',
+    href: '/blog/open-graph-preview-guide/',
+    description: 'Understand how social sharing cards use Open Graph metadata.',
+  },
+  {
+    title: 'Robots.txt Generator Guide',
+    href: '/blog/robots-txt-generator-guide/',
+    description: 'Learn how crawler rules, disallow paths, and sitemap lines work.',
+  },
+  {
+    title: 'UTM Builder Guide',
+    href: '/blog/utm-builder-guide/',
+    description: 'Create consistent campaign tracking URLs for analytics reports.',
+  },
+  {
+    title: 'URL Parser Guide',
+    href: '/blog/url-parser-guide/',
+    description: 'Inspect URL parts, query parameters, and hash fragments.',
+  },
+  {
+    title: 'HTML Formatter Guide',
+    href: '/blog/html-formatter-guide/',
+    description: 'Clean markup snippets before reviewing or publishing them.',
+  },
+];
+
+const checklist = [
+  'Write a specific page title and meta description.',
+  'Preview the search result snippet and adjust vague wording.',
+  'Generate meta tags and Open Graph tags for the page head.',
+  'Create a clean slug and confirm the canonical URL.',
+  'Add a sitemap line or robots.txt rules when needed.',
+  'Build UTM links for external campaigns, not internal navigation.',
+  'Use QR codes only after testing the destination on multiple devices.',
+];
+
+const faqItems = [
+  {
+    question: 'What are web publishing tools?',
+    answer:
+      'Web publishing tools help you prepare metadata, social previews, URLs, crawler rules, and shareable assets before launching or updating a page.',
+  },
+  {
+    question: 'Are these tools only for SEO?',
+    answer:
+      'No. They support SEO, social sharing, analytics tracking, content publishing, campaign links, and technical launch checks.',
+  },
+  {
+    question: 'Should I use UTM parameters on internal links?',
+    answer:
+      'No. UTM parameters are intended for external campaign traffic. Using them on internal links can overwrite attribution data.',
+  },
+  {
+    question: 'Does robots.txt hide private pages?',
+    answer:
+      'No. Robots.txt is public and only gives crawler instructions. Private pages need proper authentication or access control.',
+  },
+];
+
+const getTool = (slug: string) => tools.find((tool) => tool.slug === slug);
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Web publishing tools',
+  itemListElement: toolGroups
+    .flatMap((group) => group.slugs)
+    .map((slug, index) => {
+      const tool = getTool(slug);
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        name: tool?.name || slug,
+        url: `https://quicktoolflow.com/tools/${slug}/`,
+      };
+    }),
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Web Publishing Tools', item: canonical },
+  ],
+};
+
+const metadata = {
+  title: 'Web Publishing Tools',
+  description:
+    'Free online web publishing tools for SEO metadata, Open Graph previews, robots.txt, UTM links, URL parsing, QR codes, and HTML cleanup.',
+  canonical,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: 'Web Publishing' }]} />
+
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">Publishing Toolkit</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Web Publishing Tools</h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        Prepare a page for launch with metadata, social previews, robots.txt rules, campaign URLs, clean slugs, QR
+        codes, and HTML snippets. This toolkit is built for content updates, SEO checks, landing pages, and launch
+        handoffs.
+      </p>
+    </header>
+
+    <section
+      class="mt-12 rounded-2xl border border-primary-100 bg-primary-50 p-6 dark:border-primary-900/50 dark:bg-primary-950/20"
+    >
+      <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+            Launch checklist
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Run through the publishing basics</h2>
+          <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            Start with metadata and snippets, then prepare sharing links and crawler files before the page is announced.
+          </p>
+        </div>
+        <a
+          href="/tools/serp-snippet-preview/"
+          class="inline-flex rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Start with snippet preview
+        </a>
+      </div>
+    </section>
+
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      {
+        [
+          ['Search', 'Tune page titles, descriptions, slugs, and meta tags before publishing.'],
+          ['Social', 'Preview Open Graph cards and create share-ready links or QR codes.'],
+          ['Technical', 'Prepare robots.txt, clean HTML snippets, and inspect URLs before launch.'],
+        ].map(([title, description]) => (
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
+            <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{description}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 space-y-14">
+      {
+        toolGroups.map((group) => (
+          <section>
+            <div class="mb-6 max-w-3xl">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{group.title}</h2>
+              <p class="mt-3 text-gray-600 dark:text-gray-300">{group.description}</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {group.slugs.map((slug) => {
+                const tool = getTool(slug);
+                if (!tool) return null;
+                return (
+                  <ToolCard
+                    slug={tool.slug}
+                    name={tool.name}
+                    description={tool.description}
+                    icon={tool.icon}
+                    gradient={tool.gradient}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Publishing checklist</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          {
+            checklist.map((item, index) => (
+              <li class="flex gap-3">
+                <span class="font-bold text-primary-600">{index + 1}.</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Related guides</h2>
+        <div class="mt-5 grid gap-3">
+          {
+            guideLinks.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-16 max-w-4xl">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+      <div class="mt-6 space-y-4">
+        {
+          faqItems.map((item) => (
+            <details class="group rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+              <summary class="flex cursor-pointer items-center justify-between p-4 font-medium text-gray-900 transition hover:text-primary-700 dark:text-white dark:hover:text-primary-300">
+                <span>{item.question}</span>
+                <astro-icon
+                  name="tabler:chevron-down"
+                  class="ml-3 h-5 w-5 shrink-0 text-gray-400 transition group-open:rotate-180"
+                />
+              </summary>
+              <p class="px-4 pb-4 text-sm leading-6 text-gray-600 dark:text-gray-300">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <RelatedToolkits current="web-publishing" />
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+</Layout>

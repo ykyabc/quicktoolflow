@@ -10,6 +10,7 @@ const workflows = [
       'Format, minify, and convert structured data before sharing it with APIs, spreadsheets, or config files.',
     links: [
       { text: 'Structured Data Hub', href: '/tools/structured-data/' },
+      { text: 'Code Formatting Hub', href: '/tools/code-formatting/' },
       { text: 'JSON Formatter', href: '/tools/json-formatter/' },
       { text: 'JSON Minifier', href: '/tools/json-minifier/' },
       { text: 'JSON Path Tester', href: '/tools/json-path-tester/' },
@@ -19,6 +20,8 @@ const workflows = [
       { text: 'JSON to YAML', href: '/tools/json-to-yaml/' },
       { text: 'YAML Formatter', href: '/tools/yaml-formatter/' },
       { text: 'XML Formatter', href: '/tools/xml-formatter/' },
+      { text: 'HTML Formatter', href: '/tools/html-formatter/' },
+      { text: 'SQL Formatter', href: '/tools/sql-formatter/' },
     ],
   },
   {
@@ -37,6 +40,8 @@ const workflows = [
     links: [
       { text: 'Regex Tester', href: '/tools/regex-tester/' },
       { text: 'Markdown Preview', href: '/tools/markdown-preview/' },
+      { text: 'HTML Formatter', href: '/tools/html-formatter/' },
+      { text: 'SQL Formatter', href: '/tools/sql-formatter/' },
       { text: 'String Escape', href: '/tools/string-escape/' },
     ],
   },
@@ -120,6 +125,29 @@ const faqSchema = {
           class="inline-flex rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
         >
           Open Structured Data Hub
+        </a>
+      </div>
+    </section>
+
+    <section
+      class="mt-8 rounded-2xl border border-primary-100 bg-primary-50 p-6 dark:border-primary-900/50 dark:bg-primary-950/20"
+    >
+      <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+            Formatting workflow
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Code formatting tools in one place</h2>
+          <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            Format JSON, CSV, YAML, XML, HTML, SQL, and Markdown, then minify payloads, test JSON paths, or convert data
+            between common formats.
+          </p>
+        </div>
+        <a
+          href="/tools/code-formatting/"
+          class="inline-flex rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Open Formatting Hub
         </a>
       </div>
     </section>

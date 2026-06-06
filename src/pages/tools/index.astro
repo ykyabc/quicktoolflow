@@ -6,6 +6,13 @@ import AdBanner from '~/components/ui/AdBanner.astro';
 import { tools, categories, getFeaturedTools, getToolsByCategory } from '~/utils/tools-data';
 
 const popularTools = getFeaturedTools();
+const categoryRoutes: Record<string, string> = {
+  text: 'text',
+  developer: 'developer',
+  generator: 'generators',
+  converter: 'converters',
+  seo: 'seo',
+};
 const canonical = 'https://quicktoolflow.com/tools/';
 const itemListSchema = {
   '@context': 'https://schema.org',
@@ -31,68 +38,98 @@ const metadata = {
   <section class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
     <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'All Tools' }]} />
 
-    <header class="mb-8">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">All Tools</h1>
-      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+    <header class="mb-6 sm:mb-8">
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">All Tools</h1>
+        <span
+          class="rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+        >
+          {tools.length} tools
+        </span>
+      </div>
+      <p class="mt-3 text-base text-gray-600 dark:text-gray-400 max-w-2xl sm:text-lg">
         {tools.length} free tools and counting. Every tool runs entirely in your browser: no uploads, no sign-ups.
       </p>
     </header>
 
-    <div class="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        popularTools.map((tool) => (
-          <a
-            href={`/tools/${tool.slug}/`}
-            class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
-          >
-            <div
-              class:list={[
-                'mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white',
-                tool.gradient,
-              ]}
-            >
-              <astro-icon name={tool.icon} class="h-5 w-5" />
-            </div>
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{tool.name}</h2>
-            <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{tool.description}</p>
-          </a>
-        ))
-      }
-    </div>
-
-    <nav class="mb-10 flex flex-wrap gap-2" aria-label="Tool categories">
-      {
-        categories.map((cat) => (
-          <a
-            href={`/tools/${cat.slug === 'generator' ? 'generators' : cat.slug === 'converter' ? 'converters' : cat.slug}/`}
-            class="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-primary-300 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-          >
-            {cat.name}
-          </a>
-        ))
-      }
-    </nav>
-
-    <div class="relative mb-10 max-w-xl">
-      <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          ><path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg
-        >
+    <div
+      class="mb-8 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5"
+    >
+      <div class="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <astro-icon name="tabler:search" class="h-5 w-5 text-gray-400"></astro-icon>
+          </div>
+          <input
+            type="search"
+            id="tool-search"
+            placeholder="Search tools... JSON, password, color, timestamp"
+            class="w-full rounded-xl border border-gray-300 bg-white py-3.5 pl-12 pr-4 text-base text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white dark:placeholder-gray-500"
+          />
+        </div>
+        <p id="search-count" class="text-sm font-medium text-gray-500 dark:text-gray-400">{tools.length} tools shown</p>
       </div>
-      <input
-        type="text"
-        id="tool-search"
-        placeholder="Search tools... (e.g. JSON, password, color)"
-        class="w-full pl-12 pr-4 py-3.5 text-base rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-      />
-      <p id="search-count" class="mt-2 text-sm text-gray-500 dark:text-gray-400 hidden"></p>
+
+      <div class="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="Filter tools by category">
+        <button
+          type="button"
+          class="category-filter shrink-0 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition"
+          data-category="all"
+          aria-pressed="true"
+        >
+          All
+        </button>
+        {
+          categories.map((cat) => (
+            <button
+              type="button"
+              class="category-filter shrink-0 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-blue-200 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+              data-category={cat.slug}
+              aria-pressed="false"
+            >
+              {cat.name}
+            </button>
+          ))
+        }
+      </div>
     </div>
 
-    <section class="mb-12 grid gap-5 lg:grid-cols-2">
+    <section class="mb-10">
+      <div class="mb-4 flex items-end justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Popular Tools</h2>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Fast access to the tools people usually need first.
+          </p>
+        </div>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          popularTools.map((tool) => (
+            <a
+              href={`/tools/${tool.slug}/`}
+              class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+            >
+              <div
+                class:list={[
+                  'mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white',
+                  tool.gradient,
+                ]}
+              >
+                <astro-icon name={tool.icon} class="h-5 w-5" />
+              </div>
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{tool.name}</h2>
+              <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{tool.description}</p>
+              <span class="mt-4 inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                Popular
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mb-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
       <div
         class="rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20"
       >
@@ -106,6 +143,44 @@ const metadata = {
         </p>
         <a
           href="/tools/structured-data/"
+          class="mt-5 inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Open collection
+        </a>
+      </div>
+
+      <div
+        class="rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20"
+      >
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+          Formatting collection
+        </p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Code Formatting Tools</h2>
+        <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          Format JSON, CSV, YAML, XML, HTML, SQL, and Markdown. Minify payloads, test JSON paths, and convert data
+          between common formats.
+        </p>
+        <a
+          href="/tools/code-formatting/"
+          class="mt-5 inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Open collection
+        </a>
+      </div>
+
+      <div
+        class="rounded-2xl border border-primary-100 bg-primary-50 p-6 shadow-sm dark:border-primary-900/50 dark:bg-primary-950/20"
+      >
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+          Publishing collection
+        </p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Web Publishing Tools</h2>
+        <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          Prepare search metadata, social preview cards, robots.txt, campaign URLs, QR links, and clean HTML before
+          publishing a page.
+        </p>
+        <a
+          href="/tools/web-publishing/"
           class="mt-5 inline-flex justify-center rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
         >
           Open collection
@@ -138,8 +213,18 @@ const metadata = {
         if (catTools.length === 0) return null;
         return (
           <section id={cat.slug} class="mb-14 cat-section" data-category={cat.slug}>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 cat-title">{cat.name}</h2>
-            <p class="text-gray-500 dark:text-gray-400 mb-6 cat-desc">{cat.description}</p>
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white cat-title">{cat.name}</h2>
+                <p class="mt-2 text-gray-500 dark:text-gray-400 cat-desc">{cat.description}</p>
+              </div>
+              <a
+                href={`/tools/${categoryRoutes[cat.slug]}/`}
+                class="text-sm font-semibold text-blue-600 transition hover:text-blue-700 dark:text-blue-400"
+              >
+                Open category
+              </a>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 tool-grid">
               {catTools.map((tool) => (
                 <div
@@ -147,6 +232,7 @@ const metadata = {
                   data-name={tool.name.toLowerCase()}
                   data-desc={tool.description.toLowerCase()}
                   data-slug={tool.slug}
+                  data-category={cat.slug}
                 >
                   <ToolCard
                     slug={tool.slug}
@@ -176,7 +262,7 @@ const metadata = {
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg
       >
       <p class="text-xl font-semibold text-gray-700 dark:text-gray-300">No tools found</p>
-      <p class="mt-2 text-gray-500 dark:text-gray-400">Try a different search term</p>
+      <p class="mt-2 text-gray-500 dark:text-gray-400">Try another keyword or switch back to All.</p>
     </div>
 
     <div class="max-w-4xl mx-auto mt-8">
@@ -193,13 +279,25 @@ const metadata = {
       const sections = document.querySelectorAll<HTMLElement>('.cat-section');
       const cards = document.querySelectorAll<HTMLElement>('.tool-card');
       const noResults = document.getElementById('no-results');
+      const filterButtons = document.querySelectorAll<HTMLButtonElement>('.category-filter');
 
       if (!input || !countEl || !noResults) return;
 
       const searchInput = input;
       const resultCount = countEl;
       const emptyState = noResults;
+      let activeCategory = 'all';
       let debounceTimer: ReturnType<typeof setTimeout>;
+
+      function setActiveButton(category: string) {
+        filterButtons.forEach((button) => {
+          const isActive = button.dataset.category === category;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          button.className = isActive
+            ? 'category-filter shrink-0 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition'
+            : 'category-filter shrink-0 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-blue-200 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300';
+        });
+      }
 
       function doSearch() {
         const query = searchInput.value.trim().toLowerCase();
@@ -209,7 +307,10 @@ const metadata = {
           const name = card.dataset.name || '';
           const desc = card.dataset.desc || '';
           const slug = card.dataset.slug || '';
-          const match = !query || name.includes(query) || desc.includes(query) || slug.includes(query);
+          const category = card.dataset.category || '';
+          const categoryMatch = activeCategory === 'all' || category === activeCategory;
+          const queryMatch = !query || name.includes(query) || desc.includes(query) || slug.includes(query);
+          const match = categoryMatch && queryMatch;
           card.style.display = match ? '' : 'none';
           if (match) visible++;
         });
@@ -220,13 +321,8 @@ const metadata = {
         });
 
         emptyState.style.display = visible === 0 ? '' : 'none';
-
-        if (query.length > 0) {
-          resultCount.textContent = visible + ' tool' + (visible !== 1 ? 's' : '') + ' found';
-          resultCount.classList.remove('hidden');
-        } else {
-          resultCount.classList.add('hidden');
-        }
+        resultCount.textContent =
+          visible + ' tool' + (visible !== 1 ? 's' : '') + (query || activeCategory !== 'all' ? ' found' : ' shown');
       }
 
       searchInput.addEventListener('input', function () {
@@ -234,12 +330,29 @@ const metadata = {
         debounceTimer = setTimeout(doSearch, 150);
       });
 
-      // Support URL hash pre-fill
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', function () {
+          activeCategory = button.dataset.category || 'all';
+          setActiveButton(activeCategory);
+          doSearch();
+        });
+      });
+
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
       if (q) {
         searchInput.value = q;
         doSearch();
+      }
+
+      if (window.location.hash) {
+        const hashCategory = window.location.hash.replace('#', '');
+        const hasCategory = Array.from(filterButtons).some((button) => button.dataset.category === hashCategory);
+        if (hasCategory) {
+          activeCategory = hashCategory;
+          setActiveButton(activeCategory);
+          doSearch();
+        }
       }
     })();
   </script>

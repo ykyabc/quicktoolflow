@@ -7,6 +7,8 @@ export const headerData = {
       links: [
         { text: 'Text Tools', href: '/tools/text/' },
         { text: 'Developer Tools', href: '/tools/developer/' },
+        { text: 'Code Formatting Tools', href: '/tools/code-formatting/' },
+        { text: 'Web Publishing Tools', href: '/tools/web-publishing/' },
         { text: 'Security & Encoding', href: '/tools/security-encoding/' },
         { text: 'Generators', href: '/tools/generators/' },
         { text: 'Converters', href: '/tools/converters/' },
@@ -59,6 +61,7 @@ export const footerData = {
       title: 'Developer Tools',
       links: [
         { text: 'JSON Formatter', href: '/tools/json-formatter/' },
+        { text: 'Code Formatting Tools', href: '/tools/code-formatting/' },
         { text: 'Base64 Encoder', href: '/tools/base64/' },
         { text: 'Security & Encoding', href: '/tools/security-encoding/' },
         { text: 'Regex Tester', href: '/tools/regex-tester/' },
@@ -66,6 +69,8 @@ export const footerData = {
         { text: 'URL Encoder', href: '/tools/url-encoder/' },
         { text: 'HTML Entity Encoder', href: '/tools/html-entity-encoder/' },
         { text: 'String Escape', href: '/tools/string-escape/' },
+        { text: 'HTML Formatter', href: '/tools/html-formatter/' },
+        { text: 'SQL Formatter', href: '/tools/sql-formatter/' },
         { text: 'Markdown Preview', href: '/tools/markdown-preview/' },
       ],
     },
@@ -87,6 +92,10 @@ export const footerData = {
       links: [
         { text: 'SERP Snippet Preview', href: '/tools/serp-snippet-preview/' },
         { text: 'Meta Tag Generator', href: '/tools/meta-tag-generator/' },
+        { text: 'Web Publishing Tools', href: '/tools/web-publishing/' },
+        { text: 'Open Graph Preview', href: '/tools/open-graph-preview/' },
+        { text: 'UTM Builder', href: '/tools/utm-builder/' },
+        { text: 'Robots.txt Generator', href: '/tools/robots-txt-generator/' },
         { text: 'Lorem Image Placeholder', href: '/tools/lorem-image-placeholder/' },
       ],
     },

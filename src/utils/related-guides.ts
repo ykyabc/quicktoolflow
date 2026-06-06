@@ -263,6 +263,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'meta-tag-generator': [
     {
+      title: 'Open Graph Preview Guide',
+      href: '/blog/open-graph-preview-guide/',
+      description: 'Learn how Open Graph tags shape social sharing cards and what metadata fields matter most.',
+    },
+    {
       title: 'SERP Snippet Preview Guide',
       href: '/blog/serp-snippet-preview-guide/',
       description: 'Learn how to write clearer page titles and meta descriptions for search result snippets.',
@@ -273,6 +278,78 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       title: 'SERP Snippet Preview Guide',
       href: '/blog/serp-snippet-preview-guide/',
       description: 'Learn how search snippets work and how to tune titles, URLs, and meta descriptions.',
+    },
+    {
+      title: 'Open Graph Preview Guide',
+      href: '/blog/open-graph-preview-guide/',
+      description: 'Understand the difference between search snippets and social sharing cards.',
+    },
+  ],
+  'utm-builder': [
+    {
+      title: 'UTM Builder Guide',
+      href: '/blog/utm-builder-guide/',
+      description: 'Learn how UTM parameters work and how to name campaign URLs consistently.',
+    },
+    {
+      title: 'URL Parser Guide',
+      href: '/blog/url-parser-guide/',
+      description: 'Inspect campaign query parameters and understand how tagged URLs are structured.',
+    },
+  ],
+  'url-parser': [
+    {
+      title: 'URL Parser Guide',
+      href: '/blog/url-parser-guide/',
+      description: 'Learn how protocols, hosts, paths, query strings, and hash fragments work.',
+    },
+    {
+      title: 'UTM Builder Guide',
+      href: '/blog/utm-builder-guide/',
+      description: 'See how query parameters are used for campaign tracking URLs.',
+    },
+  ],
+  'robots-txt-generator': [
+    {
+      title: 'Robots.txt Generator Guide',
+      href: '/blog/robots-txt-generator-guide/',
+      description: 'Learn how robots.txt crawl rules, disallow paths, and sitemap lines work.',
+    },
+  ],
+  'open-graph-preview': [
+    {
+      title: 'Open Graph Preview Guide',
+      href: '/blog/open-graph-preview-guide/',
+      description: 'Learn how Open Graph title, description, URL, and image fields affect social previews.',
+    },
+    {
+      title: 'SERP Snippet Preview Guide',
+      href: '/blog/serp-snippet-preview-guide/',
+      description: 'Compare social previews with search result snippets.',
+    },
+  ],
+  'html-formatter': [
+    {
+      title: 'HTML Formatter Guide',
+      href: '/blog/html-formatter-guide/',
+      description: 'Learn why indentation matters, when to minify HTML, and how to review markup safely.',
+    },
+    {
+      title: 'String Escaping Guide',
+      href: '/blog/string-escaping-guide-json-javascript-html-csv/',
+      description: 'Understand how HTML escaping differs from JSON, JavaScript, and CSV escaping.',
+    },
+  ],
+  'sql-formatter': [
+    {
+      title: 'SQL Formatter Guide',
+      href: '/blog/sql-formatter-guide/',
+      description: 'Learn how formatting SQL improves query review, debugging, and documentation.',
+    },
+    {
+      title: 'JSON Formatting Best Practices',
+      href: '/blog/json-formatting-best-practices/',
+      description: 'Use similar formatting principles when reviewing structured query output and API data.',
     },
   ],
 };

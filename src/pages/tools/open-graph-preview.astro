@@ -1,0 +1,229 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+---
+
+<ToolLayout
+  title="Open Graph Preview"
+  description="Preview how a page may look when shared on social platforms using Open Graph title, description, image, and URL."
+  slug="open-graph-preview"
+  category="SEO Tools"
+  features={[
+    'Previews a social sharing card from Open Graph fields',
+    'Checks title, description, URL, site name, and image URL',
+    'Generates copy-ready Open Graph meta tags',
+    'Includes a sample card for quick testing',
+    'Useful before publishing blog posts, landing pages, and tool pages',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Preparing social preview tags for a new page',
+    'Checking whether a title and description fit well in a sharing card',
+    'Generating Open Graph tags for static sites and landing pages',
+    'Creating metadata handoff snippets for developers or content teams',
+  ]}
+  howToSteps={[
+    'Enter the page title, description, URL, and site name.',
+    'Add an absolute image URL for the preview image.',
+    'Review the live social card preview.',
+    'Copy the generated Open Graph tags into your page head.',
+  ]}
+  examples={[
+    {
+      title: 'Preview a tool page share card',
+      input: 'Title: Free JSON Formatter & Validator\nURL: https://quicktoolflow.com/tools/json-formatter/',
+      output: '<meta property="og:title" content="Free JSON Formatter & Validator" />',
+      note: 'Open Graph tags help social platforms build clearer preview cards when your page is shared.',
+    },
+  ]}
+  tips={[
+    'Use absolute URLs for og:url and og:image.',
+    'Social platforms may cache previews, so changes can take time to refresh.',
+    'A common Open Graph image size is 1200 x 630 pixels, but exact rendering varies by platform.',
+  ]}
+  faq={[
+    {
+      question: 'What is Open Graph?',
+      answer:
+        'Open Graph is a metadata format used by social platforms to understand the title, description, image, URL, and type of a shared page.',
+    },
+    {
+      question: 'Does this fetch my image URL?',
+      answer:
+        'No. The preview uses the URL you enter as an image source in your browser. It does not upload or validate the image server-side.',
+    },
+    {
+      question: 'Is this exactly how every platform will render it?',
+      answer:
+        'No. It is a practical approximation. Different platforms crop, cache, and style shared cards differently.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+        <input
+          id="og-title"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          value="Free JSON Formatter & Validator"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Site Name</label>
+        <input
+          id="og-site"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          value="QuickToolFlow"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+      <textarea
+        id="og-desc"
+        class="min-h-[90px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        >Format, validate, and minify JSON online with instant browser-based feedback. No sign-up required.</textarea
+      >
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Page URL</label>
+        <input
+          id="og-url"
+          type="url"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          value="https://quicktoolflow.com/tools/json-formatter/"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Image URL</label>
+        <input
+          id="og-image"
+          type="url"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="https://example.com/og-image.png"
+        />
+      </div>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="og-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="og-update" variant="primary" icon="tabler:eye">Update Preview</ToolActionButton>
+    </ToolActionBar>
+
+    <div
+      class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+    >
+      <div
+        id="og-preview-image"
+        class="flex aspect-[1.91/1] items-center justify-center bg-slate-100 text-sm font-medium text-slate-500 dark:bg-slate-900 dark:text-slate-400"
+      >
+        Image preview
+      </div>
+      <div class="p-4">
+        <p id="og-preview-site" class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          QuickToolFlow
+        </p>
+        <h3 id="og-preview-title" class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
+          Free JSON Formatter &amp; Validator
+        </h3>
+        <p id="og-preview-desc" class="mt-2 line-clamp-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          Format, validate, and minify JSON online with instant browser-based feedback. No sign-up required.
+        </p>
+        <p id="og-preview-url" class="mt-3 truncate text-xs text-gray-500 dark:text-gray-400">
+          quicktoolflow.com/tools/json-formatter/
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Open Graph Tags</label>
+        <ToolActionButton id="og-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
+      </div>
+      <textarea
+        id="og-output"
+        class="min-h-[190px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+        readonly></textarea>
+    </div>
+
+    <div id="og-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  const ogTitle = document.getElementById('og-title');
+  const ogSite = document.getElementById('og-site');
+  const ogDesc = document.getElementById('og-desc');
+  const ogUrl = document.getElementById('og-url');
+  const ogImage = document.getElementById('og-image');
+  const ogOutput = document.getElementById('og-output');
+  const ogStatus = document.getElementById('og-status');
+
+  function ogEscape(value) {
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function showOgStatus(message, error) {
+    ogStatus.className =
+      'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+    ogStatus.textContent = message;
+  }
+
+  function shortUrl(value) {
+    try {
+      const url = new URL(value);
+      return url.hostname + url.pathname;
+    } catch {
+      return value.replace(/^https?:\/\//, '');
+    }
+  }
+
+  function updateOgPreview() {
+    const title = ogTitle.value.trim() || 'Untitled page';
+    const site = ogSite.value.trim() || 'Website';
+    const desc = ogDesc.value.trim() || 'Write a concise page description.';
+    const url = ogUrl.value.trim() || 'https://example.com/';
+    const image = ogImage.value.trim();
+
+    document.getElementById('og-preview-title').textContent = title;
+    document.getElementById('og-preview-site').textContent = site;
+    document.getElementById('og-preview-desc').textContent = desc;
+    document.getElementById('og-preview-url').textContent = shortUrl(url);
+    document.getElementById('og-preview-image').innerHTML = image
+      ? '<img src="' + ogEscape(image) + '" alt="" class="h-full w-full object-cover" />'
+      : 'Image preview';
+
+    const lines = [
+      '<meta property="og:type" content="website" />',
+      '<meta property="og:title" content="' + ogEscape(title) + '" />',
+      '<meta property="og:description" content="' + ogEscape(desc) + '" />',
+      '<meta property="og:url" content="' + ogEscape(url) + '" />',
+      '<meta property="og:site_name" content="' + ogEscape(site) + '" />',
+    ];
+    if (image) lines.push('<meta property="og:image" content="' + ogEscape(image) + '" />');
+    ogOutput.value = lines.join('\n');
+    showOgStatus('Open Graph preview updated.', false);
+  }
+
+  document.getElementById('og-update').addEventListener('click', updateOgPreview);
+  document.getElementById('og-sample').addEventListener('click', () => {
+    ogTitle.value = 'Free JSON Formatter & Validator';
+    ogSite.value = 'QuickToolFlow';
+    ogDesc.value = 'Format, validate, and minify JSON online with instant browser-based feedback. No sign-up required.';
+    ogUrl.value = 'https://quicktoolflow.com/tools/json-formatter/';
+    ogImage.value = '';
+    updateOgPreview();
+  });
+  document.getElementById('og-copy').addEventListener('click', () => {
+    if (!ogOutput.value) updateOgPreview();
+    navigator.clipboard.writeText(ogOutput.value);
+    showOgStatus('Open Graph tags copied.', false);
+  });
+
+  updateOgPreview();
+</script>

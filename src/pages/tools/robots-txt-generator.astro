@@ -1,0 +1,212 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+---
+
+<ToolLayout
+  title="Robots.txt Generator"
+  description="Generate a clean robots.txt file with user-agent rules, allow/disallow paths, sitemap URL, and crawl delay."
+  slug="robots-txt-generator"
+  category="SEO Tools"
+  features={[
+    'Creates robots.txt rules for all bots or a custom user-agent',
+    'Supports allow and disallow path lists',
+    'Adds sitemap URL and optional crawl delay',
+    'Includes common presets for public sites and staging blocks',
+    'Outputs copy-ready robots.txt content',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Creating a starter robots.txt file for a new website',
+    'Blocking staging or internal paths from crawling',
+    'Adding sitemap discovery to a static website',
+    'Preparing SEO handoff files for deployment',
+  ]}
+  howToSteps={[
+    'Choose a user-agent or keep the default wildcard.',
+    'Add paths you want to allow or disallow, one per line.',
+    'Optionally add a sitemap URL and crawl delay.',
+    'Generate and copy the robots.txt content.',
+  ]}
+  examples={[
+    {
+      title: 'Public site robots.txt',
+      input: 'User-agent: *\nDisallow: /admin/\nSitemap: https://example.com/sitemap.xml',
+      output: 'User-agent: *\nDisallow: /admin/\nSitemap: https://example.com/sitemap.xml',
+      note: 'Robots.txt gives crawler instructions, but it is not a security control.',
+    },
+  ]}
+  tips={[
+    'Do not use robots.txt to protect private data. Blocked URLs can still be visible if linked elsewhere.',
+    'Place robots.txt at the root of your domain, such as https://example.com/robots.txt.',
+    'Use noindex on pages when you need indexing control; robots.txt only controls crawling behavior.',
+  ]}
+  faq={[
+    {
+      question: 'What is robots.txt?',
+      answer:
+        'Robots.txt is a plain text file that gives crawler instructions about which paths should or should not be crawled.',
+    },
+    {
+      question: 'Can robots.txt hide private pages?',
+      answer:
+        'No. Robots.txt is public and cooperative. It should not be used as an access control or privacy mechanism.',
+    },
+    {
+      question: 'Where should I upload robots.txt?',
+      answer: 'Upload it to the root of your website so it is available at /robots.txt.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">User-agent</label>
+        <input
+          id="robots-agent"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          value="*"
+        />
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Crawl Delay</label>
+        <input
+          id="robots-delay"
+          type="number"
+          min="0"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="Optional seconds"
+        />
+      </div>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Allow Paths</label>
+        <textarea
+          id="robots-allow"
+          class="min-h-[120px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="/public/
+/assets/"></textarea>
+      </div>
+      <div>
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Disallow Paths</label>
+        <textarea
+          id="robots-disallow"
+          class="min-h-[120px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          placeholder="/admin/
+/private/"></textarea>
+      </div>
+    </div>
+
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Sitemap URL</label>
+      <input
+        id="robots-sitemap"
+        type="url"
+        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        placeholder="https://example.com/sitemap.xml"
+      />
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="robots-public" icon="tabler:world">Public Preset</ToolActionButton>
+      <ToolActionButton id="robots-staging" icon="tabler:lock">Block All Preset</ToolActionButton>
+      <ToolActionButton id="robots-generate" variant="primary" icon="tabler:file-code">Generate</ToolActionButton>
+    </ToolActionBar>
+    <div id="robots-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div>
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">robots.txt</label>
+        <ToolActionButton id="robots-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton
+        >
+      </div>
+      <textarea
+        id="robots-output"
+        class="min-h-[220px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+        readonly></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  const agentEl = document.getElementById('robots-agent');
+  const delayEl = document.getElementById('robots-delay');
+  const allowEl = document.getElementById('robots-allow');
+  const disallowEl = document.getElementById('robots-disallow');
+  const sitemapEl = document.getElementById('robots-sitemap');
+  const outputEl = document.getElementById('robots-output');
+  const statusEl = document.getElementById('robots-status');
+
+  function showRobotsStatus(message, type) {
+    const styles = {
+      success:
+        'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+      error:
+        'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+      info: 'rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+    };
+    statusEl.className = styles[type || 'success'];
+    statusEl.textContent = message;
+  }
+
+  function linesFrom(text) {
+    return text
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+  }
+
+  function generateRobots() {
+    const agent = agentEl.value.trim() || '*';
+    const delay = delayEl.value.trim();
+    const allow = linesFrom(allowEl.value);
+    const disallow = linesFrom(disallowEl.value);
+    const sitemap = sitemapEl.value.trim();
+    const lines = ['User-agent: ' + agent];
+
+    allow.forEach((path) => lines.push('Allow: ' + path));
+    if (disallow.length === 0 && allow.length === 0) lines.push('Disallow:');
+    disallow.forEach((path) => lines.push('Disallow: ' + path));
+    if (delay) lines.push('Crawl-delay: ' + delay);
+    if (sitemap) {
+      lines.push('');
+      lines.push('Sitemap: ' + sitemap);
+    }
+
+    outputEl.value = lines.join('\n') + '\n';
+    showRobotsStatus('robots.txt generated. Review crawler rules before publishing.', 'success');
+  }
+
+  document.getElementById('robots-generate').addEventListener('click', generateRobots);
+  document.getElementById('robots-public').addEventListener('click', () => {
+    agentEl.value = '*';
+    allowEl.value = '';
+    disallowEl.value = '/admin/\n/private/';
+    delayEl.value = '';
+    sitemapEl.value = 'https://example.com/sitemap.xml';
+    generateRobots();
+    showRobotsStatus('Public site preset loaded.', 'info');
+  });
+  document.getElementById('robots-staging').addEventListener('click', () => {
+    agentEl.value = '*';
+    allowEl.value = '';
+    disallowEl.value = '/';
+    delayEl.value = '';
+    sitemapEl.value = '';
+    generateRobots();
+    showRobotsStatus('Block-all preset loaded. Use only for staging or private environments.', 'info');
+  });
+  document.getElementById('robots-copy').addEventListener('click', () => {
+    if (!outputEl.value) {
+      showRobotsStatus('Generate robots.txt before copying.', 'error');
+      return;
+    }
+    navigator.clipboard.writeText(outputEl.value);
+    showRobotsStatus('robots.txt copied.', 'success');
+  });
+
+  generateRobots();
+</script>

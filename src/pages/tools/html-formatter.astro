@@ -1,0 +1,168 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+---
+
+<ToolLayout
+  title="HTML Formatter"
+  description="Format, indent, and minify HTML snippets for cleaner templates, landing pages, and markup reviews."
+  slug="html-formatter"
+  category="Developer Tools"
+  features={[
+    'Formats HTML with readable indentation',
+    'Minifies HTML by removing extra whitespace between tags',
+    'Works with snippets, full documents, and copied page sections',
+    'Includes sample HTML for quick testing',
+    'Copies formatted or minified output with one click',
+    'Runs locally in your browser',
+  ]}
+  useCases={[
+    'Cleaning copied HTML before editing it',
+    'Reviewing landing page markup and snippets',
+    'Preparing readable HTML for documentation or code review',
+    'Minifying small HTML snippets for embeds and templates',
+  ]}
+  howToSteps={[
+    'Paste HTML into the input box.',
+    'Choose Format HTML for readable indentation or Minify HTML for compact output.',
+    'Review the result and copy it when ready.',
+  ]}
+  examples={[
+    {
+      title: 'Format a compact HTML snippet',
+      input: '<div><h1>Hello</h1><p>Welcome</p></div>',
+      output: '<div>\n  <h1>Hello</h1>\n  <p>Welcome</p>\n</div>',
+      note: 'Formatting helps reveal nesting and missing closing tags more quickly.',
+    },
+  ]}
+  tips={[
+    'This is a lightweight formatter for common HTML snippets, not a full browser parser.',
+    'For framework templates, verify the final output in your build system.',
+    'Minification may not be appropriate inside pre, textarea, or content where whitespace matters.',
+  ]}
+  faq={[
+    {
+      question: 'Can this format a full HTML document?',
+      answer:
+        'Yes. You can paste a full HTML document or a smaller snippet. The formatter is designed for common markup cleanup.',
+    },
+    {
+      question: 'Does it validate HTML?',
+      answer:
+        'It does not perform standards validation. It formats and minifies text. Use a validator for strict HTML correctness checks.',
+    },
+    {
+      question: 'Is my HTML uploaded?',
+      answer: 'No. Formatting runs locally in your browser.',
+    },
+  ]}
+>
+  <div class="space-y-6">
+    <div>
+      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">HTML Input</label>
+      <textarea
+        id="html-input"
+        class="min-h-[220px] w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        placeholder="Paste HTML here..."></textarea>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="html-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
+      <ToolActionButton id="html-format" variant="primary" icon="tabler:align-left">Format HTML</ToolActionButton>
+      <ToolActionButton id="html-minify" icon="tabler:arrows-minimize">Minify</ToolActionButton>
+      <ToolActionButton id="html-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+    <div id="html-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+    <div>
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Output</label>
+        <ToolActionButton id="html-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
+      </div>
+      <textarea
+        id="html-output"
+        class="min-h-[260px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
+        readonly></textarea>
+    </div>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  const htmlInput = document.getElementById('html-input');
+  const htmlOutput = document.getElementById('html-output');
+  const htmlStatus = document.getElementById('html-status');
+
+  function showHtmlStatus(message, error) {
+    htmlStatus.className =
+      'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+    htmlStatus.textContent = message;
+  }
+
+  function formatHtml(source) {
+    const tokens = source
+      .replace(/>\s*</g, '><')
+      .replace(/</g, '\n<')
+      .replace(/>/g, '>\n')
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+    let indent = 0;
+    const result = [];
+    tokens.forEach((token) => {
+      const isClosing = /^<\//.test(token);
+      const isSelfClosing =
+        /\/>$/.test(token) || /^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)\b/i.test(token);
+      const isOpening = /^<[^!?/][^>]*>$/.test(token) && !isSelfClosing;
+      if (isClosing) indent = Math.max(indent - 1, 0);
+      result.push('  '.repeat(indent) + token);
+      if (isOpening) indent++;
+    });
+    return result.join('\n');
+  }
+
+  document.getElementById('html-format').addEventListener('click', () => {
+    const value = htmlInput.value.trim();
+    if (!value) {
+      htmlOutput.value = '';
+      showHtmlStatus('Paste HTML before formatting.', true);
+      return;
+    }
+    htmlOutput.value = formatHtml(value);
+    showHtmlStatus('HTML formatted.', false);
+  });
+
+  document.getElementById('html-minify').addEventListener('click', () => {
+    const value = htmlInput.value.trim();
+    if (!value) {
+      htmlOutput.value = '';
+      showHtmlStatus('Paste HTML before minifying.', true);
+      return;
+    }
+    htmlOutput.value = value
+      .replace(/>\s+</g, '><')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+    showHtmlStatus('HTML minified.', false);
+  });
+
+  document.getElementById('html-sample').addEventListener('click', () => {
+    htmlInput.value =
+      '<section><h1>QuickToolFlow</h1><p>Fast browser-based tools.</p><a href="/tools/">Explore tools</a></section>';
+    htmlOutput.value = '';
+    showHtmlStatus('Sample HTML loaded.', false);
+  });
+  document.getElementById('html-clear').addEventListener('click', () => {
+    htmlInput.value = '';
+    htmlOutput.value = '';
+    showHtmlStatus('Editor cleared.', false);
+  });
+  document.getElementById('html-copy').addEventListener('click', () => {
+    if (!htmlOutput.value) {
+      showHtmlStatus('Generate output before copying.', true);
+      return;
+    }
+    navigator.clipboard.writeText(htmlOutput.value);
+    showHtmlStatus('Output copied.', false);
+  });
+</script>

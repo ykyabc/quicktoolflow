@@ -1,0 +1,280 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import RelatedToolkits from '~/components/ui/RelatedToolkits.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+
+const canonical = 'https://quicktoolflow.com/tools/code-formatting/';
+
+const toolGroups = [
+  {
+    title: 'Format structured data',
+    description: 'Clean JSON, CSV, YAML, and XML before using the data in APIs, configs, spreadsheets, or docs.',
+    slugs: ['json-formatter', 'csv-formatter', 'yaml-formatter', 'xml-formatter'],
+  },
+  {
+    title: 'Minify, query, and convert',
+    description: 'Shrink payloads, test JSON paths, and move data between common interchange formats.',
+    slugs: ['json-minifier', 'json-path-tester', 'json-to-csv', 'csv-to-json', 'json-to-yaml'],
+  },
+  {
+    title: 'Review code-like content',
+    description: 'Make HTML snippets, SQL queries, and Markdown drafts easier to read, review, and share.',
+    slugs: ['html-formatter', 'sql-formatter', 'markdown-preview'],
+  },
+];
+
+const guideLinks = [
+  {
+    title: 'JSON Formatter Guide',
+    href: '/blog/json-formatter-guide/',
+    description: 'Learn how formatting, validation, and readable indentation improve API debugging.',
+  },
+  {
+    title: 'CSV Formatter Guide',
+    href: '/blog/csv-formatter-guide/',
+    description: 'Clean spreadsheet exports and delimiter-sensitive data before importing or sharing.',
+  },
+  {
+    title: 'YAML Formatter Guide',
+    href: '/blog/yaml-formatter-guide/',
+    description: 'Avoid indentation problems in config files, CI pipelines, and static site settings.',
+  },
+  {
+    title: 'XML Formatter Guide',
+    href: '/blog/xml-formatter-guide/',
+    description: 'Format feeds, sitemaps, API payloads, and nested XML documents for easier inspection.',
+  },
+  {
+    title: 'HTML Formatter Guide',
+    href: '/blog/html-formatter-guide/',
+    description: 'Clean markup snippets before code review, publishing, or handoff.',
+  },
+  {
+    title: 'SQL Formatter Guide',
+    href: '/blog/sql-formatter-guide/',
+    description: 'Make long queries easier to audit by aligning clauses, joins, filters, and expressions.',
+  },
+];
+
+const checklist = [
+  'Paste the smallest useful sample, not an entire private dataset.',
+  'Format first, then scan indentation and nesting before editing values.',
+  'Validate JSON, YAML, XML, or CSV before converting it to another format.',
+  'Minify only after review, when the payload is ready for transport or storage.',
+  'Use JSON Path on a representative response before adding it to scripts or tests.',
+  'Format SQL before reviewing joins, filters, grouping, and ordering logic.',
+  'Keep a copy of the original data when normalizing generated exports.',
+];
+
+const faqItems = [
+  {
+    question: 'What are code formatting tools?',
+    answer:
+      'Code formatting tools clean indentation, spacing, nesting, and layout so structured data, markup, SQL, and documentation are easier to read and review.',
+  },
+  {
+    question: 'Do formatting tools change the meaning of my data?',
+    answer:
+      'A formatter should preserve the meaning of valid input while changing whitespace and layout. Converters and normalizers can alter representation, so review their output before using it in production.',
+  },
+  {
+    question: 'When should I minify instead of format?',
+    answer:
+      'Format while reviewing or debugging. Minify when you need compact output for transport, storage, or embedding after the content has already been checked.',
+  },
+  {
+    question: 'Are browser-based formatters suitable for sensitive data?',
+    answer:
+      'QuickToolFlow tools are designed to run in your browser, but you should still avoid pasting secrets, credentials, or private production records into any web tool.',
+  },
+];
+
+const getTool = (slug: string) => tools.find((tool) => tool.slug === slug);
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Code formatting tools',
+  itemListElement: toolGroups
+    .flatMap((group) => group.slugs)
+    .map((slug, index) => {
+      const tool = getTool(slug);
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        name: tool?.name || slug,
+        url: `https://quicktoolflow.com/tools/${slug}/`,
+      };
+    }),
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Code Formatting Tools', item: canonical },
+  ],
+};
+
+const metadata = {
+  title: 'Code Formatting Tools',
+  description:
+    'Free online code formatting tools for JSON, CSV, YAML, XML, HTML, SQL, Markdown, JSON Path testing, minification, and data conversion.',
+  canonical,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <Breadcrumb
+      items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: 'Code Formatting' }]}
+    />
+
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">Developer Toolkit</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Code Formatting Tools</h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        Format, validate, minify, query, and convert code-like content in one place. Use these tools for API responses,
+        config files, SQL queries, markup snippets, Markdown drafts, and structured data handoffs.
+      </p>
+    </header>
+
+    <section
+      class="mt-12 rounded-2xl border border-primary-100 bg-primary-50 p-6 dark:border-primary-900/50 dark:bg-primary-950/20"
+    >
+      <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">Start here</p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Clean the data before you debug it</h2>
+          <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            Formatting makes nesting, missing commas, broken quotes, and hard-to-read query logic easier to spot before
+            data moves into another system.
+          </p>
+        </div>
+        <a
+          href="/tools/json-formatter/"
+          class="inline-flex rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Start with JSON Formatter
+        </a>
+      </div>
+    </section>
+
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      {
+        [
+          ['Readable', 'Add indentation and line breaks so nested data and queries can be reviewed quickly.'],
+          ['Portable', 'Convert between JSON, CSV, YAML, and compact formats for APIs or spreadsheets.'],
+          ['Practical', 'Use formatters during debugging, code review, documentation, and launch handoffs.'],
+        ].map(([title, description]) => (
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
+            <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{description}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 space-y-14">
+      {
+        toolGroups.map((group) => (
+          <section>
+            <div class="mb-6 max-w-3xl">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{group.title}</h2>
+              <p class="mt-3 text-gray-600 dark:text-gray-300">{group.description}</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {group.slugs.map((slug) => {
+                const tool = getTool(slug);
+                if (!tool) return null;
+                return (
+                  <ToolCard
+                    slug={tool.slug}
+                    name={tool.name}
+                    description={tool.description}
+                    icon={tool.icon}
+                    gradient={tool.gradient}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Formatting checklist</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          {
+            checklist.map((item, index) => (
+              <li class="flex gap-3">
+                <span class="font-bold text-primary-600">{index + 1}.</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Related guides</h2>
+        <div class="mt-5 grid gap-3">
+          {
+            guideLinks.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-16 max-w-4xl">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+      <div class="mt-6 space-y-4">
+        {
+          faqItems.map((item) => (
+            <details class="group rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+              <summary class="flex cursor-pointer items-center justify-between p-4 font-medium text-gray-900 transition hover:text-primary-700 dark:text-white dark:hover:text-primary-300">
+                <span>{item.question}</span>
+                <astro-icon
+                  name="tabler:chevron-down"
+                  class="ml-3 h-5 w-5 shrink-0 text-gray-400 transition group-open:rotate-180"
+                />
+              </summary>
+              <p class="px-4 pb-4 text-sm leading-6 text-gray-600 dark:text-gray-300">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <RelatedToolkits current="code-formatting" />
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+</Layout>
