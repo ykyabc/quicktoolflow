@@ -68,8 +68,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <ToolActionButton id="he-encode" variant="primary" icon="tabler:code">Encode</ToolActionButton>
       <ToolActionButton id="he-decode" icon="tabler:code-dots">Decode</ToolActionButton>
       <ToolActionButton id="he-swap" icon="tabler:arrows-exchange" title="Swap input and output">Swap</ToolActionButton>
+      <ToolActionButton id="he-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="he-copy" icon="tabler:copy">Copy Output</ToolActionButton>
     </ToolActionBar>
+
+    <div id="he-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input</label>
@@ -123,20 +126,39 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const btnEnc = document.getElementById('he-encode');
     const btnDec = document.getElementById('he-decode');
     const btnSwap = document.getElementById('he-swap');
+    const btnSample = document.getElementById('he-sample');
     const btnCopy = document.getElementById('he-copy');
+    const status = document.getElementById('he-status');
 
     if (!input || !output || !btnEnc || !btnDec) return;
 
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
     btnEnc.addEventListener('click', () => {
+      if (!input.value.trim()) {
+        showStatus('Enter text or HTML first.', true);
+        return;
+      }
       output.value = input.value
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+      showStatus('HTML entities encoded.', false);
     });
 
     btnDec.addEventListener('click', () => {
+      if (!input.value.trim()) {
+        showStatus('Enter encoded HTML entities first.', true);
+        return;
+      }
       output.value = input.value
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
@@ -146,16 +168,29 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         .replace(/&nbsp;/g, ' ')
         .replace(/&copy;/g, '©')
         .replace(/&reg;/g, '®');
+      showStatus('HTML entities decoded.', false);
     });
 
     btnSwap?.addEventListener('click', () => {
       const temp = input.value;
       input.value = output.value;
       output.value = temp;
+      status?.classList.add('hidden');
+    });
+
+    btnSample?.addEventListener('click', () => {
+      input.value = '<div class="hello">Hello & "World" > 5 < 10</div>';
+      output.value = '';
+      showStatus('Sample HTML loaded. Click Encode to escape it.', false);
     });
 
     btnCopy?.addEventListener('click', () => {
-      if (output.value) navigator.clipboard.writeText(output.value);
+      if (!output.value) {
+        showStatus('There is no output to copy yet.', true);
+        return;
+      }
+      navigator.clipboard.writeText(output.value);
+      showStatus('Output copied to clipboard.', false);
     });
   }
 

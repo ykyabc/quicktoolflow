@@ -104,13 +104,23 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     <ToolActionBar>
       <ToolActionButton id="cc-copy" icon="tabler:copy">Copy HEX</ToolActionButton>
     </ToolActionBar>
+
+    <div id="cc-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
   </div>
 
   <script is:inline>
     const hex = document.getElementById('cc-hex'),
       rgb = document.getElementById('cc-rgb'),
       hsl = document.getElementById('cc-hsl'),
-      prev = document.getElementById('cc-preview');
+      prev = document.getElementById('cc-preview'),
+      status = document.getElementById('cc-status');
+
+    function showStatus(message, error) {
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
 
     function hexToRgb(h) {
       h = h.replace('#', '');
@@ -174,7 +184,10 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     }
 
     function updateAll(h) {
-      if (!/^#?[0-9a-fA-F]{3,6}$/.test(h)) return;
+      if (!/^#?[0-9a-fA-F]{3,6}$/.test(h)) {
+        showStatus('Enter a valid 3- or 6-digit HEX color.', true);
+        return;
+      }
       if (!h.startsWith('#')) h = '#' + h;
       const c = hexToRgb(h),
         hs = rgbToHsl(c.r, c.g, c.b);
@@ -182,6 +195,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       rgb.value = `rgb(${c.r}, ${c.g}, ${c.b})`;
       hsl.value = `hsl(${hs.h}, ${hs.s}%, ${hs.l}%)`;
       prev.style.background = h;
+      status.classList.add('hidden');
     }
 
     hex.addEventListener('input', () => updateAll(hex.value));
@@ -196,6 +210,9 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         updateAll(rgbToHex(c.r, c.g, c.b));
       }
     });
-    document.getElementById('cc-copy').addEventListener('click', () => navigator.clipboard.writeText(hex.value));
+    document.getElementById('cc-copy').addEventListener('click', () => {
+      navigator.clipboard.writeText(hex.value);
+      showStatus('HEX value copied to clipboard.', false);
+    });
   </script>
 </ToolLayout>

@@ -81,8 +81,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <ToolActionButton id="se-js" variant="primary" icon="tabler:script">Escape JS</ToolActionButton>
       <ToolActionButton id="se-html" variant="primary" icon="tabler:code">Escape HTML</ToolActionButton>
       <ToolActionButton id="se-unescape" icon="tabler:code-minus">Unescape</ToolActionButton>
+      <ToolActionButton id="se-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="se-copy" icon="tabler:copy">Copy</ToolActionButton>
     </ToolActionBar>
+
+    <div id="se-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output</label>
@@ -102,11 +105,29 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const output = document.getElementById('se-output') as HTMLTextAreaElement;
     if (!input || !output) return;
 
+    const status = document.getElementById('se-status');
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function hasInput() {
+      if (input.value.trim()) return true;
+      showStatus('Enter text to transform first.', true);
+      return false;
+    }
+
     document.getElementById('se-json')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       output.value = JSON.stringify(input.value).slice(1, -1);
+      showStatus('Escaped for JSON string values.', false);
     });
 
     document.getElementById('se-js')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       output.value = input.value
         .replace(/\\/g, '\\\\')
         .replace(/'/g, "\\'")
@@ -114,18 +135,22 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         .replace(/\n/g, '\\n')
         .replace(/\r/g, '\\r')
         .replace(/\t/g, '\\t');
+      showStatus('Escaped for JavaScript strings.', false);
     });
 
     document.getElementById('se-html')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       output.value = input.value
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+      showStatus('Escaped for HTML text output.', false);
     });
 
     document.getElementById('se-unescape')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       let r = input.value;
       r = r
         .replace(/&amp;/g, '&')
@@ -140,10 +165,22 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         void 0;
       }
       output.value = r;
+      showStatus('Unescaped text generated.', false);
+    });
+
+    document.getElementById('se-sample')?.addEventListener('click', () => {
+      input.value = 'He said "Hello World" & left.\\nNext line.';
+      output.value = '';
+      showStatus('Sample text loaded. Choose an escape mode.', false);
     });
 
     document.getElementById('se-copy')?.addEventListener('click', () => {
-      if (output.value) navigator.clipboard.writeText(output.value);
+      if (!output.value) {
+        showStatus('There is no output to copy yet.', true);
+        return;
+      }
+      navigator.clipboard.writeText(output.value);
+      showStatus('Output copied to clipboard.', false);
     });
   }
 

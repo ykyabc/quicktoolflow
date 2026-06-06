@@ -85,9 +85,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       </div>
     </div>
     <ToolActionBar>
+      <ToolActionButton id="td-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="td-cmp" variant="primary" icon="tabler:git-compare">Compare</ToolActionButton>
       <ToolActionButton id="td-clr" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
     </ToolActionBar>
+    <div id="td-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
     <div id="td-res" class="hidden">
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Differences</h3>
       <div
@@ -100,16 +102,48 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 
   <script is:inline>
     const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const tdStatus = document.getElementById('td-status');
+
+    const showTdStatus = (message, type = 'success') => {
+      const styles = {
+        success:
+          'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+        error:
+          'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+        info: 'rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+      };
+      tdStatus.className = styles[type];
+      tdStatus.textContent = message;
+    };
+
+    document.getElementById('td-sample').addEventListener('click', () => {
+      document.getElementById('td-a').value =
+        'Free online tools for developers.\nNo sign-up required.\nFormat JSON, YAML, and CSV quickly.';
+      document.getElementById('td-b').value =
+        'Free browser-based tools for developers.\nNo sign-up required.\nFormat JSON, YAML, XML, and CSV quickly.';
+      document.getElementById('td-res').classList.add('hidden');
+      showTdStatus('Sample text loaded. Click Compare to review the changed lines.', 'info');
+    });
 
     document.getElementById('td-cmp').addEventListener('click', () => {
-      const a = document.getElementById('td-a').value.split('\n');
-      const b = document.getElementById('td-b').value.split('\n');
+      const originalText = document.getElementById('td-a').value;
+      const modifiedText = document.getElementById('td-b').value;
+      if (!originalText.trim() && !modifiedText.trim()) {
+        document.getElementById('td-res').classList.add('hidden');
+        showTdStatus('Paste two text versions or load the sample before comparing.', 'error');
+        return;
+      }
+
+      const a = originalText.split('\n');
+      const b = modifiedText.split('\n');
       const max = Math.max(a.length, b.length);
       let html = '';
+      let changed = 0;
       for (let i = 0; i < max; i++) {
         if (a[i] === b[i]) {
           html += `<div class="py-0.5 px-2 text-gray-600 dark:text-gray-400">${esc(a[i] || '')}</div>`;
         } else {
+          changed++;
           if (a[i] !== undefined)
             html += `<div class="py-0.5 px-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-l-2 border-red-400">- ${esc(a[i])}</div>`;
           if (b[i] !== undefined)
@@ -119,12 +153,19 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       document.getElementById('td-out').innerHTML =
         html || '<div class="text-green-700 text-center py-4">Texts are identical.</div>';
       document.getElementById('td-res').classList.remove('hidden');
+      showTdStatus(
+        changed === 0
+          ? 'Texts are identical.'
+          : `Comparison complete. ${changed} line position${changed === 1 ? '' : 's'} changed.`,
+        changed === 0 ? 'success' : 'info'
+      );
     });
 
     document.getElementById('td-clr').addEventListener('click', () => {
       document.getElementById('td-a').value = '';
       document.getElementById('td-b').value = '';
       document.getElementById('td-res').classList.add('hidden');
+      showTdStatus('Comparison cleared.', 'info');
     });
   </script>
 </ToolLayout>

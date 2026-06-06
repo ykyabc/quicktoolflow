@@ -106,7 +106,10 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <ToolActionButton id="css-convert" variant="primary" icon="tabler:arrows-exchange" class="w-full">
         Convert
       </ToolActionButton>
+      <ToolActionButton id="css-sample" icon="tabler:file-code" class="w-full">Load Sample</ToolActionButton>
     </ToolActionBar>
+
+    <div id="css-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {
@@ -129,15 +132,34 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const fromEl = document.getElementById('css-from') as HTMLSelectElement;
     const baseEl = document.getElementById('css-base') as HTMLInputElement;
     const btn = document.getElementById('css-convert');
+    const btnSample = document.getElementById('css-sample');
+    const statusEl = document.getElementById('css-status');
 
     if (!valEl || !btn) return;
 
+    function showStatus(message: string, error = false) {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      statusEl.classList.remove('hidden');
+    }
+
     function convert() {
-      const val = parseFloat(valEl.value) || 0;
-      const base = parseFloat(baseEl?.value) || 16;
+      const val = parseFloat(valEl.value);
+      const base = parseFloat(baseEl?.value);
       const from = fromEl.value;
       const viewportWidth = 1920;
       const viewportHeight = 1080;
+
+      if (Number.isNaN(val)) {
+        showStatus('Enter a numeric value to convert.', true);
+        return;
+      }
+      if (Number.isNaN(base) || base <= 0) {
+        showStatus('Base font size must be greater than 0.', true);
+        return;
+      }
 
       let px: number;
       switch (from) {
@@ -176,9 +198,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         const el = document.getElementById('css-' + key);
         if (el) el.textContent = value;
       });
+      showStatus('CSS units converted using a 1920x1080 viewport reference.', false);
     }
 
     btn.addEventListener('click', convert);
+    btnSample?.addEventListener('click', () => {
+      valEl.value = '16';
+      fromEl.value = 'px';
+      baseEl.value = '16';
+      convert();
+    });
     valEl.addEventListener('input', convert);
     fromEl?.addEventListener('change', convert);
     baseEl?.addEventListener('input', convert);

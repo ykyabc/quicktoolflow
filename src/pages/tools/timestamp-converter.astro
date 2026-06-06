@@ -93,9 +93,12 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
             value="1700000000"
           />
         </div>
-        <ToolActionButton id="ts-to-date" variant="primary" icon="tabler:calendar-time" class="w-full">
-          Convert to Date
-        </ToolActionButton>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <ToolActionButton id="ts-sample" icon="tabler:file-code" class="w-full">Load Sample</ToolActionButton>
+          <ToolActionButton id="ts-to-date" variant="primary" icon="tabler:calendar-time" class="w-full">
+            Convert to Date
+          </ToolActionButton>
+        </div>
         <div class="space-y-2">
           <div class="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
             <span class="text-xs text-gray-500 uppercase">UTC</span>
@@ -139,11 +142,26 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         </div>
       </div>
     </div>
+    <div id="ts-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
   </div>
   <script>
     function initTimestampConverter() {
       const currentEl = document.getElementById('ts-current');
       const currentDateEl = document.getElementById('ts-current-date');
+      const status = document.getElementById('ts-status');
+
+      function showStatus(message: string, type: 'success' | 'error' | 'info' = 'success') {
+        if (!status) return;
+        const styles = {
+          success:
+            'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+          error:
+            'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+          info: 'rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+        };
+        status.className = styles[type];
+        status.textContent = message;
+      }
 
       function updateCurrent() {
         const now = Math.floor(Date.now() / 1000);
@@ -156,11 +174,18 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 
       const tsInput = document.getElementById('ts-input') as HTMLInputElement;
       const btnToDate = document.getElementById('ts-to-date');
-      btnToDate?.addEventListener('click', () => {
+      function convertTimestampToDate() {
         const val = parseInt(tsInput.value);
-        if (isNaN(val)) return;
+        if (isNaN(val)) {
+          showStatus('Enter a valid Unix timestamp in seconds or milliseconds.', 'error');
+          return;
+        }
         const ms = val > 1e12 ? val : val * 1000;
         const d = new Date(ms);
+        if (isNaN(d.getTime())) {
+          showStatus('That timestamp is outside the supported date range.', 'error');
+          return;
+        }
         const utcEl = document.getElementById('ts-utc');
         const localEl = document.getElementById('ts-local');
         const relEl = document.getElementById('ts-relative');
@@ -177,6 +202,15 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
           if (diff < 0) rel = 'in ' + rel.replace(' ago', '');
           relEl.textContent = rel;
         }
+        showStatus(`Timestamp converted as ${val > 1e12 ? 'milliseconds' : 'seconds'}.`);
+      }
+
+      btnToDate?.addEventListener('click', convertTimestampToDate);
+
+      document.getElementById('ts-sample')?.addEventListener('click', () => {
+        tsInput.value = '1700000000';
+        convertTimestampToDate();
+        showStatus('Sample timestamp loaded and converted.', 'info');
       });
 
       const dtInput = document.getElementById('dt-input') as HTMLInputElement;
@@ -189,11 +223,15 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       const btnToTs = document.getElementById('dt-to-ts');
       btnToTs?.addEventListener('click', () => {
         const d = new Date(dtInput.value);
-        if (isNaN(d.getTime())) return;
+        if (isNaN(d.getTime())) {
+          showStatus('Choose a valid date and time before converting.', 'error');
+          return;
+        }
         const secsEl = document.getElementById('dt-seconds');
         const millisEl = document.getElementById('dt-millis');
         if (secsEl) secsEl.textContent = Math.floor(d.getTime() / 1000).toString();
         if (millisEl) millisEl.textContent = d.getTime().toString();
+        showStatus('Date converted to Unix timestamp values.');
       });
     }
 

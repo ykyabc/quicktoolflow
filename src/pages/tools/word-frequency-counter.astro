@@ -82,8 +82,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         <span class="text-sm text-gray-700 dark:text-gray-300">Ignore common words (the, a, is, etc.)</span>
       </label>
       <ToolActionButton id="wf-analyze" variant="primary" icon="tabler:chart-bar">Analyze</ToolActionButton>
+      <ToolActionButton id="wf-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="wf-copy" icon="tabler:copy">Copy Results</ToolActionButton>
     </div>
+
+    <div id="wf-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div id="wf-results" class="hidden">
       <div class="flex items-center justify-between mb-3">
@@ -103,9 +106,19 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const tableEl = document.getElementById('wf-table');
     const totalEl = document.getElementById('wf-total');
     const btnAnalyze = document.getElementById('wf-analyze');
+    const btnSample = document.getElementById('wf-sample');
     const btnCopy = document.getElementById('wf-copy');
+    const status = document.getElementById('wf-status');
 
     if (!input || !btnAnalyze || !results || !tableEl) return;
+
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
 
     const stopWords = new Set([
       'the',
@@ -211,6 +224,12 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     ]);
 
     btnAnalyze.addEventListener('click', () => {
+      if (!input.value.trim()) {
+        tableEl.innerHTML = '';
+        results.classList.add('hidden');
+        showStatus('Paste text to analyze first.', true);
+        return;
+      }
       const text = input.value.toLowerCase();
       const words = text.match(/[a-z]+(?:'[a-z]+)?/g) || [];
       const freq: Record<string, number> = {};
@@ -228,6 +247,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 
       if (sorted.length === 0) {
         tableEl.innerHTML = '<div class="text-sm text-gray-500">No words found.</div>';
+        showStatus('No countable words found.', true);
         return;
       }
 
@@ -261,9 +281,22 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 
       html += '</tbody></table>';
       tableEl.innerHTML = html;
+      showStatus(`Analyzed ${words.length} word${words.length === 1 ? '' : 's'}.`, false);
+    });
+
+    btnSample?.addEventListener('click', () => {
+      input.value =
+        'Free tools help developers save time. These tools run in your browser and keep developer workflows fast.';
+      tableEl.innerHTML = '';
+      results.classList.add('hidden');
+      showStatus('Sample text loaded. Click Analyze to count word frequency.', false);
     });
 
     btnCopy?.addEventListener('click', () => {
+      if (!tableEl.querySelector('tr')) {
+        showStatus('Analyze text before copying results.', true);
+        return;
+      }
       const rows = tableEl.querySelectorAll('tr');
       let tsv = 'Rank\tWord\tCount\n';
       rows.forEach((r) => {
@@ -272,6 +305,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
           tsv += cells[0].textContent + '\t' + cells[1].textContent + '\t' + cells[2].textContent + '\n';
       });
       navigator.clipboard.writeText(tsv);
+      showStatus('Word frequency table copied as TSV.', false);
     });
   }
 

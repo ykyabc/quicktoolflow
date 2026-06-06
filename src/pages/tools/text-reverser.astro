@@ -80,8 +80,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <ToolActionButton id="tr-char" variant="primary" icon="tabler:arrows-sort">Reverse Characters</ToolActionButton>
       <ToolActionButton id="tr-word" icon="tabler:sort-descending-letters">Reverse Words</ToolActionButton>
       <ToolActionButton id="tr-line" icon="tabler:list">Reverse Lines</ToolActionButton>
+      <ToolActionButton id="tr-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="tr-copy" icon="tabler:copy">Copy</ToolActionButton>
     </ToolActionBar>
+
+    <div id="tr-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Result</label>
@@ -101,17 +104,49 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const output = document.getElementById('tr-output') as HTMLTextAreaElement;
     if (!input || !output) return;
 
+    const status = document.getElementById('tr-status');
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function hasInput() {
+      if (input.value.trim()) return true;
+      output.value = '';
+      showStatus('Enter text to reverse first.', true);
+      return false;
+    }
+
     document.getElementById('tr-char')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       output.value = input.value.split('').reverse().join('');
+      showStatus('Characters reversed.', false);
     });
     document.getElementById('tr-word')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       output.value = input.value.split(/\s+/).reverse().join(' ');
+      showStatus('Words reversed.', false);
     });
     document.getElementById('tr-line')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       output.value = input.value.split('\n').reverse().join('\n');
+      showStatus('Lines reversed.', false);
+    });
+    document.getElementById('tr-sample')?.addEventListener('click', () => {
+      input.value = 'First line\nSecond line\nThird line';
+      output.value = '';
+      showStatus('Sample text loaded. Choose a reverse mode.', false);
     });
     document.getElementById('tr-copy')?.addEventListener('click', () => {
-      if (output.value) navigator.clipboard.writeText(output.value);
+      if (!output.value) {
+        showStatus('Reverse text before copying.', true);
+        return;
+      }
+      navigator.clipboard.writeText(output.value);
+      showStatus('Reversed text copied to clipboard.', false);
     });
   }
 

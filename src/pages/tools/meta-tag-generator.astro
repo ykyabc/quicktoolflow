@@ -147,6 +147,9 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     <ToolActionButton id="mt-gen" variant="primary" icon="tabler:tags" class="w-full">
       Generate Meta Tags
     </ToolActionButton>
+    <ToolActionButton id="mt-sample" icon="tabler:file-code" class="w-full">Load Sample</ToolActionButton>
+
+    <div id="mt-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <div class="flex items-center justify-between mb-2">
@@ -175,9 +178,19 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const outputEl = document.getElementById('mt-output') as HTMLTextAreaElement;
     const countEl = document.getElementById('mt-desc-count');
     const btnGen = document.getElementById('mt-gen');
+    const btnSample = document.getElementById('mt-sample');
     const btnCopy = document.getElementById('mt-copy');
+    const statusEl = document.getElementById('mt-status');
 
     if (!btnGen || !outputEl) return;
+
+    function showStatus(message: string, error = false) {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      statusEl.classList.remove('hidden');
+    }
 
     descEl?.addEventListener('input', () => {
       if (countEl) countEl.textContent = descEl.value.length + ' / 160';
@@ -195,6 +208,12 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       const author = esc(authorEl.value);
       const image = esc(imageEl.value);
       const twitter = esc(twitterEl.value);
+
+      if (!title && !desc && !url) {
+        outputEl.value = '';
+        showStatus('Enter at least a page title, description, or URL first.', true);
+        return;
+      }
 
       const lines: string[] = [];
       lines.push('<!-- Basic Meta Tags -->');
@@ -221,10 +240,30 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       if (image) lines.push('<meta name="twitter:image" content="' + image + '" />');
 
       outputEl.value = lines.join('\n');
+      showStatus('Meta tags generated. Review the output before publishing.', false);
+    });
+
+    btnSample?.addEventListener('click', () => {
+      titleEl.value = 'Free JSON Formatter & Validator';
+      urlEl.value = 'https://quicktoolflow.com/tools/json-formatter/';
+      descEl.value =
+        'Format, validate, and minify JSON online with instant browser-based feedback. No sign-up required.';
+      keywordsEl.value = 'json formatter, json validator, developer tools';
+      authorEl.value = 'QuickToolFlow';
+      imageEl.value = 'https://quicktoolflow.com/og-image.png';
+      twitterEl.value = '@quicktoolflow';
+      if (countEl) countEl.textContent = descEl.value.length + ' / 160';
+      outputEl.value = '';
+      showStatus('Sample metadata loaded. Click Generate Meta Tags.', false);
     });
 
     btnCopy?.addEventListener('click', () => {
-      if (outputEl.value) navigator.clipboard.writeText(outputEl.value);
+      if (!outputEl.value) {
+        showStatus('Generate meta tags before copying.', true);
+        return;
+      }
+      navigator.clipboard.writeText(outputEl.value);
+      showStatus('Generated meta tags copied to clipboard.', false);
     });
   }
 

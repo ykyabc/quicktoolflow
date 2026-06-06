@@ -120,6 +120,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     </div>
 
     <div>
+      <ToolActionButton id="serp-sample" icon="tabler:file-code" class="mb-4 w-full">Load Sample</ToolActionButton>
       <div class="mb-2 flex items-center justify-between gap-3">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description Tag</label>
         <ToolActionButton id="serp-copy" icon="tabler:copy" class="min-h-0 px-3 py-1.5 text-xs">Copy</ToolActionButton>
@@ -129,6 +130,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         class="min-h-[70px] w-full resize-y rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-xs text-gray-900 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-gray-100"
         readonly></textarea>
     </div>
+
+    <div id="serp-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
   </div>
 
   <script is:inline>
@@ -143,6 +146,15 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const previewDescription = document.getElementById('serp-preview-description');
     const output = document.getElementById('serp-output');
     const copyButton = document.getElementById('serp-copy');
+    const sampleButton = document.getElementById('serp-sample');
+    const statusEl = document.getElementById('serp-status');
+
+    function showStatus(message, error) {
+      statusEl.textContent = message;
+      statusEl.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      statusEl.classList.remove('hidden');
+    }
 
     function escapeHtml(value) {
       return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -186,7 +198,21 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     });
 
     copyButton.addEventListener('click', () => {
-      if (output.value) navigator.clipboard.writeText(output.value);
+      if (!output.value) {
+        showStatus('There is no meta description tag to copy yet.', true);
+        return;
+      }
+      navigator.clipboard.writeText(output.value);
+      showStatus('Meta description tag copied to clipboard.', false);
+    });
+
+    sampleButton.addEventListener('click', () => {
+      titleInput.value = 'Free JSON Formatter & Validator';
+      urlInput.value = 'https://quicktoolflow.com/tools/json-formatter/';
+      descriptionInput.value =
+        'Format, validate, and minify JSON online with instant browser-based feedback. No sign-up required.';
+      updatePreview();
+      showStatus('Sample search snippet loaded.', false);
     });
 
     updatePreview();

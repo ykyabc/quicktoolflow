@@ -115,6 +115,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         placeholder="Random numbers will appear here..."
         spellcheck="false"></textarea>
     </div>
+
+    <div id="rng-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
   </div>
 </ToolLayout>
 
@@ -127,8 +129,17 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const output = document.getElementById('rng-output') as HTMLTextAreaElement;
     const btnGen = document.getElementById('rng-gen');
     const btnCopy = document.getElementById('rng-copy');
+    const status = document.getElementById('rng-status');
 
     if (!minEl || !maxEl || !output || !btnGen) return;
+
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
 
     function generate() {
       const min = parseFloat(minEl.value) || 0;
@@ -137,16 +148,28 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       const isDecimal = decEl?.checked;
       const nums: string[] = [];
 
+      if (min > max) {
+        output.value = '';
+        showStatus('Minimum must be less than or equal to maximum.', true);
+        return;
+      }
+
       for (let i = 0; i < count; i++) {
         const r = Math.random() * (max - min) + min;
         nums.push(isDecimal ? r.toFixed(2) : Math.floor(Math.random() * (max - min + 1) + min).toString());
       }
       output.value = nums.join('\n');
+      showStatus(`Generated ${count} random number${count === 1 ? '' : 's'}.`, false);
     }
 
     btnGen.addEventListener('click', generate);
     btnCopy?.addEventListener('click', () => {
-      if (output.value) navigator.clipboard.writeText(output.value);
+      if (!output.value) {
+        showStatus('Generate numbers before copying.', true);
+        return;
+      }
+      navigator.clipboard.writeText(output.value);
+      showStatus('Random numbers copied to clipboard.', false);
     });
     generate();
   }

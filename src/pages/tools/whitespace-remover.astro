@@ -83,8 +83,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <ToolActionButton id="ws-trim" icon="tabler:align-left">Trim Lines</ToolActionButton>
       <ToolActionButton id="ws-blank" icon="tabler:line-dashed">Remove Blank Lines</ToolActionButton>
       <ToolActionButton id="ws-tabs" icon="tabler:indent-increase">Tabs to Spaces</ToolActionButton>
+      <ToolActionButton id="ws-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="ws-copy" icon="tabler:copy">Copy</ToolActionButton>
     </ToolActionBar>
+
+    <div id="ws-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div id="ws-stats" class="hidden flex gap-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-sm">
       <span class="text-green-700 dark:text-green-400" id="ws-before">Before: 0 chars</span>
@@ -112,22 +115,41 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const beforeEl = document.getElementById('ws-before');
     const afterEl = document.getElementById('ws-after');
     const removedEl = document.getElementById('ws-removed');
+    const status = document.getElementById('ws-status');
 
     if (!input || !output) return;
+
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function hasInput() {
+      if (input.value.trim()) return true;
+      output.value = '';
+      showStatus('Paste text to clean first.', true);
+      return false;
+    }
 
     function showStats(result: string) {
       if (statsEl) statsEl.classList.remove('hidden');
       if (beforeEl) beforeEl.textContent = 'Before: ' + input.value.length + ' chars';
       if (afterEl) afterEl.textContent = 'After: ' + result.length + ' chars';
       if (removedEl) removedEl.textContent = 'Removed: ' + (input.value.length - result.length) + ' chars';
+      showStatus('Whitespace cleanup complete.', false);
     }
 
     document.getElementById('ws-all')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       const r = input.value.replace(/\s+/g, ' ').trim();
       output.value = r;
       showStats(r);
     });
     document.getElementById('ws-trim')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       const r = input.value
         .split('\n')
         .map((l) => l.trim())
@@ -136,17 +158,30 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       showStats(r);
     });
     document.getElementById('ws-blank')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       const r = input.value.replace(/^\s*[\n]/gm, '').replace(/\n{3,}/g, '\n\n');
       output.value = r;
       showStats(r);
     });
     document.getElementById('ws-tabs')?.addEventListener('click', () => {
+      if (!hasInput()) return;
       const r = input.value.replace(/\t/g, '  ');
       output.value = r;
       showStats(r);
     });
+    document.getElementById('ws-sample')?.addEventListener('click', () => {
+      input.value = '  Hello     world\\n\\n\\n\\tThis line has tabs and extra spaces.  ';
+      output.value = '';
+      statsEl?.classList.add('hidden');
+      showStatus('Sample messy text loaded. Choose a cleanup mode.', false);
+    });
     document.getElementById('ws-copy')?.addEventListener('click', () => {
-      if (output.value) navigator.clipboard.writeText(output.value);
+      if (!output.value) {
+        showStatus('Clean text before copying.', true);
+        return;
+      }
+      navigator.clipboard.writeText(output.value);
+      showStatus('Cleaned text copied to clipboard.', false);
     });
   }
 

@@ -96,6 +96,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <ToolActionButton id="lg-gen" variant="primary" icon="tabler:refresh">Generate</ToolActionButton>
       <ToolActionButton id="lg-copy" icon="tabler:copy">Copy</ToolActionButton>
     </div>
+    <div id="lg-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
     <textarea
       id="lg-out"
       class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-gray-100 text-sm min-h-[300px] resize-y outline-none"
@@ -117,9 +118,23 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       return w.join(' ') + '.';
     };
     const paragraph = () => Array.from({ length: Math.floor(Math.random() * 5) + 3 }, sentence).join(' ');
+    const status = document.getElementById('lg-status');
+    const output = document.getElementById('lg-out');
+
+    function showStatus(message, error) {
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
 
     document.getElementById('lg-gen').addEventListener('click', () => {
       const n = parseInt(document.getElementById('lg-count').value) || 3;
+      if (n < 1 || n > 100) {
+        output.value = '';
+        showStatus('Count must be between 1 and 100.', true);
+        return;
+      }
       const t = document.getElementById('lg-type').value;
       const sl = document.getElementById('lg-lorem').checked;
       let r;
@@ -134,11 +149,17 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         r = Array.from({ length: n }, rw).join(' ');
         if (sl) r = 'Lorem ipsum ' + r.split(' ').slice(2).join(' ');
       }
-      document.getElementById('lg-out').value = r;
+      output.value = r;
+      showStatus(`Generated ${n} ${t}.`, false);
     });
     document.getElementById('lg-copy').addEventListener('click', () => {
-      const v = document.getElementById('lg-out').value;
-      if (v) navigator.clipboard.writeText(v);
+      const v = output.value;
+      if (!v) {
+        showStatus('Generate placeholder text before copying.', true);
+        return;
+      }
+      navigator.clipboard.writeText(v);
+      showStatus('Placeholder text copied to clipboard.', false);
     });
   </script>
 </ToolLayout>

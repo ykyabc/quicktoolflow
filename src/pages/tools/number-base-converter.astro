@@ -87,6 +87,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     <ToolActionButton id="nb-convert" variant="primary" icon="tabler:arrows-exchange" class="w-full">
       Convert
     </ToolActionButton>
+    <ToolActionButton id="nb-sample" icon="tabler:file-code" class="w-full">Load Sample</ToolActionButton>
 
     <div
       id="nb-error"
@@ -125,6 +126,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const fromEl = document.getElementById('nb-from') as HTMLSelectElement;
     const errorEl = document.getElementById('nb-error');
     const btnConvert = document.getElementById('nb-convert');
+    const btnSample = document.getElementById('nb-sample');
 
     if (!inputEl || !fromEl || !btnConvert) return;
 
@@ -142,6 +144,10 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
           const el = document.getElementById(id);
           if (el) el.textContent = '-';
         });
+        if (errorEl) {
+          errorEl.textContent = 'Enter a number to convert.';
+          errorEl.classList.remove('hidden');
+        }
         return;
       }
 
@@ -165,6 +171,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     }
 
     btnConvert.addEventListener('click', convert);
+    btnSample?.addEventListener('click', () => {
+      inputEl.value = '255';
+      fromEl.value = '10';
+      convert();
+    });
     inputEl.addEventListener('input', convert);
     fromEl.addEventListener('change', convert);
 
@@ -172,7 +183,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       btn.addEventListener('click', () => {
         const tgt = (btn as HTMLElement).dataset.tgt;
         const el = tgt ? document.getElementById(tgt) : null;
-        if (el && el.textContent && el.textContent !== '-') {
+        if (el && el.textContent && el.textContent.trim() !== '-') {
           navigator.clipboard.writeText(el.textContent);
         }
       });

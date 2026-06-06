@@ -111,6 +111,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     </div>
 
     <ToolActionButton id="lip-gen" variant="primary" icon="tabler:photo" class="w-full">Generate</ToolActionButton>
+    <div id="lip-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview</label>
@@ -155,8 +156,17 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const colorTextEl = document.getElementById('lip-color-text') as HTMLInputElement;
     const preview = document.getElementById('lip-preview') as HTMLImageElement;
     const btn = document.getElementById('lip-gen');
+    const status = document.getElementById('lip-status');
 
     if (!wEl || !btn) return;
+
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
 
     colorEl?.addEventListener('input', () => {
       if (colorTextEl) colorTextEl.value = colorEl.value;
@@ -169,6 +179,14 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       const w = parseInt(wEl.value) || 800;
       const h = parseInt(hEl.value) || 400;
       const bg = (colorTextEl?.value || '#cccccc').replace('#', '');
+      if (w < 1 || w > 4000 || h < 1 || h > 4000) {
+        showStatus('Width and height must be between 1 and 4000 pixels.', true);
+        return;
+      }
+      if (!/^[0-9a-fA-F]{6}$/.test(bg)) {
+        showStatus('Enter a valid 6-digit HEX color.', true);
+        return;
+      }
       const url = 'https://placehold.co/' + w + 'x' + h + '/' + bg + '/white?text=' + w + 'x' + h;
 
       if (preview) preview.src = url;
@@ -184,6 +202,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
           '<img src="' + url + '" alt="Placeholder ' + w + 'x' + h + '" width="' + w + '" height="' + h + '" />';
       if (urlMd) urlMd.value = '![Placeholder ' + w + 'x' + h + '](' + url + ')';
       if (urlCss) urlCss.value = "background-image: url('" + url + "');";
+      showStatus('Placeholder image snippets generated.', false);
     }
 
     btn.addEventListener('click', generate);
@@ -191,7 +210,12 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       b.addEventListener('click', () => {
         const src = (b as HTMLElement).dataset.src;
         const el = src ? (document.getElementById(src) as HTMLInputElement) : null;
-        if (el?.value) navigator.clipboard.writeText(el.value);
+        if (!el?.value) {
+          showStatus('Generate snippets before copying.', true);
+          return;
+        }
+        navigator.clipboard.writeText(el.value);
+        showStatus('Snippet copied to clipboard.', false);
       });
     });
 

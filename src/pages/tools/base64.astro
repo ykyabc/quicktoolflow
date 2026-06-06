@@ -71,6 +71,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <ToolActionButton id="b64-dec" icon="tabler:lock-open-2">Decode</ToolActionButton>
       <ToolActionButton id="b64-swap" icon="tabler:arrows-exchange" title="Swap input and output">Swap</ToolActionButton
       >
+      <ToolActionButton id="b64-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="b64-copy" icon="tabler:copy">Copy Output</ToolActionButton>
     </ToolActionBar>
     <div id="b64-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
@@ -125,6 +126,10 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     }
     document.getElementById('b64-enc').addEventListener('click', () => {
       try {
+        if (!i.value.trim()) {
+          show('Enter text to encode first.', true);
+          return;
+        }
         o.value = bytesToBase64(new TextEncoder().encode(i.value));
         show('Encoded successfully.', false);
       } catch (e) {
@@ -133,6 +138,10 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     });
     document.getElementById('b64-dec').addEventListener('click', () => {
       try {
+        if (!i.value.trim()) {
+          show('Enter Base64 text to decode first.', true);
+          return;
+        }
         o.value = new TextDecoder('utf-8', { fatal: true }).decode(base64ToBytes(i.value));
         show('Decoded successfully.', false);
       } catch {
@@ -143,8 +152,18 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       [i.value, o.value] = [o.value, i.value];
       s.classList.add('hidden');
     });
+    document.getElementById('b64-sample').addEventListener('click', () => {
+      i.value = 'QuickToolFlow';
+      o.value = '';
+      show('Sample text loaded. Click Encode to convert it to Base64.', false);
+    });
     document.getElementById('b64-copy').addEventListener('click', () => {
-      if (o.value) navigator.clipboard.writeText(o.value);
+      if (!o.value) {
+        show('There is no output to copy yet.', true);
+        return;
+      }
+      navigator.clipboard.writeText(o.value);
+      show('Output copied to clipboard.', false);
     });
   </script>
 </ToolLayout>

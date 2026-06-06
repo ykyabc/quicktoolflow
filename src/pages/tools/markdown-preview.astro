@@ -67,9 +67,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 >
   <div class="space-y-4">
     <ToolActionBar>
+      <ToolActionButton id="md-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="md-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
       <ToolActionButton id="md-copy-html" icon="tabler:copy">Copy HTML</ToolActionButton>
     </ToolActionBar>
+    <div id="md-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div>
@@ -96,12 +98,14 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
   function initMarkdownPreview() {
     const input = document.getElementById('md-input') as HTMLTextAreaElement;
     const preview = document.getElementById('md-preview') as HTMLDivElement;
+    const status = document.getElementById('md-status');
+    const btnSample = document.getElementById('md-sample');
     const btnClear = document.getElementById('md-clear');
     const btnCopyHtml = document.getElementById('md-copy-html');
 
     if (!input || !preview) return;
 
-    if (!input.value) {
+    function getSampleMarkdown(): string {
       const defaultLines = [
         '# Hello World',
         '',
@@ -129,7 +133,24 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         '',
         'End of example.',
       ];
-      input.value = defaultLines.join('\n');
+      return defaultLines.join('\n');
+    }
+
+    function showStatus(message: string, type: 'success' | 'error' | 'info' = 'success') {
+      if (!status) return;
+      const styles = {
+        success:
+          'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+        error:
+          'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+        info: 'rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+      };
+      status.className = styles[type];
+      status.textContent = message;
+    }
+
+    if (!input.value) {
+      input.value = getSampleMarkdown();
     }
 
     function escapeHtml(str: string): string {
@@ -245,11 +266,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 
       // Images and links
       html = html.replace(
-        /!$$([^$$]*)\]$$([^)]+)$$/g,
+        /!\[([^\]]*)\]\(([^)]+)\)/g,
         lt + 'img src="$2" alt="$1" class="rounded-lg max-w-full" /' + gt
       );
       html = html.replace(
-        /$$([^$$]+)\]$$([^)]+)$$/g,
+        /\[([^\]]+)\]\(([^)]+)\)/g,
         lt + 'a href="$2" class="text-blue-600 hover:underline"' + gt + '$1' + lt + '/a' + gt
       );
 
@@ -317,13 +338,25 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 
     input.addEventListener('input', render);
 
+    btnSample?.addEventListener('click', () => {
+      input.value = getSampleMarkdown();
+      render();
+      showStatus('Sample Markdown loaded. Edit it to preview headings, lists, links, tables, and code.');
+    });
+
     btnClear?.addEventListener('click', () => {
       input.value = '';
       render();
+      showStatus('Editor cleared. Start typing Markdown on the left.', 'info');
     });
 
     btnCopyHtml?.addEventListener('click', () => {
+      if (!input.value.trim()) {
+        showStatus('Add Markdown before copying HTML.', 'error');
+        return;
+      }
       navigator.clipboard.writeText(preview.innerHTML);
+      showStatus('Rendered HTML copied to your clipboard.');
     });
 
     render();

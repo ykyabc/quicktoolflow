@@ -93,7 +93,10 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
           </ToolActionButton>
         ))
       }
+      <ToolActionButton id="cc-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
     </ToolActionBar>
+
+    <div id="cc-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <div class="flex items-center justify-between mb-2">
@@ -115,9 +118,26 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     const input = document.getElementById('cc-input') as HTMLTextAreaElement;
     const output = document.getElementById('cc-output') as HTMLTextAreaElement;
     const btnCopy = document.getElementById('cc-copy');
+    const btnSample = document.getElementById('cc-sample');
+    const status = document.getElementById('cc-status');
     const buttons = document.querySelectorAll('.cc-btn') as NodeListOf<HTMLButtonElement>;
 
     if (!input || !output || !buttons.length) return;
+
+    function showStatus(message: string, error = false) {
+      if (!status) return;
+      status.textContent = message;
+      status.className =
+        'rounded-lg px-4 py-3 text-sm font-medium ' + (error ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
+      status.classList.remove('hidden');
+    }
+
+    function hasInput() {
+      if (input.value.trim()) return true;
+      output.value = '';
+      showStatus('Enter text to convert first.', true);
+      return false;
+    }
 
     const words = () =>
       input.value
@@ -160,13 +180,28 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
 
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (!hasInput()) return;
         const fn = converters[btn.id];
-        if (fn) output.value = fn();
+        if (fn) {
+          output.value = fn();
+          showStatus('Text converted.', false);
+        }
       });
     });
 
+    btnSample?.addEventListener('click', () => {
+      input.value = 'quick tool flow developer tools';
+      output.value = '';
+      showStatus('Sample text loaded. Choose a case style.', false);
+    });
+
     btnCopy?.addEventListener('click', () => {
-      if (output.value) navigator.clipboard.writeText(output.value);
+      if (!output.value) {
+        showStatus('Convert text before copying.', true);
+        return;
+      }
+      navigator.clipboard.writeText(output.value);
+      showStatus('Converted text copied to clipboard.', false);
     });
   }
 

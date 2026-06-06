@@ -83,9 +83,13 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
           </div>
         </div>
 
-        <ToolActionButton id="qr-generate" variant="primary" icon="tabler:qrcode" class="mt-4 w-full py-3">
-          Generate QR Code
-        </ToolActionButton>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <ToolActionButton id="qr-sample" icon="tabler:file-code" class="w-full py-3">Load Sample</ToolActionButton>
+          <ToolActionButton id="qr-generate" variant="primary" icon="tabler:qrcode" class="w-full py-3">
+            Generate QR Code
+          </ToolActionButton>
+        </div>
+        <div id="qr-status" class="hidden mt-4 rounded-lg px-4 py-3 text-sm font-medium"></div>
       </div>
 
       <div
@@ -275,11 +279,30 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
         const result = document.getElementById('qr-result');
         const dlBtn = document.getElementById('qr-download');
         const qrWrap = document.getElementById('qr-wrapper');
+        const sampleBtn = document.getElementById('qr-sample');
+        const statusEl = document.getElementById('qr-status');
+
+        function showStatus(message, type) {
+          const styles = {
+            success:
+              'mt-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+            error:
+              'mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+            info: 'mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+          };
+          statusEl.className = styles[type || 'success'];
+          statusEl.textContent = message;
+        }
+
+        sampleBtn.addEventListener('click', function () {
+          input.value = 'https://quicktoolflow.com/tools/';
+          showStatus('Sample URL loaded. Generate it to preview the QR code.', 'info');
+        });
 
         btn.addEventListener('click', function () {
           const text = input.value.trim();
           if (!text) {
-            alert('Please enter some text or a URL.');
+            showStatus('Enter text, a URL, or load the sample before generating a QR code.', 'error');
             return;
           }
           const size = parseInt(sizeEl.value);
@@ -293,12 +316,16 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
             correctLevel: QRCode.CorrectLevel.H,
           });
           result.classList.remove('hidden');
+          showStatus('QR code generated. Test it with a phone before printing or sharing.');
           result.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
         dlBtn.addEventListener('click', function () {
           const img = qrWrap.querySelector('img') || qrWrap.querySelector('canvas');
-          if (!img) return;
+          if (!img) {
+            showStatus('Generate a QR code before downloading.', 'error');
+            return;
+          }
           const link = document.createElement('a');
           link.download = 'qrcode.png';
           if (img.tagName === 'CANVAS') {
@@ -307,6 +334,7 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
             link.href = img.src;
           }
           link.click();
+          showStatus('QR code downloaded as PNG.');
         });
       });
     })();

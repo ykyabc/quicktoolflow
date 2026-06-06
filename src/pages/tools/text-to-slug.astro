@@ -101,9 +101,11 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         <input id="sl-lower" type="checkbox" checked class="w-4 h-4 accent-blue-600" />
         <span class="text-sm text-gray-700 dark:text-gray-300">Lowercase</span>
       </label>
+      <ToolActionButton id="sl-sample" icon="tabler:file-code">Load Sample</ToolActionButton>
       <ToolActionButton id="sl-gen" variant="primary" icon="tabler:link">Generate Slug</ToolActionButton>
       <ToolActionButton id="sl-copy" icon="tabler:copy">Copy</ToolActionButton>
     </div>
+    <div id="sl-status" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
 
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Generated Slug</label>
@@ -142,13 +144,42 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       const urlEl = document.getElementById('sl-url');
       const btnGen = document.getElementById('sl-gen');
       const btnCopy = document.getElementById('sl-copy');
+      const btnSample = document.getElementById('sl-sample');
+      const status = document.getElementById('sl-status');
 
       if (!input || !btnGen || !output) return;
+
+      function showStatus(message: string, type: 'success' | 'error' | 'info' = 'success') {
+        if (!status) return;
+        const styles = {
+          success:
+            'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-200',
+          error:
+            'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200',
+          info: 'rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200',
+        };
+        status.className = styles[type];
+        status.textContent = message;
+      }
 
       function generate() {
         let text = input.value;
         const sep = sepEl.value;
         const maxLen = parseInt(maxEl.value) || 0;
+
+        if (!text.trim()) {
+          output.textContent = '';
+          if (lenEl) lenEl.textContent = '0';
+          if (wordsEl) wordsEl.textContent = '0';
+          if (urlEl) urlEl.textContent = '-';
+          showStatus('Enter a title or phrase to generate a slug.', 'error');
+          return;
+        }
+
+        if (maxLen < 0 || maxLen > 500) {
+          showStatus('Max length must be between 0 and 500.', 'error');
+          return;
+        }
 
         if (lowerEl.checked) text = text.toLowerCase();
 
@@ -172,6 +203,10 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         if (lenEl) lenEl.textContent = slug.length.toString();
         if (wordsEl) wordsEl.textContent = (slug ? slug.split(sep).length : 0).toString();
         if (urlEl) urlEl.textContent = slug ? 'https://quicktoolflow.com/blog/' + slug : '-';
+        showStatus(
+          slug ? 'Slug generated and ready to copy.' : 'No URL-safe characters were found.',
+          slug ? 'success' : 'error'
+        );
       }
 
       btnGen.addEventListener('click', generate);
@@ -180,9 +215,23 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       lowerEl.addEventListener('change', generate);
       maxEl.addEventListener('input', generate);
 
+      btnSample?.addEventListener('click', () => {
+        input.value = 'How to Build a Great Website in 2026 - The Practical Guide!';
+        maxEl.value = '80';
+        lowerEl.checked = true;
+        sepEl.value = '-';
+        generate();
+        showStatus('Sample title loaded and converted to a clean slug.', 'info');
+      });
+
       btnCopy?.addEventListener('click', () => {
         const text = output.textContent;
-        if (text) navigator.clipboard.writeText(text);
+        if (!text) {
+          showStatus('Generate a slug before copying.', 'error');
+          return;
+        }
+        navigator.clipboard.writeText(text);
+        showStatus('Slug copied to your clipboard.');
       });
 
       generate();
