@@ -1,0 +1,196 @@
+---
+import { tools } from '~/utils/tools-data';
+
+interface RelatedPost {
+  title: string;
+  href: string;
+  excerpt?: string;
+}
+
+interface Props {
+  slug: string;
+  title: string;
+  category?: string;
+  tags?: string[];
+  relatedPosts?: RelatedPost[];
+}
+
+const { slug, title, category, tags = [], relatedPosts = [] } = Astro.props;
+const normalizedSlug = slug.replace(/\.(md|mdx)$/i, '');
+
+const guideToolSlugsMap: Record<string, string[]> = {
+  'word-counter-guide': ['word-counter', 'word-frequency-counter', 'text-diff'],
+  'word-frequency-counter-guide': ['word-frequency-counter', 'word-counter', 'whitespace-remover'],
+  'text-diff-checker-guide': ['text-diff', 'whitespace-remover', 'word-counter'],
+  'case-converter-guide': ['case-converter', 'text-to-slug', 'whitespace-remover'],
+  'slug-generator-guide': ['text-to-slug', 'serp-snippet-preview', 'url-parser'],
+  'whitespace-remover-guide': ['whitespace-remover', 'word-counter', 'text-diff'],
+  'text-reverser-guide': ['text-reverser', 'case-converter', 'whitespace-remover'],
+  'json-formatting-best-practices': ['json-formatter', 'json-minifier', 'json-path-tester'],
+  'json-minifier-guide': ['json-minifier', 'json-formatter', 'json-path-tester'],
+  'json-path-tester-guide': ['json-path-tester', 'json-formatter', 'json-to-csv'],
+  'json-to-csv-conversion-guide': ['json-to-csv', 'json-formatter', 'csv-formatter'],
+  'csv-to-json-conversion-guide': ['csv-to-json', 'csv-formatter', 'json-formatter'],
+  'csv-formatting-guide': ['csv-formatter', 'csv-to-json', 'json-to-csv'],
+  'json-to-yaml-conversion-guide': ['json-to-yaml', 'yaml-formatter', 'json-formatter'],
+  'yaml-formatting-guide': ['yaml-formatter', 'json-to-yaml', 'json-formatter'],
+  'xml-formatting-guide': ['xml-formatter', 'json-formatter', 'html-entity-encoder'],
+  'html-formatter-guide': ['html-formatter', 'open-graph-preview', 'html-entity-encoder'],
+  'sql-formatter-guide': ['sql-formatter', 'json-formatter', 'csv-formatter'],
+  'markdown-preview-guide-syntax-cheatsheet': ['markdown-preview', 'html-formatter', 'text-diff'],
+  'regex-tutorial-beginners-guide': ['regex-tester', 'string-escape', 'text-diff'],
+  'cron-expression-guide-seo-complete': ['cron-expression-generator', 'timestamp-converter', 'json-formatter'],
+  'url-parser-guide': ['url-parser', 'url-encoder', 'utm-builder'],
+  'url-encoder-guide': ['url-encoder', 'url-parser', 'utm-builder'],
+  'base64-vs-url-encoding-guide': ['base64', 'url-encoder', 'string-escape'],
+  'understanding-base64-encoding-explained': ['base64', 'jwt-decoder', 'url-encoder'],
+  'jwt-decoder-guide-json-web-token-explained': ['jwt-decoder', 'base64', 'timestamp-converter'],
+  'jwt-security-best-practices': ['jwt-decoder', 'hash-generator', 'base64'],
+  'sha-256-vs-sha-512-guide': ['hash-generator', 'string-escape', 'base64'],
+  'password-entropy-explained': ['password-generator', 'hash-generator', 'random-number-generator'],
+  'how-to-create-strong-passwords-guide': ['password-generator', 'uuid-generator', 'hash-generator'],
+  'uuid-generator-guide-for-developers': ['uuid-generator', 'password-generator', 'random-number-generator'],
+  'uuid-vs-random-string-guide': ['uuid-generator', 'random-number-generator', 'password-generator'],
+  'string-escaping-guide-json-javascript-html-csv': ['string-escape', 'html-entity-encoder', 'url-encoder'],
+  'html-entity-encoder-guide': ['html-entity-encoder', 'html-formatter', 'string-escape'],
+  'how-to-create-qr-codes-guide': ['qr-code-generator', 'url-encoder', 'utm-builder'],
+  'random-number-generator-guide': ['random-number-generator', 'uuid-generator', 'number-base-converter'],
+  'lorem-ipsum-generator-guide': ['lorem-ipsum', 'lorem-image-placeholder', 'word-counter'],
+  'lorem-image-placeholder-guide': ['lorem-image-placeholder', 'color-converter', 'open-graph-preview'],
+  'number-base-converter-guide': ['number-base-converter', 'color-converter', 'hash-generator'],
+  'color-conversion-guide-for-web-designers': ['color-converter', 'css-unit-converter', 'lorem-image-placeholder'],
+  'css-units-guide-px-em-rem-vw-vh': ['css-unit-converter', 'color-converter', 'lorem-image-placeholder'],
+  'serp-snippet-preview-guide': ['serp-snippet-preview', 'meta-tag-generator', 'text-to-slug'],
+  'open-graph-preview-guide': ['open-graph-preview', 'meta-tag-generator', 'lorem-image-placeholder'],
+  'robots-txt-generator-guide': ['robots-txt-generator', 'serp-snippet-preview', 'url-parser'],
+  'utm-builder-guide': ['utm-builder', 'url-parser', 'qr-code-generator'],
+  'top-10-free-online-developer-tools-2026': ['json-formatter', 'password-generator', 'base64'],
+};
+
+const categoryToolkits: Record<string, { title: string; href: string; description: string }> = {
+  'Developer Tools': {
+    title: 'Developer Tools',
+    href: '/tools/developer/',
+    description: 'Browse developer utilities for data, code, encoding, and debugging workflows.',
+  },
+  'Text Tools': {
+    title: 'Text Tools',
+    href: '/tools/text/',
+    description: 'Clean, count, compare, and transform text before publishing or editing.',
+  },
+  Security: {
+    title: 'Security & Encoding Tools',
+    href: '/tools/security-encoding/',
+    description: 'Decode, hash, escape, and generate secure values with browser-based utilities.',
+  },
+  SEO: {
+    title: 'Web Publishing Tools',
+    href: '/tools/web-publishing/',
+    description: 'Prepare metadata, snippets, URLs, and social previews before publishing.',
+  },
+  Generators: {
+    title: 'Generators',
+    href: '/tools/generators/',
+    description: 'Generate passwords, UUIDs, QR codes, placeholder content, and sample values.',
+  },
+  Converters: {
+    title: 'Converters',
+    href: '/tools/converters/',
+    description: 'Convert colors, CSS units, timestamps, number bases, and structured data.',
+  },
+};
+
+const directToolSlugs = guideToolSlugsMap[normalizedSlug] || [];
+const searchText = [normalizedSlug, title, category, ...tags].join(' ').toLowerCase();
+const scoredToolSlugs = tools
+  .map((tool) => {
+    const slugTokens = tool.slug.split('-').filter((token) => token.length > 2);
+    const nameTokens = tool.name
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter((token) => token.length > 2 && !['tool', 'tools', 'free', 'online'].includes(token));
+    const score =
+      (searchText.includes(tool.slug) ? 8 : 0) +
+      [...slugTokens, ...nameTokens].reduce((sum, token) => sum + (searchText.includes(token) ? 1 : 0), 0);
+
+    return { slug: tool.slug, score };
+  })
+  .filter((item) => item.score > 1)
+  .sort((a, b) => b.score - a.score)
+  .map((item) => item.slug);
+
+const selectedToolSlugs = [...directToolSlugs, ...scoredToolSlugs].filter(
+  (toolSlug, index, allSlugs) => allSlugs.indexOf(toolSlug) === index
+);
+const relatedTools = selectedToolSlugs
+  .map((toolSlug) => tools.find((tool) => tool.slug === toolSlug))
+  .filter((tool): tool is (typeof tools)[number] => Boolean(tool))
+  .slice(0, 3);
+
+const toolkit = category ? categoryToolkits[category] : undefined;
+const visibleRelatedPosts = relatedPosts.slice(0, 3);
+---
+
+{
+  (relatedTools.length > 0 || toolkit || visibleRelatedPosts.length > 0) && (
+    <section class="mt-12 border-t border-gray-200 pt-8 dark:border-slate-700">
+      <div class="mb-5">
+        <p class="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-400">Keep going</p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Related tools and guides</h2>
+      </div>
+
+      <div class="grid gap-5 lg:grid-cols-3">
+        {relatedTools.length > 0 && (
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Try these tools</h3>
+            <div class="mt-4 space-y-3">
+              {relatedTools.map((tool) => (
+                <a
+                  href={`/tools/${tool.slug}/`}
+                  class="block rounded-xl border border-gray-100 bg-gray-50 p-3 transition hover:border-blue-200 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+                >
+                  <span class="text-sm font-semibold text-gray-900 dark:text-white">{tool.name}</span>
+                  <span class="mt-1 block text-xs leading-5 text-gray-600 dark:text-gray-300">{tool.description}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {toolkit && (
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Open the toolkit</h3>
+            <a
+              href={toolkit.href}
+              class="mt-4 block rounded-xl border border-blue-100 bg-blue-50 p-4 transition hover:border-blue-200 hover:bg-blue-100 dark:border-blue-900/50 dark:bg-blue-950/30 dark:hover:bg-blue-950/50"
+            >
+              <span class="text-sm font-semibold text-blue-800 dark:text-blue-300">{toolkit.title}</span>
+              <span class="mt-1 block text-sm leading-6 text-gray-600 dark:text-gray-300">{toolkit.description}</span>
+            </a>
+          </div>
+        )}
+
+        {visibleRelatedPosts.length > 0 && (
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Continue reading</h3>
+            <div class="mt-4 space-y-3">
+              {visibleRelatedPosts.map((relatedPost) => (
+                <a
+                  href={relatedPost.href}
+                  class="block rounded-xl border border-gray-100 bg-gray-50 p-3 transition hover:border-blue-200 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+                >
+                  <span class="text-sm font-semibold text-gray-900 dark:text-white">{relatedPost.title}</span>
+                  {relatedPost.excerpt && (
+                    <span class="mt-1 block text-xs leading-5 text-gray-600 dark:text-gray-300">
+                      {relatedPost.excerpt}
+                    </span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}

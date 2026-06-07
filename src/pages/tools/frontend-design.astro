@@ -1,0 +1,285 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Breadcrumb from '~/components/ui/Breadcrumb.astro';
+import RelatedToolkits from '~/components/ui/RelatedToolkits.astro';
+import ToolCard from '~/components/ui/ToolCard.astro';
+import { tools } from '~/utils/tools-data';
+
+const canonical = 'https://quicktoolflow.com/tools/frontend-design/';
+
+const toolGroups = [
+  {
+    title: 'Prepare visual values',
+    description: 'Convert colors, CSS units, and placeholder dimensions while building responsive layouts.',
+    slugs: ['color-converter', 'css-unit-converter', 'lorem-image-placeholder'],
+  },
+  {
+    title: 'Shape page markup and content',
+    description: 'Format HTML, generate realistic placeholder text, and clean copy before adding it to a layout.',
+    slugs: ['html-formatter', 'lorem-ipsum', 'whitespace-remover'],
+  },
+  {
+    title: 'Preview publishing metadata',
+    description: 'Prepare Open Graph cards, meta tags, search snippets, and clean slugs before a page goes live.',
+    slugs: ['open-graph-preview', 'meta-tag-generator', 'serp-snippet-preview', 'text-to-slug'],
+  },
+];
+
+const guideLinks = [
+  {
+    title: 'Color Conversion Guide',
+    href: '/blog/color-conversion-guide-for-web-designers/',
+    description: 'Understand HEX, RGB, HSL, and practical color conversion workflows for web design.',
+  },
+  {
+    title: 'CSS Units Guide',
+    href: '/blog/css-units-guide-px-em-rem-vw-vh/',
+    description: 'Choose px, em, rem, vw, and vh with clearer layout intent.',
+  },
+  {
+    title: 'Lorem Image Placeholder Guide',
+    href: '/blog/lorem-image-placeholder-guide/',
+    description: 'Use placeholder image URLs to test dimensions, aspect ratios, and responsive layouts.',
+  },
+  {
+    title: 'Lorem Ipsum Generator Guide',
+    href: '/blog/lorem-ipsum-generator-guide/',
+    description: 'Use placeholder text responsibly in mockups, wireframes, and early page layouts.',
+  },
+  {
+    title: 'HTML Formatter Guide',
+    href: '/blog/html-formatter-guide/',
+    description: 'Clean markup snippets before review, handoff, or publishing.',
+  },
+  {
+    title: 'Open Graph Preview Guide',
+    href: '/blog/open-graph-preview-guide/',
+    description: 'Prepare better social sharing cards before launching a page.',
+  },
+];
+
+const checklist = [
+  'Choose color values and spacing units before finalizing component styles.',
+  'Use realistic placeholder image dimensions that match final assets.',
+  'Test layout text with different paragraph and heading lengths.',
+  'Format HTML before reviewing markup or handing it to another person.',
+  'Prepare Open Graph tags and meta tags before sharing a new page.',
+  'Preview search snippets and social cards before publishing.',
+  'Replace placeholder text and images before launching production pages.',
+];
+
+const faqItems = [
+  {
+    question: 'What are frontend design tools?',
+    answer:
+      'Frontend design tools help developers and designers prepare colors, spacing, placeholders, markup, metadata, and previews while building web pages.',
+  },
+  {
+    question: 'Are these tools only for designers?',
+    answer:
+      'No. They are useful for frontend developers, content editors, SEO specialists, marketers, and anyone preparing web pages or landing pages.',
+  },
+  {
+    question: 'Should placeholder content be used on live pages?',
+    answer:
+      'No. Placeholder text and images are useful for design and testing, but live pages should use final copy, relevant images, and appropriate metadata.',
+  },
+  {
+    question: 'How does this toolkit connect to SEO?',
+    answer:
+      'Frontend work affects how pages look, load, and appear when shared. Metadata tools, Open Graph previews, clean slugs, and snippet checks help bridge design and publishing.',
+  },
+];
+
+const getTool = (slug: string) => tools.find((tool) => tool.slug === slug);
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Frontend design tools',
+  itemListElement: toolGroups
+    .flatMap((group) => group.slugs)
+    .map((slug, index) => {
+      const tool = getTool(slug);
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        name: tool?.name || slug,
+        url: `https://quicktoolflow.com/tools/${slug}/`,
+      };
+    }),
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Design & Frontend Tools', item: canonical },
+  ],
+};
+
+const metadata = {
+  title: 'Design & Frontend Tools',
+  description:
+    'Free online design and frontend tools for color conversion, CSS units, placeholder images, HTML formatting, meta tags, Open Graph previews, slugs, and snippets.',
+  canonical,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <Breadcrumb
+      items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: 'Design & Frontend' }]}
+    />
+
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-600">Frontend Toolkit</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+        Design & Frontend Tools
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        Prepare the practical details behind web pages: colors, CSS units, placeholder images, HTML snippets, metadata,
+        social previews, search snippets, and clean slugs. This toolkit is built for frontend work, landing pages,
+        mockups, and publishing handoffs.
+      </p>
+    </header>
+
+    <section
+      class="mt-12 rounded-2xl border border-primary-100 bg-primary-50 p-6 dark:border-primary-900/50 dark:bg-primary-950/20"
+    >
+      <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+            Start with layout values
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Build cleaner pages before launch</h2>
+          <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            Frontend polish often comes from small details: consistent color values, responsive units, realistic
+            placeholders, readable markup, and share-ready metadata.
+          </p>
+        </div>
+        <a
+          href="/tools/color-converter/"
+          class="inline-flex rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700"
+        >
+          Start with Color Converter
+        </a>
+      </div>
+    </section>
+
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      {
+        [
+          ['Design values', 'Convert colors, units, and placeholder dimensions for layout work.'],
+          ['Markup cleanup', 'Format HTML and clean content before review or handoff.'],
+          ['Launch previews', 'Prepare metadata, Open Graph cards, snippets, and slugs before publishing.'],
+        ].map(([title, description]) => (
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
+            <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{description}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 space-y-14">
+      {
+        toolGroups.map((group) => (
+          <section>
+            <div class="mb-6 max-w-3xl">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{group.title}</h2>
+              <p class="mt-3 text-gray-600 dark:text-gray-300">{group.description}</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {group.slugs.map((slug) => {
+                const tool = getTool(slug);
+                if (!tool) return null;
+                return (
+                  <ToolCard
+                    slug={tool.slug}
+                    name={tool.name}
+                    description={tool.description}
+                    icon={tool.icon}
+                    gradient={tool.gradient}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Frontend launch checklist</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          {
+            checklist.map((item, index) => (
+              <li class="flex gap-3">
+                <span class="font-bold text-primary-600">{index + 1}.</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Related guides</h2>
+        <div class="mt-5 grid gap-3">
+          {
+            guideLinks.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-16 max-w-4xl">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+      <div class="mt-6 space-y-4">
+        {
+          faqItems.map((item) => (
+            <details class="group rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+              <summary class="flex cursor-pointer items-center justify-between p-4 font-medium text-gray-900 transition hover:text-primary-700 dark:text-white dark:hover:text-primary-300">
+                <span>{item.question}</span>
+                <astro-icon
+                  name="tabler:chevron-down"
+                  class="ml-3 h-5 w-5 shrink-0 text-gray-400 transition group-open:rotate-180"
+                />
+              </summary>
+              <p class="px-4 pb-4 text-sm leading-6 text-gray-600 dark:text-gray-300">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <RelatedToolkits current="frontend-design" />
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+</Layout>

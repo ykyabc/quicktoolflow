@@ -42,6 +42,14 @@ The string "Hello" in Base64 is "SGVsbG8=".
 
 The = at the end is padding to make the output length a multiple of 4.
 
+## Base64 vs Base64Url
+
+Standard Base64 uses `+`, `/`, and `=` padding. Those characters can be awkward inside URLs because they may need escaping or can be interpreted specially by query strings.
+
+Base64Url solves that by replacing `+` with `-`, replacing `/` with `_`, and often omitting padding. This is why JWT headers and payloads look similar to Base64 but are not always copy-paste compatible with a basic Base64 decoder.
+
+If a decoded value fails unexpectedly, check whether the input is standard Base64 or Base64Url before assuming the data is corrupted.
+
 ## Base64 in Different Languages
 
 ### JavaScript
@@ -57,6 +65,12 @@ Use the base64 module with b64encode and b64decode functions.
 1. **Base64 is not encryption** - It provides zero security. Anyone can decode it
 2. **Size overhead** - Base64 output is about 33 percent larger than the input
 3. **Unicode issues** - btoa() only handles ASCII. For Unicode, use encodeURIComponent first
+
+## When Should You Use Base64?
+
+Use Base64 when a system expects text but you need to carry binary data, such as a small image, certificate, or byte array. Avoid it for large files when a normal file upload, object storage URL, or multipart request would be cleaner and faster.
+
+For secrets, Base64 should only be treated as an encoding layer. It can make a token easier to transport, but it does not hide the token from users, logs, browser extensions, or anyone who can inspect the request.
 
 ## Try It Yourself
 

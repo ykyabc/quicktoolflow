@@ -44,6 +44,15 @@ const toolkits: Toolkit[] = [
     tags: ['SEO', 'Open Graph', 'UTM', 'Robots.txt'],
   },
   {
+    slug: 'frontend-design',
+    title: 'Design & Frontend Tools',
+    href: '/tools/frontend-design/',
+    eyebrow: 'Frontend workflows',
+    description: 'Prepare colors, CSS units, placeholder assets, HTML snippets, metadata, and launch previews.',
+    icon: 'tabler:layout-dashboard',
+    tags: ['Colors', 'CSS Units', 'HTML', 'Previews'],
+  },
+  {
     slug: 'security-encoding',
     title: 'Security & Encoding Tools',
     href: '/tools/security-encoding/',
@@ -71,7 +80,7 @@ const relatedToolkits = toolkits.filter((toolkit) => toolkit.slug !== current);
         </p>
       </div>
 
-      <div class="grid gap-5 md:grid-cols-3">
+      <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         {relatedToolkits.map((toolkit) => (
           <a
             href={toolkit.href}

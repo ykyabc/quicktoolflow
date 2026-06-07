@@ -8,6 +8,7 @@ const workflows = [
     title: 'Work with web design values',
     description: 'Convert colors and CSS units while building layouts, themes, and responsive interfaces.',
     links: [
+      { text: 'Design & Frontend Toolkit', href: '/tools/frontend-design/' },
       { text: 'Color Converter', href: '/tools/color-converter/' },
       { text: 'CSS Unit Converter', href: '/tools/css-unit-converter/' },
     ],
@@ -29,6 +30,48 @@ const workflows = [
       { text: 'JSON to YAML', href: '/tools/json-to-yaml/' },
     ],
   },
+];
+
+const guideLinks = [
+  {
+    title: 'Number Base Converter Guide',
+    href: '/blog/number-base-converter-guide/',
+    description: 'Learn how binary, decimal, hexadecimal, and octal work in technical workflows.',
+  },
+  {
+    title: 'Unix Timestamp Explained',
+    href: '/blog/unix-timestamp-explained-guide/',
+    description: 'Understand epoch time and convert Unix timestamps into readable dates.',
+  },
+  {
+    title: 'Color Conversion Guide',
+    href: '/blog/color-conversion-guide-for-web-designers/',
+    description: 'Compare HEX, RGB, HSL, and practical color conversion use cases for web design.',
+  },
+  {
+    title: 'CSS Units Guide',
+    href: '/blog/css-units-guide-px-em-rem-vw-vh/',
+    description: 'Understand px, em, rem, vw, vh, and when to use each CSS unit.',
+  },
+  {
+    title: 'JSON to CSV Conversion Guide',
+    href: '/blog/json-to-csv-conversion-guide/',
+    description: 'Move structured API data into spreadsheet-friendly CSV output.',
+  },
+  {
+    title: 'JSON to YAML Conversion Guide',
+    href: '/blog/json-to-yaml-conversion-guide/',
+    description: 'Convert JSON into YAML for configuration and documentation workflows.',
+  },
+];
+
+const checklist = [
+  'Confirm the source format before converting a value.',
+  'Keep labels or prefixes such as hex, decimal, seconds, and milliseconds visible.',
+  'Use design-specific converters for colors and CSS units.',
+  'Validate structured data before converting it to CSV or YAML.',
+  'Document converted values when sharing examples or technical notes.',
+  'Double-check time zones when converting human-readable dates and timestamps.',
 ];
 
 const metadata = {
@@ -132,6 +175,39 @@ const faqSchema = {
         }
       </div>
     </div>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Conversion checklist</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          {
+            checklist.map((item, index) => (
+              <li class="flex gap-3">
+                <span class="font-bold text-primary-600">{index + 1}.</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Converter guides</h2>
+        <div class="mt-5 grid gap-3">
+          {
+            guideLinks.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
 
     <div class="prose prose-lg mx-auto mt-16 dark:prose-invert">
       <h2>Why use online converters?</h2>

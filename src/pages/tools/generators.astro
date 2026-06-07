@@ -31,6 +31,48 @@ const workflows = [
   },
 ];
 
+const guideLinks = [
+  {
+    title: 'Random Number Generator Guide',
+    href: '/blog/random-number-generator-guide/',
+    description: 'Understand ranges, integer vs decimal output, testing use cases, and security boundaries.',
+  },
+  {
+    title: 'Lorem Ipsum Generator Guide',
+    href: '/blog/lorem-ipsum-generator-guide/',
+    description: 'Use placeholder text well in wireframes, layouts, mockups, and content drafts.',
+  },
+  {
+    title: 'Lorem Image Placeholder Guide',
+    href: '/blog/lorem-image-placeholder-guide/',
+    description: 'Generate image placeholder URLs with realistic dimensions and aspect ratios.',
+  },
+  {
+    title: 'How to Create QR Codes',
+    href: '/blog/how-to-create-qr-codes-guide/',
+    description: 'Create QR codes for URLs, WiFi, contact details, and common sharing workflows.',
+  },
+  {
+    title: 'Password Entropy Explained',
+    href: '/blog/password-entropy-explained/',
+    description: 'Learn how length, randomness, and character pools affect password strength.',
+  },
+  {
+    title: 'UUID Generator Guide',
+    href: '/blog/uuid-generator-guide-for-developers/',
+    description: 'Understand when UUIDs are useful for identifiers, databases, tests, and public IDs.',
+  },
+];
+
+const checklist = [
+  'Use password-specific generators for secrets, not casual random numbers.',
+  'Generate UUIDs for public unique IDs when secrecy is not required.',
+  'Choose placeholder text length based on the final layout, not arbitrary filler.',
+  'Match placeholder image dimensions to the expected final asset ratio.',
+  'Test QR code destinations before using them in print or public campaigns.',
+  'Keep generated demo data clearly separate from production data.',
+];
+
 const metadata = {
   title: 'Free Online Generators',
   description:
@@ -132,6 +174,39 @@ const faqSchema = {
         }
       </div>
     </div>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Generator checklist</h2>
+        <ol class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          {
+            checklist.map((item, index) => (
+              <li class="flex gap-3">
+                <span class="font-bold text-primary-600">{index + 1}.</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Generator guides</h2>
+        <div class="mt-5 grid gap-3">
+          {
+            guideLinks.map((guide) => (
+              <a
+                href={guide.href}
+                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
 
     <div class="prose prose-lg mx-auto mt-16 dark:prose-invert">
       <h2>Why use online generators?</h2>

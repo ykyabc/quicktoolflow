@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
+import RelatedResources from '~/components/blog/RelatedResources.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -14,6 +15,32 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const allPosts = await getCollection('post', ({ data }) => !data.draft);
+const currentTags = new Set((post.data.tags || []).map((tag) => tag.toLowerCase()));
+const relatedPosts = allPosts
+  .filter((candidate) => candidate.id !== post.id)
+  .map((candidate) => {
+    const sharedTags = (candidate.data.tags || []).filter((tag) => currentTags.has(tag.toLowerCase())).length;
+    const sameCategory =
+      candidate.data.category && post.data.category && candidate.data.category === post.data.category;
+
+    return {
+      post: candidate,
+      score: (sameCategory ? 5 : 0) + sharedTags,
+    };
+  })
+  .filter((candidate) => candidate.score > 0)
+  .sort(
+    (a, b) =>
+      b.score - a.score ||
+      new Date(b.post.data.publishDate || 0).valueOf() - new Date(a.post.data.publishDate || 0).valueOf()
+  )
+  .slice(0, 3)
+  .map(({ post: relatedPost }) => ({
+    title: relatedPost.data.title,
+    href: `/blog/${relatedPost.id.replace(/\.(md|mdx)$/i, '')}/`,
+    excerpt: relatedPost.data.excerpt,
+  }));
 
 const metadata = {
   title: post.data.title,
@@ -79,6 +106,14 @@ const metadata = {
     >
       <Content />
     </div>
+
+    <RelatedResources
+      slug={post.id}
+      title={post.data.title}
+      category={post.data.category}
+      tags={post.data.tags}
+      relatedPosts={relatedPosts}
+    />
 
     <AdBanner placement="blogBottom" format="auto" />
 

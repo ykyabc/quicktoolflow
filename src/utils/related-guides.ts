@@ -5,6 +5,95 @@ export interface RelatedGuide {
 }
 
 export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
+  'word-counter': [
+    {
+      title: 'Word Counter Guide',
+      href: '/blog/word-counter-guide/',
+      description: 'Learn how word count, character count, sentence count, and reading time estimates work.',
+    },
+    {
+      title: 'Word Frequency Counter Guide',
+      href: '/blog/word-frequency-counter-guide/',
+      description: 'Use frequency analysis to find repeated terms and improve drafts after counting text length.',
+    },
+  ],
+  'word-frequency-counter': [
+    {
+      title: 'Word Frequency Counter Guide',
+      href: '/blog/word-frequency-counter-guide/',
+      description: 'Learn how word frequency analysis reveals repetition, filler words, and content patterns.',
+    },
+    {
+      title: 'Word Counter Guide',
+      href: '/blog/word-counter-guide/',
+      description: 'Combine frequency analysis with word count and reading time for practical content review.',
+    },
+  ],
+  'whitespace-remover': [
+    {
+      title: 'Whitespace Remover Guide',
+      href: '/blog/whitespace-remover-guide/',
+      description: 'Learn how to clean extra spaces, blank lines, tabs, and pasted text without breaking structure.',
+    },
+    {
+      title: 'Text Diff Checker Guide',
+      href: '/blog/text-diff-checker-guide/',
+      description: 'Clean spacing before comparing two versions of a draft, snippet, or copied text.',
+    },
+  ],
+  'case-converter': [
+    {
+      title: 'Case Converter Guide',
+      href: '/blog/case-converter-guide/',
+      description: 'Compare title case, sentence case, camelCase, snake_case, kebab-case, and other formats.',
+    },
+    {
+      title: 'Slug Generator Guide',
+      href: '/blog/slug-generator-guide/',
+      description: 'Turn normalized headings and labels into readable URL slugs.',
+    },
+  ],
+  'text-to-slug': [
+    {
+      title: 'Slug Generator Guide',
+      href: '/blog/slug-generator-guide/',
+      description: 'Learn how clean URL slugs work and how to create stable, readable page paths.',
+    },
+    {
+      title: 'Case Converter Guide',
+      href: '/blog/case-converter-guide/',
+      description: 'Normalize titles and headings before converting them into URL-friendly slugs.',
+    },
+  ],
+  'text-diff': [
+    {
+      title: 'Text Diff Checker Guide',
+      href: '/blog/text-diff-checker-guide/',
+      description: 'Learn how line-by-line comparison helps review drafts, code snippets, and config changes.',
+    },
+    {
+      title: 'Whitespace Remover Guide',
+      href: '/blog/whitespace-remover-guide/',
+      description: 'Normalize messy spacing before comparing two similar text versions.',
+    },
+  ],
+  'text-reverser': [
+    {
+      title: 'Text Reverser Guide',
+      href: '/blog/text-reverser-guide/',
+      description: 'Learn when to reverse characters, words, or lines and what formatting issues to watch for.',
+    },
+    {
+      title: 'Case Converter Guide',
+      href: '/blog/case-converter-guide/',
+      description: 'Learn how quick text transformations support naming, formatting, and cleanup workflows.',
+    },
+    {
+      title: 'Whitespace Remover Guide',
+      href: '/blog/whitespace-remover-guide/',
+      description: 'Clean copied text before applying small transformations such as reversing words or lines.',
+    },
+  ],
   'json-formatter': [
     {
       title: 'JSON Formatting Best Practices',
@@ -184,6 +273,18 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'Understand Unix timestamps and how to convert them into human-readable dates.',
     },
   ],
+  'number-base-converter': [
+    {
+      title: 'Number Base Converter Guide',
+      href: '/blog/number-base-converter-guide/',
+      description: 'Learn how binary, decimal, hexadecimal, and octal represent the same numeric value.',
+    },
+    {
+      title: 'Color Conversion Guide for Web Designers',
+      href: '/blog/color-conversion-guide-for-web-designers/',
+      description: 'See where hexadecimal values appear in CSS colors and web design workflows.',
+    },
+  ],
   'uuid-generator': [
     {
       title: 'UUID vs Random String',
@@ -210,6 +311,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'url-encoder': [
     {
+      title: 'URL Encoder Guide',
+      href: '/blog/url-encoder-guide/',
+      description: 'Learn how percent-encoding works and when to encode query parameters or URL parts.',
+    },
+    {
       title: 'Base64 vs URL Encoding',
       href: '/blog/base64-vs-url-encoding-guide/',
       description: 'Learn the difference between reversible binary encoding and URL-safe percent encoding.',
@@ -233,6 +339,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'html-entity-encoder': [
+    {
+      title: 'HTML Entity Encoder Guide',
+      href: '/blog/html-entity-encoder-guide/',
+      description: 'Learn how HTML entities escape special characters such as brackets, ampersands, and quotes.',
+    },
     {
       title: 'String Escaping Guide',
       href: '/blog/string-escaping-guide-json-javascript-html-csv/',
@@ -259,6 +370,47 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       title: 'Color Conversion Guide for Web Designers',
       href: '/blog/color-conversion-guide-for-web-designers/',
       description: 'Learn how HEX, RGB, and HSL color formats work in web design.',
+    },
+    {
+      title: 'Number Base Converter Guide',
+      href: '/blog/number-base-converter-guide/',
+      description: 'Understand why hexadecimal appears in color channels and technical values.',
+    },
+  ],
+  'random-number-generator': [
+    {
+      title: 'Random Number Generator Guide',
+      href: '/blog/random-number-generator-guide/',
+      description: 'Learn how ranges, integers, decimals, and practical randomness use cases work.',
+    },
+    {
+      title: 'UUID vs Random String',
+      href: '/blog/uuid-vs-random-string-guide/',
+      description: 'Compare casual random values with identifiers, public IDs, and secret-like strings.',
+    },
+  ],
+  'lorem-ipsum': [
+    {
+      title: 'Lorem Ipsum Generator Guide',
+      href: '/blog/lorem-ipsum-generator-guide/',
+      description: 'Learn when placeholder text helps layouts and when realistic copy is a better choice.',
+    },
+    {
+      title: 'Lorem Image Placeholder Guide',
+      href: '/blog/lorem-image-placeholder-guide/',
+      description: 'Pair placeholder text with image placeholders for more realistic mockups.',
+    },
+  ],
+  'lorem-image-placeholder': [
+    {
+      title: 'Lorem Image Placeholder Guide',
+      href: '/blog/lorem-image-placeholder-guide/',
+      description: 'Learn how placeholder image URLs help test dimensions, ratios, and responsive layouts.',
+    },
+    {
+      title: 'Lorem Ipsum Generator Guide',
+      href: '/blog/lorem-ipsum-generator-guide/',
+      description: 'Use placeholder text and image placeholders together when building page mockups.',
     },
   ],
   'meta-tag-generator': [
