@@ -1,0 +1,225 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+
+const title = 'CSS Minifier';
+const description =
+  'Minify CSS by removing comments, collapsing whitespace, compacting selectors and declarations, and showing exact character savings.';
+const category = 'Developer Tools';
+const slug = 'css-minifier';
+
+const features = [
+  'Remove regular CSS comments before publishing snippets',
+  'Preserve quoted strings while compacting surrounding CSS',
+  'Collapse whitespace around braces, colons, semicolons, commas, and selectors',
+  'Optionally keep important license comments that start with /*!',
+  'Includes a simple beautify action for quick review',
+  'Shows before and after character counts',
+];
+
+const howToSteps = [
+  'Paste CSS into the input area.',
+  'Choose whether to remove comments and keep license comments.',
+  'Click Minify CSS to create compact output.',
+  'Use Beautify when you need a readable version for review.',
+  'Copy the output when the CSS is ready.',
+];
+
+const useCases = [
+  'Compacting standalone CSS snippets before embedding them',
+  'Preparing small stylesheets for demos, documentation, or static pages',
+  'Reviewing how much whitespace and comments add to CSS size',
+  'Switching between readable and compact CSS while debugging',
+];
+
+const examples = [
+  {
+    title: 'Minify component CSS',
+    input: '.card {\\n  color: #111827;\\n  padding: 1rem;\\n}\\n.card:hover {\\n  color: #2563eb;\\n}',
+    output: '.card{color:#111827;padding:1rem}.card:hover{color:#2563eb}',
+    note: 'The minifier removes layout whitespace and unnecessary semicolons before closing braces.',
+  },
+];
+
+const tips = [
+  'Keep source CSS readable in your project and minify only the copy you plan to ship or embed.',
+  'Use a build tool for production bundles when you need source maps, autoprefixing, and advanced optimization.',
+  'Preserve license comments when required by a package or stylesheet license.',
+];
+
+const faq = [
+  {
+    question: 'What does the CSS Minifier remove?',
+    answer:
+      'It removes regular comments, collapses whitespace, removes unnecessary spaces around punctuation, and drops trailing semicolons before closing braces.',
+  },
+  {
+    question: 'Can CSS minification break styles?',
+    answer:
+      'Basic whitespace minification is usually safe, but always test the result. Complex generated CSS, unusual hacks, or template placeholders may need special handling.',
+  },
+  {
+    question: 'Does this tool handle source maps?',
+    answer:
+      'No. This browser tool is intended for quick snippets and manual cleanup. Use your build pipeline when you need source maps or advanced CSS processing.',
+  },
+  {
+    question: 'Is my CSS uploaded?',
+    answer: 'No. The CSS is processed locally in your browser and is not uploaded to a server.',
+  },
+];
+---
+
+<ToolLayout {title} {description} {slug} {category} {features} {howToSteps} {useCases} {examples} {tips} {faq}>
+  <div class="space-y-5">
+    <label class="block">
+      <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Input CSS</span>
+      <textarea
+        id="css-minifier-input"
+        class="min-h-[260px] w-full resize-y rounded-lg border border-gray-300 bg-white p-4 font-mono text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        spellcheck="false"
+        placeholder=".card { padding: 1rem; }"></textarea>
+    </label>
+
+    <div
+      class="grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm dark:border-slate-700 dark:bg-slate-900 sm:grid-cols-2"
+    >
+      <label class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+        <input id="css-remove-comments" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        Remove comments
+      </label>
+      <label class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+        <input id="css-keep-license" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        Keep /*! license comments
+      </label>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="css-minify" variant="primary" icon="tabler:arrows-minimize">Minify CSS</ToolActionButton>
+      <ToolActionButton id="css-beautify" icon="tabler:align-left">Beautify</ToolActionButton>
+      <ToolActionButton id="css-sample" icon="tabler:wand">Load sample</ToolActionButton>
+      <ToolActionButton id="css-copy" icon="tabler:copy">Copy output</ToolActionButton>
+      <ToolActionButton id="css-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+
+    <label class="block">
+      <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Output CSS</span>
+      <textarea
+        id="css-minifier-output"
+        class="min-h-[220px] w-full resize-y rounded-lg border border-gray-300 bg-gray-50 p-4 font-mono text-sm text-gray-900 shadow-sm dark:border-slate-600 dark:bg-slate-950 dark:text-gray-100"
+        spellcheck="false"
+        readonly></textarea>
+    </label>
+
+    <p id="css-minifier-stats" class="text-sm text-gray-600 dark:text-gray-400">Add CSS to see size savings.</p>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  (() => {
+    const input = document.getElementById('css-minifier-input');
+    const output = document.getElementById('css-minifier-output');
+    const stats = document.getElementById('css-minifier-stats');
+    const removeComments = document.getElementById('css-remove-comments');
+    const keepLicense = document.getElementById('css-keep-license');
+
+    const sample = `/*! Example component styles */
+.card {
+  color: #111827;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+}
+
+.card:hover,
+.card:focus {
+  color: #2563eb;
+  transform: translateY(-2px);
+}`;
+
+    function protectStrings(css) {
+      const strings = [];
+      const protectedCss = css.replace(/(["'])(?:\\.|(?!\1)[^\\])*\1/g, (match) => {
+        const token = `___CSS_STRING_${strings.length}___`;
+        strings.push(match);
+        return token;
+      });
+      return { protectedCss, strings };
+    }
+
+    function restoreStrings(css, strings) {
+      return strings.reduce((result, value, index) => result.replace(`___CSS_STRING_${index}___`, value), css);
+    }
+
+    function minifyCss() {
+      const source = input.value;
+      const licenses = [];
+      let css = source;
+
+      if (removeComments.checked && keepLicense.checked) {
+        css = css.replace(/\/\*![\s\S]*?\*\//g, (match) => {
+          const token = `___CSS_LICENSE_${licenses.length}___`;
+          licenses.push(match.trim());
+          return token;
+        });
+      }
+
+      const { protectedCss, strings } = protectStrings(css);
+      css = protectedCss;
+
+      if (removeComments.checked) {
+        css = css.replace(/\/\*[\s\S]*?\*\//g, '');
+      }
+
+      css = css
+        .replace(/\s+/g, ' ')
+        .replace(/\s*([{}:;,>+~])\s*/g, '$1')
+        .replace(/;}/g, '}')
+        .replace(/\s*\(\s*/g, '(')
+        .replace(/\s*\)\s*/g, ')')
+        .trim();
+
+      css = restoreStrings(css, strings);
+      licenses.forEach((license, index) => {
+        css = css.replace(`___CSS_LICENSE_${index}___`, license);
+      });
+
+      output.value = css;
+      updateStats(source, css);
+    }
+
+    function beautifyCss() {
+      const source = output.value || input.value;
+      const pretty = source
+        .replace(/\s*{\s*/g, ' {\n  ')
+        .replace(/;\s*/g, ';\n  ')
+        .replace(/\s*}\s*/g, '\n}\n\n')
+        .replace(/,\s*/g, ',\n')
+        .replace(/\n\s*\n\s*\n/g, '\n\n')
+        .trim();
+      output.value = pretty;
+      updateStats(input.value, pretty);
+    }
+
+    function updateStats(source, result) {
+      const saved = source.length - result.length;
+      const percent = source.length ? Math.max(0, (saved / source.length) * 100).toFixed(1) : '0.0';
+      stats.textContent = `${source.length.toLocaleString()} characters to ${result.length.toLocaleString()} characters. Saved ${Math.max(0, saved).toLocaleString()} characters (${percent}%).`;
+    }
+
+    document.getElementById('css-minify').addEventListener('click', minifyCss);
+    document.getElementById('css-beautify').addEventListener('click', beautifyCss);
+    document.getElementById('css-sample').addEventListener('click', () => {
+      input.value = sample;
+      minifyCss();
+    });
+    document.getElementById('css-copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(output.value);
+    });
+    document.getElementById('css-clear').addEventListener('click', () => {
+      input.value = '';
+      output.value = '';
+      stats.textContent = 'Add CSS to see size savings.';
+    });
+  })();
+</script>

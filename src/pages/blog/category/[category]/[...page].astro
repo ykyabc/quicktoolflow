@@ -37,6 +37,87 @@ interface Props {
 const { page, category } = Astro.props;
 const currentPage = page.currentPage ?? 1;
 const pageTitle = currentPage > 1 ? `${category.title} Articles - Page ${currentPage}` : `${category.title} Articles`;
+const categoryToolkits: Record<string, { title: string; href: string; description: string }[]> = {
+  'developer-tools': [
+    {
+      title: 'Developer Tools',
+      href: '/tools/developer/',
+      description: 'Open the core developer utilities for formatting, debugging, encoding, and inspecting data.',
+    },
+    {
+      title: 'Code Formatting Tools',
+      href: '/tools/code-formatting/',
+      description: 'Format structured data, markup, SQL, and Markdown while following the developer guides.',
+    },
+    {
+      title: 'Structured Data Tools',
+      href: '/tools/structured-data/',
+      description: 'Work with JSON, CSV, YAML, XML, JSON Path, and conversion workflows from one collection.',
+    },
+  ],
+  security: [
+    {
+      title: 'Security & Encoding Tools',
+      href: '/tools/security-encoding/',
+      description: 'Decode, encode, hash, escape, and generate secure values while reading security guides.',
+    },
+    {
+      title: 'Password Generator',
+      href: '/tools/password-generator/',
+      description: 'Generate strong random passwords when following password and entropy articles.',
+    },
+  ],
+  'text-tools': [
+    {
+      title: 'Text Tools',
+      href: '/tools/text/',
+      description: 'Clean, compare, count, transform, and analyze text while following writing workflow guides.',
+    },
+    {
+      title: 'Web Publishing Tools',
+      href: '/tools/web-publishing/',
+      description: 'Move from cleaned copy into metadata, slugs, SERP snippets, and publishing checks.',
+    },
+  ],
+  seo: [
+    {
+      title: 'SEO Tools',
+      href: '/tools/seo/',
+      description: 'Preview snippets, generate metadata, build UTM links, and prepare publishing assets.',
+    },
+    {
+      title: 'Web Publishing Tools',
+      href: '/tools/web-publishing/',
+      description: 'Use the broader publishing toolkit for metadata, robots.txt, Open Graph, and QR workflows.',
+    },
+  ],
+  generators: [
+    {
+      title: 'Generators',
+      href: '/tools/generators/',
+      description: 'Generate passwords, UUIDs, QR codes, random numbers, lorem ipsum, and placeholder images.',
+    },
+  ],
+  converters: [
+    {
+      title: 'Converters',
+      href: '/tools/converters/',
+      description: 'Convert timestamps, number bases, colors, CSS units, JSON, CSV, and YAML.',
+    },
+    {
+      title: 'Structured Data Tools',
+      href: '/tools/structured-data/',
+      description: 'Use structured data converters and formatters alongside conversion guides.',
+    },
+  ],
+};
+const relatedToolkits = categoryToolkits[category.slug] ?? [
+  {
+    title: 'All Tools',
+    href: '/tools/',
+    description: 'Browse all QuickToolFlow tools connected to these tutorials and guides.',
+  },
+];
 
 const metadata = {
   title: pageTitle,
@@ -66,5 +147,31 @@ const metadata = {
     <List posts={page.data} />
 
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+
+    <section class="mt-14 border-t border-gray-200 pt-10 dark:border-slate-700">
+      <div class="mb-5">
+        <p class="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Related tools</p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Try the workflows from these articles</h2>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          relatedToolkits.map((toolkit) => (
+            <a
+              href={toolkit.href}
+              class="group rounded-lg border border-gray-200 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-500"
+            >
+              <h3 class="text-base font-bold text-gray-900 transition-colors group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-300">
+                {toolkit.title}
+              </h3>
+              <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{toolkit.description}</p>
+              <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 dark:text-blue-300">
+                Open toolkit
+                <astro-icon name="tabler:arrow-right" class="h-4 w-4 transition group-hover:translate-x-0.5" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
   </section>
 </Layout>

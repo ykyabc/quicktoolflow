@@ -1,0 +1,325 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+
+const title = 'JSON Schema Validator';
+const description =
+  'Validate JSON data against common JSON Schema rules including type, required fields, properties, arrays, enums, ranges, and string patterns.';
+const category = 'Developer Tools';
+const slug = 'json-schema-validator';
+
+const features = [
+  'Validate JSON against common schema keywords',
+  'Supports type, required, properties, items, enum, const, and ranges',
+  'Shows readable error paths for nested objects and arrays',
+  'Includes a sample payload and schema for quick testing',
+  'Runs locally in your browser without uploading data',
+  'Copy a plain-text validation report for debugging or review',
+];
+
+const howToSteps = [
+  'Paste your JSON data into the JSON input panel.',
+  'Paste or write a JSON Schema in the schema panel.',
+  'Click Validate to check the data against the schema rules.',
+  'Review each path-level error and adjust either the data or schema.',
+  'Copy the validation report if you need to share the result.',
+];
+
+const useCases = [
+  'Checking API response shapes before adding frontend handling',
+  'Reviewing fixture data for tests and documentation',
+  'Validating config-like JSON before committing changes',
+  'Debugging required fields, nested properties, arrays, and enums',
+];
+
+const examples = [
+  {
+    title: 'Validate an API user object',
+    input: '{\n  "id": 42,\n  "email": "ada@example.com",\n  "roles": ["admin"]\n}',
+    output:
+      '{\n  "type": "object",\n  "required": ["id", "email"],\n  "properties": {\n    "id": { "type": "integer" },\n    "email": { "type": "string", "pattern": "^[^@]+@[^@]+\\\\.[^@]+$" },\n    "roles": { "type": "array", "items": { "type": "string" } }\n  }\n}',
+    note: 'The validator reports whether required fields exist and whether nested values match the expected type and constraints.',
+  },
+];
+
+const tips = [
+  'This quick validator focuses on common JSON Schema keywords. Use a full schema library in production test suites when you need complete draft compatibility.',
+  'Validate small representative samples first. Large payloads are easier to debug after you reduce them to the failing branch.',
+  'Use JSON Formatter before schema validation when pasted data may contain syntax errors.',
+  'Pattern rules are interpreted as JavaScript regular expressions, so escape backslashes carefully in JSON strings.',
+];
+
+const faq = [
+  {
+    question: 'What does this JSON Schema Validator check?',
+    answer:
+      'It checks common JSON Schema constraints such as type, required, properties, items, enum, const, minimum, maximum, minLength, maxLength, minItems, maxItems, pattern, and additionalProperties.',
+  },
+  {
+    question: 'Is this a complete JSON Schema draft implementation?',
+    answer:
+      'No. It is designed for fast browser checks of common schema rules. For advanced keywords such as oneOf, anyOf, allOf, refs, conditionals, and custom formats, use a dedicated JSON Schema library in your build or test workflow.',
+  },
+  {
+    question: 'Does my JSON data leave the browser?',
+    answer:
+      'No. Validation runs with JavaScript in your browser, so the pasted JSON and schema are not uploaded to a server.',
+  },
+  {
+    question: 'Should I format JSON before validating it?',
+    answer:
+      'Yes. Formatting first makes syntax errors, missing commas, and nesting problems easier to spot before schema-level validation begins.',
+  },
+];
+---
+
+<ToolLayout {title} {description} {slug} {category} {features} {howToSteps} {useCases} {examples} {tips} {faq}>
+  <div class="space-y-5">
+    <div class="grid gap-4 lg:grid-cols-2">
+      <label class="block">
+        <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">JSON data</span>
+        <textarea
+          id="schema-json-input"
+          class="min-h-[320px] w-full resize-y rounded-lg border border-gray-300 bg-white p-4 font-mono text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          spellcheck="false"
+          placeholder='{"id": 42, "email": "ada@example.com"}'></textarea>
+      </label>
+
+      <label class="block">
+        <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">JSON Schema</span>
+        <textarea
+          id="schema-input"
+          class="min-h-[320px] w-full resize-y rounded-lg border border-gray-300 bg-white p-4 font-mono text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          spellcheck="false"
+          placeholder='{"type":"object","required":["id"],"properties":{"id":{"type":"integer"}}}'></textarea>
+      </label>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="schema-validate" variant="primary" icon="tabler:check">Validate</ToolActionButton>
+      <ToolActionButton id="schema-sample" icon="tabler:wand">Load sample</ToolActionButton>
+      <ToolActionButton id="schema-copy" icon="tabler:copy">Copy report</ToolActionButton>
+      <ToolActionButton id="schema-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+
+    <section
+      class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-700 dark:bg-slate-900"
+      aria-live="polite"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <h2 class="text-base font-semibold text-gray-900 dark:text-white">Validation result</h2>
+        <span
+          id="schema-status"
+          class="rounded-full bg-gray-200 px-3 py-1 text-xs font-semibold text-gray-700 dark:bg-slate-700 dark:text-gray-200"
+        >
+          Waiting for input
+        </span>
+      </div>
+      <pre
+        id="schema-report"
+        class="mt-4 max-h-[320px] overflow-auto whitespace-pre-wrap rounded-md bg-white p-4 font-mono text-sm leading-6 text-gray-800 dark:bg-slate-950 dark:text-gray-100">Paste JSON and a schema, then click Validate.</pre>
+    </section>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  (() => {
+    const jsonInput = document.getElementById('schema-json-input');
+    const schemaInput = document.getElementById('schema-input');
+    const report = document.getElementById('schema-report');
+    const status = document.getElementById('schema-status');
+    const validateButton = document.getElementById('schema-validate');
+    const sampleButton = document.getElementById('schema-sample');
+    const copyButton = document.getElementById('schema-copy');
+    const clearButton = document.getElementById('schema-clear');
+
+    const sampleJson = `{
+  "id": 42,
+  "email": "ada@example.com",
+  "active": true,
+  "roles": ["admin", "editor"],
+  "profile": {
+    "displayName": "Ada",
+    "age": 31
+  }
+}`;
+
+    const sampleSchema = `{
+  "type": "object",
+  "required": ["id", "email", "roles"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "integer", "minimum": 1 },
+    "email": {
+      "type": "string",
+      "pattern": "^[^@]+@[^@]+\\\\.[^@]+$"
+    },
+    "active": { "type": "boolean" },
+    "roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["admin", "editor", "viewer"] }
+    },
+    "profile": {
+      "type": "object",
+      "required": ["displayName"],
+      "properties": {
+        "displayName": { "type": "string", "minLength": 2 },
+        "age": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}`;
+
+    function getType(value) {
+      if (value === null) return 'null';
+      if (Array.isArray(value)) return 'array';
+      if (Number.isInteger(value)) return 'integer';
+      if (typeof value === 'number') return 'number';
+      return typeof value;
+    }
+
+    function matchesType(value, expected) {
+      const actual = getType(value);
+      const types = Array.isArray(expected) ? expected : [expected];
+      return types.some((type) => type === actual || (type === 'number' && actual === 'integer'));
+    }
+
+    function formatValue(value) {
+      if (typeof value === 'string') return `"${value}"`;
+      return JSON.stringify(value);
+    }
+
+    function validateValue(value, schema, path, errors) {
+      if (!schema || typeof schema !== 'object' || Array.isArray(schema)) return;
+
+      if (schema.type && !matchesType(value, schema.type)) {
+        errors.push(
+          `${path}: expected ${Array.isArray(schema.type) ? schema.type.join(' or ') : schema.type}, got ${getType(value)}`
+        );
+        return;
+      }
+
+      if (Object.prototype.hasOwnProperty.call(schema, 'const') && value !== schema.const) {
+        errors.push(`${path}: expected const ${formatValue(schema.const)}, got ${formatValue(value)}`);
+      }
+
+      if (Array.isArray(schema.enum) && !schema.enum.some((item) => JSON.stringify(item) === JSON.stringify(value))) {
+        errors.push(`${path}: expected one of ${schema.enum.map(formatValue).join(', ')}, got ${formatValue(value)}`);
+      }
+
+      if (typeof value === 'number') {
+        if (typeof schema.minimum === 'number' && value < schema.minimum) {
+          errors.push(`${path}: must be >= ${schema.minimum}`);
+        }
+        if (typeof schema.maximum === 'number' && value > schema.maximum) {
+          errors.push(`${path}: must be <= ${schema.maximum}`);
+        }
+      }
+
+      if (typeof value === 'string') {
+        if (typeof schema.minLength === 'number' && value.length < schema.minLength) {
+          errors.push(`${path}: length must be at least ${schema.minLength}`);
+        }
+        if (typeof schema.maxLength === 'number' && value.length > schema.maxLength) {
+          errors.push(`${path}: length must be at most ${schema.maxLength}`);
+        }
+        if (typeof schema.pattern === 'string') {
+          try {
+            if (!new RegExp(schema.pattern).test(value)) {
+              errors.push(`${path}: does not match pattern ${schema.pattern}`);
+            }
+          } catch {
+            errors.push(`${path}: invalid schema pattern ${schema.pattern}`);
+          }
+        }
+      }
+
+      if (Array.isArray(value)) {
+        if (typeof schema.minItems === 'number' && value.length < schema.minItems) {
+          errors.push(`${path}: must contain at least ${schema.minItems} item(s)`);
+        }
+        if (typeof schema.maxItems === 'number' && value.length > schema.maxItems) {
+          errors.push(`${path}: must contain at most ${schema.maxItems} item(s)`);
+        }
+        if (schema.items) {
+          value.forEach((item, index) => validateValue(item, schema.items, `${path}[${index}]`, errors));
+        }
+      }
+
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        const properties = schema.properties && typeof schema.properties === 'object' ? schema.properties : {};
+
+        if (Array.isArray(schema.required)) {
+          schema.required.forEach((key) => {
+            if (!Object.prototype.hasOwnProperty.call(value, key)) {
+              errors.push(`${path}.${key}: required property is missing`);
+            }
+          });
+        }
+
+        Object.keys(properties).forEach((key) => {
+          if (Object.prototype.hasOwnProperty.call(value, key)) {
+            validateValue(value[key], properties[key], path === '$' ? `$.${key}` : `${path}.${key}`, errors);
+          }
+        });
+
+        if (schema.additionalProperties === false) {
+          Object.keys(value).forEach((key) => {
+            if (!Object.prototype.hasOwnProperty.call(properties, key)) {
+              errors.push(`${path}.${key}: additional property is not allowed`);
+            }
+          });
+        }
+      }
+    }
+
+    function setStatus(text, state) {
+      status.textContent = text;
+      status.className =
+        state === 'valid'
+          ? 'rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-200'
+          : state === 'invalid'
+            ? 'rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 dark:bg-red-900/40 dark:text-red-200'
+            : 'rounded-full bg-gray-200 px-3 py-1 text-xs font-semibold text-gray-700 dark:bg-slate-700 dark:text-gray-200';
+    }
+
+    function validateSchema() {
+      try {
+        const data = JSON.parse(jsonInput.value);
+        const schema = JSON.parse(schemaInput.value);
+        const errors = [];
+        validateValue(data, schema, '$', errors);
+
+        if (errors.length === 0) {
+          setStatus('Valid', 'valid');
+          report.textContent = 'Valid JSON\n\nThe data matches the supported schema rules.';
+          return;
+        }
+
+        setStatus(`${errors.length} issue${errors.length === 1 ? '' : 's'}`, 'invalid');
+        report.textContent = `Invalid JSON for this schema\n\n${errors.map((error, index) => `${index + 1}. ${error}`).join('\n')}`;
+      } catch (error) {
+        setStatus('Parse error', 'invalid');
+        report.textContent = error instanceof Error ? error.message : 'Unable to parse JSON or schema.';
+      }
+    }
+
+    validateButton.addEventListener('click', validateSchema);
+    sampleButton.addEventListener('click', () => {
+      jsonInput.value = sampleJson;
+      schemaInput.value = sampleSchema;
+      validateSchema();
+    });
+    copyButton.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(report.textContent || '');
+    });
+    clearButton.addEventListener('click', () => {
+      jsonInput.value = '';
+      schemaInput.value = '';
+      report.textContent = 'Paste JSON and a schema, then click Validate.';
+      setStatus('Waiting for input', 'idle');
+    });
+  })();
+</script>

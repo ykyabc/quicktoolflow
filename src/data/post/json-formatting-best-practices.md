@@ -1,6 +1,6 @@
 ---
 title: 'JSON Formatting Best Practices Every Developer Should Know'
-excerpt: 'Master JSON formatting with these best practices. Learn about indentation, validation, minification, and common mistakes to avoid.'
+excerpt: 'Learn practical JSON formatting habits for indentation, validation, minification, API debugging, and avoiding common JSON mistakes.'
 publishDate: 2025-03-05
 category: 'Developer Tools'
 tags:

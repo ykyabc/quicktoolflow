@@ -1,0 +1,213 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+
+const title = 'Base64 Image Converter';
+const description =
+  'Convert images to Base64 data URLs and decode Base64 image strings into browser previews for icons, small embeds, CSS backgrounds, and test fixtures.';
+const category = 'Developer Tools';
+const slug = 'base64-image-converter';
+
+const features = [
+  'Convert PNG, JPEG, WebP, GIF, and SVG files to Base64 data URLs',
+  'Preview decoded Base64 image strings directly in the browser',
+  'Shows MIME type, file size, encoded size, and approximate overhead',
+  'Copies full data URLs for HTML, CSS, and JSON examples',
+  'Works locally in your browser without uploading image files',
+  'Includes sample output patterns for img tags and CSS backgrounds',
+];
+
+const howToSteps = [
+  'Choose an image file from your device.',
+  'Review the preview, file details, and generated Base64 data URL.',
+  'Copy the data URL when you need to embed a small image in HTML, CSS, or test data.',
+  'Paste an existing Base64 image data URL to preview and inspect it.',
+];
+
+const useCases = [
+  'Embedding tiny icons or placeholders in demos and documentation',
+  'Testing image data fields in JSON fixtures or API examples',
+  'Preparing CSS background-image data URLs for small assets',
+  'Checking whether a copied Base64 image string decodes correctly',
+];
+
+const examples = [
+  {
+    title: 'Use a data URL in HTML',
+    input: 'data:image/png;base64,iVBORw0KGgo...',
+    output: '<img src="data:image/png;base64,iVBORw0KGgo..." alt="Embedded icon">',
+    note: 'Data URLs are convenient for small assets, but large images should usually remain normal files.',
+  },
+];
+
+const tips = [
+  'Base64 image strings are usually about one third larger than the original binary file.',
+  'Use data URLs for small icons, placeholders, and fixtures. Avoid embedding large screenshots or photos.',
+  'Base64 is not encryption. Anyone with the string can decode and view the image.',
+];
+
+const faq = [
+  {
+    question: 'What is a Base64 image?',
+    answer:
+      'A Base64 image is image binary data represented as text, usually inside a data URL such as data:image/png;base64,... so it can be embedded directly in HTML, CSS, or JSON.',
+  },
+  {
+    question: 'Should I use Base64 for every image?',
+    answer:
+      'No. Base64 can increase size and reduce caching benefits. It is best for small icons, placeholders, test fixtures, and one-off embeds.',
+  },
+  {
+    question: 'Are uploaded images sent to a server?',
+    answer:
+      'No. The file is read with browser APIs and converted locally. QuickToolFlow does not upload the selected image.',
+  },
+  {
+    question: 'Can this decode plain Base64 without a data URL prefix?',
+    answer: 'Yes. If you paste plain Base64, choose a MIME type first so the preview can build the correct data URL.',
+  },
+];
+---
+
+<ToolLayout {title} {description} {slug} {category} {features} {howToSteps} {useCases} {examples} {tips} {faq}>
+  <div class="space-y-5">
+    <div class="grid gap-5 lg:grid-cols-[1fr_280px]">
+      <div>
+        <label class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Image file</label>
+        <input
+          id="b64img-file"
+          type="file"
+          accept="image/*"
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        />
+        <div
+          class="mt-4 grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm dark:border-slate-700 dark:bg-slate-900 sm:grid-cols-2"
+        >
+          <label class="block">
+            <span class="mb-1 block font-medium text-gray-700 dark:text-gray-200">MIME type for pasted Base64</span>
+            <select
+              id="b64img-mime"
+              class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
+            >
+              <option value="image/png">image/png</option>
+              <option value="image/jpeg">image/jpeg</option>
+              <option value="image/webp">image/webp</option>
+              <option value="image/gif">image/gif</option>
+              <option value="image/svg+xml">image/svg+xml</option>
+            </select>
+          </label>
+          <div>
+            <span class="mb-1 block font-medium text-gray-700 dark:text-gray-200">Image details</span>
+            <p id="b64img-details" class="text-gray-600 dark:text-gray-400">No image selected.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-700 dark:bg-slate-900">
+        <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Preview</h2>
+        <div class="mt-3 flex min-h-[180px] items-center justify-center rounded-md bg-white p-3 dark:bg-slate-950">
+          <img id="b64img-preview" alt="" class="max-h-48 max-w-full object-contain" />
+          <span id="b64img-empty" class="text-sm text-gray-500 dark:text-gray-400">No preview yet</span>
+        </div>
+      </div>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="b64img-preview-button" variant="primary" icon="tabler:photo-scan">
+        Preview pasted Base64
+      </ToolActionButton>
+      <ToolActionButton id="b64img-copy" icon="tabler:copy">Copy data URL</ToolActionButton>
+      <ToolActionButton id="b64img-html" icon="tabler:code">Copy img tag</ToolActionButton>
+      <ToolActionButton id="b64img-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+
+    <label class="block">
+      <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Base64 image data URL</span>
+      <textarea
+        id="b64img-output"
+        class="min-h-[240px] w-full resize-y rounded-lg border border-gray-300 bg-white p-4 font-mono text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        spellcheck="false"
+        placeholder="Upload an image, or paste a data:image/...;base64 string here."></textarea>
+    </label>
+
+    <p id="b64img-status" class="text-sm text-gray-600 dark:text-gray-400">Ready.</p>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  (() => {
+    const fileInput = document.getElementById('b64img-file');
+    const output = document.getElementById('b64img-output');
+    const preview = document.getElementById('b64img-preview');
+    const empty = document.getElementById('b64img-empty');
+    const details = document.getElementById('b64img-details');
+    const status = document.getElementById('b64img-status');
+    const mime = document.getElementById('b64img-mime');
+
+    function setPreview(dataUrl) {
+      preview.src = dataUrl;
+      preview.classList.remove('hidden');
+      empty.classList.add('hidden');
+    }
+
+    function normalizeDataUrl(value) {
+      const text = value.trim();
+      if (!text) return '';
+      if (text.startsWith('data:image/')) return text;
+      return `data:${mime.value};base64,${text.replace(/\s+/g, '')}`;
+    }
+
+    function showDetails(name, type, rawSize, encodedSize) {
+      const overhead = rawSize ? (((encodedSize - rawSize) / rawSize) * 100).toFixed(1) : '0.0';
+      details.textContent = `${name || 'Pasted image'} | ${type || mime.value} | ${rawSize.toLocaleString()} bytes raw | ${encodedSize.toLocaleString()} chars encoded | ${overhead}% overhead`;
+    }
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = String(reader.result || '');
+        output.value = dataUrl;
+        setPreview(dataUrl);
+        showDetails(file.name, file.type, file.size, dataUrl.length);
+        status.textContent = 'Image converted to Base64 data URL.';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('b64img-preview-button').addEventListener('click', () => {
+      const dataUrl = normalizeDataUrl(output.value);
+      if (!dataUrl) {
+        status.textContent = 'Paste Base64 image data before previewing.';
+        return;
+      }
+      output.value = dataUrl;
+      setPreview(dataUrl);
+      showDetails('', dataUrl.slice(5, dataUrl.indexOf(';')) || mime.value, 0, dataUrl.length);
+      status.textContent = 'Base64 image preview updated.';
+    });
+
+    document.getElementById('b64img-copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(output.value);
+      status.textContent = 'Data URL copied.';
+    });
+
+    document.getElementById('b64img-html').addEventListener('click', async () => {
+      const dataUrl = normalizeDataUrl(output.value);
+      await navigator.clipboard.writeText(`<img src="${dataUrl}" alt="Embedded image">`);
+      status.textContent = 'HTML img tag copied.';
+    });
+
+    document.getElementById('b64img-clear').addEventListener('click', () => {
+      fileInput.value = '';
+      output.value = '';
+      preview.removeAttribute('src');
+      preview.classList.add('hidden');
+      empty.classList.remove('hidden');
+      details.textContent = 'No image selected.';
+      status.textContent = 'Cleared.';
+    });
+  })();
+</script>

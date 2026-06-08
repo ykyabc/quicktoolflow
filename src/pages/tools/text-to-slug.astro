@@ -31,8 +31,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
   examples={[
     {
       title: 'Turn a headline into a URL slug',
-      input: 'How to Build a Great Website in 2025 - The Ultimate Guide!',
-      output: 'how-to-build-a-great-website-in-2025-the-ultimate-guide',
+      input: 'How to Format JSON Data for API Debugging',
+      output: 'how-to-format-json-data-for-api-debugging',
       note: 'Clean slugs are easier to read, share, and maintain than raw page titles.',
     },
   ]}
@@ -69,8 +69,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       <textarea
         id="sl-input"
         class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 font-mono text-sm min-h-[100px] resize-y focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-        placeholder="Enter a title or phrase to convert..."
-        >How to Build a Great Website in 2025 - The Ultimate Guide!</textarea
+        placeholder="Enter a title or phrase to convert...">How to Format JSON Data for API Debugging</textarea
       >
     </div>
 
@@ -216,7 +215,7 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       maxEl.addEventListener('input', generate);
 
       btnSample?.addEventListener('click', () => {
-        input.value = 'How to Build a Great Website in 2026 - The Practical Guide!';
+        input.value = 'How to Format JSON Data for API Debugging';
         maxEl.value = '80';
         lowerEl.checked = true;
         sepEl.value = '-';

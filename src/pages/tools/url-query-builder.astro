@@ -1,0 +1,212 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+
+const title = 'URL Query Builder';
+const description =
+  'Build clean URLs with encoded query parameters, merge parameters into existing URLs, sort keys, and parse existing query strings into editable key-value lines.';
+const category = 'Developer Tools';
+const slug = 'url-query-builder';
+
+const features = [
+  'Build URLs from a base URL and key-value parameter lines',
+  'Automatically percent-encodes query keys and values',
+  'Parses existing URL query strings back into editable rows',
+  'Supports repeated query keys by using repeated lines',
+  'Sorts parameters for more stable testing and documentation',
+  'Runs locally in your browser with copy-ready output',
+];
+
+const howToSteps = [
+  'Enter a base URL, with or without existing query parameters.',
+  'Add one parameter per line using key=value format.',
+  'Click Build URL to encode and append the query string.',
+  'Use Parse Existing URL to turn a pasted URL into editable parameter lines.',
+  'Copy the final URL when it is ready.',
+];
+
+const useCases = [
+  'Building API request URLs for docs, testing, and debugging',
+  'Preparing non-UTM query strings for product or search pages',
+  'Encoding special characters inside query parameter values',
+  'Normalizing long URLs before sharing them in tickets or examples',
+];
+
+const examples = [
+  {
+    title: 'Build a filtered search URL',
+    input: 'https://example.com/search\nq=json formatter\nsort=recent',
+    output: 'https://example.com/search?q=json+formatter&sort=recent',
+    note: 'The builder encodes spaces and special characters so query values remain parseable.',
+  },
+];
+
+const tips = [
+  'Use UTM Builder for campaign tracking URLs. Use this tool for general query parameters.',
+  'Repeated keys are valid in URLs and are useful for filters such as tag=js and tag=css.',
+  'Avoid placing secrets, tokens, or private data in URLs because URLs can appear in logs and browser history.',
+];
+
+const faq = [
+  {
+    question: 'What is a URL query parameter?',
+    answer:
+      'A query parameter is a key-value pair after the question mark in a URL, such as ?q=search&page=2. Parameters are commonly used for filters, search terms, tracking, and API requests.',
+  },
+  {
+    question: 'Does this tool encode special characters?',
+    answer:
+      'Yes. It uses the browser URLSearchParams API to encode keys and values so spaces, ampersands, equals signs, and other special characters are handled safely.',
+  },
+  {
+    question: 'Can I use duplicate parameter names?',
+    answer: 'Yes. Add the same key on multiple lines to create repeated query parameters.',
+  },
+  {
+    question: 'Is this the same as a UTM builder?',
+    answer:
+      'No. A UTM builder is specialized for analytics campaign parameters. This query builder is for general URL parameters.',
+  },
+];
+---
+
+<ToolLayout {title} {description} {slug} {category} {features} {howToSteps} {useCases} {examples} {tips} {faq}>
+  <div class="space-y-5">
+    <label class="block">
+      <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Base URL</span>
+      <input
+        id="urlqb-base"
+        type="url"
+        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 font-mono text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        placeholder="https://example.com/search"
+      />
+    </label>
+
+    <div class="grid gap-4 lg:grid-cols-[1fr_220px]">
+      <label class="block">
+        <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Parameters, one per line</span>
+        <textarea
+          id="urlqb-params"
+          class="min-h-[230px] w-full resize-y rounded-lg border border-gray-300 bg-white p-4 font-mono text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          spellcheck="false"
+          placeholder="q=json formatter
+sort=recent
+tag=developer"></textarea>
+      </label>
+
+      <div class="space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-700 dark:bg-slate-900">
+        <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
+          <input id="urlqb-sort" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+          Sort keys
+        </label>
+        <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
+          <input
+            id="urlqb-keep-existing"
+            type="checkbox"
+            checked
+            class="h-4 w-4 rounded border-gray-300 text-blue-600"
+          />
+          Keep existing query
+        </label>
+        <p id="urlqb-status" class="text-sm text-gray-600 dark:text-gray-400">Ready.</p>
+      </div>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="urlqb-build" variant="primary" icon="tabler:link-plus">Build URL</ToolActionButton>
+      <ToolActionButton id="urlqb-parse" icon="tabler:route">Parse existing URL</ToolActionButton>
+      <ToolActionButton id="urlqb-sample" icon="tabler:file-code">Load sample</ToolActionButton>
+      <ToolActionButton id="urlqb-copy" icon="tabler:copy">Copy URL</ToolActionButton>
+      <ToolActionButton id="urlqb-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+
+    <label class="block">
+      <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Final URL</span>
+      <textarea
+        id="urlqb-output"
+        class="min-h-[130px] w-full resize-y rounded-lg border border-gray-300 bg-gray-50 p-4 font-mono text-sm text-gray-900 dark:border-slate-600 dark:bg-slate-950 dark:text-gray-100"
+        readonly></textarea>
+    </label>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  (() => {
+    const base = document.getElementById('urlqb-base');
+    const paramsInput = document.getElementById('urlqb-params');
+    const output = document.getElementById('urlqb-output');
+    const status = document.getElementById('urlqb-status');
+    const sortKeys = document.getElementById('urlqb-sort');
+    const keepExisting = document.getElementById('urlqb-keep-existing');
+
+    function parseParamLines() {
+      return paramsInput.value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const index = line.indexOf('=');
+          if (index === -1) return [line, ''];
+          return [line.slice(0, index).trim(), line.slice(index + 1).trim()];
+        })
+        .filter(([key]) => key);
+    }
+
+    function createUrl(value) {
+      try {
+        return new URL(value);
+      } catch {
+        return new URL(value, 'https://example.com');
+      }
+    }
+
+    function buildUrl() {
+      if (!base.value.trim()) {
+        status.textContent = 'Enter a base URL first.';
+        return;
+      }
+
+      const url = createUrl(base.value.trim());
+      const rows = parseParamLines();
+      const search = keepExisting.checked ? new URLSearchParams(url.search) : new URLSearchParams();
+      const orderedRows = sortKeys.checked ? [...rows].sort((a, b) => a[0].localeCompare(b[0])) : rows;
+      orderedRows.forEach(([key, value]) => search.append(key, value));
+      url.search = search.toString();
+      output.value = url.href;
+      status.textContent = `${orderedRows.length} parameter${orderedRows.length === 1 ? '' : 's'} added.`;
+    }
+
+    function parseExisting() {
+      if (!base.value.trim()) {
+        status.textContent = 'Paste a URL into the Base URL field first.';
+        return;
+      }
+      const url = createUrl(base.value.trim());
+      paramsInput.value = Array.from(url.searchParams.entries())
+        .map(([key, value]) => `${key}=${value}`)
+        .join('\n');
+      url.search = '';
+      base.value = url.href.replace(/\/$/, url.pathname === '/' ? '/' : '');
+      status.textContent = 'Existing query parsed into editable lines.';
+    }
+
+    document.getElementById('urlqb-build').addEventListener('click', buildUrl);
+    document.getElementById('urlqb-parse').addEventListener('click', parseExisting);
+    document.getElementById('urlqb-sample').addEventListener('click', () => {
+      base.value = 'https://quicktoolflow.com/tools/';
+      paramsInput.value = 'category=developer tools\nsort=popular\ntag=json\ntag=url';
+      buildUrl();
+    });
+    document.getElementById('urlqb-copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(output.value);
+      status.textContent = 'Final URL copied.';
+    });
+    document.getElementById('urlqb-clear').addEventListener('click', () => {
+      base.value = '';
+      paramsInput.value = '';
+      output.value = '';
+      status.textContent = 'Cleared.';
+    });
+  })();
+</script>

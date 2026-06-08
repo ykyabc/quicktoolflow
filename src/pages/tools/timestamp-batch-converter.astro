@@ -1,0 +1,251 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+
+const title = 'Timestamp Batch Converter';
+const description =
+  'Convert multiple Unix timestamps, millisecond timestamps, and date strings at once into UTC, local time, ISO strings, seconds, and milliseconds.';
+const category = 'Converters';
+const slug = 'timestamp-batch-converter';
+
+const features = [
+  'Converts many timestamp values in one pass',
+  'Auto-detects seconds, milliseconds, and readable date strings',
+  'Outputs UTC, local time, ISO, Unix seconds, and milliseconds',
+  'Exports copy-ready CSV for spreadsheets and debugging notes',
+  'Handles blank lines and labels safely',
+  'Runs locally in your browser',
+];
+
+const howToSteps = [
+  'Paste one timestamp or date string per line.',
+  'Choose auto-detect, seconds, milliseconds, or date string mode.',
+  'Click Convert Batch to produce a table and CSV output.',
+  'Copy the CSV when you need to move the results into a spreadsheet or ticket.',
+];
+
+const useCases = [
+  'Reviewing many API timestamps from logs or database exports',
+  'Checking seconds vs milliseconds mistakes in bulk',
+  'Preparing timestamp examples for documentation',
+  'Comparing UTC and local display values before debugging time-zone issues',
+];
+
+const examples = [
+  {
+    title: 'Convert mixed timestamp values',
+    input: '1700000000\n1700000000000\n2026-06-08T12:00:00Z',
+    output: 'Each line is converted into UTC, local, ISO, seconds, and milliseconds columns.',
+    note: 'Auto mode detects common 10-digit seconds and 13-digit millisecond timestamps.',
+  },
+];
+
+const tips = [
+  'A 10-digit Unix timestamp is usually seconds. A 13-digit value is usually milliseconds.',
+  'Unix timestamps represent a UTC moment. Local time only changes how that moment is displayed.',
+  'Use the single Timestamp Converter when you need live current time or one detailed conversion.',
+];
+
+const faq = [
+  {
+    question: 'Can this convert both seconds and milliseconds?',
+    answer:
+      'Yes. Auto mode treats large numeric values as milliseconds and smaller Unix-style values as seconds. You can also force seconds or milliseconds manually.',
+  },
+  {
+    question: 'Can I paste ISO date strings?',
+    answer:
+      'Yes. Auto mode and Date string mode can parse values such as 2026-06-08T12:00:00Z when the browser Date parser supports the format.',
+  },
+  {
+    question: 'Does this handle time zones?',
+    answer:
+      'It displays each converted moment in UTC and in your browser local time. Date strings with explicit offsets are interpreted according to that offset.',
+  },
+  {
+    question: 'Is my timestamp data uploaded?',
+    answer: 'No. Batch conversion runs locally in your browser.',
+  },
+];
+---
+
+<ToolLayout {title} {description} {slug} {category} {features} {howToSteps} {useCases} {examples} {tips} {faq}>
+  <div class="space-y-5">
+    <div class="grid gap-4 lg:grid-cols-[1fr_220px]">
+      <label class="block">
+        <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Input values</span>
+        <textarea
+          id="tsbatch-input"
+          class="min-h-[260px] w-full resize-y rounded-lg border border-gray-300 bg-white p-4 font-mono text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+          spellcheck="false"
+          placeholder="1700000000
+1700000000000
+2026-06-08T12:00:00Z"></textarea>
+      </label>
+
+      <div class="space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-700 dark:bg-slate-900">
+        <label class="block">
+          <span class="mb-1 block text-sm font-semibold text-gray-900 dark:text-white">Input mode</span>
+          <select
+            id="tsbatch-mode"
+            class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
+          >
+            <option value="auto">Auto detect</option>
+            <option value="seconds">Unix seconds</option>
+            <option value="milliseconds">Unix milliseconds</option>
+            <option value="date">Date strings</option>
+          </select>
+        </label>
+        <p id="tsbatch-summary" class="text-sm text-gray-600 dark:text-gray-400">No rows converted yet.</p>
+      </div>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="tsbatch-convert" variant="primary" icon="tabler:calendar-time">
+        Convert Batch
+      </ToolActionButton>
+      <ToolActionButton id="tsbatch-sample" icon="tabler:file-code">Load sample</ToolActionButton>
+      <ToolActionButton id="tsbatch-copy" icon="tabler:copy">Copy CSV</ToolActionButton>
+      <ToolActionButton id="tsbatch-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+
+    <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-slate-700">
+      <table class="min-w-full text-left text-sm">
+        <thead class="bg-gray-50 text-xs uppercase tracking-wide text-gray-600 dark:bg-slate-900 dark:text-gray-300">
+          <tr>
+            <th class="px-3 py-2">Input</th>
+            <th class="px-3 py-2">Detected</th>
+            <th class="px-3 py-2">UTC</th>
+            <th class="px-3 py-2">Local</th>
+            <th class="px-3 py-2">Seconds</th>
+            <th class="px-3 py-2">Milliseconds</th>
+          </tr>
+        </thead>
+        <tbody id="tsbatch-table" class="divide-y divide-gray-200 dark:divide-slate-700"></tbody>
+      </table>
+    </div>
+
+    <textarea
+      id="tsbatch-csv"
+      class="min-h-[150px] w-full resize-y rounded-lg border border-gray-300 bg-gray-50 p-4 font-mono text-xs text-gray-900 dark:border-slate-600 dark:bg-slate-950 dark:text-gray-100"
+      readonly
+      placeholder="CSV output will appear here."></textarea>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  (() => {
+    const input = document.getElementById('tsbatch-input');
+    const mode = document.getElementById('tsbatch-mode');
+    const table = document.getElementById('tsbatch-table');
+    const csv = document.getElementById('tsbatch-csv');
+    const summary = document.getElementById('tsbatch-summary');
+
+    const sample = `1700000000
+1700000000000
+2026-06-08T12:00:00Z
+June 8, 2026 09:30:00`;
+
+    function escapeHtml(value) {
+      return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function csvCell(value) {
+      return `"${String(value).replace(/"/g, '""')}"`;
+    }
+
+    function parseLine(line) {
+      const value = line.trim();
+      const selected = mode.value;
+      let date;
+      let detected;
+
+      if (selected === 'seconds') {
+        date = new Date(Number(value) * 1000);
+        detected = 'seconds';
+      } else if (selected === 'milliseconds') {
+        date = new Date(Number(value));
+        detected = 'milliseconds';
+      } else if (selected === 'date') {
+        date = new Date(value);
+        detected = 'date string';
+      } else if (/^-?\d+$/.test(value)) {
+        const numeric = Number(value);
+        detected = Math.abs(numeric) >= 100000000000 ? 'milliseconds' : 'seconds';
+        date = new Date(detected === 'milliseconds' ? numeric : numeric * 1000);
+      } else {
+        date = new Date(value);
+        detected = 'date string';
+      }
+
+      if (!value || Number.isNaN(date.getTime())) {
+        return {
+          input: value,
+          detected: 'invalid',
+          utc: 'Invalid date',
+          local: '-',
+          iso: '-',
+          seconds: '-',
+          millis: '-',
+        };
+      }
+
+      return {
+        input: value,
+        detected,
+        utc: date.toUTCString(),
+        local: date.toLocaleString(),
+        iso: date.toISOString(),
+        seconds: Math.floor(date.getTime() / 1000),
+        millis: date.getTime(),
+      };
+    }
+
+    function convertBatch() {
+      const rows = input.value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map(parseLine);
+
+      table.innerHTML = rows
+        .map(
+          (row) => `<tr class="bg-white dark:bg-slate-800">
+            <td class="px-3 py-2 font-mono text-xs text-gray-900 dark:text-gray-100">${escapeHtml(row.input)}</td>
+            <td class="px-3 py-2 text-gray-600 dark:text-gray-300">${escapeHtml(row.detected)}</td>
+            <td class="px-3 py-2 font-mono text-xs text-gray-600 dark:text-gray-300">${escapeHtml(row.utc)}</td>
+            <td class="px-3 py-2 font-mono text-xs text-gray-600 dark:text-gray-300">${escapeHtml(row.local)}</td>
+            <td class="px-3 py-2 font-mono text-xs text-gray-600 dark:text-gray-300">${escapeHtml(row.seconds)}</td>
+            <td class="px-3 py-2 font-mono text-xs text-gray-600 dark:text-gray-300">${escapeHtml(row.millis)}</td>
+          </tr>`
+        )
+        .join('');
+
+      const csvRows = [
+        ['input', 'detected', 'utc', 'local', 'iso', 'seconds', 'milliseconds'],
+        ...rows.map((row) => [row.input, row.detected, row.utc, row.local, row.iso, row.seconds, row.millis]),
+      ];
+      csv.value = csvRows.map((row) => row.map(csvCell).join(',')).join('\n');
+      const invalid = rows.filter((row) => row.detected === 'invalid').length;
+      summary.textContent = `${rows.length} row${rows.length === 1 ? '' : 's'} converted${invalid ? `, ${invalid} invalid` : ''}.`;
+    }
+
+    document.getElementById('tsbatch-convert').addEventListener('click', convertBatch);
+    document.getElementById('tsbatch-sample').addEventListener('click', () => {
+      input.value = sample;
+      mode.value = 'auto';
+      convertBatch();
+    });
+    document.getElementById('tsbatch-copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(csv.value);
+      summary.textContent = 'CSV copied to clipboard.';
+    });
+    document.getElementById('tsbatch-clear').addEventListener('click', () => {
+      input.value = '';
+      table.innerHTML = '';
+      csv.value = '';
+      summary.textContent = 'No rows converted yet.';
+    });
+  })();
+</script>

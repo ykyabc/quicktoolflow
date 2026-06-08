@@ -96,6 +96,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'json-formatter': [
     {
+      title: 'JSON Schema Validator Guide',
+      href: '/blog/json-schema-validator-guide/',
+      description: 'Validate formatted JSON against expected API and configuration shapes.',
+    },
+    {
       title: 'JSON Formatting Best Practices',
       href: '/blog/json-formatting-best-practices/',
       description: 'Learn how to format, validate, and clean JSON data for APIs, debugging, and development.',
@@ -113,9 +118,26 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'Learn what JSON minification changes, when compact JSON is useful, and what mistakes to avoid.',
     },
     {
+      title: 'JSON Schema Validator Guide',
+      href: '/blog/json-schema-validator-guide/',
+      description: 'Check JSON structure before creating compact output for transport or storage.',
+    },
+    {
       title: 'JSON Formatting Best Practices',
       href: '/blog/json-formatting-best-practices/',
       description: 'Understand when to keep JSON readable and when to produce compact output.',
+    },
+  ],
+  'json-schema-validator': [
+    {
+      title: 'JSON Schema Validator Guide',
+      href: '/blog/json-schema-validator-guide/',
+      description: 'Learn how schema validation checks JSON types, required fields, arrays, enums, and nested objects.',
+    },
+    {
+      title: 'JSON Formatting Best Practices',
+      href: '/blog/json-formatting-best-practices/',
+      description: 'Format and parse JSON before checking whether it matches a schema contract.',
     },
   ],
   'json-path-tester': [
@@ -123,6 +145,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       title: 'JSON Path Tester Guide',
       href: '/blog/json-path-tester-guide/',
       description: 'Learn how to query nested JSON objects, arrays, indexes, and wildcard matches.',
+    },
+    {
+      title: 'JSON Schema Validator Guide',
+      href: '/blog/json-schema-validator-guide/',
+      description: 'Validate payload shape before writing paths against nested response data.',
     },
   ],
   'json-to-csv': [
@@ -251,6 +278,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   base64: [
     {
+      title: 'Base64 Image Converter Guide',
+      href: '/blog/base64-image-converter-guide/',
+      description: 'See how Base64 encoding applies to image data URLs and small embedded assets.',
+    },
+    {
       title: 'Base64 vs URL Encoding',
       href: '/blog/base64-vs-url-encoding-guide/',
       description: 'Compare Base64, Base64Url, and URL encoding in practical web development workflows.',
@@ -266,11 +298,40 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'See a practical example of Base64Url-encoded data inside JSON Web Tokens.',
     },
   ],
+  'base64-image-converter': [
+    {
+      title: 'Base64 Image Converter Guide',
+      href: '/blog/base64-image-converter-guide/',
+      description: 'Learn how Base64 image data URLs work and when embedded images are useful or risky.',
+    },
+    {
+      title: 'Understanding Base64 Encoding',
+      href: '/blog/understanding-base64-encoding-explained/',
+      description: 'Understand the encoding foundation behind Base64 image strings.',
+    },
+  ],
   'timestamp-converter': [
+    {
+      title: 'Timestamp Batch Converter Guide',
+      href: '/blog/timestamp-batch-converter-guide/',
+      description: 'Convert many timestamp values at once when logs or exports contain multiple rows.',
+    },
     {
       title: 'Unix Timestamp Explained',
       href: '/blog/unix-timestamp-explained-guide/',
       description: 'Understand Unix timestamps and how to convert them into human-readable dates.',
+    },
+  ],
+  'timestamp-batch-converter': [
+    {
+      title: 'Timestamp Batch Converter Guide',
+      href: '/blog/timestamp-batch-converter-guide/',
+      description: 'Learn how to convert timestamp lists and detect seconds, milliseconds, and date strings.',
+    },
+    {
+      title: 'Unix Timestamp Explained',
+      href: '/blog/unix-timestamp-explained-guide/',
+      description: 'Understand Unix time before converting many timestamp values at once.',
     },
   ],
   'number-base-converter': [
@@ -444,12 +505,22 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'Learn how UTM parameters work and how to name campaign URLs consistently.',
     },
     {
+      title: 'URL Query Builder Guide',
+      href: '/blog/url-query-builder-guide/',
+      description: 'Understand general query parameter building before working with campaign-specific fields.',
+    },
+    {
       title: 'URL Parser Guide',
       href: '/blog/url-parser-guide/',
       description: 'Inspect campaign query parameters and understand how tagged URLs are structured.',
     },
   ],
   'url-parser': [
+    {
+      title: 'URL Query Builder Guide',
+      href: '/blog/url-query-builder-guide/',
+      description: 'Build clean query strings, then parse the final URL to verify the structure.',
+    },
     {
       title: 'URL Parser Guide',
       href: '/blog/url-parser-guide/',
@@ -459,6 +530,23 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       title: 'UTM Builder Guide',
       href: '/blog/utm-builder-guide/',
       description: 'See how query parameters are used for campaign tracking URLs.',
+    },
+  ],
+  'url-query-builder': [
+    {
+      title: 'URL Query Builder Guide',
+      href: '/blog/url-query-builder-guide/',
+      description: 'Learn how to build encoded query strings, handle repeated keys, and avoid URL mistakes.',
+    },
+    {
+      title: 'URL Parser Guide',
+      href: '/blog/url-parser-guide/',
+      description: 'Inspect the URLs you build by splitting them into protocol, path, query, and hash parts.',
+    },
+    {
+      title: 'UTM Builder Guide',
+      href: '/blog/utm-builder-guide/',
+      description: 'Use a dedicated UTM workflow when query parameters are for campaign tracking.',
     },
   ],
   'robots-txt-generator': [
@@ -482,6 +570,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'html-formatter': [
     {
+      title: 'HTML Minifier Guide',
+      href: '/blog/html-minifier-guide/',
+      description: 'Understand when to compact HTML after formatting and reviewing markup.',
+    },
+    {
       title: 'HTML Formatter Guide',
       href: '/blog/html-formatter-guide/',
       description: 'Learn why indentation matters, when to minify HTML, and how to review markup safely.',
@@ -490,6 +583,30 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       title: 'String Escaping Guide',
       href: '/blog/string-escaping-guide-json-javascript-html-csv/',
       description: 'Understand how HTML escaping differs from JSON, JavaScript, and CSV escaping.',
+    },
+  ],
+  'html-minifier': [
+    {
+      title: 'HTML Minifier Guide',
+      href: '/blog/html-minifier-guide/',
+      description: 'Learn what HTML minification removes and how to compact markup without breaking pages.',
+    },
+    {
+      title: 'HTML Formatter Guide',
+      href: '/blog/html-formatter-guide/',
+      description: 'Format HTML for review before producing compact output.',
+    },
+  ],
+  'css-minifier': [
+    {
+      title: 'CSS Minifier Guide',
+      href: '/blog/css-minifier-guide/',
+      description: 'Learn how CSS minification works and when to preserve comments or use a build pipeline.',
+    },
+    {
+      title: 'CSS Units Guide',
+      href: '/blog/css-units-guide-px-em-rem-vw-vh/',
+      description: 'Review CSS units and values before compacting frontend styles.',
     },
   ],
   'sql-formatter': [

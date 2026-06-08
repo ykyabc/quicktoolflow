@@ -11,12 +11,13 @@ const toolGroups = [
   {
     title: 'Prepare visual values',
     description: 'Convert colors, CSS units, and placeholder dimensions while building responsive layouts.',
-    slugs: ['color-converter', 'css-unit-converter', 'lorem-image-placeholder'],
+    slugs: ['color-converter', 'css-unit-converter', 'css-minifier', 'lorem-image-placeholder'],
   },
   {
     title: 'Shape page markup and content',
-    description: 'Format HTML, generate realistic placeholder text, and clean copy before adding it to a layout.',
-    slugs: ['html-formatter', 'lorem-ipsum', 'whitespace-remover'],
+    description:
+      'Format or minify HTML, generate realistic placeholder text, and clean copy before adding it to a layout.',
+    slugs: ['html-formatter', 'html-minifier', 'lorem-ipsum', 'whitespace-remover'],
   },
   {
     title: 'Preview publishing metadata',
@@ -50,6 +51,16 @@ const guideLinks = [
     title: 'HTML Formatter Guide',
     href: '/blog/html-formatter-guide/',
     description: 'Clean markup snippets before review, handoff, or publishing.',
+  },
+  {
+    title: 'HTML Minifier Guide',
+    href: '/blog/html-minifier-guide/',
+    description: 'Compact HTML snippets after review while avoiding whitespace-sensitive mistakes.',
+  },
+  {
+    title: 'CSS Minifier Guide',
+    href: '/blog/css-minifier-guide/',
+    description: 'Understand CSS minification, license comments, and when to rely on build tools.',
   },
   {
     title: 'Open Graph Preview Guide',

@@ -11,7 +11,14 @@ const toolGroups = [
   {
     title: 'Format and validate data',
     description: 'Clean up raw payloads, configuration files, and copied snippets before debugging or sharing them.',
-    slugs: ['json-formatter', 'json-minifier', 'yaml-formatter', 'xml-formatter', 'csv-formatter'],
+    slugs: [
+      'json-formatter',
+      'json-schema-validator',
+      'json-minifier',
+      'yaml-formatter',
+      'xml-formatter',
+      'csv-formatter',
+    ],
   },
   {
     title: 'Convert between formats',
@@ -40,6 +47,11 @@ const guideLinks = [
     title: 'JSON Minifier Guide',
     href: '/blog/json-minifier-guide/',
     description: 'Understand when compact JSON helps and what minification does not change.',
+  },
+  {
+    title: 'JSON Schema Validator Guide',
+    href: '/blog/json-schema-validator-guide/',
+    description: 'Validate JSON shape, required fields, arrays, enums, and nested object contracts.',
   },
   {
     title: 'JSON Path Tester Guide',

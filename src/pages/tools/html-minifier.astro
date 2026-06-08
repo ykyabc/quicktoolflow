@@ -1,0 +1,195 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import ToolActionBar from '~/components/ui/ToolActionBar.astro';
+import ToolActionButton from '~/components/ui/ToolActionButton.astro';
+
+const title = 'HTML Minifier';
+const description =
+  'Minify HTML snippets by removing comments, collapsing whitespace, and compacting markup while preserving sensitive blocks such as script, style, textarea, and pre.';
+const category = 'Developer Tools';
+const slug = 'html-minifier';
+
+const features = [
+  'Remove HTML comments with an option to keep conditional comments',
+  'Collapse repeated whitespace in regular markup',
+  'Optionally remove spaces between tags for compact output',
+  'Preserves script, style, textarea, and pre content while minifying surrounding markup',
+  'Shows input size, output size, and percentage saved',
+  'Runs locally in your browser with one-click copy',
+];
+
+const howToSteps = [
+  'Paste an HTML snippet or full HTML document into the input area.',
+  'Choose whether to remove comments, collapse whitespace, and remove spaces between tags.',
+  'Click Minify HTML to generate compact markup.',
+  'Review the result and copy it when ready.',
+];
+
+const useCases = [
+  'Preparing small HTML embeds, snippets, and templates',
+  'Reducing copied markup before sharing it in tickets or docs',
+  'Cleaning static HTML fragments after code review',
+  'Comparing formatted and compact HTML during frontend debugging',
+];
+
+const examples = [
+  {
+    title: 'Compact a small card component',
+    input: '<article class="card">\\n  <h2>Hello</h2>\\n  <p>Example content.</p>\\n</article>',
+    output: '<article class="card"><h2>Hello</h2><p>Example content.</p></article>',
+    note: 'Whitespace between tags can be removed while text content remains readable.',
+  },
+];
+
+const tips = [
+  'Always test minified HTML in the page or template system that will render it.',
+  'Be careful with email templates, CMS placeholders, and framework-specific whitespace behavior.',
+  'Use HTML Formatter when you need readable markup for review, then minify only after edits are complete.',
+];
+
+const faq = [
+  {
+    question: 'What does the HTML Minifier remove?',
+    answer:
+      'It can remove comments, collapse repeated whitespace, trim the document, and remove spaces between tags. It preserves script, style, textarea, and pre blocks to avoid changing code or preformatted content.',
+  },
+  {
+    question: 'Can minifying HTML change how a page looks?',
+    answer:
+      'It can in whitespace-sensitive layouts or templates. Review the output and test the rendered page, especially for inline text, email HTML, and framework templates.',
+  },
+  {
+    question: 'Does this tool upload my HTML?',
+    answer: 'No. HTML minification runs locally in your browser, so pasted markup is not sent to a server.',
+  },
+  {
+    question: 'Should I use this instead of a build tool minifier?',
+    answer:
+      'Use this for quick snippets and manual debugging. For production websites, a build pipeline can provide more complete optimization, source handling, and repeatability.',
+  },
+];
+---
+
+<ToolLayout {title} {description} {slug} {category} {features} {howToSteps} {useCases} {examples} {tips} {faq}>
+  <div class="space-y-5">
+    <label class="block">
+      <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Input HTML</span>
+      <textarea
+        id="html-minifier-input"
+        class="min-h-[260px] w-full resize-y rounded-lg border border-gray-300 bg-white p-4 font-mono text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100"
+        spellcheck="false"
+        placeholder="<section>...</section>"></textarea>
+    </label>
+
+    <div
+      class="grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm dark:border-slate-700 dark:bg-slate-900 sm:grid-cols-3"
+    >
+      <label class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+        <input
+          id="html-remove-comments"
+          type="checkbox"
+          checked
+          class="h-4 w-4 rounded border-gray-300 text-blue-600"
+        />
+        Remove comments
+      </label>
+      <label class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+        <input id="html-collapse-space" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        Collapse whitespace
+      </label>
+      <label class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+        <input id="html-between-tags" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-blue-600" />
+        Remove spaces between tags
+      </label>
+    </div>
+
+    <ToolActionBar>
+      <ToolActionButton id="html-minify" variant="primary" icon="tabler:arrows-minimize">Minify HTML</ToolActionButton>
+      <ToolActionButton id="html-sample" icon="tabler:wand">Load sample</ToolActionButton>
+      <ToolActionButton id="html-copy" icon="tabler:copy">Copy output</ToolActionButton>
+      <ToolActionButton id="html-clear" variant="danger" icon="tabler:trash">Clear</ToolActionButton>
+    </ToolActionBar>
+
+    <label class="block">
+      <span class="mb-2 block text-sm font-semibold text-gray-900 dark:text-white">Minified output</span>
+      <textarea
+        id="html-minifier-output"
+        class="min-h-[220px] w-full resize-y rounded-lg border border-gray-300 bg-gray-50 p-4 font-mono text-sm text-gray-900 shadow-sm dark:border-slate-600 dark:bg-slate-950 dark:text-gray-100"
+        spellcheck="false"
+        readonly></textarea>
+    </label>
+
+    <p id="html-minifier-stats" class="text-sm text-gray-600 dark:text-gray-400">Add HTML to see size savings.</p>
+  </div>
+</ToolLayout>
+
+<script is:inline>
+  (() => {
+    const input = document.getElementById('html-minifier-input');
+    const output = document.getElementById('html-minifier-output');
+    const stats = document.getElementById('html-minifier-stats');
+    const removeComments = document.getElementById('html-remove-comments');
+    const collapseSpace = document.getElementById('html-collapse-space');
+    const betweenTags = document.getElementById('html-between-tags');
+
+    const sample = `<section class="hero">
+  <!-- Public-facing heading -->
+  <h1>Quick HTML snippet</h1>
+  <p>
+    This text keeps normal spacing while extra markup whitespace is removed.
+  </p>
+  <pre>Keep    preformatted    spacing.</pre>
+</section>`;
+
+    function preserveBlocks(html) {
+      const blocks = [];
+      const preserved = html.replace(/<(script|style|textarea|pre)\b[\s\S]*?<\/\1>/gi, (match) => {
+        const token = `___HTML_BLOCK_${blocks.length}___`;
+        blocks.push(match);
+        return token;
+      });
+      return { preserved, blocks };
+    }
+
+    function restoreBlocks(html, blocks) {
+      return blocks.reduce((result, block, index) => result.replace(`___HTML_BLOCK_${index}___`, block), html);
+    }
+
+    function minifyHtml() {
+      const source = input.value;
+      const { preserved, blocks } = preserveBlocks(source);
+      let result = preserved;
+
+      if (removeComments.checked) {
+        result = result.replace(/<!--(?!\[if\b)[\s\S]*?-->/gi, '');
+      }
+      if (collapseSpace.checked) {
+        result = result.replace(/\s+/g, ' ');
+      }
+      if (betweenTags.checked) {
+        result = result.replace(/>\s+</g, '><');
+      }
+
+      result = restoreBlocks(result.trim(), blocks);
+      output.value = result;
+
+      const saved = source.length - result.length;
+      const percent = source.length ? Math.max(0, (saved / source.length) * 100).toFixed(1) : '0.0';
+      stats.textContent = `${source.length.toLocaleString()} characters to ${result.length.toLocaleString()} characters. Saved ${Math.max(0, saved).toLocaleString()} characters (${percent}%).`;
+    }
+
+    document.getElementById('html-minify').addEventListener('click', minifyHtml);
+    document.getElementById('html-sample').addEventListener('click', () => {
+      input.value = sample;
+      minifyHtml();
+    });
+    document.getElementById('html-copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(output.value);
+    });
+    document.getElementById('html-clear').addEventListener('click', () => {
+      input.value = '';
+      output.value = '';
+      stats.textContent = 'Add HTML to see size savings.';
+    });
+  })();
+</script>

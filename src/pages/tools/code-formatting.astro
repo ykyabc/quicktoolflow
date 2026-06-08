@@ -15,41 +15,57 @@ const toolGroups = [
   },
   {
     title: 'Minify, query, and convert',
-    description: 'Shrink payloads, test JSON paths, and move data between common interchange formats.',
-    slugs: ['json-minifier', 'json-path-tester', 'json-to-csv', 'csv-to-json', 'json-to-yaml'],
+    description:
+      'Validate schemas, shrink payloads, test JSON paths, and move data between common interchange formats.',
+    slugs: ['json-schema-validator', 'json-minifier', 'json-path-tester', 'json-to-csv', 'csv-to-json', 'json-to-yaml'],
   },
   {
     title: 'Review code-like content',
-    description: 'Make HTML snippets, SQL queries, and Markdown drafts easier to read, review, and share.',
-    slugs: ['html-formatter', 'sql-formatter', 'markdown-preview'],
+    description: 'Make HTML, CSS, SQL queries, and Markdown drafts easier to read, compact, review, and share.',
+    slugs: ['html-formatter', 'html-minifier', 'css-minifier', 'sql-formatter', 'markdown-preview'],
   },
 ];
 
 const guideLinks = [
   {
     title: 'JSON Formatter Guide',
-    href: '/blog/json-formatter-guide/',
+    href: '/blog/json-formatting-best-practices/',
     description: 'Learn how formatting, validation, and readable indentation improve API debugging.',
   },
   {
     title: 'CSV Formatter Guide',
-    href: '/blog/csv-formatter-guide/',
+    href: '/blog/csv-formatting-guide/',
     description: 'Clean spreadsheet exports and delimiter-sensitive data before importing or sharing.',
   },
   {
     title: 'YAML Formatter Guide',
-    href: '/blog/yaml-formatter-guide/',
+    href: '/blog/yaml-formatting-guide/',
     description: 'Avoid indentation problems in config files, CI pipelines, and static site settings.',
   },
   {
     title: 'XML Formatter Guide',
-    href: '/blog/xml-formatter-guide/',
+    href: '/blog/xml-formatting-guide/',
     description: 'Format feeds, sitemaps, API payloads, and nested XML documents for easier inspection.',
   },
   {
     title: 'HTML Formatter Guide',
     href: '/blog/html-formatter-guide/',
     description: 'Clean markup snippets before code review, publishing, or handoff.',
+  },
+  {
+    title: 'HTML Minifier Guide',
+    href: '/blog/html-minifier-guide/',
+    description: 'Compact markup safely after review and understand whitespace-sensitive cases.',
+  },
+  {
+    title: 'CSS Minifier Guide',
+    href: '/blog/css-minifier-guide/',
+    description: 'Minify CSS snippets while preserving values, strings, and required license comments.',
+  },
+  {
+    title: 'JSON Schema Validator Guide',
+    href: '/blog/json-schema-validator-guide/',
+    description: 'Check JSON data against common schema rules before sharing or integrating it.',
   },
   {
     title: 'SQL Formatter Guide',

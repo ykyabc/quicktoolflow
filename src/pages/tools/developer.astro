@@ -12,6 +12,7 @@ const workflows = [
       { text: 'Structured Data Hub', href: '/tools/structured-data/' },
       { text: 'Code Formatting Hub', href: '/tools/code-formatting/' },
       { text: 'JSON Formatter', href: '/tools/json-formatter/' },
+      { text: 'JSON Schema Validator', href: '/tools/json-schema-validator/' },
       { text: 'JSON Minifier', href: '/tools/json-minifier/' },
       { text: 'JSON Path Tester', href: '/tools/json-path-tester/' },
       { text: 'JSON to CSV', href: '/tools/json-to-csv/' },
@@ -21,6 +22,8 @@ const workflows = [
       { text: 'YAML Formatter', href: '/tools/yaml-formatter/' },
       { text: 'XML Formatter', href: '/tools/xml-formatter/' },
       { text: 'HTML Formatter', href: '/tools/html-formatter/' },
+      { text: 'HTML Minifier', href: '/tools/html-minifier/' },
+      { text: 'CSS Minifier', href: '/tools/css-minifier/' },
       { text: 'SQL Formatter', href: '/tools/sql-formatter/' },
     ],
   },
@@ -30,6 +33,7 @@ const workflows = [
     links: [
       { text: 'Security & Encoding Hub', href: '/tools/security-encoding/' },
       { text: 'Base64 Encoder', href: '/tools/base64/' },
+      { text: 'Base64 Image Converter', href: '/tools/base64-image-converter/' },
       { text: 'JWT Decoder', href: '/tools/jwt-decoder/' },
       { text: 'Hash Generator', href: '/tools/hash-generator/' },
     ],
@@ -39,6 +43,8 @@ const workflows = [
     description: 'Test regex patterns, preview Markdown, and escape strings before using them in code.',
     links: [
       { text: 'Regex Tester', href: '/tools/regex-tester/' },
+      { text: 'URL Query Builder', href: '/tools/url-query-builder/' },
+      { text: 'URL Parser', href: '/tools/url-parser/' },
       { text: 'Markdown Preview', href: '/tools/markdown-preview/' },
       { text: 'HTML Formatter', href: '/tools/html-formatter/' },
       { text: 'SQL Formatter', href: '/tools/sql-formatter/' },
@@ -229,7 +235,8 @@ const faqSchema = {
       <h2>What can you do with these developer tools?</h2>
       <p>
         You can format JSON, decode JWT tokens, test regular expressions, convert data formats, encode URLs, generate
-        hashes, preview Markdown, and prepare content for APIs, websites, scripts, and documentation.
+        hashes, preview Markdown, validate JSON schemas, minify HTML and CSS, build URL query strings, and prepare
+        content for APIs, websites, scripts, and documentation.
       </p>
 
       <h2>Who are these tools for?</h2>

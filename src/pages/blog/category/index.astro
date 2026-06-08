@@ -18,6 +18,39 @@ const categories = Object.entries(categoryCounts).sort(
   ([, a], [, b]) => b.count - a.count || a.title.localeCompare(b.title)
 );
 
+const toolCollectionLinks = [
+  {
+    title: 'Code Formatting Tools',
+    href: '/tools/code-formatting/',
+    description: 'Format JSON, CSV, YAML, XML, HTML, SQL, and Markdown before reading the related guides.',
+  },
+  {
+    title: 'Security & Encoding Tools',
+    href: '/tools/security-encoding/',
+    description: 'Decode, hash, escape, and generate security-related values while reading security articles.',
+  },
+  {
+    title: 'Text Tools',
+    href: '/tools/text/',
+    description: 'Count, compare, clean, and transform text for writing, editing, and publishing workflows.',
+  },
+  {
+    title: 'Web Publishing Tools',
+    href: '/tools/web-publishing/',
+    description: 'Prepare metadata, snippets, robots.txt, UTM links, QR codes, and publishing assets.',
+  },
+  {
+    title: 'Generators',
+    href: '/tools/generators/',
+    description: 'Generate passwords, UUIDs, QR codes, random numbers, and placeholder content.',
+  },
+  {
+    title: 'Converters',
+    href: '/tools/converters/',
+    description: 'Convert timestamps, number bases, colors, CSS units, JSON, CSV, and YAML.',
+  },
+];
+
 const metadata = {
   title: 'Blog Categories',
   description:
@@ -60,5 +93,36 @@ const metadata = {
         ))
       }
     </div>
+
+    <section class="mt-14 border-t border-gray-200 pt-10 dark:border-slate-700">
+      <div class="mb-6 max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Tool collections</p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Pair articles with the right tools</h2>
+        <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-400">
+          Many guides explain a workflow that you can try directly in QuickToolFlow. Use these collections to move from
+          reading into formatting, converting, generating, or publishing.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          toolCollectionLinks.map((collection) => (
+            <a
+              href={collection.href}
+              class="group rounded-lg border border-gray-200 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-500"
+            >
+              <h3 class="text-base font-bold text-gray-900 transition-colors group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-300">
+                {collection.title}
+              </h3>
+              <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{collection.description}</p>
+              <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 dark:text-blue-300">
+                Open tools
+                <astro-icon name="tabler:arrow-right" class="h-4 w-4 transition group-hover:translate-x-0.5" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
   </section>
 </Layout>
