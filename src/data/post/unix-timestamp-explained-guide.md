@@ -1,5 +1,5 @@
 ---
-title: 'Unix Timestamp Explained: A Complete Guide with Conversion Examples'
+title: 'Unix Timestamp Explained: Epoch Time and Conversion Examples'
 excerpt: 'Learn what Unix timestamps are, how epoch time works, and how to convert timestamps across common programming languages.'
 publishDate: 2026-05-26
 category: 'Developer Tools'
@@ -59,6 +59,14 @@ Milliseconds: 1716763574000
 
 If a timestamp has 13 digits, it is probably in milliseconds. If it has 10 digits, it is probably in seconds.
 
+## UTC, Local Time, and Display
+
+A Unix timestamp represents a moment in UTC. The same timestamp can display as different calendar dates depending on timezone.
+
+For example, a timestamp close to midnight UTC may appear as the previous or next day for users in other regions. This is not a conversion bug. It is the difference between storing an instant and displaying that instant locally.
+
+For APIs and databases, store timestamps in UTC. For user interfaces, convert to the user's timezone at the edge where the value is displayed.
+
 ## JavaScript Conversion
 
 ```javascript
@@ -100,12 +108,29 @@ echo strtotime('2024-05-26 22:06:14');
 
 The 32-bit limit falls on January 19, 2038. Modern systems generally use 64-bit values, but older systems can still be affected by the Year 2038 problem.
 
+## Timestamp Fields in APIs
+
+API timestamp fields often use names such as:
+
+- `created_at`
+- `updated_at`
+- `expires_at`
+- `iat`
+- `exp`
+- `nbf`
+
+JWT tokens commonly use `iat`, `exp`, and `nbf` as Unix timestamps in seconds. If a token appears expired too early or too late, check whether the value was treated as seconds or milliseconds.
+
+Use the [JWT Decoder](/tools/jwt-decoder/) to inspect token claims and the [Timestamp Converter](/tools/timestamp-converter/) to convert the values.
+
 ## Practical Tips
 
 1. Store timestamps in UTC.
 2. Convert to local time only at the display layer.
 3. Document whether your API uses seconds or milliseconds.
 4. Validate timestamps before converting user input.
+5. Be careful with date-only values, which may not represent a precise moment.
+6. Include timezone information when showing readable dates in logs or reports.
 
 ## Convert Timestamps Instantly
 

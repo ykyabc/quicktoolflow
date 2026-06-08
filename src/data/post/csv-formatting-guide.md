@@ -125,6 +125,33 @@ Then the JSON output becomes:
 ]
 ```
 
+## CSV Injection Risks
+
+CSV files opened in spreadsheet software can interpret cells that start with characters such as `=`, `+`, `-`, or `@` as formulas. This can create a security risk when exporting user-provided content.
+
+For example:
+
+```csv
+name,note
+Alice,=IMPORTXML("https://example.com","//title")
+```
+
+If you export untrusted data to CSV, consider escaping or prefixing formula-like values according to your spreadsheet security requirements. Formatting helps with structure, but it does not automatically make untrusted spreadsheet data safe.
+
+## Headers and Data Types
+
+CSV does not have built-in types. Everything is text until another system interprets it. A value like `00123` may be treated as a number by a spreadsheet and lose leading zeros.
+
+Be careful with:
+
+- ZIP codes and postal codes
+- Phone numbers
+- Large numeric IDs
+- Dates with ambiguous formats
+- Boolean-like values such as `true`, `false`, `yes`, and `no`
+
+When converting CSV to JSON, decide whether values should remain strings or become numbers and booleans.
+
 ## Related QuickToolFlow Tools
 
 - [CSV Formatter](/tools/csv-formatter/) for normalizing delimited data.

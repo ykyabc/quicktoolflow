@@ -60,6 +60,21 @@ utm_campaign=june_product_update
 
 Pick a naming convention before launching a campaign. Lowercase words with underscores are usually easier to filter and compare.
 
+## Build a Small Naming Taxonomy
+
+A simple taxonomy prevents messy analytics reports. For example:
+
+```text
+utm_source: newsletter, linkedin, google, partner_name
+utm_medium: email, social, cpc, referral, qr
+utm_campaign: product_launch, webinar_june, black_friday_2026
+utm_content: hero_cta, footer_link, image_ad, text_link
+```
+
+Keep `source` focused on the traffic origin and `medium` focused on the channel type. If both fields describe the same thing, reports become harder to compare.
+
+For recurring campaigns, document the naming pattern before the first link is shared.
+
 ## Do Not Use UTMs on Internal Links
 
 UTM parameters are for inbound campaign attribution. Do not add them to links inside your own site navigation.
@@ -71,6 +86,20 @@ https://example.com/pricing?utm_source=homepage&utm_medium=internal
 ```
 
 Internal UTMs can overwrite the original acquisition source and make analytics reports less accurate.
+
+## UTM Links for QR Codes and Offline Campaigns
+
+UTM parameters are also useful for offline materials. If a QR code appears on a flyer, poster, event badge, or product insert, use a medium such as `qr` and a campaign name that describes the offline context.
+
+Example:
+
+```text
+utm_source=event_booth
+utm_medium=qr
+utm_campaign=summer_demo
+```
+
+After building the URL, use a [QR Code Generator](/tools/qr-code-generator/) and test the scan on multiple devices before printing.
 
 ## Practical UTM Checklist
 

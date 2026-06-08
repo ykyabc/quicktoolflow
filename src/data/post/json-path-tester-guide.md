@@ -105,6 +105,26 @@ The result is:
 
 Wildcards are useful when checking API response arrays, product lists, event logs, or search results.
 
+## Filters and Optional Data
+
+Some JSON Path implementations support filters, such as selecting items where a field has a certain value. Syntax support varies, so always test in the same tool or library you plan to use.
+
+Example idea:
+
+```text
+Find users where active is true
+```
+
+When filtering API responses, also test edge cases:
+
+- Empty arrays
+- Missing fields
+- `null` values
+- Mixed item shapes
+- Numbers represented as strings
+
+These cases are common in real APIs and can change whether a path returns one value, many values, or no values.
+
 ## Practical API Debugging Workflow
 
 When debugging an API response, follow this sequence:
@@ -134,6 +154,18 @@ If a field is absent, a path tester should return no match for that item.
 ## JSON Path vs JSON Pointer
 
 JSON Path and JSON Pointer are different. JSON Pointer uses slash-based paths such as `/users/0/name`. JSON Path commonly uses `$`, dots, brackets, indexes, and wildcards. JSON Path is often more convenient for querying multiple values.
+
+## JSON Path in Testing and Documentation
+
+JSON paths are useful in automated tests because they describe exactly which field is expected:
+
+```text
+$.data.items[0].id
+```
+
+They are also useful in documentation. Instead of saying "the user ID is inside the first item", you can provide the path. This makes API examples easier to verify and maintain.
+
+For public documentation, include both the path and a small JSON example so readers can understand the structure quickly.
 
 ## Related QuickToolFlow Tools
 

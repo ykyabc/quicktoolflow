@@ -55,6 +55,18 @@ Common examples:
 
 Named entities are readable, while numeric entities can represent many characters.
 
+## Body Text vs Attribute Values
+
+Escaping rules depend on where the text will appear. In normal HTML body text, `<`, `>`, and `&` are the most important characters to encode. In attributes, quotes matter too:
+
+```html
+<a title='Tom "checked" the markup'>Example</a>
+```
+
+If user-provided text is inserted into an attribute, unescaped quotes can break the attribute and change how the browser reads the rest of the tag.
+
+This is why context matters. HTML body text, HTML attributes, URLs, JavaScript strings, and JSON values each need the right escaping method.
+
 ## Encoding Text vs Sanitizing HTML
 
 HTML entity encoding is not the same as full HTML sanitization.
@@ -77,6 +89,22 @@ URL encoded: %26
 Both can represent an ampersand, but they are used in different contexts.
 
 Use the [URL Encoder & Decoder](/tools/url-encoder/) for query parameters and URL-safe values. Use the [String Escape / Unescape](/tools/string-escape/) when preparing text for JSON, JavaScript, HTML, or CSV contexts.
+
+## Decoding Entities for Debugging
+
+Decoding is useful when copied text contains entities and you need to inspect the original characters:
+
+```html
+Tom &amp; Jerry
+```
+
+decodes to:
+
+```text
+Tom & Jerry
+```
+
+This is helpful when reviewing CMS output, email templates, documentation examples, or API responses that contain encoded HTML.
 
 ## A Practical Workflow
 

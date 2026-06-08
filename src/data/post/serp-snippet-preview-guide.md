@@ -45,6 +45,26 @@ Free JSON Formatter & Validator
 
 Best titles are specific, readable, and different from nearby pages on the same site.
 
+## Avoid Duplicate Titles
+
+Duplicate titles make it harder for users and search engines to understand which page is which. This is especially common on tool sites where many pages follow the same pattern.
+
+Instead of:
+
+```text
+Free Online Tool
+```
+
+Use page-specific titles:
+
+```text
+Free XML Formatter
+Free JSON Formatter
+Free CSV Formatter
+```
+
+The shared pattern is fine, but the distinguishing word should appear early enough to be visible.
+
 ## Meta Descriptions Should Explain the Value
 
 The meta description is not a ranking shortcut. Its job is to summarize the page clearly.
@@ -72,6 +92,24 @@ Many practical descriptions are around 120 to 160 characters. Titles often work 
 But search engines do not follow a fixed character limit. They may shorten, rewrite, or replace snippets depending on the query.
 
 Use length checks as a warning system, not as the entire SEO strategy.
+
+## Match the Snippet to Search Intent
+
+A good snippet should match why someone searched. For a tool page, the user likely wants to complete a task quickly. For a guide, the user may want explanation, examples, or troubleshooting.
+
+Tool page description:
+
+```text
+Format and validate JSON online with instant browser-based feedback.
+```
+
+Guide description:
+
+```text
+Learn common JSON formatting mistakes, validation tips, and when to minify JSON.
+```
+
+Both can target the same topic, but they promise different experiences.
 
 ## Why Search Engines Rewrite Snippets
 

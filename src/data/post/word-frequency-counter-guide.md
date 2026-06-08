@@ -55,6 +55,25 @@ Word frequency can help you check whether a page covers its topic clearly. If a 
 
 Do not use frequency counts for keyword stuffing. Repeating a phrase unnaturally makes content worse. Use the data to improve coverage and clarity, not to force density.
 
+## Stop Words and Meaningful Terms
+
+Common words such as "the", "and", "to", "of", and "in" often appear at the top of raw frequency lists. They rarely tell you much about the topic. More useful signals usually come from nouns, verbs, product names, file formats, and technical terms.
+
+When reviewing a draft, separate:
+
+- Necessary topic terms
+- Repeated filler words
+- Accidental duplicates
+- Terms that should appear but are missing
+
+This makes the frequency list easier to turn into editing decisions.
+
+## Consistency in Technical Writing
+
+Frequency analysis can reveal inconsistent terminology. For example, a page might alternate between "URL encoding", "percent encoding", and "link escaping". That may be fine if the article explains the relationship, but confusing if the terms are used randomly.
+
+Use the count as a prompt to standardize language. Consistent terms help readers follow the guide and help related pages feel connected.
+
 ## A Practical Content Review Workflow
 
 1. Paste the draft into the word frequency counter.
@@ -73,6 +92,8 @@ Do not treat word frequency as a ranking formula. It is not.
 Do not remove every repeated word. Some repetition is necessary for clarity.
 
 Do not compare unrelated topics. A security article and a design article should have different vocabulary patterns.
+
+Do not edit only from the frequency table. Read the full text afterward to make sure the article still sounds natural.
 
 ## Final Tip
 

@@ -70,6 +70,24 @@ https://example.com/docs#installation
 
 It is usually handled by the browser and often points to a section on the page. Hash fragments are also used by some single-page applications for client-side routing.
 
+## Absolute vs Relative URLs
+
+An absolute URL includes the protocol and hostname:
+
+```text
+https://example.com/docs/page
+```
+
+A relative URL depends on the current page:
+
+```text
+/docs/page
+```
+
+Both can be valid, but they are used differently. Absolute URLs are common in metadata, redirects, sitemaps, canonical tags, API callbacks, and shared links. Relative URLs are common inside site navigation and application routes.
+
+If a link works on one page but fails on another, check whether it is relative to the current path. A parser makes that easier by showing which parts are present and which parts are implied by the browser.
+
 ## Percent Encoding
 
 URLs cannot contain every character literally. Spaces, punctuation, and non-ASCII text may be percent encoded.
@@ -85,6 +103,29 @@ hello%20world
 ```
 
 Parsing and decoding helps you understand what a long URL actually means.
+
+## Encoding Query Values Safely
+
+Only encode the value that needs encoding, not the entire URL. For example, if a query value contains another URL, encode the nested value:
+
+```text
+https://example.com/redirect?to=https%3A%2F%2Fquicktoolflow.com%2Ftools%2F
+```
+
+If you encode the full URL at once, characters like `:`, `/`, `?`, and `&` may stop working as URL separators. Use the [URL Encoder & Decoder](/tools/url-encoder/) for individual components and the URL parser to check the final structure.
+
+## Security Checks When Reviewing URLs
+
+Parsing a URL is also useful for spotting risky links. Before trusting a URL, check:
+
+- Whether the hostname is the expected domain
+- Whether the protocol is `https:`
+- Whether a redirect parameter points to an external site
+- Whether the path contains lookalike characters
+- Whether credentials appear before the hostname
+- Whether tracking parameters expose sensitive information
+
+This is especially important for login links, payment pages, OAuth redirects, and support tickets that include copied URLs.
 
 ## Practical Debugging Checklist
 

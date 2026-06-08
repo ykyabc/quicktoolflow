@@ -48,6 +48,18 @@ A correct minifier does not:
 
 Minified JSON is smaller as text, but it is not the same as HTTP compression. In production APIs, you often use both: minified output from the application and gzip or Brotli from the server.
 
+## Minification vs Compression
+
+Minification removes unnecessary characters from the source text. Compression uses an algorithm such as gzip or Brotli to reduce bytes during transfer.
+
+For small JSON snippets, the difference may not matter. For large static JSON files, both can help:
+
+- Minification reduces the original text size.
+- Compression reduces transfer size over the network.
+- Formatting improves readability while debugging.
+
+Use the right representation for the job instead of keeping every copy minified.
+
 ## When Minified JSON Is Useful
 
 **Embedding JSON in environment variables**
@@ -71,6 +83,12 @@ A good workflow is:
 1. Format and validate JSON while reviewing it.
 2. Minify only after the data is correct.
 3. Keep a readable source copy when the JSON is maintained by humans.
+
+## Embedding Minified JSON Safely
+
+If minified JSON is embedded inside HTML, JavaScript, or an environment variable, escaping rules matter. A valid JSON string may still need extra escaping in the surrounding context.
+
+For example, JSON placed inside an HTML attribute needs HTML attribute escaping. JSON placed inside a JavaScript string needs JavaScript string escaping. Use the [String Escape / Unescape](/tools/string-escape/) when the JSON is being embedded into another format.
 
 ## Validation Comes First
 

@@ -51,6 +51,28 @@ Most readable SQL formatting starts by separating:
 
 Nested queries, CTEs, window functions, and database-specific syntax may need extra manual formatting.
 
+## Formatting CTEs and Subqueries
+
+Common table expressions can make complex queries easier to read when each step has a clear name:
+
+```sql
+WITH active_users AS (
+  SELECT id, email
+  FROM users
+  WHERE active = 1
+),
+order_counts AS (
+  SELECT user_id, count(*) AS order_count
+  FROM orders
+  GROUP BY user_id
+)
+SELECT active_users.email, order_counts.order_count
+FROM active_users
+LEFT JOIN order_counts ON order_counts.user_id = active_users.id
+```
+
+Formatting each CTE as a separate block helps reviewers understand the data flow before the final `SELECT`.
+
 ## Formatting Helps Code Review
 
 Readable SQL helps reviewers answer practical questions:
@@ -69,6 +91,18 @@ That clarity matters when queries affect reports, billing, analytics, or product
 A formatter changes whitespace and line breaks. It does not prove that a query is correct, efficient, or safe.
 
 Always test important SQL in the target database. Different databases have different syntax rules for identifiers, JSON operators, functions, dates, limits, and procedural blocks.
+
+## Formatting and Performance Review
+
+Formatting also makes performance review easier. Once the query is readable, you can more quickly spot:
+
+- Joins without clear conditions
+- Filters that should happen earlier
+- Selected columns that are not needed
+- Repeated subqueries
+- Sorting or grouping on expensive expressions
+
+Formatting does not optimize a query automatically, but it makes the next review step much easier.
 
 ## When to Minify SQL
 

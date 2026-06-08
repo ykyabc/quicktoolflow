@@ -60,6 +60,30 @@ These are different tasks. A formatter may make broken markup easier to inspect,
 
 For important pages, especially production templates, use a validator or framework build check after formatting.
 
+## Attributes, Long Lines, and Template Code
+
+HTML becomes difficult to review when one element carries many attributes:
+
+```html
+<a class="button primary large" href="/pricing" data-track="hero_cta" aria-label="View pricing">View pricing</a>
+```
+
+Formatting can make this easier to scan by keeping the tag structure consistent and separating the surrounding content from the attribute-heavy element. This matters in component templates, marketing pages, and CMS snippets where a single missing quote can affect the rest of the page.
+
+Be extra careful with framework-specific syntax such as Astro, JSX, Vue, Svelte, Liquid, or Handlebars. A generic HTML formatter may not understand every template expression. If a snippet contains framework code, format the surrounding HTML but review dynamic attributes manually.
+
+## Safe Review Workflow
+
+For copied or generated markup, use this sequence:
+
+1. Format the HTML so the structure is readable.
+2. Look for unexpected wrappers, duplicated IDs, and unclosed tags.
+3. Check links, image attributes, and form labels.
+4. Escape user-facing text when it will be displayed as markup.
+5. Minify only after the readable version has been reviewed.
+
+This workflow keeps formatting useful without hiding semantic or accessibility issues.
+
 ## When to Minify HTML
 
 Minifying removes unnecessary whitespace to make HTML more compact.
@@ -72,6 +96,12 @@ That can be useful for:
 - Performance-sensitive templates
 
 But be careful with content where whitespace matters, such as `pre`, `textarea`, code examples, and some email layouts.
+
+## Formatting Email and Embed Snippets
+
+Email HTML and third-party embed snippets often contain table layouts, inline styles, tracking attributes, and conditional comments. Formatting helps you understand them, but changing whitespace or comments too aggressively can break older email clients or vendor-provided code.
+
+When working with email or embeds, keep a copy of the original snippet, format a working copy, and test the final output in the environment where it will actually run.
 
 ## Practical HTML Cleanup Checklist
 

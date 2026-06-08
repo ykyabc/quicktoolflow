@@ -58,6 +58,25 @@ When prototyping, use placeholders with real expected dimensions. If final blog 
 
 This makes the mockup closer to the final page.
 
+## Testing Cropping and Object Fit
+
+Placeholder images are useful for checking how a layout crops media. A card may look good with a centered image but fail when the real photo has important content near the edge.
+
+When testing a component, try several shapes:
+
+- Square placeholders for avatars and product grids
+- Wide placeholders for blog cards and videos
+- Tall placeholders for profile or poster layouts
+- Social-card dimensions for share previews
+
+If the layout uses `object-fit: cover`, make sure important visual content would still be visible after cropping.
+
+## Preventing Layout Shift
+
+Modern pages should reserve image space before the image loads. Use fixed dimensions, aspect-ratio styles, or framework image components where possible.
+
+During prototyping, placeholder images can reveal whether the page jumps as media appears. If text moves after images load, the layout probably needs a defined width, height, or aspect ratio.
+
 ## Placeholder Images and SEO
 
 Placeholder images are useful during design, but they should not replace final images on important live pages. Real images need descriptive filenames, alt text, compression, and relevance.
@@ -75,6 +94,18 @@ For publishing workflows, pair image placeholders with:
 3. Generate the placeholder image URL.
 4. Test the layout on desktop and mobile.
 5. Replace placeholder images with final optimized assets before publishing.
+
+## Before Replacing Placeholders
+
+Before swapping in final images, confirm:
+
+- The final asset uses the same aspect ratio or intentional cropping
+- Alt text describes the real image
+- File size is appropriate for the page
+- The image still works in mobile layouts
+- Social preview images are large enough for sharing cards
+
+This avoids the common problem where the prototype looked polished but the final content breaks the layout.
 
 ## Common Mistakes
 

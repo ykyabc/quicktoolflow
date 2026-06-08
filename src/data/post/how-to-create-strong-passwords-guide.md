@@ -51,6 +51,36 @@ Reuses leaked passwords from other breaches. Never reuse passwords across sites.
 4. **Use unique passwords** - one per account
 5. **Use a password manager** - store passwords securely
 
+## Random Passwords vs Passphrases
+
+A random password is usually best for accounts stored in a password manager:
+
+```text
+v9!Qm2#rL8@zT4pW
+```
+
+It is hard to memorize, but it has strong unpredictability when generated correctly.
+
+A passphrase can be useful when you must type the secret manually:
+
+```text
+river-cobalt-window-lantern-47
+```
+
+Passphrases work best when the words are selected randomly, not chosen from a meaningful sentence. A memorable phrase like `mydoglikespizza` is much weaker because attackers can guess common words and personal patterns.
+
+## Passwords Are Only One Layer
+
+A strong password reduces risk, but account security also depends on the surrounding controls:
+
+- Enable multi-factor authentication for important accounts
+- Avoid reusing passwords across sites
+- Watch for phishing pages before entering credentials
+- Remove old browser-saved passwords you no longer trust
+- Rotate a password immediately if it appears in a breach
+
+For sensitive accounts, a unique password plus multi-factor authentication is much stronger than a complex password reused across multiple services.
+
 ## Generate a Strong Password
 
 The easiest way to create a secure password is to use a [cryptographic password generator](/tools/password-generator/) that runs entirely in your browser.

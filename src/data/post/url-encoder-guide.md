@@ -57,6 +57,19 @@ space -> %20
 
 Encoding keeps the meaning of the value while preventing the URL parser from treating it as syntax.
 
+## Spaces: `%20` vs `+`
+
+Spaces are commonly represented as `%20`. In form-encoded query strings, you may also see `+`.
+
+For example:
+
+```text
+q=red+shoes
+q=red%20shoes
+```
+
+Both can represent a space in many query string contexts, but they are not always interchangeable in every URL part. `%20` is the safer general representation when you are manually inspecting or building URL components.
+
 ## Encode Components, Not Always the Whole URL
 
 One of the most common mistakes is encoding an entire URL when only a value should be encoded.
@@ -76,6 +89,22 @@ q=red%20shoes
 ```
 
 Use the [URL Parser](/tools/url-parser/) if you need to inspect which part of a URL should be encoded.
+
+## Nested URLs and Redirect Parameters
+
+Some links include another URL as a parameter value:
+
+```text
+https://example.com/redirect?to=https://quicktoolflow.com/tools/
+```
+
+The nested URL should be encoded so its `:` and `/` characters are treated as part of the value:
+
+```text
+https://example.com/redirect?to=https%3A%2F%2Fquicktoolflow.com%2Ftools%2F
+```
+
+This is common in redirect links, OAuth flows, payment callbacks, and campaign tools.
 
 ## URL Encoding vs Base64
 
@@ -98,6 +127,8 @@ Do not encode a full URL unless the full URL is meant to be used as a parameter 
 Do not assume encoding makes a link safe or trusted. It only changes representation.
 
 Do not confuse URL encoding with encryption. Anyone can decode percent-encoded text.
+
+Do not double-encode values unless the receiving system explicitly expects it. `%26` can become `%2526`, which changes what the server receives after one decoding pass.
 
 ## Final Tip
 

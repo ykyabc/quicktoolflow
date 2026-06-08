@@ -40,6 +40,17 @@ For example, hashing `hello` with SHA-256 gives a completely different digest th
 
 SHA-512 produces a longer digest. That does not automatically mean every project should use it.
 
+## Output Format Matters
+
+The same hash bytes can be displayed in different encodings. Hex is common because it is easy to copy and compare:
+
+```text
+SHA-256 hex length: 64 characters
+SHA-512 hex length: 128 characters
+```
+
+Some systems use Base64 instead. When comparing digests, make sure both sides use the same algorithm and the same output encoding. A mismatch between lowercase hex, uppercase hex, and Base64 can look like a hashing error when it is really a formatting issue.
+
 ## When SHA-256 Is a Good Choice
 
 SHA-256 is widely supported and commonly used.
@@ -80,6 +91,20 @@ For password storage, use dedicated password hashing algorithms such as:
 - PBKDF2, when required by a platform or policy
 
 To generate a password, use a [Password Generator](/tools/password-generator/). To store passwords in an application, use a server-side password hashing library.
+
+## Hashes for File Integrity
+
+Hashes are excellent for checking whether a file changed. If a downloaded file has the same SHA-256 digest as the expected value, you have strong evidence that the bytes match.
+
+This is useful for:
+
+- Release artifacts
+- Backups
+- Static assets
+- Data exports
+- Build outputs
+
+For security-sensitive downloads, hashes are strongest when the expected digest comes from a trusted channel. If an attacker can change both the file and the displayed hash, the check loses value.
 
 ## Hashing vs Encoding vs Encryption
 

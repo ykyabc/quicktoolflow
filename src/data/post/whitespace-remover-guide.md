@@ -70,6 +70,30 @@ Whitespace cleanup is useful before pasting content into a CMS, writing meta des
 
 It can also help before comparison. If two versions of text have different spacing but the same words, cleaning whitespace first can make a [Text Diff Checker](/tools/text-diff/) easier to read.
 
+## PDF, Spreadsheet, and Email Cleanup
+
+Copied text often carries hidden formatting from the source:
+
+- PDFs may insert line breaks after every visual line.
+- Spreadsheets may include tabs between cells.
+- Emails may contain quoted reply indentation.
+- Web pages may copy extra blank lines between blocks.
+
+Before editing the wording, clean the structure first. For example, remove repeated blank lines, collapse extra spaces, and decide whether line breaks should become spaces or paragraph breaks.
+
+This is especially helpful before pasting content into forms, CMS fields, meta descriptions, or support replies.
+
+## Whitespace and Data Processing
+
+Whitespace can also affect data tasks. A trailing space in a label can make two values look identical while still comparing as different strings:
+
+```text
+"active"
+"active "
+```
+
+When cleaning data manually, trim leading and trailing spaces before comparing values. For CSV, JSON, or YAML, use format-specific tools when the structure matters.
+
 ## A Practical Cleanup Workflow
 
 1. Paste copied text into the whitespace remover.
@@ -87,6 +111,8 @@ Do not remove every line break from long-form writing. Paragraphs exist for read
 Do not strip indentation from code or configuration files unless you know the format does not depend on it.
 
 Do not confuse whitespace cleanup with rewriting. Removing extra spaces can improve presentation, but it will not fix unclear wording.
+
+Do not normalize whitespace before saving an original copy when reviewing legal, code, or data records. Sometimes exact spacing is part of the evidence or expected format.
 
 ## Final Tip
 

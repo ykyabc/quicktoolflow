@@ -67,6 +67,29 @@ Sitemap: https://example.com/sitemap.xml
 
 For many static websites, this is one of the most useful lines in the file.
 
+## Common Patterns
+
+A simple public site often only needs a sitemap:
+
+```text
+User-agent: *
+Allow: /
+
+Sitemap: https://example.com/sitemap.xml
+```
+
+A site with internal search results may block those paths:
+
+```text
+User-agent: *
+Disallow: /search/
+Disallow: /internal/
+
+Sitemap: https://example.com/sitemap.xml
+```
+
+Keep patterns broad enough to be useful but not so broad that they accidentally block important pages. For example, `Disallow: /tag` may also affect paths that only start with those characters.
+
 ## Robots.txt Is Not Security
 
 Do not use robots.txt to hide private content. The file is public, and blocked paths can still be discovered from links, logs, referrers, or other sources.
@@ -78,6 +101,19 @@ If content is private, protect it with authentication, permissions, or server-si
 Robots.txt controls crawling. It does not reliably control indexing.
 
 If you want a page excluded from search results, use a proper `noindex` directive on the page or in HTTP headers, and make sure crawlers are allowed to crawl the page so they can see it.
+
+## Launch and Staging Mistakes
+
+Robots.txt problems often happen during launches. A staging site may use:
+
+```text
+User-agent: *
+Disallow: /
+```
+
+That is fine for a private preview environment, but it is dangerous if copied to production. Before launch, confirm that the production file allows the pages you want indexed and includes the correct sitemap URL.
+
+Also check canonical domains. If your site uses `https://www.example.com`, the sitemap line should point to the preferred host, not an old preview domain.
 
 ## Practical Robots.txt Checklist
 

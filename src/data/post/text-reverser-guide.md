@@ -68,6 +68,48 @@ Text reversal can produce surprising results when the input has punctuation, emo
 
 If you are working with code, JSON, HTML, CSV, or YAML, use a format-specific tool instead. For example, use the [HTML Formatter](/tools/html-formatter/) for HTML and the [JSON Formatter](/tools/json-formatter/) for JSON.
 
+## Character vs Word vs Line Reversal
+
+Choosing the right mode prevents most mistakes:
+
+- Use **character reversal** for short strings, puzzles, and simple demonstrations of string handling.
+- Use **word reversal** when the words should remain readable but the sentence order needs to change.
+- Use **line reversal** for lists, logs, ordered notes, and copied rows from a document.
+
+For example, if you paste a list of changelog entries in oldest-to-newest order, line reversal can quickly show the newest item first without editing every line by hand.
+
+## Examples for Real Text Cleanup
+
+Line reversal is useful when exported text comes out in the opposite order:
+
+```text
+Step 1: Draft
+Step 2: Review
+Step 3: Publish
+```
+
+After line reversal:
+
+```text
+Step 3: Publish
+Step 2: Review
+Step 1: Draft
+```
+
+Word reversal is better for quick language experiments:
+
+```text
+small tools save time
+```
+
+Becomes:
+
+```text
+time save tools small
+```
+
+Character reversal should be used most carefully because it changes punctuation placement and can make text unreadable.
+
 ## A Practical Workflow
 
 1. Clean copied text with the [Whitespace Remover](/tools/whitespace-remover/) if spacing is messy.
@@ -83,6 +125,10 @@ Do not reverse structured data and expect it to remain valid.
 Do not use character reversal when you only need to reverse a list. Use line reversal instead.
 
 Do not assume visual symbols always reverse cleanly. Emoji and accented characters can behave differently depending on how they are represented.
+
+## Privacy Note
+
+For notes, draft copy, or copied data, browser-based text tools are helpful because the transformation can happen locally. That makes a text reverser a good fit for quick edits where opening a larger editor would slow you down.
 
 ## Final Tip
 

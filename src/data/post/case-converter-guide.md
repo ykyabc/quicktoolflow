@@ -81,6 +81,37 @@ For example, `JSON formatter` might become `Json Formatter` in a naive title cas
 
 After converting, scan important terms manually.
 
+## Acronyms, Initialisms, and Brand Names
+
+Technical writing often includes terms such as JSON, XML, CSV, API, URL, CSS, and HTML. A naive converter may turn them into `Json`, `Xml`, or `Api`, which looks less professional in developer-facing content.
+
+Brand names can have even stricter rules:
+
+```text
+iPhone
+GitHub
+YouTube
+QuickToolFlow
+```
+
+Use conversion for the bulk transformation, then manually review names and acronyms before publishing.
+
+## Case Conversion for Filenames and URLs
+
+For filenames and URLs, readability matters. Kebab-case is often easiest for public web paths:
+
+```text
+json-path-tester-guide
+```
+
+snake_case is common in datasets and code:
+
+```text
+json_path_tester_guide
+```
+
+Before turning a title into a public URL, combine the case converter with the [Slug Generator](/tools/text-to-slug/) so spaces, punctuation, and capitalization are handled consistently.
+
 ## A Practical Workflow
 
 1. Paste text into the case converter.
@@ -98,6 +129,8 @@ Do not convert brand names blindly. Some names have intentional capitalization.
 Do not use uppercase for long body text. It is harder to read and can feel aggressive.
 
 Do not assume title case rules are universal. Style guides differ on small words such as "and", "to", "for", and "with".
+
+Do not convert code identifiers without checking the language convention. `user_id`, `userId`, and `UserId` may all be correct in different systems.
 
 ## Final Tip
 

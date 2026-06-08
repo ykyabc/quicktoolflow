@@ -99,6 +99,26 @@ Use random strings when:
 
 For secret values, use cryptographically secure randomness and enough length.
 
+## URL-Safe and Human-Friendly Strings
+
+Random strings can be designed for the place where they will appear. A URL-safe token should avoid characters that need escaping, such as spaces, `/`, `?`, `#`, and `&`.
+
+For human entry, avoid ambiguous characters:
+
+```text
+0 O
+1 l I
+5 S
+```
+
+That can reduce support issues when users copy codes from emails, screenshots, or printed materials.
+
+## Collision Risk and Entropy
+
+Collision risk depends on how many possible values exist and how many values you generate. Short strings can collide quickly if the alphabet is small.
+
+For public invite codes, reset links, or API tokens, think in terms of entropy, expiration, and rate limits. A short random-looking code may be fine for a one-time low-risk workflow, but not for long-lived account access.
+
 ## Common Mistakes
 
 ### Mistake 1: Using UUIDs as access tokens
@@ -112,6 +132,10 @@ An 8-character random string may be too small if the alphabet is limited and att
 ### Mistake 3: Using sequential IDs for public resources
 
 Sequential IDs can expose business information and make enumeration easier. UUIDs or random public IDs can reduce that risk.
+
+### Mistake 4: Treating public IDs as secrets
+
+Even if an ID is hard to guess, it may appear in logs, URLs, analytics tools, screenshots, and browser history. Do not put sensitive authorization decisions on the ID alone.
 
 ## Practical Rule
 

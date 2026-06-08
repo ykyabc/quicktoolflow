@@ -89,6 +89,39 @@ In CSS color notation:
 
 Decimal is easiest for everyday reading because it is the system most people learn first. When debugging technical values, it is common to convert binary or hex back to decimal to confirm the actual numeric value.
 
+## Prefixes and Notation in Code
+
+Programming languages often use prefixes to show the base:
+
+```text
+0b11111111  binary
+0o377       octal
+0xFF        hexadecimal
+255         decimal
+```
+
+These prefixes are not part of the mathematical value. They tell the reader or parser how to interpret the digits that follow.
+
+When writing documentation, include the base label or prefix so values are not misread.
+
+## Bits, Bytes, and Grouping
+
+Binary values become easier to read when grouped:
+
+```text
+11111111
+1111 1111
+```
+
+Each group of four bits maps to one hexadecimal digit:
+
+```text
+1111 = F
+1111 1111 = FF
+```
+
+This relationship is why developers often convert binary to hexadecimal when inspecting bytes, masks, colors, or encoded values.
+
 ## Common Conversion Mistakes
 
 Do not confuse a representation with a different value. `10` in binary equals `2` in decimal. `10` in decimal equals `10`.
@@ -96,6 +129,8 @@ Do not confuse a representation with a different value. `10` in binary equals `2
 Do not ignore prefixes. In code, `0xFF` usually means hexadecimal, while `0b11111111` usually means binary.
 
 Do not assume every long string of letters and numbers is a number. Hashes and IDs may contain hexadecimal-looking characters, but converting them as a normal number may not be useful.
+
+Do not ignore leading zeros when the value represents fixed-width data. `00001111` and `1111` have the same numeric value, but the leading zeros may matter when showing an 8-bit byte.
 
 ## A Practical Workflow
 

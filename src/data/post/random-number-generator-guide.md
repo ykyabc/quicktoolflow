@@ -58,11 +58,25 @@ Generate an integer from 1 to 100, inclusive.
 
 That removes ambiguity.
 
+## Repeated Values and Uniqueness
+
+Random generation does not automatically mean unique values. If you generate enough numbers in a small range, duplicates are expected.
+
+For example, generating 20 numbers from 1 to 10 will almost certainly repeat some values. That is normal randomness, not a bug.
+
+If you need unique identifiers, use a tool designed for that purpose, such as the [UUID Generator](/tools/uuid-generator/). If you need a shuffled list without repeats, generate the list first and then shuffle it rather than drawing random values independently.
+
 ## Randomness for Testing
 
 Random values are helpful for testing interfaces and sample data, but they can also make bugs harder to reproduce. If a test fails only for one random value, you need a way to capture that value.
 
 For serious automated tests, deterministic fixtures are often better than fully random input. For quick manual testing, random generation is fast and convenient.
+
+## Seeds and Repeatability
+
+Some random generators support seeds. A seed lets the same sequence be reproduced later. This is useful in simulations, demos, and tests where you want random-looking data but still need repeatable results.
+
+If a generator does not expose a seed, save the generated values when they matter. A bug report with the exact value is much easier to investigate than a report that only says "a random number broke it."
 
 ## Randomness and Security
 

@@ -91,11 +91,38 @@ post-12938-final-new
 
 The first one explains the topic before the page is opened.
 
+## Stop Words and Shortening
+
+Slug generators often keep every word from the title. That is useful as a first draft, but the best final slug is usually shorter.
+
+For example:
+
+```text
+Title: How to Convert JSON Data to CSV for Spreadsheets
+Draft: how-to-convert-json-data-to-csv-for-spreadsheets
+Better: json-to-csv-spreadsheets
+```
+
+Remove filler words when they do not add meaning. Keep words that describe the actual topic, format, product, or use case.
+
 ## Keep Slugs Stable
 
 Changing a slug changes the URL. That can break bookmarks, shared links, internal links, and search engine history unless redirects are handled correctly.
 
 Before publishing, use the slug generator and choose a slug you can keep. After publishing, avoid changing it unless there is a strong reason.
+
+## Handling Numbers, Dates, and Versions
+
+Numbers can be useful when they are part of the topic, such as `sha-256` or `top-10-tools`. Dates are riskier. A slug like `best-tools-2026` may be fine for an annual article, but it becomes awkward for evergreen content.
+
+For tutorials and tool pages, prefer stable slugs:
+
+```text
+Good: json-formatter-guide
+Risky: json-formatter-guide-2026
+```
+
+Version numbers should only appear when the version changes the topic, such as a framework migration guide.
 
 ## A Practical Publishing Workflow
 

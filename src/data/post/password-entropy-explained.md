@@ -67,6 +67,14 @@ Different settings create different pools:
 
 Increasing the pool helps, but increasing length is often easier and more reliable.
 
+## Why Entropy Estimates Are Imperfect
+
+Entropy estimates assume the password was generated randomly from the stated pool. Human-created passwords usually violate that assumption. For example, `BlueCoffee2026!` appears to use many character types, but it is still built from words, a year, and a predictable symbol.
+
+Attackers do not always try every possible string in order. They often use leaked password lists, dictionaries, keyboard patterns, names, dates, and transformation rules first. That is why a theoretically large character pool does not guarantee real-world strength.
+
+Use entropy as a useful estimate, not as a complete security score.
+
 ## Randomness Is the Key
 
 Entropy assumes random selection. Human-created passwords are rarely random.
@@ -89,6 +97,12 @@ Passphrases can be strong if the words are chosen randomly and the phrase is lon
 For example, four random dictionary words can be easier to type than a symbol-heavy password. But a phrase you personally invent may be less random than it looks.
 
 Use random generation whenever possible.
+
+## Offline vs Online Guessing
+
+Password strength also depends on the attack scenario. Online guessing against a login form is usually rate-limited, monitored, and slowed by lockouts or multi-factor authentication. Offline guessing is different: if password hashes are leaked, attackers can try guesses very quickly on their own hardware.
+
+This is why important accounts deserve unique, high-entropy passwords even if the login page limits attempts. You are protecting against both visible login attempts and future breach scenarios.
 
 ## Practical Recommendations
 

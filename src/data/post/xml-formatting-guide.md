@@ -85,6 +85,20 @@ Or child elements:
 
 Attributes work well for small metadata. Elements are better for longer text, nested data, or repeated values.
 
+## Namespaces in XML
+
+Many XML formats use namespaces to avoid naming conflicts:
+
+```xml
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://quicktoolflow.com/</loc>
+  </url>
+</urlset>
+```
+
+Namespaces can make XML look more complex, but they are important in sitemaps, RSS extensions, SOAP, SVG, and office document formats. When formatting XML, keep namespace declarations intact. Removing or changing them can make a document invalid for the system that reads it.
+
 ## Escaping Special Characters
 
 XML reserves certain characters. Use entities when they appear as text:
@@ -115,6 +129,18 @@ Use minified XML when:
 - Embedding XML in a compact example
 - Reducing file size slightly
 - Sending machine-generated XML where humans do not need to inspect it
+
+## XML in Sitemaps and Feeds
+
+Sitemaps and RSS feeds are two common places where XML still matters for web publishing. Formatting these files can help you spot:
+
+- Missing closing tags
+- Incorrect URLs
+- Invalid dates
+- Broken nesting
+- Unescaped ampersands in titles or links
+
+For SEO-related XML, always check that URLs are absolute and use the preferred domain. A formatted sitemap is much easier to audit than one long minified line.
 
 ## Common XML Errors
 

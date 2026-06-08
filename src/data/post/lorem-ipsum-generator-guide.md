@@ -67,11 +67,41 @@ Use words when testing labels, badges, buttons, or small UI fragments.
 
 The right amount of placeholder text should stress the layout without overwhelming it.
 
+## Test Realistic Content Lengths
+
+One common mistake is using placeholder text that is too neat. Real content is rarely balanced. Product names can be long, descriptions can wrap, and calls to action may need more space than expected.
+
+When testing a design, generate several lengths:
+
+- A short version for the ideal case
+- A medium version for normal content
+- A long version for stress testing
+
+This helps you catch cards that become uneven, buttons that wrap awkwardly, and sections that only look good with perfect copy.
+
+## Use Placeholder Text to Find Layout Limits
+
+Lorem ipsum is useful because it can expose layout limits early. Try testing:
+
+- Very short headings
+- Long headings that wrap to two lines
+- Paragraphs with different sentence counts
+- Lists with uneven item lengths
+- Empty or nearly empty content areas
+
+If a layout breaks with placeholder text, it will probably break with real content too.
+
 ## Pairing Text and Image Placeholders
 
 Text often appears next to media. If you are building a blog card, feature grid, or landing page section, combine lorem ipsum with placeholder images.
 
 Use the [Lorem Image Placeholder](/tools/lorem-image-placeholder/) for image dimensions and the [Word Counter](/tools/word-counter/) to estimate realistic copy length.
+
+## Replacing Placeholder Text Before Launch
+
+Before publishing, search for leftover placeholder phrases such as "lorem", "ipsum", "dolor", and "placeholder". Also check screenshots, image alt text, metadata, and hidden template fields. Placeholder text sometimes survives in places that are not visible in the main page body.
+
+For content-heavy pages, replace placeholder text section by section instead of all at once. That makes it easier to keep spacing under control while the page becomes more realistic.
 
 ## Common Mistakes
 
