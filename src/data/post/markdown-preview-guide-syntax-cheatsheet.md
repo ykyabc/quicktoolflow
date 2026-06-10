@@ -1,5 +1,5 @@
 ﻿---
-title: 'Markdown Cheat Sheet: Syntax Guide with Live Preview'
+title: 'Markdown Cheat Sheet with Live Preview'
 excerpt: 'Learn practical Markdown syntax for headings, lists, tables, code blocks, links, images, and documentation drafts with a live preview tool.'
 publishDate: 2026-05-26
 category: 'Developer Tools'

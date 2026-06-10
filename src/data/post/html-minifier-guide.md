@@ -1,5 +1,5 @@
 ---
-title: 'HTML Minifier Guide: Compact Markup Without Breaking Pages'
+title: 'HTML Minifier: Compact Markup Safely'
 excerpt: 'Learn what HTML minification removes, when it is useful, which whitespace can be risky, and how to test compact HTML snippets safely.'
 publishDate: 2026-06-08
 category: 'Developer Tools'

@@ -1,5 +1,5 @@
 ---
-title: 'String Escaping Guide for JSON, JavaScript, HTML, and CSV'
+title: 'String Escaping for JSON, JS, HTML, and CSV'
 excerpt: 'Learn why string escaping matters, how JSON, JavaScript, HTML, and CSV handle special characters, and how to avoid broken code or malformed data.'
 publishDate: 2026-06-05
 category: 'Security'

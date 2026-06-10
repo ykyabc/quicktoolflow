@@ -157,8 +157,37 @@ const metadata = {
       </p>
     </header>
 
+    <div class="mt-12 space-y-12">
+      {
+        toolGroups.map((group) => (
+          <section>
+            <div class="mb-5 max-w-3xl">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{group.title}</h2>
+              <p class="mt-2 text-gray-600 dark:text-gray-300">{group.description}</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {group.slugs.map((slug) => {
+                const tool = getTool(slug);
+                if (!tool) return null;
+                return (
+                  <ToolCard
+                    slug={tool.slug}
+                    name={tool.name}
+                    description={tool.description}
+                    icon={tool.icon}
+                    gradient={tool.gradient}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
     <section
-      class="mt-12 rounded-2xl border border-primary-100 bg-primary-50 p-6 dark:border-primary-900/50 dark:bg-primary-950/20"
+      class="mt-14 rounded-2xl border border-primary-100 bg-primary-50 p-5 dark:border-primary-900/50 dark:bg-primary-950/20"
     >
       <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
         <div>
@@ -190,35 +219,6 @@ const metadata = {
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
             <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{description}</p>
           </div>
-        ))
-      }
-    </div>
-
-    <div class="mt-16 space-y-14">
-      {
-        toolGroups.map((group) => (
-          <section>
-            <div class="mb-6 max-w-3xl">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{group.title}</h2>
-              <p class="mt-3 text-gray-600 dark:text-gray-300">{group.description}</p>
-            </div>
-
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {group.slugs.map((slug) => {
-                const tool = getTool(slug);
-                if (!tool) return null;
-                return (
-                  <ToolCard
-                    slug={tool.slug}
-                    name={tool.name}
-                    description={tool.description}
-                    icon={tool.icon}
-                    gradient={tool.gradient}
-                  />
-                );
-              })}
-            </div>
-          </section>
         ))
       }
     </div>

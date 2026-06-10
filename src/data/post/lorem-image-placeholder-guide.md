@@ -1,5 +1,5 @@
 ---
-title: 'Lorem Image Placeholder Guide: Generate Image URLs for Mockups'
+title: 'Lorem Image Placeholders for Mockups'
 excerpt: 'Learn how placeholder image URLs help with layout testing, aspect ratios, responsive design, and mockups before final assets are ready.'
 publishDate: 2026-06-07
 category: 'Generators'

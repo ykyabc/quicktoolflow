@@ -1,5 +1,5 @@
 ---
-title: 'XML Formatting Guide for APIs, Feeds, and Sitemaps'
+title: 'XML Formatting for APIs and Sitemaps'
 excerpt: 'Learn how XML formatting works, what well-formed XML means, how indentation helps debugging, and how to avoid common XML syntax errors.'
 publishDate: 2026-06-05
 category: 'Developer Tools'

@@ -1,5 +1,5 @@
 ---
-title: "Regular Expressions (Regex): A Beginner's Guide with Examples"
+title: 'Regex Tutorial for Beginners'
 excerpt: 'Learn regular expressions from scratch. This beginner-friendly guide covers regex syntax, common patterns, and practical examples.'
 publishDate: 2025-04-10
 category: 'Developer Tools'

@@ -60,6 +60,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'Learn how clean URL slugs work and how to create stable, readable page paths.',
     },
     {
+      title: 'UUID vs Short ID vs Slug',
+      href: '/blog/uuid-vs-short-id-vs-slug/',
+      description: 'Compare readable slugs with UUIDs and short IDs for URLs, records, and share links.',
+    },
+    {
       title: 'Case Converter Guide',
       href: '/blog/case-converter-guide/',
       description: 'Normalize titles and headings before converting them into URL-friendly slugs.',
@@ -96,6 +101,26 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'json-formatter': [
     {
+      title: 'Why Is My JSON Invalid?',
+      href: '/blog/why-is-my-json-invalid/',
+      description: 'Debug common JSON syntax errors such as trailing commas, quotes, comments, and bad escapes.',
+    },
+    {
+      title: 'Clean API Data Before Importing',
+      href: '/blog/clean-api-data-before-importing/',
+      description: 'Use a practical workflow for validating, inspecting, and preparing API responses.',
+    },
+    {
+      title: 'JSON vs YAML vs XML',
+      href: '/blog/json-vs-yaml-vs-xml/',
+      description: 'Compare structured data formats before choosing how to store or share a payload.',
+    },
+    {
+      title: 'JSON Schema vs JSON Validation',
+      href: '/blog/json-schema-vs-json-validation/',
+      description: 'Understand the difference between parseable JSON and data that matches an expected schema.',
+    },
+    {
       title: 'JSON Schema Validator Guide',
       href: '/blog/json-schema-validator-guide/',
       description: 'Validate formatted JSON against expected API and configuration shapes.',
@@ -123,12 +148,27 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'Check JSON structure before creating compact output for transport or storage.',
     },
     {
+      title: 'JSON Schema vs JSON Validation',
+      href: '/blog/json-schema-vs-json-validation/',
+      description: 'See why valid JSON syntax is not the same as valid API or configuration data.',
+    },
+    {
       title: 'JSON Formatting Best Practices',
       href: '/blog/json-formatting-best-practices/',
       description: 'Understand when to keep JSON readable and when to produce compact output.',
     },
   ],
   'json-schema-validator': [
+    {
+      title: 'JSON Schema for API Validation',
+      href: '/blog/json-schema-for-api-validation/',
+      description: 'Learn how schemas protect API contracts by checking fields, types, arrays, and enums.',
+    },
+    {
+      title: 'JSON Schema vs JSON Validation',
+      href: '/blog/json-schema-vs-json-validation/',
+      description: 'Learn when to use syntax validation and when to validate data against a schema contract.',
+    },
     {
       title: 'JSON Schema Validator Guide',
       href: '/blog/json-schema-validator-guide/',
@@ -142,9 +182,19 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'json-path-tester': [
     {
+      title: 'Clean API Data Before Importing',
+      href: '/blog/clean-api-data-before-importing/',
+      description: 'Find nested records inside API responses before converting or importing them.',
+    },
+    {
       title: 'JSON Path Tester Guide',
       href: '/blog/json-path-tester-guide/',
       description: 'Learn how to query nested JSON objects, arrays, indexes, and wildcard matches.',
+    },
+    {
+      title: 'JSON Schema vs JSON Validation',
+      href: '/blog/json-schema-vs-json-validation/',
+      description: 'Validate structure before writing JSON paths against nested API response data.',
     },
     {
       title: 'JSON Schema Validator Guide',
@@ -153,6 +203,16 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'json-to-csv': [
+    {
+      title: 'CSV vs JSON for Developers',
+      href: '/blog/csv-vs-json-for-developers/',
+      description: 'Understand when structured JSON should become spreadsheet-friendly CSV.',
+    },
+    {
+      title: 'Clean API Data Before Importing',
+      href: '/blog/clean-api-data-before-importing/',
+      description: 'Validate and inspect API data before turning it into rows and columns.',
+    },
     {
       title: 'JSON to CSV Conversion Guide',
       href: '/blog/json-to-csv-conversion-guide/',
@@ -167,6 +227,16 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'csv-formatter': [
     {
+      title: 'Common CSV Formatting Problems',
+      href: '/blog/common-csv-formatting-problems/',
+      description: 'Fix headers, delimiters, quotes, line breaks, encodings, and empty rows before import.',
+    },
+    {
+      title: 'CSV vs JSON for Developers',
+      href: '/blog/csv-vs-json-for-developers/',
+      description: 'Compare table-shaped CSV with nested JSON before choosing a data workflow.',
+    },
+    {
       title: 'CSV Formatting Guide',
       href: '/blog/csv-formatting-guide/',
       description: 'Learn how CSV delimiters, quoting, line breaks, and row cleanup work.',
@@ -178,6 +248,16 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'csv-to-json': [
+    {
+      title: 'Common CSV Formatting Problems',
+      href: '/blog/common-csv-formatting-problems/',
+      description: 'Clean CSV structure first so converted JSON keys and values are predictable.',
+    },
+    {
+      title: 'CSV vs JSON for Developers',
+      href: '/blog/csv-vs-json-for-developers/',
+      description: 'Learn how tabular CSV data becomes structured JSON objects.',
+    },
     {
       title: 'CSV to JSON Conversion Guide',
       href: '/blog/csv-to-json-conversion-guide/',
@@ -191,6 +271,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'json-to-yaml': [
     {
+      title: 'JSON vs YAML vs XML',
+      href: '/blog/json-vs-yaml-vs-xml/',
+      description: 'Compare structured formats before converting application data into configuration data.',
+    },
+    {
       title: 'JSON to YAML Conversion Guide',
       href: '/blog/json-to-yaml-conversion-guide/',
       description: 'Understand the differences between JSON and YAML and how to convert data between both formats.',
@@ -203,6 +288,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'yaml-formatter': [
     {
+      title: 'JSON vs YAML vs XML',
+      href: '/blog/json-vs-yaml-vs-xml/',
+      description: 'Understand why YAML is useful for human-edited configuration and where it can be risky.',
+    },
+    {
       title: 'YAML Formatting Guide',
       href: '/blog/yaml-formatting-guide/',
       description: 'Learn why YAML indentation matters and how to avoid common configuration mistakes.',
@@ -214,6 +304,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'xml-formatter': [
+    {
+      title: 'JSON vs YAML vs XML',
+      href: '/blog/json-vs-yaml-vs-xml/',
+      description: 'See when XML is still useful for feeds, documents, namespaces, and schema-heavy integrations.',
+    },
     {
       title: 'XML Formatting Guide',
       href: '/blog/xml-formatting-guide/',
@@ -238,6 +333,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'qr-code-generator': [
+    {
+      title: 'QR Code Use Cases',
+      href: '/blog/qr-code-use-cases-for-marketing-and-operations/',
+      description: 'Explore QR code workflows for campaigns, events, WiFi access, support, and operations.',
+    },
     {
       title: 'How to Create QR Codes',
       href: '/blog/how-to-create-qr-codes-guide/',
@@ -278,6 +378,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   base64: [
     {
+      title: 'Base64 Image vs Image File',
+      href: '/blog/base64-image-vs-image-file/',
+      description: 'Compare embedded Base64 data URLs with normal image files, caching, and performance tradeoffs.',
+    },
+    {
       title: 'Base64 Image Converter Guide',
       href: '/blog/base64-image-converter-guide/',
       description: 'See how Base64 encoding applies to image data URLs and small embedded assets.',
@@ -300,6 +405,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'base64-image-converter': [
     {
+      title: 'Base64 Image vs Image File',
+      href: '/blog/base64-image-vs-image-file/',
+      description: 'Learn when a Base64 image data URL is useful and when a normal image file is better.',
+    },
+    {
       title: 'Base64 Image Converter Guide',
       href: '/blog/base64-image-converter-guide/',
       description: 'Learn how Base64 image data URLs work and when embedded images are useful or risky.',
@@ -311,6 +421,16 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'timestamp-converter': [
+    {
+      title: 'Timestamp Conversion for Logs and APIs',
+      href: '/blog/timestamp-log-debugging-guide/',
+      description: 'Debug API and log timestamps by checking units, time zones, and event order.',
+    },
+    {
+      title: 'Unix Seconds vs Milliseconds',
+      href: '/blog/unix-seconds-vs-milliseconds/',
+      description: 'Learn how to detect timestamp units before converting dates from APIs, logs, or exports.',
+    },
     {
       title: 'Timestamp Batch Converter Guide',
       href: '/blog/timestamp-batch-converter-guide/',
@@ -324,6 +444,16 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'timestamp-batch-converter': [
     {
+      title: 'Timestamp Conversion for Logs and APIs',
+      href: '/blog/timestamp-log-debugging-guide/',
+      description: 'Use batch conversion to compare event sequences, exports, and mixed timestamp formats.',
+    },
+    {
+      title: 'Unix Seconds vs Milliseconds',
+      href: '/blog/unix-seconds-vs-milliseconds/',
+      description: 'Compare 10-digit second timestamps with 13-digit millisecond timestamps in batch data.',
+    },
+    {
       title: 'Timestamp Batch Converter Guide',
       href: '/blog/timestamp-batch-converter-guide/',
       description: 'Learn how to convert timestamp lists and detect seconds, milliseconds, and date strings.',
@@ -336,6 +466,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'number-base-converter': [
     {
+      title: 'Number Base Conversion for Developers',
+      href: '/blog/number-base-conversion-for-developers/',
+      description: 'See where binary, decimal, hexadecimal, and octal appear in development workflows.',
+    },
+    {
       title: 'Number Base Converter Guide',
       href: '/blog/number-base-converter-guide/',
       description: 'Learn how binary, decimal, hexadecimal, and octal represent the same numeric value.',
@@ -347,6 +482,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'uuid-generator': [
+    {
+      title: 'UUID vs Short ID vs Slug',
+      href: '/blog/uuid-vs-short-id-vs-slug/',
+      description: 'Choose the right identifier for databases, public URLs, share links, and readable paths.',
+    },
     {
       title: 'UUID vs Random String',
       href: '/blog/uuid-vs-random-string-guide/',
@@ -421,6 +561,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'css-unit-converter': [
     {
+      title: 'CSS Unit Conversion for Responsive Design',
+      href: '/blog/css-unit-conversion-responsive-design/',
+      description: 'Compare px, rem, em, percentages, and viewport units in real responsive layouts.',
+    },
+    {
       title: 'CSS Units Guide',
       href: '/blog/css-units-guide-px-em-rem-vw-vh/',
       description: 'Understand px, em, rem, vw, vh, and when to use each CSS unit.',
@@ -433,12 +578,22 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
       description: 'Learn how HEX, RGB, and HSL color formats work in web design.',
     },
     {
+      title: 'CSS Unit Conversion for Responsive Design',
+      href: '/blog/css-unit-conversion-responsive-design/',
+      description: 'Pair color tokens with scalable CSS unit choices when building frontend systems.',
+    },
+    {
       title: 'Number Base Converter Guide',
       href: '/blog/number-base-converter-guide/',
       description: 'Understand why hexadecimal appears in color channels and technical values.',
     },
   ],
   'random-number-generator': [
+    {
+      title: 'Random Test Data Generation',
+      href: '/blog/random-test-data-generation-guide/',
+      description: 'Use random ranges, batches, and edge cases for forms, tables, simulations, and QA.',
+    },
     {
       title: 'Random Number Generator Guide',
       href: '/blog/random-number-generator-guide/',
@@ -500,6 +655,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'utm-builder': [
     {
+      title: 'UTM Parameters vs Query Parameters',
+      href: '/blog/utm-parameters-vs-query-parameters/',
+      description: 'Understand how campaign tracking parameters fit inside normal URL query strings.',
+    },
+    {
       title: 'UTM Builder Guide',
       href: '/blog/utm-builder-guide/',
       description: 'Learn how UTM parameters work and how to name campaign URLs consistently.',
@@ -517,6 +677,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'url-parser': [
     {
+      title: 'UTM Parameters vs Query Parameters',
+      href: '/blog/utm-parameters-vs-query-parameters/',
+      description: 'Inspect URLs that mix page parameters, campaign tags, and encoded query values.',
+    },
+    {
       title: 'URL Query Builder Guide',
       href: '/blog/url-query-builder-guide/',
       description: 'Build clean query strings, then parse the final URL to verify the structure.',
@@ -533,6 +698,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'url-query-builder': [
+    {
+      title: 'UTM Parameters vs Query Parameters',
+      href: '/blog/utm-parameters-vs-query-parameters/',
+      description: 'Learn when to use general query parameters and when to use UTM fields for analytics.',
+    },
     {
       title: 'URL Query Builder Guide',
       href: '/blog/url-query-builder-guide/',
@@ -570,6 +740,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
   ],
   'html-formatter': [
     {
+      title: 'HTML Formatter vs HTML Minifier',
+      href: '/blog/html-formatter-vs-html-minifier/',
+      description: 'Learn when to format HTML for review and when to minify it for compact output.',
+    },
+    {
       title: 'HTML Minifier Guide',
       href: '/blog/html-minifier-guide/',
       description: 'Understand when to compact HTML after formatting and reviewing markup.',
@@ -586,6 +761,11 @@ export const relatedGuidesMap: Record<string, RelatedGuide[]> = {
     },
   ],
   'html-minifier': [
+    {
+      title: 'HTML Formatter vs HTML Minifier',
+      href: '/blog/html-formatter-vs-html-minifier/',
+      description: 'Compare readable HTML formatting with compact HTML minification workflows.',
+    },
     {
       title: 'HTML Minifier Guide',
       href: '/blog/html-minifier-guide/',

@@ -1,5 +1,5 @@
 ---
-title: 'UUID Generator Guide: What Is a UUID and How to Generate One'
+title: 'UUID Generator Guide for Developers'
 excerpt: 'Learn what UUIDs are, understand the different versions, and generate RFC-compliant UUIDs instantly with our free online tool.'
 publishDate: 2026-05-26
 category: 'Developer Tools'

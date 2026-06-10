@@ -1,5 +1,5 @@
 ---
-title: 'Text Reverser Guide: Reverse Characters, Words, and Lines'
+title: 'Text Reverser: Characters, Words, and Lines'
 excerpt: 'Learn practical uses for reversing text by characters, words, or lines, plus how to avoid mistakes with punctuation, spacing, and structured content.'
 publishDate: 2026-06-07
 category: 'Text Tools'

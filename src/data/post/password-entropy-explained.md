@@ -1,5 +1,5 @@
 ---
-title: 'Password Entropy Explained: How Strong Is Strong Enough?'
+title: 'Password Entropy: How Strong Is Enough?'
 excerpt: 'Learn what password entropy means, how length and character sets affect guessing resistance, and why random generation beats memorable patterns.'
 publishDate: 2026-06-05
 category: 'Security'

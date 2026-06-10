@@ -1,5 +1,5 @@
 ---
-title: 'UTM Builder Guide: Create Cleaner Campaign Tracking URLs'
+title: 'UTM Builder for Campaign URLs'
 excerpt: 'Learn how UTM parameters work, how to name campaign links consistently, and how to avoid common analytics tracking mistakes.'
 publishDate: 2026-06-06
 category: 'SEO'

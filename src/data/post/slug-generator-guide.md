@@ -1,5 +1,5 @@
 ---
-title: 'Slug Generator Guide: Create Clean URLs from Page Titles'
+title: 'Slug Generator: Create Clean URLs'
 excerpt: 'Learn what URL slugs are, how slug generators clean text, and how to create readable, stable, SEO-friendly slugs for pages and articles.'
 publishDate: 2026-06-07
 category: 'Text Tools'

@@ -1,5 +1,5 @@
 ---
-title: 'JSON Schema Validator Guide: Validate API Data and Config Files'
+title: 'JSON Schema Validator for APIs and Configs'
 excerpt: 'Learn how JSON Schema validation works, which rules matter most, and how to debug type, required field, enum, array, and nested object errors.'
 publishDate: 2026-06-08
 category: 'Developer Tools'

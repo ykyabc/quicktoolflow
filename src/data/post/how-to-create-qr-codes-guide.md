@@ -1,5 +1,5 @@
 ---
-title: 'How to Create QR Codes for URLs, WiFi, and Contact Details'
+title: 'Create QR Codes for URLs, WiFi, and Contacts'
 excerpt: 'Learn how to create QR codes for URLs, text, email, WiFi, and more. Understand how QR codes work, best practices, and use our free QR code generator tool.'
 publishDate: 2026-05-27
 category: 'Generators'

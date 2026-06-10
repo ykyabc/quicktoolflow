@@ -6,6 +6,48 @@ import AdBanner from '~/components/ui/AdBanner.astro';
 import { tools, categories, getFeaturedTools, getToolsByCategory } from '~/utils/tools-data';
 
 const popularTools = getFeaturedTools();
+const recentlyAddedSlugs = [
+  'json-schema-validator',
+  'html-minifier',
+  'css-minifier',
+  'base64-image-converter',
+  'timestamp-batch-converter',
+  'url-query-builder',
+];
+const recentlyAddedTools = recentlyAddedSlugs
+  .map((slug) => tools.find((tool) => tool.slug === slug))
+  .filter((tool): tool is (typeof tools)[number] => Boolean(tool));
+
+const quickPaths = [
+  {
+    title: 'Format or validate data',
+    description: 'JSON, CSV, YAML, XML, schema validation, JSON Path, and minification.',
+    href: '/tools/structured-data/',
+    icon: 'tabler:braces',
+    slugs: ['json-formatter', 'json-schema-validator', 'json-minifier', 'json-path-tester'],
+  },
+  {
+    title: 'Prepare frontend code',
+    description: 'HTML formatting, HTML/CSS minification, colors, CSS units, and page metadata.',
+    href: '/tools/frontend-design/',
+    icon: 'tabler:layout-dashboard',
+    slugs: ['html-formatter', 'html-minifier', 'css-minifier', 'color-converter'],
+  },
+  {
+    title: 'Encode, decode, and inspect',
+    description: 'Base64, Base64 images, JWTs, hashes, escaping, and URL-safe text.',
+    href: '/tools/security-encoding/',
+    icon: 'tabler:shield-lock',
+    slugs: ['base64', 'base64-image-converter', 'jwt-decoder', 'hash-generator'],
+  },
+  {
+    title: 'Build publish-ready URLs',
+    description: 'UTM links, URL query strings, URL parsing, snippets, Open Graph, and QR codes.',
+    href: '/tools/web-publishing/',
+    icon: 'tabler:world-upload',
+    slugs: ['url-query-builder', 'utm-builder', 'url-parser', 'qr-code-generator'],
+  },
+];
 const categoryRoutes: Record<string, string> = {
   text: 'text',
   developer: 'developer',
@@ -87,12 +129,89 @@ const metadata = {
               data-category={cat.slug}
               aria-pressed="false"
             >
-              {cat.name}
+              {cat.name} ({getToolsByCategory(cat.slug).length})
             </button>
           ))
         }
       </div>
     </div>
+
+    <section class="mb-10">
+      <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Find tools by task</h2>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Start from the job you are doing, then jump into the right toolkit.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {
+          quickPaths.map((path) => (
+            <a
+              href={path.href}
+              class="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
+            >
+              <div class="mb-4 flex items-center gap-3">
+                <span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                  <astro-icon name={path.icon} class="h-5 w-5" />
+                </span>
+                <h3 class="text-base font-semibold leading-5 text-gray-900 group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-300">
+                  {path.title}
+                </h3>
+              </div>
+              <p class="text-sm leading-6 text-gray-600 dark:text-gray-300">{path.description}</p>
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                {path.slugs.map((slug) => {
+                  const tool = tools.find((item) => item.slug === slug);
+                  return tool ? (
+                    <span class="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-semibold text-gray-600 dark:bg-gray-900 dark:text-gray-300">
+                      {tool.name.replace('JSON ', '').replace('Base64 ', '')}
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Recently Added</h2>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            New utilities added to strengthen developer, frontend, encoding, and URL workflows.
+          </p>
+        </div>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          recentlyAddedTools.map((tool) => (
+            <a
+              href={`/tools/${tool.slug}/`}
+              class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+            >
+              <div
+                class:list={[
+                  'mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white',
+                  tool.gradient,
+                ]}
+              >
+                <astro-icon name={tool.icon} class="h-5 w-5" />
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{tool.name}</h3>
+              <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{tool.description}</p>
+              <span class="mt-4 inline-flex rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                New
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
 
     <section class="mb-10">
       <div class="mb-4 flex items-end justify-between gap-4">

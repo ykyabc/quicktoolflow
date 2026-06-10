@@ -1,5 +1,5 @@
 ---
-title: 'SERP Snippet Preview Guide: Write Better Titles and Meta Descriptions'
+title: 'SERP Snippet Preview: Titles and Descriptions'
 excerpt: 'Learn how search result snippets work, how to write clearer page titles and meta descriptions, and why search engines may rewrite them.'
 publishDate: 2026-06-05
 category: 'SEO'

@@ -1,5 +1,5 @@
 ---
-title: 'HTML Formatter Guide: Clean Markup for Easier Review'
+title: 'HTML Formatter: Clean Markup for Review'
 excerpt: 'Learn why HTML formatting matters, how indentation reveals structure, and when minifying HTML can be useful.'
 publishDate: 2026-06-06
 category: 'Developer Tools'

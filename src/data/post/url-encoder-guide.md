@@ -1,5 +1,5 @@
 ---
-title: 'URL Encoder Guide: Percent-Encoding for Query Strings and Links'
+title: 'URL Encoder: Percent-Encoding Guide'
 excerpt: 'Learn how URL encoding works, why special characters need percent-encoding, and how to encode query parameters safely for links, APIs, and web forms.'
 publishDate: 2026-06-07
 category: 'Security'

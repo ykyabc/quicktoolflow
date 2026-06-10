@@ -1,5 +1,5 @@
 ---
-title: 'Number Base Converter Guide: Binary, Decimal, Hex, and Octal Explained'
+title: 'Number Base Converter: Binary, Decimal, Hex'
 excerpt: 'Learn how number bases work, why binary and hexadecimal matter in computing, and how to convert values safely between decimal, binary, octal, and hex.'
 publishDate: 2026-06-07
 category: 'Converters'

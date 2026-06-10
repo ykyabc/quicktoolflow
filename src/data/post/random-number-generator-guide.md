@@ -1,5 +1,5 @@
 ---
-title: 'Random Number Generator Guide: Ranges, Seeds, and Practical Use Cases'
+title: 'Random Number Generator: Ranges and Use Cases'
 excerpt: 'Learn how random number generators are used for testing, sampling, games, demos, and simulations, plus when randomness needs stronger security guarantees.'
 publishDate: 2026-06-07
 category: 'Generators'

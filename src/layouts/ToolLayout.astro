@@ -162,19 +162,19 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 ---
 
 <Layout metadata={metadata}>
-  <section class="px-4 py-6 mx-auto max-w-4xl sm:px-6 sm:py-10 lg:px-8">
+  <section class="px-3 py-4 mx-auto max-w-4xl sm:px-6 sm:py-10 lg:px-8">
     <Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools/' }, { name: title }]} />
 
-    <header class="mb-5 sm:mb-8">
+    <header class="mb-4 sm:mb-8">
       <span
-        class="inline-block text-xs font-medium tracking-wider uppercase text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full px-3 py-1 mb-3"
+        class="inline-block text-[11px] font-medium tracking-wider uppercase text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full px-3 py-1 mb-2 sm:mb-3"
       >
         {category}
       </span>
-      <h1 class="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
+      <h1 class="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-2 sm:mb-3">
         {title}
       </h1>
-      <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
+      <p class="text-sm sm:text-lg text-gray-600 dark:text-gray-400 leading-6 sm:leading-relaxed max-w-2xl">
         {description}
       </p>
       <div class="mt-5 hidden gap-3 lg:grid lg:grid-cols-3">
@@ -204,7 +204,7 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
         currentTool && (
           <a
             href={categoryUrl}
-            class="mt-4 inline-flex text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            class="mt-3 sm:mt-4 inline-flex text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
             View all {currentTool.category}
           </a>
@@ -214,39 +214,55 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
     {
       quickLinks.length > 0 && (
-        <nav
-          aria-label="Tool page sections"
-          class="mb-6 hidden gap-2 overflow-x-auto rounded-xl border border-gray-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-800 lg:flex"
-        >
-          {quickLinks.map((link) => (
-            <a
-              href={link.href}
-              class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-blue-300"
-            >
-              {link.text}
-            </a>
-          ))}
-        </nav>
+        <>
+          <nav
+            aria-label="Tool page sections"
+            class="sticky top-[57px] z-30 -mx-3 mb-4 flex gap-2 overflow-x-auto border-y border-gray-200 bg-white/95 px-3 py-2 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/95 sm:-mx-6 sm:px-6 lg:hidden"
+          >
+            {quickLinks.slice(0, 6).map((link) => (
+              <a
+                href={link.href}
+                class="shrink-0 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:bg-blue-50 hover:text-blue-700 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700 dark:hover:text-blue-300"
+              >
+                {link.text}
+              </a>
+            ))}
+          </nav>
+
+          <nav
+            aria-label="Tool page sections"
+            class="mb-6 hidden gap-2 overflow-x-auto rounded-xl border border-gray-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-800 lg:flex"
+          >
+            {quickLinks.map((link) => (
+              <a
+                href={link.href}
+                class="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-blue-300"
+              >
+                {link.text}
+              </a>
+            ))}
+          </nav>
+        </>
       )
     }
 
     {/* TOOL BODY */}
     <div
       id="tool-workspace"
-      class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm mb-8"
+      class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 sm:p-8 shadow-sm mb-6 sm:mb-8 scroll-mt-28"
     >
       <slot />
     </div>
 
     {
       nextTools.length > 0 && (
-        <section id="next-tools" class="mb-8 scroll-mt-24">
+        <section id="next-tools" class="mb-6 sm:mb-8 scroll-mt-24">
           <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div>
               <p class="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
                 Continue Workflow
               </p>
-              <h2 class="mt-1 text-xl font-bold text-gray-900 dark:text-white">Related tools to try next</h2>
+              <h2 class="mt-1 text-lg font-bold text-gray-900 dark:text-white sm:text-xl">Related tools to try next</h2>
             </div>
             <a
               href="/tools/"
@@ -256,11 +272,11 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
             </a>
           </div>
 
-          <div class="grid gap-3 sm:grid-cols-3">
+          <div class="-mx-3 flex gap-3 overflow-x-auto px-3 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0">
             {nextTools.map((tool) => (
               <a
                 href={`/tools/${tool.slug}/`}
-                class="group rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600"
+                class="group w-[78vw] max-w-72 shrink-0 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600 sm:w-auto sm:max-w-none"
               >
                 <div
                   class:list={[
@@ -281,33 +297,32 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
       )
     }
 
-    <div class="mb-8 grid grid-cols-3 gap-2 sm:hidden" aria-label="Tool privacy notes">
-      <div
-        class="flex flex-col items-center rounded-lg border border-gray-200 bg-white px-2 py-2 text-center dark:border-slate-700 dark:bg-slate-800"
-      >
-        <astro-icon name="tabler:device-laptop" class="h-4 w-4 text-blue-600 dark:text-blue-400"></astro-icon>
-        <span class="mt-1 text-[11px] font-semibold leading-4 text-gray-700 dark:text-gray-200">Browser-based</span>
-      </div>
-      <div
-        class="flex flex-col items-center rounded-lg border border-gray-200 bg-white px-2 py-2 text-center dark:border-slate-700 dark:bg-slate-800"
-      >
-        <astro-icon name="tabler:shield-lock" class="h-4 w-4 text-blue-600 dark:text-blue-400"></astro-icon>
-        <span class="mt-1 text-[11px] font-semibold leading-4 text-gray-700 dark:text-gray-200">Local</span>
-      </div>
-      <div
-        class="flex flex-col items-center rounded-lg border border-gray-200 bg-white px-2 py-2 text-center dark:border-slate-700 dark:bg-slate-800"
-      >
-        <astro-icon name="tabler:user-off" class="h-4 w-4 text-blue-600 dark:text-blue-400"></astro-icon>
-        <span class="mt-1 text-[11px] font-semibold leading-4 text-gray-700 dark:text-gray-200">No sign-up</span>
-      </div>
+    <div
+      class="mb-6 flex items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-3 py-2 text-[11px] font-semibold text-gray-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-gray-200 sm:hidden"
+      aria-label="Tool privacy notes"
+    >
+      <span class="inline-flex items-center gap-1">
+        <astro-icon name="tabler:device-laptop" class="h-3.5 w-3.5 text-blue-600 dark:text-blue-400"></astro-icon>
+        Browser
+      </span>
+      <span class="h-1 w-1 rounded-full bg-gray-300 dark:bg-slate-600"></span>
+      <span class="inline-flex items-center gap-1">
+        <astro-icon name="tabler:shield-lock" class="h-3.5 w-3.5 text-blue-600 dark:text-blue-400"></astro-icon>
+        Local
+      </span>
+      <span class="h-1 w-1 rounded-full bg-gray-300 dark:bg-slate-600"></span>
+      <span class="inline-flex items-center gap-1">
+        <astro-icon name="tabler:user-off" class="h-3.5 w-3.5 text-blue-600 dark:text-blue-400"></astro-icon>
+        No sign-up
+      </span>
     </div>
 
     <AdBanner placement="toolBottom" format="auto" />
 
     {
       examples.length > 0 && (
-        <section id="example" class="mt-12 mb-10 scroll-mt-24">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Example</h2>
+        <section id="example" class="mt-10 sm:mt-12 mb-8 sm:mb-10 scroll-mt-24">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">Example</h2>
           <div class="space-y-4">
             {examples.map((example) => (
               <article class="rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
@@ -344,8 +359,8 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
     {
       tips.length > 0 && (
-        <section id="practical-notes" class="mb-10 scroll-mt-24">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Practical Notes</h2>
+        <section id="practical-notes" class="mb-8 sm:mb-10 scroll-mt-24">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">Practical Notes</h2>
           <ul class="space-y-3 text-gray-600 dark:text-gray-400">
             {tips.map((tip) => (
               <li class="flex items-start gap-2">
@@ -359,8 +374,8 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     }
 
     {/* HOW TO USE */}
-    <section id="how-to-use" class="mt-12 mb-10 scroll-mt-24">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">How to Use</h2>
+    <section id="how-to-use" class="mt-10 sm:mt-12 mb-8 sm:mb-10 scroll-mt-24">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">How to Use</h2>
       <ol class="space-y-3 text-gray-600 dark:text-gray-400">
         {
           autoHowToSteps.map((step, index) => (
@@ -374,8 +389,8 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     </section>
 
     {/* FEATURES */}
-    <section id="features" class="mb-10 scroll-mt-24">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
+    <section id="features" class="mb-8 sm:mb-10 scroll-mt-24">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
       <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {
           autoFeatures.map((f) => (
@@ -389,8 +404,8 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     </section>
 
     {/* USE CASES */}
-    <section id="use-cases" class="mb-10 scroll-mt-24">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Use Cases</h2>
+    <section id="use-cases" class="mb-8 sm:mb-10 scroll-mt-24">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">Use Cases</h2>
       <ul class="space-y-2 text-gray-600 dark:text-gray-400">
         {
           autoUseCases.map((uc) => (
@@ -404,8 +419,10 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     </section>
 
     {/* FAQ */}
-    <section id="faq" class="mb-10 scroll-mt-24">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Frequently Asked Questions</h2>
+    <section id="faq" class="mb-8 sm:mb-10 scroll-mt-24">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
+        Frequently Asked Questions
+      </h2>
       <div class="space-y-4">
         {
           autoFaq.map((item) => (
@@ -426,8 +443,8 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
     {
       relatedGuides.length > 0 && (
-        <section id="related-guides" class="mt-12 scroll-mt-24">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Guides</h2>
+        <section id="related-guides" class="mt-10 sm:mt-12 scroll-mt-24">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">Related Guides</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {relatedGuides.map((guide) => (
@@ -450,8 +467,8 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     {/* RELATED TOOLS */}
     {
       moreRelatedTools.length > 0 && (
-        <section id="related-tools" class="mt-12 scroll-mt-24">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">More Related Tools</h2>
+        <section id="related-tools" class="mt-10 sm:mt-12 scroll-mt-24">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">More Related Tools</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {moreRelatedTools.map((tool) => (
               <ToolCard
@@ -471,6 +488,31 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
   <script type="application/ld+json" set:html={JSON.stringify(toolSchema)} is:inline />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
+  <style is:global>
+    @media (max-width: 640px) {
+      #tool-workspace input,
+      #tool-workspace select,
+      #tool-workspace textarea {
+        font-size: 16px;
+      }
+
+      #tool-workspace textarea {
+        min-height: 9rem;
+      }
+
+      #tool-workspace pre,
+      #tool-workspace textarea,
+      #tool-workspace input {
+        max-width: 100%;
+      }
+
+      #tool-workspace button,
+      #tool-workspace a[role='button'] {
+        min-height: 44px;
+        touch-action: manipulation;
+      }
+    }
+  </style>
   <script is:inline>
     function initCopyFeedback() {
       document.querySelectorAll('[data-copy-feedback="true"]').forEach((button) => {

@@ -1,5 +1,5 @@
 ---
-title: 'Lorem Ipsum Generator Guide: Placeholder Text for Layouts and Drafts'
+title: 'Lorem Ipsum for Layouts and Drafts'
 excerpt: 'Learn when lorem ipsum is useful, when real copy is better, and how to use placeholder text responsibly in wireframes, mockups, and content layouts.'
 publishDate: 2026-06-07
 category: 'Generators'

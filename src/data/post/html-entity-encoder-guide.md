@@ -1,6 +1,6 @@
 ---
-title: 'HTML Entity Encoder Guide: Escape Special Characters for Web Pages'
-excerpt: 'Learn how HTML entities work, when to encode characters like <, >, &, and quotes, and how entity encoding differs from URL encoding or JavaScript escaping.'
+title: 'HTML Entity Encoder: Escape Web Characters'
+excerpt: 'Learn how HTML entities work, when to encode angle brackets, ampersands, and quotes, and how entity encoding differs from URL encoding or JavaScript escaping.'
 publishDate: 2026-06-07
 category: 'Security'
 tags:

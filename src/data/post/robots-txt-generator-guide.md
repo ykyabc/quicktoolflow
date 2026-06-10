@@ -1,5 +1,5 @@
 ---
-title: 'Robots.txt Generator Guide: Crawl Rules, Sitemaps, and Common Mistakes'
+title: 'Robots.txt: Crawl Rules and Sitemaps'
 excerpt: 'Learn what robots.txt does, how user-agent rules work, when to use disallow paths, and why robots.txt is not a privacy tool.'
 publishDate: 2026-06-06
 category: 'SEO'

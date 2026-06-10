@@ -1,5 +1,5 @@
 ---
-title: 'URL Query Builder Guide: Build and Encode Query Parameters Correctly'
+title: 'URL Query Builder: Encode Parameters'
 excerpt: 'Learn how URL query parameters work, how encoding protects special characters, when to use repeated keys, and how query builders differ from UTM builders.'
 publishDate: 2026-06-08
 category: 'Developer Tools'

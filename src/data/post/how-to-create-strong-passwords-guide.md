@@ -1,5 +1,5 @@
 ---
-title: 'How to Create Strong Passwords: A Practical Security Guide'
+title: 'How to Create Strong Passwords'
 excerpt: 'Learn how to create truly secure passwords. Understand password entropy, common attack methods, and modern account security habits.'
 publishDate: 2025-02-10
 category: 'Security'

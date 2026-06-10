@@ -1,5 +1,5 @@
 ---
-title: 'URL Parser Guide: Understand URL Parts, Query Strings, and Hash Fragments'
+title: 'URL Parser: Parts, Queries, and Fragments'
 excerpt: 'Learn how URLs are structured, how query parameters work, and how parsing a URL helps with debugging links, APIs, and campaigns.'
 publishDate: 2026-06-06
 category: 'Developer Tools'

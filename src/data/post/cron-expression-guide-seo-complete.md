@@ -1,5 +1,5 @@
 ---
-title: 'Cron Expression Guide: Syntax, Examples, and Scheduling Patterns'
+title: 'Cron Expression Syntax and Examples'
 excerpt: 'Learn cron syntax with practical examples, special characters, common scheduling patterns, troubleshooting tips, and a browser-based cron expression generator.'
 publishDate: 2026-05-28
 category: 'Developer Tools'

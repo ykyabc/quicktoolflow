@@ -1,5 +1,5 @@
 ---
-title: 'Open Graph Preview Guide: Better Social Sharing Cards'
+title: 'Open Graph Preview for Social Cards'
 excerpt: 'Learn how Open Graph tags work, what fields matter most, and how to prepare better page previews for social platforms.'
 publishDate: 2026-06-06
 category: 'SEO'

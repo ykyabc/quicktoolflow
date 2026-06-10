@@ -1,5 +1,5 @@
 ---
-title: 'Text Diff Checker Guide: Compare Drafts, Code, and Config Changes'
+title: 'Text Diff Checker for Drafts and Code'
 excerpt: 'Learn how text diff tools work, what line-by-line comparison reveals, and how to review changes in copy, code snippets, configuration, and documentation.'
 publishDate: 2026-06-07
 category: 'Text Tools'

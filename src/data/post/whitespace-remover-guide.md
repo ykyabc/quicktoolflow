@@ -1,5 +1,5 @@
 ---
-title: 'Whitespace Remover Guide: Clean Extra Spaces, Tabs, and Line Breaks'
+title: 'Whitespace Remover: Clean Spaces and Tabs'
 excerpt: 'Learn how whitespace cleanup works, when to remove extra spaces or line breaks, and how to avoid damaging formatting in text, code, and data.'
 publishDate: 2026-06-07
 category: 'Text Tools'

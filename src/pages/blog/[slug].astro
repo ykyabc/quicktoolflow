@@ -107,6 +107,15 @@ const metadata = {
       <Content />
     </div>
 
+    <style>
+      .prose :global(pre code) {
+        color: rgb(241 245 249);
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+      }
+    </style>
+
     <RelatedResources
       slug={post.id}
       title={post.data.title}

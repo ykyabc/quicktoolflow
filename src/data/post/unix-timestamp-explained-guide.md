@@ -1,5 +1,5 @@
 ---
-title: 'Unix Timestamp Explained: Epoch Time and Conversion Examples'
+title: 'Unix Timestamp: Epoch Time Examples'
 excerpt: 'Learn what Unix timestamps are, how epoch time works, and how to convert timestamps across common programming languages.'
 publishDate: 2026-05-26
 category: 'Developer Tools'

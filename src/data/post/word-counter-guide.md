@@ -1,5 +1,5 @@
 ---
-title: 'Word Counter Guide: Count Words, Characters, and Reading Time'
+title: 'Word Counter: Words, Characters, Reading Time'
 excerpt: 'Learn how word counters work, when word count matters, how reading time is estimated, and how to use text metrics without over-optimizing your writing.'
 publishDate: 2026-06-07
 category: 'Text Tools'

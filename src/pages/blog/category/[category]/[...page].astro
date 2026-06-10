@@ -121,7 +121,10 @@ const relatedToolkits = categoryToolkits[category.slug] ?? [
 
 const metadata = {
   title: pageTitle,
-  description: `Read ${category.title.toLowerCase()} tutorials, tool guides, and practical workflow articles from QuickToolFlow.`,
+  description:
+    currentPage > 1
+      ? `Read page ${currentPage} of ${category.title.toLowerCase()} tutorials, tool guides, and practical workflow articles from QuickToolFlow.`
+      : `Read ${category.title.toLowerCase()} tutorials, tool guides, and practical workflow articles from QuickToolFlow.`,
 };
 ---
 

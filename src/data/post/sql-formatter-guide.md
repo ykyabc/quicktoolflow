@@ -1,5 +1,5 @@
 ---
-title: 'SQL Formatter Guide: Make Queries Easier to Read and Debug'
+title: 'SQL Formatter: Readable Queries'
 excerpt: 'Learn how formatting SQL improves query review, what clauses to organize, and why formatting should not replace database testing.'
 publishDate: 2026-06-06
 category: 'Developer Tools'

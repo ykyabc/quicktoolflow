@@ -1,5 +1,5 @@
 ---
-title: 'Color Conversion Guide: HEX, RGB, HSL, and CMYK Explained'
+title: 'Color Conversion: HEX, RGB, HSL, and CMYK'
 excerpt: 'Understand HEX, RGB, HSL, and CMYK color models with practical web design examples and conversion tips.'
 publishDate: 2026-05-26
 category: 'Developer Tools'

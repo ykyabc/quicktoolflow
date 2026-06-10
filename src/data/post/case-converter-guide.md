@@ -1,5 +1,5 @@
 ---
-title: 'Case Converter Guide: Change Text Case for Writing and Code'
+title: 'Case Converter for Writing and Code'
 excerpt: 'Learn how uppercase, lowercase, title case, sentence case, camelCase, snake_case, and kebab-case differ, and when each format is useful.'
 publishDate: 2026-06-07
 category: 'Text Tools'

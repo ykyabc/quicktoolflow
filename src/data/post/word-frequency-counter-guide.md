@@ -1,5 +1,5 @@
 ---
-title: 'Word Frequency Counter Guide: Find Repeated Words and Content Patterns'
+title: 'Word Frequency Counter: Repeated Words'
 excerpt: 'Learn how word frequency analysis works, how to interpret repeated terms, and how to use frequency counts for editing, SEO, and content cleanup.'
 publishDate: 2026-06-07
 category: 'Text Tools'

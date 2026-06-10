@@ -1,5 +1,5 @@
 ---
-title: 'Base64 Image Converter Guide: Data URLs, Image Embeds, and Tradeoffs'
+title: 'Base64 Image Converter: Data URL Tradeoffs'
 excerpt: 'Learn how Base64 image data URLs work, when to embed images directly, why Base64 increases size, and how to avoid common performance mistakes.'
 publishDate: 2026-06-08
 category: 'Security'

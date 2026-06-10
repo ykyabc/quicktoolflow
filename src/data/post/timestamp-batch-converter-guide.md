@@ -1,5 +1,5 @@
 ---
-title: 'Timestamp Batch Converter Guide: Convert Many Dates and Epoch Values'
+title: 'Timestamp Batch Converter for Logs and Dates'
 excerpt: 'Learn how to convert timestamp lists, detect seconds versus milliseconds, handle date strings, and debug time values in logs, APIs, and spreadsheets.'
 publishDate: 2026-06-08
 category: 'Converters'

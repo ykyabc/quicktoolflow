@@ -1,5 +1,5 @@
 ---
-title: 'CSV Formatting Guide: Clean Delimiters, Quotes, and Rows'
+title: 'CSV Formatting: Delimiters, Quotes, and Rows'
 excerpt: 'Learn how CSV formatting works, why quoting matters, how delimiters affect parsing, and how to clean spreadsheet exports before importing or converting data.'
 publishDate: 2026-06-05
 category: 'Developer Tools'
