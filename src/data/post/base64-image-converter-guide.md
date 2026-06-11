@@ -42,6 +42,8 @@ Base64 represents binary bytes using text characters. That convenience has a cos
 
 That means a 9 KB image may become roughly 12 KB of text before compression. For tiny icons this may be acceptable. For photos, screenshots, and large graphics, it usually is not.
 
+The overhead matters in two places. First, the HTML, CSS, or JSON file that contains the data URL becomes larger. Second, the image can no longer be cached as a separate asset. If the same logo appears on 20 pages as a normal image file, the browser can reuse it. If it is embedded into 20 HTML documents, each document carries its own copy.
+
 ## When Base64 Images Are Useful
 
 **Small icons**
@@ -62,6 +64,16 @@ A small background image can be embedded directly:
 **Portable documentation**
 Self-contained HTML examples can be easier to share when a small image is embedded directly.
 
+## Practical Size Guidelines
+
+There is no universal size limit, but these rules of thumb are useful:
+
+- Good candidates: tiny SVG icons, one-pixel placeholders, very small PNG badges, and small test fixtures.
+- Questionable candidates: thumbnails, repeated UI icons used across many pages, and images that may change often.
+- Poor candidates: screenshots, photos, hero images, product images, and any image that should use responsive loading.
+
+If the encoded data URL is longer than the surrounding example, it is probably hurting readability. If the image is used repeatedly, a normal file usually wins because it can be cached and replaced independently.
+
 ## When Not to Use Base64 Images
 
 Avoid Base64 for large assets. Normal image files have important advantages:
@@ -73,6 +85,19 @@ Avoid Base64 for large assets. Normal image files have important advantages:
 - They are easier to replace without editing source text.
 
 Base64 also makes diffs harder to read. A tiny image change can create a very large text change.
+
+## HTML, CSS, and JSON Tradeoffs
+
+The best context depends on why you are embedding the image:
+
+| Context | Good use                                  | Main risk                             |
+| ------- | ----------------------------------------- | ------------------------------------- |
+| HTML    | Self-contained demo, tiny inline icon     | Large markup and poor caching         |
+| CSS     | Small background icon or decorative asset | Harder stylesheet review              |
+| JSON    | Fixture or API example                    | Bloated payload and unreadable diffs  |
+| Email   | Small fallback asset                      | Client compatibility and message size |
+
+For production pages, data URLs should be intentional. If you are using a bundler, image optimizer, or CDN, let that pipeline handle normal images unless you have a clear reason to inline them.
 
 ## Base64 Is Not Encryption
 
@@ -86,6 +111,18 @@ To preview a Base64 image, the browser needs the correct MIME type. A full data 
 
 If you only have the encoded string, you need to know whether it is PNG, JPEG, WebP, GIF, or SVG before creating a preview.
 
+## Troubleshooting Broken Base64 Image Previews
+
+If a Base64 image does not preview, check these details:
+
+- The data URL should start with `data:image/...;base64,`.
+- The MIME type should match the actual image type.
+- The encoded data should not include extra spaces, quotes, or line wrapping from a document editor.
+- The string should not be URL-encoded unless the target context expects that.
+- SVG data URLs may need extra review because SVG can contain XML, CSS, and references.
+
+Plain Base64 without the `data:` prefix can still be valid, but the browser needs a MIME type before it can render the preview.
+
 ## Practical Workflow
 
 1. Start with a small image.
@@ -93,6 +130,8 @@ If you only have the encoded string, you need to know whether it is PNG, JPEG, W
 3. Check the encoded size.
 4. Test the output in the target HTML, CSS, or JSON context.
 5. Use a normal image file if the data URL becomes large.
+
+For a public site, add one more step: test the final page with browser caching and page weight in mind. A data URL can simplify deployment, but it can also make future performance work harder.
 
 ## Related QuickToolFlow Tools
 

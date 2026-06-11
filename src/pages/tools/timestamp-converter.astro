@@ -21,6 +21,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Checking whether an event time is in seconds or milliseconds',
     'Converting log entries into readable local and UTC times',
     'Preparing Unix timestamp values for tests, docs, and scripts',
+    'Debugging token expiration, cookie expiry, and scheduled job times',
+    'Comparing event order across systems that log in different time zones',
   ]}
   howToSteps={[
     'Use the live timestamp panel to see the current Unix time.',
@@ -35,11 +37,25 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: '1700000000 is interpreted as seconds.\n1700000000000 is interpreted as milliseconds.',
       note: 'A 10-digit value is usually seconds. A 13-digit value is usually milliseconds.',
     },
+    {
+      title: 'Check an expiration timestamp',
+      input: 'exp: 1735689600',
+      output: 'UTC: 2025-01-01T00:00:00.000Z',
+      note: 'Token and cookie expiration fields often use Unix seconds. Convert them before debugging authentication or session issues.',
+    },
+    {
+      title: 'Generate a timestamp for a test case',
+      input: 'Local date and time: 2026-06-11 09:00',
+      output: 'Seconds and milliseconds values for the selected local moment.',
+      note: 'Date-to-timestamp conversion is useful when writing fixtures, scheduled job tests, or API examples.',
+    },
   ]}
   tips={[
     'Unix timestamps represent a moment in UTC, not a timezone-specific calendar date.',
     'JavaScript Date.now() returns milliseconds, while many APIs and databases store seconds.',
     'When debugging time bugs, always confirm whether the source value is seconds or milliseconds.',
+    'If a converted date is decades off, the value was probably interpreted with the wrong unit.',
+    'Store timestamps consistently at system boundaries, then format them for local users only at the display layer.',
   ]}
   faq={[
     {
@@ -58,6 +74,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     {
       question: 'Is conversion done online?',
       answer: 'The conversion runs locally in your browser.',
+    },
+    {
+      question: 'Why does my timestamp show a different day locally?',
+      answer:
+        'The timestamp points to one UTC moment. Your local timezone can display that moment on a different calendar day, especially near midnight UTC.',
+    },
+    {
+      question: 'Which timestamp unit should APIs use?',
+      answer:
+        'Either seconds or milliseconds can work, but the API should document the unit clearly and use it consistently across fields.',
     },
   ]}
 >

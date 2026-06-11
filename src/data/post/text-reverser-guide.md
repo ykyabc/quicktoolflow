@@ -49,6 +49,18 @@ first
 
 The right mode depends on what you are trying to inspect or transform.
 
+## Which Reversal Mode Should You Use?
+
+| Goal                           | Best mode  | Why                                  |
+| ------------------------------ | ---------- | ------------------------------------ |
+| Reverse a short puzzle string  | Characters | Every character changes position     |
+| Put newest log lines first     | Lines      | Each row stays intact                |
+| Rearrange a phrase for testing | Words      | Words remain readable                |
+| Reverse copied table rows      | Lines      | Row structure is preserved           |
+| Test string handling code      | Characters | Helps reveal assumptions about order |
+
+Most real editing tasks use line reversal, not character reversal. Character reversal is more destructive because it changes punctuation, spacing, and sometimes symbol composition.
+
 ## Practical Use Cases
 
 Text reversal is useful for:
@@ -67,6 +79,19 @@ It is not meant for complex parsing or structured data conversion.
 Text reversal can produce surprising results when the input has punctuation, emoji, accents, code, markup, or right-to-left text. Characters that visually appear as one symbol may be built from multiple code points.
 
 If you are working with code, JSON, HTML, CSV, or YAML, use a format-specific tool instead. For example, use the [HTML Formatter](/tools/html-formatter/) for HTML and the [JSON Formatter](/tools/json-formatter/) for JSON.
+
+## Unicode and Visual Characters
+
+Some visible characters are made from more than one underlying code point. Accents, emoji, flags, skin-tone modifiers, and some scripts can behave differently from simple Latin letters.
+
+For example, a character may visually look like one symbol but internally contain:
+
+- a base letter plus an accent mark
+- a multi-code-point emoji sequence
+- a right-to-left writing mark
+- a combined flag emoji
+
+This matters most for character reversal. If a symbol looks broken after reversing, the input may contain combined Unicode characters. For plain lists and notes, line reversal is usually safer.
 
 ## Character vs Word vs Line Reversal
 
@@ -110,6 +135,28 @@ time save tools small
 
 Character reversal should be used most carefully because it changes punctuation placement and can make text unreadable.
 
+## Reversing Lists and Logs
+
+Line reversal is handy when copied text arrives in the wrong order:
+
+```text
+2026-06-10 created
+2026-06-11 reviewed
+2026-06-12 published
+```
+
+After line reversal:
+
+```text
+2026-06-12 published
+2026-06-11 reviewed
+2026-06-10 created
+```
+
+This is useful for changelogs, task lists, exported comments, copied spreadsheet rows, and chronological notes. It keeps each row intact while changing the reading order.
+
+If the content is truly tabular, review the output before pasting it back into a spreadsheet. Line reversal will not understand grouped rows, headers, merged cells, or multi-line fields.
+
 ## A Practical Workflow
 
 1. Clean copied text with the [Whitespace Remover](/tools/whitespace-remover/) if spacing is messy.
@@ -126,6 +173,19 @@ Do not use character reversal when you only need to reverse a list. Use line rev
 
 Do not assume visual symbols always reverse cleanly. Emoji and accented characters can behave differently depending on how they are represented.
 
+## When Not to Use a Text Reverser
+
+Avoid simple reversal when the input has structure that must remain valid:
+
+- JSON objects or arrays
+- HTML tags and attributes
+- CSV rows with embedded line breaks
+- YAML configuration files
+- SQL queries
+- Markdown tables
+
+For those formats, reversing text can destroy syntax. Use format-specific tools first, then copy only the plain text segment that actually needs transformation.
+
 ## Privacy Note
 
 For notes, draft copy, or copied data, browser-based text tools are helpful because the transformation can happen locally. That makes a text reverser a good fit for quick edits where opening a larger editor would slow you down.
@@ -133,3 +193,9 @@ For notes, draft copy, or copied data, browser-based text tools are helpful beca
 ## Final Tip
 
 Text reversal is best for plain text and small transformations. Choose the reversal mode intentionally, then review the result before using it in a document, page, or script.
+
+## Related Guides
+
+- [Whitespace remover guide](/blog/whitespace-remover-guide/) helps clean copied text before reversing lines or words.
+- [Case converter guide](/blog/case-converter-guide/) is useful when transformed text also needs consistent capitalization.
+- Browse related utilities in the [Text Tools collection](/tools/text/).

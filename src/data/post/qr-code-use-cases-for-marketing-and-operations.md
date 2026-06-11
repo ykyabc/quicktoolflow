@@ -107,3 +107,9 @@ However, short links add dependency on a redirect service. For long-term printed
 QR codes work best when they connect a physical context to a specific action. Start with the user moment, build the destination URL carefully, test the code on real devices, and only then print or publish it.
 
 The QR code is only the doorway. The page behind it still has to do the real work.
+
+## Related Guides
+
+- [How to create QR codes](/blog/how-to-create-qr-codes-guide/) covers QR code content types, sizing, and scanning reliability.
+- [UTM builder guide](/blog/utm-builder-guide/) helps prepare trackable campaign URLs before turning them into QR codes.
+- Browse related utilities in the [Generators collection](/tools/generators/).

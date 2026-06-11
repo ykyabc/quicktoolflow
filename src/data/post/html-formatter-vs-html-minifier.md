@@ -53,6 +53,18 @@ The result is harder to read, but smaller. Minified HTML is useful when markup i
 
 Minification is not a review step. It is a packaging step.
 
+## Quick Comparison
+
+| Question               | HTML Formatter                                    | HTML Minifier                |
+| ---------------------- | ------------------------------------------------- | ---------------------------- |
+| Main goal              | Make markup readable                              | Make markup compact          |
+| Best timing            | Before review and debugging                       | After review and testing     |
+| Output style           | Indented, multi-line HTML                         | Dense, compact HTML          |
+| Human-friendly?        | Yes                                               | Usually no                   |
+| Risk if used too early | Can hide generated output changes if not compared | Can make bugs harder to find |
+
+For most workflows, the formatter is part of the editing loop. The minifier is part of the publishing or handoff loop.
+
 ## Why Order Matters
 
 If you minify first, debugging becomes harder. You lose indentation, line structure, and visual cues. If the HTML contains a structural issue, compact output can hide it.
@@ -79,6 +91,18 @@ HTML whitespace usually collapses in normal text, but not everywhere. Whitespace
 
 A good formatter or minifier should avoid changing meaning. Still, you should preview the result when whitespace-sensitive content is involved.
 
+## Review Before You Compact
+
+Formatting gives you a chance to inspect the actual structure:
+
+- Are headings nested in the expected section?
+- Are links wrapping the right text?
+- Are attributes attached to the correct element?
+- Are closing tags matched clearly?
+- Are interactive controls inside valid parents?
+
+Once the same snippet is minified, these questions become harder to answer. If the markup came from a visual editor, CMS export, AI draft, email builder, or third-party embed, review the formatted version first.
+
 ## Attributes and Readability
 
 Formatting can make attributes easier to review. For example, a long tag with many attributes may be easier to inspect when line breaks separate concerns:
@@ -94,6 +118,20 @@ Minification collapses that back into a compact form. That is fine for output, b
 HTML often contains inline CSS, inline scripts, data attributes, and escaped strings. If you are also compacting CSS, use the [CSS Minifier](/tools/css-minifier/) for style rules instead of expecting an HTML minifier to understand every CSS-specific optimization.
 
 If you are escaping markup for JSON, JavaScript, or HTML attributes, use the [String Escape / Unescape](/tools/string-escape/) or [HTML Entity Encoder](/tools/html-entity-encoder/) depending on the context.
+
+## Build Tools vs Manual Tools
+
+Production websites often minify generated HTML through a build pipeline, framework, CDN, or static site generator. That is ideal for full pages because the source remains readable while production output is optimized automatically.
+
+Manual tools are still useful when you need to:
+
+- inspect a small snippet
+- clean copied markup before a ticket
+- prepare a compact embed
+- compare what a CMS generated
+- test whether whitespace changes visible output
+
+Do not replace your source templates with minified markup unless there is a very specific reason. Future editing becomes unnecessarily painful.
 
 ## Practical Examples
 
@@ -112,6 +150,37 @@ Use minification when:
 - preparing HTML for a build artifact
 - creating compact examples for testing
 - sending markup through a field with size limits
+
+## Common Workflow Mistakes
+
+**Minifying before validating**
+If the HTML is already hard to read, minification makes the debugging problem worse.
+
+**Using minification as security**
+Minified HTML is still visible and can be formatted again.
+
+**Forgetting inline text spacing**
+Removing a space between inline elements can change what users see.
+
+**Treating email HTML like normal webpage HTML**
+Email clients can depend on unusual comments, tables, and inline styles.
+
+**Expecting one tool to optimize everything**
+HTML, CSS, JavaScript, and escaping contexts each need the right tool.
+
+## Practical Publishing Workflow
+
+1. Format the HTML.
+2. Review structure and whitespace-sensitive text.
+3. Test rendered output.
+4. Minify only the final snippet or generated output.
+5. Keep the readable source copy for future edits.
+
+## Related Guides
+
+- [HTML formatter guide](/blog/html-formatter-guide/) walks through readable markup cleanup before review.
+- [HTML minifier guide](/blog/html-minifier-guide/) focuses on compacting final snippets safely.
+- Browse related utilities in the [Code Formatting Tools collection](/tools/code-formatting/).
 
 ## Bottom Line
 

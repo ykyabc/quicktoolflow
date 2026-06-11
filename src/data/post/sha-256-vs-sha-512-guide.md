@@ -126,6 +126,14 @@ If you can decode it without a secret key, it is not encryption. If you cannot r
 - Compare hashes in a consistent format, such as lowercase hex.
 - Include the exact algorithm name in documentation and API contracts.
 
+## Choosing Between SHA-256 and SHA-512
+
+For most web and developer workflows, SHA-256 is the practical default because it is widely supported, compact enough to share, and strong for integrity checks.
+
+SHA-512 can be appropriate when a standard, policy, or existing system requires it. It produces a longer digest, which can be less convenient in logs, URLs, and documentation.
+
+Do not switch algorithms casually. If two systems compare hashes, both sides must use the same input bytes, encoding, algorithm, and output format. A SHA-256 digest and a SHA-512 digest of the same text will never match.
+
 ## Related QuickToolFlow Tools
 
 - [Hash Generator](/tools/hash-generator/) for SHA-256, SHA-512, and SHA-1 digests.

@@ -114,6 +114,26 @@ When reviewing HTML:
 - Does minification change whitespace-sensitive content?
 - Does the final page still render correctly?
 
+## Formatting vs Validation
+
+Formatting makes HTML easier to read, but it is not the same as full validation. A formatter can indent a snippet that still has accessibility, semantics, or browser-compatibility problems.
+
+After formatting, check the meaning of the markup:
+
+- headings should follow a logical order
+- images that convey meaning need alt text
+- form inputs should have labels
+- links should have readable anchor text
+- interactive elements should not be nested incorrectly
+
+Use formatting as the first pass. Then review the page behavior in the browser, especially if the HTML came from a CMS, email builder, third-party widget, or generated template.
+
+## Related Guides
+
+- [HTML formatter vs HTML minifier](/blog/html-formatter-vs-html-minifier/) explains when to format for review and when to minify for delivery.
+- [HTML minifier guide](/blog/html-minifier-guide/) covers the final cleanup step for compact snippets.
+- Browse related utilities in the [Code Formatting Tools collection](/tools/code-formatting/).
+
 ## Related QuickToolFlow Tools
 
 - [HTML Formatter](/tools/html-formatter/) for formatting and minifying markup.

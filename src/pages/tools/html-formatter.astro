@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Reviewing landing page markup and snippets',
     'Preparing readable HTML for documentation or code review',
     'Minifying small HTML snippets for embeds and templates',
+    'Inspecting CMS output, email snippets, or copied widget markup',
+    'Reviewing nested sections before moving markup into a component',
   ]}
   howToSteps={[
     'Paste HTML into the input box.',
@@ -35,11 +37,25 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: '<div>\n  <h1>Hello</h1>\n  <p>Welcome</p>\n</div>',
       note: 'Formatting helps reveal nesting and missing closing tags more quickly.',
     },
+    {
+      title: 'Review a nested card component',
+      input: '<article><h2>Plan</h2><p>For teams</p><a href="/pricing">View</a></article>',
+      output: '<article>\n  <h2>Plan</h2>\n  <p>For teams</p>\n  <a href="/pricing">View</a>\n</article>',
+      note: 'Readable indentation makes it easier to confirm that headings, copy, and links are grouped in the right container.',
+    },
+    {
+      title: 'Minify a small embed snippet',
+      input: '<div class="badge">\n  <span>Beta</span>\n</div>',
+      output: '<div class="badge"><span>Beta</span></div>',
+      note: 'Minification is useful for short embeds, but review whitespace-sensitive content before using compact output.',
+    },
   ]}
   tips={[
     'This is a lightweight formatter for common HTML snippets, not a full browser parser.',
     'For framework templates, verify the final output in your build system.',
     'Minification may not be appropriate inside pre, textarea, or content where whitespace matters.',
+    'If formatted indentation looks wrong, check for missing closing tags or copied partial markup.',
+    'Do not minify template syntax blindly when a framework uses whitespace, directives, or server-side placeholders.',
   ]}
   faq={[
     {
@@ -55,6 +71,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     {
       question: 'Is my HTML uploaded?',
       answer: 'No. Formatting runs locally in your browser.',
+    },
+    {
+      question: 'Can this format JSX or framework templates?',
+      answer:
+        'It is intended for HTML snippets. Some JSX or template syntax may format acceptably, but framework-specific code should be checked with the formatter used by that framework.',
+    },
+    {
+      question: 'When should I minify HTML?',
+      answer:
+        'Minify only when compact output matters, such as short embeds or production delivery. Keep readable HTML while reviewing, documenting, or debugging markup.',
     },
   ]}
 >

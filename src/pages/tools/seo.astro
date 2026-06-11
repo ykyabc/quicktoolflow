@@ -44,6 +44,39 @@ const workflows = [
   },
 ];
 
+const guideLinks = [
+  {
+    title: 'SERP Snippet Preview Guide',
+    href: '/blog/serp-snippet-preview-guide/',
+    description: 'Write clearer page titles and meta descriptions before publishing or requesting indexing.',
+  },
+  {
+    title: 'Open Graph Preview Guide',
+    href: '/blog/open-graph-preview-guide/',
+    description: 'Prepare social sharing cards with the right title, description, image, and URL.',
+  },
+  {
+    title: 'Robots.txt Generator Guide',
+    href: '/blog/robots-txt-generator-guide/',
+    description: 'Understand crawler rules, disallow paths, sitemap lines, and indexing mistakes.',
+  },
+  {
+    title: 'UTM Builder Guide',
+    href: '/blog/utm-builder-guide/',
+    description: 'Create consistent campaign URLs without overwriting important analytics signals.',
+  },
+  {
+    title: 'UTM Parameters vs Query Parameters',
+    href: '/blog/utm-parameters-vs-query-parameters/',
+    description: 'Separate tracking parameters from functional URL parameters before sharing links.',
+  },
+  {
+    title: 'URL Query Builder Guide',
+    href: '/blog/url-query-builder-guide/',
+    description: 'Build clean encoded URLs for landing pages, forms, and campaign destinations.',
+  },
+];
+
 const metadata = {
   title: 'Free Online SEO Tools',
   description:
@@ -67,6 +100,36 @@ const faqItems = [
     answer:
       'SEO tools are useful for bloggers, developers, marketers, website owners, and anyone who wants to improve how pages appear in search results and social previews.',
   },
+];
+
+const auditSteps = [
+  {
+    title: 'Snippet readiness',
+    description:
+      'Check that the title, meta description, URL slug, and primary heading describe the page clearly without stuffing keywords.',
+  },
+  {
+    title: 'Social sharing metadata',
+    description:
+      'Prepare Open Graph and Twitter Card tags so links look intentional when shared in Slack, LinkedIn, X, or messaging apps.',
+  },
+  {
+    title: 'Crawl signals',
+    description:
+      'Review robots.txt, sitemap references, canonical URLs, and noindex rules before assuming a page is eligible for indexing.',
+  },
+  {
+    title: 'Content review',
+    description:
+      'Use word count, frequency checks, and text comparison to catch thin copy, repeated phrasing, and accidental draft changes.',
+  },
+];
+
+const seoMistakes = [
+  'Writing a title for search engines but a description for humans. Both should be clear to a real reader.',
+  'Using UTMs on internal links, which can overwrite the original traffic source in analytics reports.',
+  'Changing slugs after a page is indexed without planning redirects and internal link updates.',
+  'Forgetting that Open Graph previews need their own title, description, and image quality checks.',
 ];
 
 const breadcrumbSchema = {
@@ -146,6 +209,66 @@ const faqSchema = {
       </div>
     </section>
 
+    <section
+      class="mt-10 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+    >
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-600">SEO guides</p>
+          <h2 class="mt-1 text-xl font-bold text-gray-900 dark:text-white">Helpful guides</h2>
+          <p class="mt-1 hidden text-sm leading-6 text-gray-600 dark:text-gray-300 sm:block">
+            Quick reads for snippets, social previews, crawl signals, and campaign URLs.
+          </p>
+        </div>
+        <a href="/blog/category/seo/" class="text-sm font-semibold text-primary-600 hover:text-primary-700"
+          >More SEO guides</a
+        >
+      </div>
+
+      <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          guideLinks.map((guide) => (
+            <a
+              href={guide.href}
+              class="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2.5 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+            >
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+              <p class="mt-1 hidden text-xs leading-5 text-gray-600 dark:text-gray-300 sm:block">{guide.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">SEO publishing checklist</h2>
+        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+          {
+            auditSteps.map((step) => (
+              <div class="rounded-xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{step.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{step.description}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Common SEO workflow mistakes</h2>
+        <ul class="mt-5 space-y-4 text-sm leading-6 text-gray-600 dark:text-gray-300">
+          {
+            seoMistakes.map((item) => (
+              <li class="rounded-xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
     <div class="prose prose-lg mx-auto mt-16 dark:prose-invert">
       <h2>Why use online SEO tools?</h2>
       <p>
@@ -165,6 +288,21 @@ const faqSchema = {
       <p>
         These tools are useful for bloggers, website owners, developers, marketers, and anyone who wants to prepare
         better search snippets and social previews without manually writing every tag from scratch.
+      </p>
+
+      <h2>How these tools fit into an SEO workflow</h2>
+      <p>
+        The tools on this page cover the practical checks that happen around publishing: preparing metadata, previewing
+        snippets, shaping URLs, reviewing text quality, and verifying crawl-related files. They do not replace keyword
+        research, analytics, or Search Console, but they help reduce the small publishing mistakes that often keep a
+        good page from looking polished in search results.
+      </p>
+
+      <h2>When to revisit a published page</h2>
+      <p>
+        Recheck a page when its title changes, its target search intent changes, a social image is replaced, or Search
+        Console reports indexing or snippet issues. A quick metadata and text review is often faster than waiting for a
+        crawler to reveal a simple avoidable mistake.
       </p>
     </div>
   </section>

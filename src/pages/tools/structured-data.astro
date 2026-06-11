@@ -98,6 +98,8 @@ const guideGroups = [
   },
 ];
 
+const featuredGuides = guideGroups.flatMap((group) => group.guides).slice(0, 6);
+
 const faqItems = [
   {
     question: 'What are structured data tools?',
@@ -239,34 +241,28 @@ const metadata = {
       </div>
     </div>
 
-    <section class="mt-14">
-      <div class="mb-6 max-w-3xl">
-        <p class="text-sm font-semibold uppercase tracking-wide text-primary-600">Structured data guides</p>
-        <h2 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Learn the workflow behind the tools</h2>
-        <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
-          Use these guides when you need to choose a format, debug broken data, validate API payloads, or prepare
-          structured files for import.
-        </p>
+    <section class="mt-10">
+      <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary-600">Structured data guides</p>
+          <h2 class="mt-1 text-xl font-bold text-gray-900 dark:text-white">Helpful guides</h2>
+          <p class="mt-1 hidden text-sm leading-6 text-gray-600 dark:text-gray-300 sm:block">
+            Short reads for choosing formats, debugging data, and preparing imports.
+          </p>
+        </div>
+        <a href="/blog/" class="text-sm font-semibold text-primary-600 hover:text-primary-700">View all guides</a>
       </div>
 
-      <div class="grid gap-5 lg:grid-cols-3">
+      <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {
-          guideGroups.map((group) => (
-            <section class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-              <h3 class="text-lg font-bold text-gray-900 dark:text-white">{group.title}</h3>
-              <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{group.description}</p>
-              <div class="mt-5 space-y-3">
-                {group.guides.map((guide) => (
-                  <a
-                    href={guide.href}
-                    class="block rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
-                  >
-                    <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h4>
-                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
-                  </a>
-                ))}
-              </div>
-            </section>
+          featuredGuides.map((guide) => (
+            <a
+              href={guide.href}
+              class="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2.5 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+            >
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+              <p class="mt-1 hidden text-xs leading-5 text-gray-600 dark:text-gray-300 sm:block">{guide.description}</p>
+            </a>
           ))
         }
       </div>

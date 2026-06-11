@@ -167,9 +167,31 @@ They are also useful in documentation. Instead of saying "the user ID is inside 
 
 For public documentation, include both the path and a small JSON example so readers can understand the structure quickly.
 
+## Practical Debugging Workflow
+
+When a JSON Path returns no results, do not rewrite the entire expression immediately. First confirm that the JSON parses correctly. Then format the response and manually inspect the path from the root object.
+
+Work one segment at a time:
+
+```text
+$
+$.data
+$.data.items
+$.data.items[0]
+$.data.items[0].id
+```
+
+This makes it easier to find whether the problem is a missing wrapper, an array index, a case-sensitive key, or a field that exists only in some responses.
+
 ## Related QuickToolFlow Tools
 
 - [JSON Path Tester](/tools/json-path-tester/) for testing paths against JSON data.
 - [JSON Formatter & Validator](/tools/json-formatter/) for formatting and validating JSON first.
 - [JSON Minifier](/tools/json-minifier/) for compact JSON output after testing.
 - [JWT Decoder](/tools/jwt-decoder/) for inspecting JSON payloads inside tokens.
+
+## Related Guides
+
+- [Why Is My JSON Invalid?](/blog/why-is-my-json-invalid/) if the source JSON does not parse.
+- [JSON Schema Validator for APIs and Configs](/blog/json-schema-validator-guide/) when paths need to match an expected contract.
+- [Structured Data Tools](/tools/structured-data/) for related JSON, schema, CSV, YAML, and XML tools.

@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Decoding Base64 text found in logs, tokens, or data URLs',
     'Checking whether copied Base64 content decodes to readable text',
     'Preparing simple examples for documentation and tests',
+    'Inspecting the encoded header or payload section of JWT-like tokens',
+    'Testing whether a value is Base64 text or another encoded representation',
   ]}
   howToSteps={[
     'Paste plain text or a Base64 string into the input field.',
@@ -36,11 +38,25 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: 'UXVpY2tUb29sRmxvdw==',
       note: 'Base64 is often used when text needs to travel through systems that expect plain ASCII characters.',
     },
+    {
+      title: 'Decode an encoded message',
+      input: 'SGVsbG8sIFF1aWNrVG9vbEZsb3ch',
+      output: 'Hello, QuickToolFlow!',
+      note: 'Decoding is useful when logs, examples, or configuration values contain Base64 text that should be human-readable.',
+    },
+    {
+      title: 'Recognize a data URL prefix',
+      input: 'data:text/plain;base64,SGVsbG8=',
+      output: 'Decode only the Base64 part: SGVsbG8=',
+      note: 'If a value starts with a data URL prefix, remove the metadata prefix before decoding the Base64 payload.',
+    },
   ]}
   tips={[
     'Base64 is encoding, not encryption. Anyone can decode it without a password or secret key.',
     'Base64 output is usually larger than the original text because it represents binary-safe data as text.',
     'If decoding fails, check for missing padding characters, copied whitespace, or characters that are not part of the Base64 alphabet.',
+    'JWTs use Base64Url, which replaces some characters and often omits padding. Decode JWTs with a JWT-specific tool when possible.',
+    'Do not store passwords, API keys, or private tokens in Base64 and treat them as protected. Base64 can be reversed immediately.',
   ]}
   faq={[
     {
@@ -62,6 +78,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       question: 'Is my input uploaded when I encode or decode?',
       answer:
         'No. The conversion runs locally in your browser. QuickToolFlow does not receive the text you paste into this tool.',
+    },
+    {
+      question: 'What is the difference between Base64 and Base64Url?',
+      answer:
+        'Base64Url is a URL-safe variant often used in JWTs and web tokens. It replaces plus and slash characters with URL-safe alternatives and may omit padding.',
+    },
+    {
+      question: 'Why does decoded output look unreadable?',
+      answer:
+        'The original data may be binary, compressed, encrypted, or not actually Base64 text. Base64 decoding only reverses the representation; it does not decrypt or decompress content.',
     },
   ]}
 >

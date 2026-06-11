@@ -149,6 +149,12 @@ p {
 
 Need to convert between px, em, rem, vw, and vh? Use our free [CSS Unit Converter](/tools/css-unit-converter/) to convert values instantly in your browser with a live preview.
 
+## Related Guides
+
+- [CSS unit conversion for responsive design](/blog/css-unit-conversion-responsive-design/) shows how to turn unit knowledge into a practical layout workflow.
+- [Color conversion guide for web designers](/blog/color-conversion-guide-for-web-designers/) covers the color side of frontend design tokens.
+- Browse related utilities in the [Design / Frontend Tools collection](/tools/frontend-design/).
+
 ## Conclusion
 
 The best approach is to combine units strategically. Use rem for font sizes and global spacing. Use em for component-level padding and margins that should scale with text. Use px for borders and fixed-size elements. Use vw and vh for full-screen layouts and responsive typography. Understanding when to use each CSS unit will make your designs more responsive, accessible, and maintainable across all devices and screen sizes.

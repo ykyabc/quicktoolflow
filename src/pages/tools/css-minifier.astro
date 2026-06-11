@@ -31,6 +31,8 @@ const useCases = [
   'Preparing small stylesheets for demos, documentation, or static pages',
   'Reviewing how much whitespace and comments add to CSS size',
   'Switching between readable and compact CSS while debugging',
+  'Cleaning inline CSS before pasting it into CMS, email, or documentation fields',
+  'Testing whether a small stylesheet is safe to compress before moving it into a build pipeline',
 ];
 
 const examples = [
@@ -40,12 +42,27 @@ const examples = [
     output: '.card{color:#111827;padding:1rem}.card:hover{color:#2563eb}',
     note: 'The minifier removes layout whitespace and unnecessary semicolons before closing braces.',
   },
+  {
+    title: 'Preserve a license comment',
+    input: '/*! normalize.css license */\\n.button {\\n  display: inline-flex;\\n}',
+    output: '/*! normalize.css license */.button{display:inline-flex}',
+    note: 'Keep license comments enabled when a stylesheet requires attribution in the distributed file.',
+  },
+  {
+    title: 'Compact responsive CSS',
+    input: '@media (min-width: 768px) {\\n  .grid {\\n    grid-template-columns: repeat(2, 1fr);\\n  }\\n}',
+    output: '@media(min-width:768px){.grid{grid-template-columns:repeat(2,1fr)}}',
+    note: 'Media queries and function values can usually be compacted safely, but the result should still be tested in the browser.',
+  },
 ];
 
 const tips = [
   'Keep source CSS readable in your project and minify only the copy you plan to ship or embed.',
   'Use a build tool for production bundles when you need source maps, autoprefixing, and advanced optimization.',
   'Preserve license comments when required by a package or stylesheet license.',
+  'Test minified CSS with the same HTML where it will run, especially for CMS, email, or third-party embed snippets.',
+  'Do not minify templated CSS placeholders unless you know the placeholder syntax cannot be mistaken for CSS.',
+  'If a visual issue appears after minification, beautify the result and compare selectors, media queries, and custom properties first.',
 ];
 
 const faq = [
@@ -67,6 +84,16 @@ const faq = [
   {
     question: 'Is my CSS uploaded?',
     answer: 'No. The CSS is processed locally in your browser and is not uploaded to a server.',
+  },
+  {
+    question: 'Should I replace my source CSS with minified CSS?',
+    answer:
+      'Usually no. Keep readable source CSS in your project, then use minified CSS for distribution, embedding, or quick publishing workflows.',
+  },
+  {
+    question: 'Can I minify CSS variables and media queries?',
+    answer:
+      'Yes for normal CSS syntax. The tool keeps quoted strings and compact punctuation around custom properties, functions, and media queries, but you should still test the result.',
   },
 ];
 ---

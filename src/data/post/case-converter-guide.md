@@ -30,6 +30,20 @@ Different formats serve different purposes:
 
 The right choice depends on where the text will be used.
 
+## Case Format Reference
+
+| Format           | Example                | Common use                       |
+| ---------------- | ---------------------- | -------------------------------- |
+| Title Case       | `JSON Formatter Guide` | Article titles, headings         |
+| Sentence case    | `JSON formatter guide` | UI labels, descriptions          |
+| camelCase        | `jsonFormatterGuide`   | JavaScript variables             |
+| PascalCase       | `JsonFormatterGuide`   | Components, classes              |
+| snake_case       | `json_formatter_guide` | Python, databases, datasets      |
+| kebab-case       | `json-formatter-guide` | URLs, slugs, filenames           |
+| UPPER_SNAKE_CASE | `JSON_FORMATTER_GUIDE` | Constants, environment variables |
+
+This table is a starting point. Your language, framework, CMS, or style guide may have its own rules.
+
 ## Writing and Publishing Cases
 
 For regular writing, the most common choices are title case and sentence case.
@@ -81,6 +95,30 @@ For example, `JSON formatter` might become `Json Formatter` in a naive title cas
 
 After converting, scan important terms manually.
 
+## Case Conversion Is Not Semantic Editing
+
+A converter can change capitalization and separators, but it does not understand meaning the way a human editor does.
+
+For example:
+
+```text
+api url parser
+```
+
+might become:
+
+```text
+Api Url Parser
+```
+
+For developer-facing writing, the preferred version is often:
+
+```text
+API URL Parser
+```
+
+Use conversion for consistency, then review technical terms.
+
 ## Acronyms, Initialisms, and Brand Names
 
 Technical writing often includes terms such as JSON, XML, CSV, API, URL, CSS, and HTML. A naive converter may turn them into `Json`, `Xml`, or `Api`, which looks less professional in developer-facing content.
@@ -112,6 +150,42 @@ json_path_tester_guide
 
 Before turning a title into a public URL, combine the case converter with the [Slug Generator](/tools/text-to-slug/) so spaces, punctuation, and capitalization are handled consistently.
 
+## Bulk Cleanup Examples
+
+Case conversion is useful when cleaning copied lists:
+
+```text
+First Name
+Email Address
+Signup Date
+```
+
+For database-style fields:
+
+```text
+first_name
+email_address
+signup_date
+```
+
+For URL slugs:
+
+```text
+first-name
+email-address
+signup-date
+```
+
+For code constants:
+
+```text
+FIRST_NAME
+EMAIL_ADDRESS
+SIGNUP_DATE
+```
+
+If the source text also has inconsistent spacing, clean whitespace before converting. That reduces odd separators in the result.
+
 ## A Practical Workflow
 
 1. Paste text into the case converter.
@@ -132,6 +206,26 @@ Do not assume title case rules are universal. Style guides differ on small words
 
 Do not convert code identifiers without checking the language convention. `user_id`, `userId`, and `UserId` may all be correct in different systems.
 
+## Practical Review Checklist
+
+After converting, check:
+
+- acronyms such as JSON, API, URL, CSS, and HTML
+- brand names with special capitalization
+- punctuation that should be removed for filenames
+- duplicate separators such as `--` or `__`
+- leading or trailing separators
+- language-specific naming rules
+- whether the output is meant for humans or machines
+
+This quick review prevents polished-looking but subtly wrong names.
+
 ## Final Tip
 
 Case conversion is best for speed and consistency. Use it to get 95% of the way there, then do a quick human review for names, acronyms, and style-sensitive text.
+
+## Related Guides
+
+- [Slug generator guide](/blog/slug-generator-guide/) shows how converted titles become clean URL slugs.
+- [Whitespace remover guide](/blog/whitespace-remover-guide/) helps normalize copied labels before case conversion.
+- Browse related utilities in the [Text Tools collection](/tools/text/).

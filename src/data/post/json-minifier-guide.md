@@ -121,6 +121,25 @@ The space between `hello` and `world` must remain.
 **Treating minification as security**
 Minified JSON is not encrypted. Anyone can pretty-print it again.
 
+## JSON Size and Readability Tradeoff
+
+Minification is useful when JSON is transmitted, embedded, or stored as a compact artifact. It is less useful while people are reviewing the data.
+
+A clean workflow is:
+
+1. Format and validate JSON while editing.
+2. Use JSON Path or Schema tools if structure matters.
+3. Minify only the final version.
+4. Keep a readable source copy for future changes.
+
+This is especially important for configuration, examples, and API fixtures. If humans maintain the JSON, readability prevents more mistakes than minification saves.
+
+## Related Guides
+
+- [JSON formatting best practices](/blog/json-formatting-best-practices/) explains how to keep JSON readable before compacting it.
+- [Why is my JSON invalid?](/blog/why-is-my-json-invalid/) covers syntax errors that should be fixed before minification.
+- Browse related utilities in the [Code Formatting Tools collection](/tools/code-formatting/).
+
 ## Related QuickToolFlow Tools
 
 - [JSON Minifier](/tools/json-minifier/) for compact JSON output.

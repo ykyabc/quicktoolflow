@@ -17,6 +17,19 @@ Most CSV problems come from a small set of formatting issues. If you know what t
 
 The [CSV Formatter](/tools/csv-formatter/) is a useful first stop when you need to inspect rows, delimiters, and quoted fields quickly.
 
+## CSV Problem Checklist
+
+| Symptom                             | Likely cause                         |
+| ----------------------------------- | ------------------------------------ |
+| File opens as one column            | Wrong delimiter                      |
+| Values shift into the wrong columns | Unescaped comma or quote             |
+| Import creates blank records        | Empty rows                           |
+| Some rows have extra fields         | Trailing delimiters or broken quotes |
+| Names display as strange symbols    | Encoding mismatch                    |
+| JSON conversion creates odd keys    | Header problems                      |
+
+Start with the visible symptom. It usually points to the first thing to inspect.
+
 ## 1. Inconsistent Headers
 
 Headers are the closest thing CSV has to a schema. If they are missing, duplicated, or inconsistent, every later step becomes harder.
@@ -51,6 +64,19 @@ Check whether the file uses:
 
 Do not replace delimiters blindly if values may contain the same character inside quoted text.
 
+## Regional Spreadsheet Exports
+
+Some spreadsheet tools export semicolon-separated files when the locale uses comma as a decimal separator. That means a file can be "CSV-like" but not comma-separated.
+
+For example:
+
+```csv
+name;price;status
+Ada;12,50;active
+```
+
+Changing every semicolon to a comma may break decimal values or quoted text. Identify the delimiter first, then convert carefully if the destination system requires commas.
+
 ## 3. Unescaped Commas
 
 If a value contains a comma, it should be quoted:
@@ -82,6 +108,23 @@ Ada,"She said ""hello"" during the demo"
 
 This rule is easy to miss when exporting comments, product descriptions, support tickets, or copied text.
 
+## Row Length Consistency
+
+A healthy CSV usually has the same number of fields in every data row as it has headers.
+
+Example problem:
+
+```csv
+id,name,email
+1,Ada,ada@example.com
+2,Grace
+3,Linus,linus@example.com,extra
+```
+
+The second row is missing a value. The third row has an extra value. Some importers reject the whole file; others silently shift data into the wrong columns.
+
+Before importing, scan for rows that have fewer or more fields than expected.
+
 ## 5. Line Breaks Inside Fields
 
 CSV can contain line breaks inside quoted fields, but not every importer handles them well.
@@ -111,14 +154,49 @@ Names, symbols, and international characters can break when encoding is misread.
 
 Encoding issues are especially common when CSV files move between old spreadsheet software, regional systems, and web applications.
 
+## CSV to JSON Problems
+
+When CSV becomes JSON, headers usually become object keys:
+
+```csv
+first_name,email
+Ada,ada@example.com
+```
+
+becomes:
+
+```json
+[{ "first_name": "Ada", "email": "ada@example.com" }]
+```
+
+If headers contain duplicates, blanks, spaces, or inconsistent casing, the JSON output becomes harder to use. Clean headers before conversion rather than trying to repair messy object keys afterward.
+
 ## CSV Cleanup Workflow
 
 Start with headers. Make sure they are present, unique, and stable. Then check the delimiter, quoted values, row length, blank rows, and encoding. If the file will become JSON, clean the CSV first so object keys and values are predictable.
 
 When converting to JSON, the [CSV to JSON Converter](/tools/csv-to-json/) can help reveal whether headers and rows are being interpreted correctly.
 
+## Safe Import Workflow
+
+1. Keep the original export.
+2. Check headers first.
+3. Confirm the delimiter.
+4. Inspect quoted commas, quotes, and line breaks.
+5. Remove empty rows.
+6. Check row length consistency.
+7. Convert a small sample before importing the full file.
+
+This workflow is especially important for CRM imports, analytics data, product catalogs, user lists, and migration files where a shifted column can create expensive cleanup work.
+
 ## Related QuickToolFlow Tools
 
 - [CSV Formatter](/tools/csv-formatter/) for inspecting and cleaning CSV structure.
 - [CSV to JSON Converter](/tools/csv-to-json/) for checking how rows become JSON objects.
 - [JSON to CSV Converter](/tools/json-to-csv/) for converting structured JSON into spreadsheet-friendly rows.
+
+## Related Guides
+
+- [CSV Formatting: Delimiters, Quotes, and Rows](/blog/csv-formatting-guide/) for a broader cleanup workflow.
+- [CSV vs JSON for Developers](/blog/csv-vs-json-for-developers/) for choosing the right data format.
+- [Converters Tools](/tools/converters/) for related CSV, JSON, timestamp, and number conversion tools.

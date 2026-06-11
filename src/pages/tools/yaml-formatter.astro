@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Validating CI, Docker Compose, or static site config snippets',
     'Normalizing indentation after copying YAML from documentation',
     'Checking whether YAML can be parsed before converting to JSON',
+    'Reviewing frontmatter, deployment, and automation config before pushing changes',
+    'Spotting values that YAML may interpret as booleans, nulls, or numbers',
   ]}
   howToSteps={[
     'Paste YAML into the input field.',
@@ -36,11 +38,26 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: 'site:\n  name: QuickToolFlow\n  tools:\n    - JSON Formatter\n    - YAML Formatter\n',
       note: 'Consistent indentation makes YAML configuration easier to review and maintain.',
     },
+    {
+      title: 'Catch indentation drift',
+      input: 'jobs:\n build:\n  steps:\n   - run: npm test\n deploy:\n    steps:\n      - run: npm run deploy',
+      output: 'A parser error or normalized structure reveals whether build and deploy are actually siblings.',
+      note: 'YAML indentation mistakes often pass visual review but change the object structure a tool receives.',
+    },
+    {
+      title: 'Protect string-like values',
+      input: 'env:\n  FEATURE_FLAG: on\n  BUILD_ID: 0012',
+      output: 'env:\n  FEATURE_FLAG: true\n  BUILD_ID: 10\n',
+      note: 'If values such as on, off, yes, no, or leading-zero IDs must remain text, quote them before using the config.',
+    },
   ]}
   tips={[
     'YAML is indentation-sensitive, so spaces matter.',
     'Use spaces instead of tabs in YAML files.',
     'If a value looks like a boolean or number but should stay text, wrap it in quotes.',
+    'Review the formatted output before replacing a real config file because comments and original ordering may change.',
+    'Use quotes for version numbers, IDs, cron expressions, and environment variables that should stay strings.',
+    'When debugging a CI config, format a small section first instead of pasting the entire file at once.',
   ]}
   faq={[
     {
@@ -61,6 +78,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       question: 'Does formatting preserve comments?',
       answer:
         'This formatter parses and re-dumps YAML, so comments may not be preserved. Use it for cleanup and validation, not comment-preserving edits.',
+    },
+    {
+      question: 'Can formatting change YAML values?',
+      answer:
+        'Yes. YAML parsers may interpret values such as true, false, on, off, null, and numeric-looking strings as typed values. Quote values that must remain plain text.',
+    },
+    {
+      question: 'Why does valid-looking YAML still fail in my app?',
+      answer:
+        'The file may be syntactically valid but structurally wrong for that app. Formatting confirms YAML can be parsed, but the receiving tool may still require specific keys, nesting, or value types.',
     },
   ]}
 >

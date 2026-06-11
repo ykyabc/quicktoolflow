@@ -68,6 +68,18 @@ This likely changes the page view.
 
 This usually does not change the page content. It tells analytics where the visit came from.
 
+## Quick Comparison
+
+| Question               | Query parameter                     | UTM parameter                              |
+| ---------------------- | ----------------------------------- | ------------------------------------------ |
+| Main purpose           | Pass data through a URL             | Attribute traffic to a campaign            |
+| Typical keys           | `q`, `page`, `sort`, `filter`, `id` | `utm_source`, `utm_medium`, `utm_campaign` |
+| Changes page behavior? | Often yes                           | Usually no                                 |
+| Used by                | Apps, APIs, search pages, filters   | Analytics and marketing reports            |
+| Naming control         | Defined by your app or API          | Defined by campaign naming conventions     |
+
+This is why a URL can contain both. A pricing page may need `plan=team` to show the right plan and `utm_source=newsletter` to record where the visitor came from.
+
 ## Why Mixing Them Carelessly Causes Problems
 
 Campaign URLs often include both normal query parameters and UTM parameters:
@@ -86,6 +98,26 @@ This can be valid. But messy URLs create problems when:
 - fragment identifiers are placed incorrectly
 
 The safest approach is to build the base URL first, then add campaign parameters in a consistent order.
+
+## How Analytics Tools Read UTM Values
+
+Analytics systems do not understand your campaign strategy by magic. They read raw parameter values and group sessions based on those strings.
+
+If one link uses:
+
+```text
+utm_medium=email
+```
+
+and another uses:
+
+```text
+utm_medium=Email
+```
+
+some reports may treat them as separate values. The same problem happens with `paid-social`, `paid_social`, and `paidsocial`. Before publishing campaign links, decide on a shared vocabulary for sources, media, and campaign names.
+
+For teams, a short naming guide is often more valuable than a clever link builder. The tool can encode and assemble the URL, but the team still needs consistent labels.
 
 ## Encoding Still Matters
 
@@ -125,6 +157,20 @@ utm_campaign=summer-launch
 
 The exact style matters less than consistency.
 
+## Common UTM Naming Mistakes
+
+**Using the channel as the source**
+`utm_source` should usually name the platform or sender, such as `google`, `linkedin`, `newsletter`, or `partner-site`. `utm_medium` should describe the channel type, such as `cpc`, `social`, `email`, or `referral`.
+
+**Creating campaign names that are too broad**
+Values like `summer` or `launch` may be hard to interpret later. A name such as `summer-product-launch` is still readable but carries more context.
+
+**Changing names during the campaign**
+If the first week uses `spring-sale` and the second week uses `spring_sale`, reports become harder to compare. Normalize before publishing.
+
+**Adding UTMs to internal links**
+UTM tags are intended for external campaign attribution. Adding them to internal navigation can pollute analytics and make sessions look like they came from a new campaign.
+
 ## When to Use Each Tool
 
 Use the [URL Query Builder](/tools/url-query-builder/) when:
@@ -144,6 +190,20 @@ Use the [UTM Builder](/tools/utm-builder/) when:
 - avoiding missing required tracking fields
 
 Use the [URL Parser](/tools/url-parser/) after building a URL to inspect whether the path, query string, and hash fragment ended up in the right place.
+
+## Pre-Publish Checklist
+
+Before sending a campaign URL to an email tool, ad platform, or partner, check:
+
+- the base URL opens the intended page
+- existing query parameters are preserved
+- UTM values follow your team's casing and separator style
+- spaces, ampersands, and special characters are encoded
+- the hash fragment, if any, stays at the end of the URL
+- no private data or temporary tokens are included
+- the final URL still looks readable enough for review
+
+This review only takes a minute, but it prevents messy campaign reports that are difficult to repair later.
 
 ## Bottom Line
 

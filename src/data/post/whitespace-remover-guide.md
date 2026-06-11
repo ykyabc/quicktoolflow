@@ -28,6 +28,18 @@ Common whitespace characters include:
 
 Some whitespace is meaningful. Some is clutter. The goal is to remove the clutter without destroying useful structure.
 
+## Whitespace Cleanup Options
+
+| Cleanup action           | Best for                          | Risk                        |
+| ------------------------ | --------------------------------- | --------------------------- |
+| Trim line edges          | Copied lists, labels, data values | Low                         |
+| Collapse multiple spaces | Paragraphs and short text         | Can affect aligned text     |
+| Remove blank lines       | Dense notes and form fields       | Can remove paragraph rhythm |
+| Convert tabs to spaces   | Pasted spreadsheet-like text      | Can damage TSV data         |
+| Remove all line breaks   | Meta descriptions, short snippets | Bad for long-form writing   |
+
+Choose the smallest cleanup that solves the problem. Removing everything is rarely the best first move.
+
 ## Common Cleanup Tasks
 
 Whitespace cleanup often means one of these:
@@ -64,6 +76,18 @@ site:
 
 Removing indentation would break the file. For YAML, use a [YAML Formatter](/tools/yaml-formatter/) instead of blindly removing whitespace.
 
+## Spaces, Tabs, and Line Breaks Are Different
+
+Whitespace is not one thing. Tabs can separate spreadsheet columns. Line breaks can separate paragraphs or rows. Spaces can separate words or align text.
+
+For example, copied spreadsheet data may use tabs:
+
+```text
+name    email   status
+```
+
+If you collapse every tab and space, the table may become harder to inspect. If the data is structured, use CSV or table-aware tools instead of treating it as plain prose.
+
 ## Whitespace in Web Publishing
 
 Whitespace cleanup is useful before pasting content into a CMS, writing meta descriptions, preparing social posts, or normalizing copied paragraphs from PDFs and documents.
@@ -94,6 +118,20 @@ Whitespace can also affect data tasks. A trailing space in a label can make two 
 
 When cleaning data manually, trim leading and trailing spaces before comparing values. For CSV, JSON, or YAML, use format-specific tools when the structure matters.
 
+## Whitespace in SEO Text
+
+Extra spaces and line breaks can sneak into metadata, snippets, titles, and social copy. A meta description pasted from a document might contain line breaks that make it awkward to review.
+
+Before publishing SEO text:
+
+- collapse repeated spaces
+- remove accidental line breaks
+- keep intentional punctuation
+- check character length after cleanup
+- preview the final snippet when possible
+
+Use the [SERP Snippet Preview Tool](/tools/serp-snippet-preview/) after cleanup when title or description display matters.
+
 ## A Practical Cleanup Workflow
 
 1. Paste copied text into the whitespace remover.
@@ -114,6 +152,46 @@ Do not confuse whitespace cleanup with rewriting. Removing extra spaces can impr
 
 Do not normalize whitespace before saving an original copy when reviewing legal, code, or data records. Sometimes exact spacing is part of the evidence or expected format.
 
+## Practical Examples
+
+Copied PDF paragraph:
+
+```text
+This guide explains
+how whitespace cleanup
+works in copied text.
+```
+
+Cleaned for a CMS field:
+
+```text
+This guide explains how whitespace cleanup works in copied text.
+```
+
+Copied label list:
+
+```text
+  Draft
+  Review
+  Publish
+```
+
+Trimmed:
+
+```text
+Draft
+Review
+Publish
+```
+
+Small cleanups like these make later formatting and counting more reliable.
+
 ## Final Tip
 
 Whitespace cleanup is best used before publishing, comparing, or transforming text. It gives you a cleaner input, which makes every next step easier.
+
+## Related Guides
+
+- [Word counter guide](/blog/word-counter-guide/) works better after copied text has been cleaned.
+- [Text diff checker guide](/blog/text-diff-checker-guide/) helps compare the original and cleaned versions when whitespace changes matter.
+- Browse related utilities in the [Text Tools collection](/tools/text/).

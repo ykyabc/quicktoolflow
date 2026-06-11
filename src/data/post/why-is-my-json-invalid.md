@@ -47,8 +47,8 @@ JSON strings must use double quotes. Single quotes are invalid for both keys and
 
 Invalid:
 
-```json
-{ "name": "Ada" }
+```text
+{ 'name': 'Ada' }
 ```
 
 Valid:
@@ -65,8 +65,8 @@ JavaScript object literals can use unquoted keys, but JSON cannot.
 
 Invalid:
 
-```json
-{ "name": "Ada", "active": true }
+```text
+{ name: "Ada", active: true }
 ```
 
 Valid:
@@ -110,7 +110,33 @@ Valid:
 
 This also matters when embedding quotes inside strings. If a value contains a double quote, it must be escaped.
 
-## 6. Mismatched Brackets or Braces
+## 6. Invalid Values
+
+JSON only supports a small set of value types: object, array, string, number, boolean, and `null`.
+
+Invalid:
+
+```text
+{
+  "createdAt": new Date(),
+  "score": NaN,
+  "limit": undefined
+}
+```
+
+Valid:
+
+```json
+{
+  "createdAt": "2026-06-10T12:00:00Z",
+  "score": null,
+  "limit": 10
+}
+```
+
+Values such as `undefined`, `NaN`, functions, dates, and comments may appear in JavaScript code, but they are not valid JSON values.
+
+## 7. Mismatched Brackets or Braces
 
 Large JSON responses often fail because an array or object was not closed correctly. Formatting helps because indentation makes nesting visible.
 
@@ -126,7 +152,7 @@ Invalid:
 
 The array started with `[` but was never closed with `]`.
 
-## 7. Valid JSON, Wrong Data
+## 8. Valid JSON, Wrong Data
 
 Sometimes the JSON is valid but still not acceptable to an application. For example:
 
@@ -139,6 +165,17 @@ Sometimes the JSON is valid but still not acceptable to an application. For exam
 
 This parses correctly, but `count` may be the wrong type and `email` may not match the expected format. In that case, syntax validation is not enough. Use the [JSON Schema Validator](/tools/json-schema-validator/) to check the data shape against a schema.
 
+## Syntax Validation vs Schema Validation
+
+| Check       | Question it answers                            | Tool                       |
+| ----------- | ---------------------------------------------- | -------------------------- |
+| JSON syntax | Can a parser read this document?               | JSON Formatter & Validator |
+| JSON schema | Does the data match expected fields and types? | JSON Schema Validator      |
+| JSON path   | Can I find a nested value after parsing?       | JSON Path Tester           |
+| Conversion  | Can the data become CSV or YAML cleanly?       | JSON to CSV / JSON to YAML |
+
+Start with syntax. If the JSON cannot parse, schema validation cannot run reliably.
+
 ## Debugging Workflow
 
 First, validate the raw JSON. If it does not parse, fix syntax problems such as commas, quotes, comments, escapes, and brackets.
@@ -149,8 +186,30 @@ Third, check whether the data matches the expected contract. Look at required fi
 
 Finally, if the JSON will be converted to another format, such as CSV or YAML, validate before conversion. A clean source document makes every later step easier.
 
+## Fast Error-Spotting Checklist
+
+When JSON fails, scan for:
+
+- a comma after the last item
+- single quotes
+- unquoted keys
+- comments copied from JavaScript or JSONC
+- raw line breaks inside strings
+- unsupported values such as `undefined`
+- missing closing `]` or `}`
+- Windows paths with unescaped backslashes
+- text copied with smart quotes instead of normal quotes
+
+Most invalid JSON issues are in this list. Once these are fixed, deeper data-shape problems are usually easier to diagnose.
+
 ## Related QuickToolFlow Tools
 
 - [JSON Formatter & Validator](/tools/json-formatter/) for finding syntax errors and formatting valid JSON.
 - [JSON Schema Validator](/tools/json-schema-validator/) for checking whether valid JSON matches an expected structure.
 - [JSON Path Tester](/tools/json-path-tester/) for querying nested values after the JSON parses correctly.
+
+## Related Guides
+
+- [JSON Formatting Best Practices](/blog/json-formatting-best-practices/) for review workflows after the syntax is fixed.
+- [JSON Schema Validator for APIs and Configs](/blog/json-schema-validator-guide/) for checking valid JSON against required fields.
+- [Structured Data Tools](/tools/structured-data/) for related JSON, schema, path, CSV, YAML, and XML tools.

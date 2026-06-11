@@ -16,6 +16,8 @@ const features = [
   'Includes a sample payload and schema for quick testing',
   'Runs locally in your browser without uploading data',
   'Copy a plain-text validation report for debugging or review',
+  'Useful for quick API contract checks before writing automated tests',
+  'Helps separate syntax errors from data-shape errors',
 ];
 
 const howToSteps = [
@@ -31,6 +33,8 @@ const useCases = [
   'Reviewing fixture data for tests and documentation',
   'Validating config-like JSON before committing changes',
   'Debugging required fields, nested properties, arrays, and enums',
+  'Confirming webhook payloads contain the fields your integration expects',
+  'Reviewing sample API documentation before sharing it with consumers',
 ];
 
 const examples = [
@@ -41,6 +45,20 @@ const examples = [
       '{\n  "type": "object",\n  "required": ["id", "email"],\n  "properties": {\n    "id": { "type": "integer" },\n    "email": { "type": "string", "pattern": "^[^@]+@[^@]+\\\\.[^@]+$" },\n    "roles": { "type": "array", "items": { "type": "string" } }\n  }\n}',
     note: 'The validator reports whether required fields exist and whether nested values match the expected type and constraints.',
   },
+  {
+    title: 'Detect a string where a number is expected',
+    input: '{\n  "sku": "plan-pro",\n  "price": "29.00"\n}',
+    output:
+      '{\n  "type": "object",\n  "required": ["sku", "price"],\n  "properties": {\n    "sku": { "type": "string" },\n    "price": { "type": "number" }\n  }\n}',
+    note: 'The JSON syntax is valid, but schema validation can still flag type drift that would break calculations or database imports.',
+  },
+  {
+    title: 'Limit status values with enum',
+    input: '{\n  "id": "order_123",\n  "status": "processing"\n}',
+    output:
+      '{\n  "type": "object",\n  "properties": {\n    "status": { "type": "string", "enum": ["draft", "paid", "shipped", "cancelled"] }\n  }\n}',
+    note: 'Enum checks are useful when API clients should only accept a controlled set of states.',
+  },
 ];
 
 const tips = [
@@ -48,6 +66,8 @@ const tips = [
   'Validate small representative samples first. Large payloads are easier to debug after you reduce them to the failing branch.',
   'Use JSON Formatter before schema validation when pasted data may contain syntax errors.',
   'Pattern rules are interpreted as JavaScript regular expressions, so escape backslashes carefully in JSON strings.',
+  'Use required for fields that must exist, then add minLength, minimum, or enum rules when values also need constraints.',
+  'When a schema feels noisy, start with only the fields your application truly depends on and expand from there.',
 ];
 
 const faq = [
@@ -70,6 +90,16 @@ const faq = [
     question: 'Should I format JSON before validating it?',
     answer:
       'Yes. Formatting first makes syntax errors, missing commas, and nesting problems easier to spot before schema-level validation begins.',
+  },
+  {
+    question: 'What is the difference between required and non-empty?',
+    answer:
+      'The required keyword means a property must exist. It does not always mean the value is useful. Add rules such as minLength, minimum, minItems, or enum when empty or out-of-range values should fail.',
+  },
+  {
+    question: 'Can schema validation replace API tests?',
+    answer:
+      'No. Schema validation is a strong boundary check, but API tests should still cover behavior, authorization, error states, pagination, and business rules.',
   },
 ];
 ---

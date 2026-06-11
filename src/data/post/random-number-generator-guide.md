@@ -28,6 +28,19 @@ Random numbers are useful for:
 
 For security-sensitive values, use a dedicated tool such as the [Password Generator](/tools/password-generator/) or [UUID Generator](/tools/uuid-generator/) instead.
 
+## Use Case Table
+
+| Goal                      | Recommended approach                |
+| ------------------------- | ----------------------------------- |
+| Simulate a die roll       | Integer range `1-6`                 |
+| Create percentage samples | Integer or decimal range `0-100`    |
+| Generate chart demo data  | Batch numbers with realistic bounds |
+| Pick a random index       | Integer range matching list length  |
+| Create a secret           | Use a password or token generator   |
+| Create a public unique ID | Use UUIDs                           |
+
+Random numbers are flexible, but the range and output type should match the job.
+
 ## Integers vs Decimals
 
 An integer has no decimal part:
@@ -58,6 +71,20 @@ Generate an integer from 1 to 100, inclusive.
 
 That removes ambiguity.
 
+## Off-by-One Errors
+
+Random number code often fails at the boundaries. A function may include the minimum but exclude the maximum, or it may round decimals in a way that changes distribution.
+
+When writing examples or tests, verify:
+
+- can the minimum appear?
+- can the maximum appear?
+- are decimals allowed?
+- is rounding applied before or after range selection?
+- does the generated value match the expected type?
+
+This matters for simulations, games, pagination tests, and documentation examples.
+
 ## Repeated Values and Uniqueness
 
 Random generation does not automatically mean unique values. If you generate enough numbers in a small range, duplicates are expected.
@@ -72,11 +99,31 @@ Random values are helpful for testing interfaces and sample data, but they can a
 
 For serious automated tests, deterministic fixtures are often better than fully random input. For quick manual testing, random generation is fast and convenient.
 
+## Random Samples for UI Testing
+
+Random numbers can expose layout issues when you generate a realistic spread:
+
+- very small values
+- very large values
+- zero values
+- negative values if allowed
+- long decimals
+- repeated values
+- values near thresholds
+
+For dashboards and charts, a flat list of neat values may not reveal problems. Include spikes, gaps, and uneven ranges.
+
 ## Seeds and Repeatability
 
 Some random generators support seeds. A seed lets the same sequence be reproduced later. This is useful in simulations, demos, and tests where you want random-looking data but still need repeatable results.
 
 If a generator does not expose a seed, save the generated values when they matter. A bug report with the exact value is much easier to investigate than a report that only says "a random number broke it."
+
+## Random Is Not Fair by Default
+
+Randomness can produce clusters and repeats. Seeing the same number twice does not mean the generator is broken.
+
+If you need no repeats, you need sampling without replacement. If you need weighted results, you need a weighted selection method. If you need fairness for a contest or audit, document the process and use appropriate tools.
 
 ## Randomness and Security
 
@@ -104,6 +151,25 @@ Do not forget range boundaries. Off-by-one mistakes are common in code and examp
 
 Do not rely on random values alone for repeatable tests. Save the value that caused a failure.
 
+## Practical Review Checklist
+
+Before using generated random numbers, ask:
+
+- is the range realistic?
+- are boundaries included correctly?
+- do duplicates matter?
+- is repeatability needed?
+- is this casual testing or security-sensitive?
+- should the output be integer, decimal, CSV, or JSON?
+
+For structured sample data, combine generated numbers with the [CSV Formatter](/tools/csv-formatter/) or [JSON Formatter & Validator](/tools/json-formatter/) to keep the surrounding data valid.
+
 ## Final Tip
 
 Random number generators are excellent for quick practical work. Just separate casual randomness from security randomness, and choose the right tool for the job.
+
+## Related Guides
+
+- [Random test data generation guide](/blog/random-test-data-generation-guide/) shows how generated values fit into practical QA workflows.
+- [UUID generator guide for developers](/blog/uuid-generator-guide-for-developers/) is a better fit when uniqueness matters more than numeric range.
+- Browse related utilities in the [Generators collection](/tools/generators/).

@@ -2,7 +2,6 @@
 import Layout from '~/layouts/Layout.astro';
 import Breadcrumb from '~/components/ui/Breadcrumb.astro';
 import AdBanner from '~/components/ui/AdBanner.astro';
-import ToolCard from '~/components/ui/ToolCard.astro';
 import { getRelatedTools, tools } from '~/utils/tools-data';
 import { getRelatedGuides } from '~/utils/related-guides';
 
@@ -142,10 +141,10 @@ const breadcrumbSchema = {
   ],
 };
 
-const relatedTools = getRelatedTools(slug, 6);
+const relatedTools = getRelatedTools(slug, 7);
 const nextTools = relatedTools.slice(0, 3);
-const moreRelatedTools = relatedTools.slice(3);
-const relatedGuides = getRelatedGuides(slug);
+const moreRelatedTools = relatedTools.slice(3, 7);
+const relatedGuides = getRelatedGuides(slug).slice(0, 4);
 const quickLinks = [
   { text: 'Tool', href: '#tool-workspace', show: true },
   { text: 'Next Tools', href: '#next-tools', show: nextTools.length > 0 },
@@ -443,20 +442,25 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
 
     {
       relatedGuides.length > 0 && (
-        <section id="related-guides" class="mt-10 sm:mt-12 scroll-mt-24">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">Related Guides</h2>
+        <section id="related-guides" class="mt-8 sm:mt-10 scroll-mt-24">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Related Guides</h2>
+            <a href="/blog/" class="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400">
+              More
+            </a>
+          </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {relatedGuides.map((guide) => (
               <a
                 href={guide.href}
-                class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                class="rounded-lg border border-gray-200 bg-white px-3 py-2.5 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
               >
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
 
-                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{guide.description}</p>
-
-                <span class="mt-4 inline-flex text-sm font-semibold text-blue-600 dark:text-blue-400">Read guide</span>
+                <p class="mt-1 hidden text-xs leading-5 text-gray-600 dark:text-gray-400 sm:block">
+                  {guide.description}
+                </p>
               </a>
             ))}
           </div>
@@ -467,17 +471,34 @@ const metadata = { title, description, canonical, robots: { index: true, follow:
     {/* RELATED TOOLS */}
     {
       moreRelatedTools.length > 0 && (
-        <section id="related-tools" class="mt-10 sm:mt-12 scroll-mt-24">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">More Related Tools</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <section id="related-tools" class="mt-8 sm:mt-10 scroll-mt-24">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">More Related Tools</h2>
+            <a href="/tools/" class="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400">
+              All tools
+            </a>
+          </div>
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {moreRelatedTools.map((tool) => (
-              <ToolCard
-                slug={tool.slug}
-                name={tool.name}
-                description={tool.description}
-                icon={tool.icon}
-                gradient={tool.gradient}
-              />
+              <a
+                href={`/tools/${tool.slug}/`}
+                class="flex items-start gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2.5 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+              >
+                <span
+                  class:list={[
+                    'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-sm',
+                    tool.gradient,
+                  ]}
+                >
+                  <astro-icon name={tool.icon} class="h-4 w-4" />
+                </span>
+                <span>
+                  <span class="block text-sm font-semibold text-gray-900 dark:text-white">{tool.name}</span>
+                  <span class="mt-1 hidden text-xs leading-5 text-gray-600 dark:text-gray-400 sm:block">
+                    {tool.description}
+                  </span>
+                </span>
+              </a>
             ))}
           </div>
         </section>

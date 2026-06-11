@@ -53,6 +53,11 @@ const guideLinks = [
     description: 'Create QR codes for URLs, WiFi, contact details, and common sharing workflows.',
   },
   {
+    title: 'QR Code Use Cases',
+    href: '/blog/qr-code-use-cases-for-marketing-and-operations/',
+    description: 'Plan QR codes for campaigns, print materials, asset labels, and field operations.',
+  },
+  {
     title: 'Password Entropy Explained',
     href: '/blog/password-entropy-explained/',
     description: 'Learn how length, randomness, and character pools affect password strength.',
@@ -61,6 +66,16 @@ const guideLinks = [
     title: 'UUID Generator Guide',
     href: '/blog/uuid-generator-guide-for-developers/',
     description: 'Understand when UUIDs are useful for identifiers, databases, tests, and public IDs.',
+  },
+  {
+    title: 'Random Test Data Guide',
+    href: '/blog/random-test-data-generation-guide/',
+    description: 'Generate realistic values for QA, demos, screenshots, and edge-case testing.',
+  },
+  {
+    title: 'UUID vs Random String',
+    href: '/blog/uuid-vs-random-string-guide/',
+    description: 'Choose the right generated value for identifiers, secrets, public IDs, and tokens.',
   },
 ];
 
@@ -71,6 +86,31 @@ const checklist = [
   'Match placeholder image dimensions to the expected final asset ratio.',
   'Test QR code destinations before using them in print or public campaigns.',
   'Keep generated demo data clearly separate from production data.',
+];
+
+const generatorTypes = [
+  {
+    title: 'Security-sensitive output',
+    description:
+      'Use password tools for account credentials and review length, randomness, and storage. Do not use casual random numbers as secrets.',
+  },
+  {
+    title: 'Identifiers and test data',
+    description:
+      'Use UUIDs, random values, and placeholders when you need stable examples for tests, demos, prototypes, or documentation.',
+  },
+  {
+    title: 'Publishing and sharing assets',
+    description:
+      'Use QR codes, slugs, lorem text, and image placeholders when preparing pages, mockups, or printable materials.',
+  },
+];
+
+const generatorRisks = [
+  'A generated password is only useful if it is stored in a password manager and not shared in chat or screenshots.',
+  'A UUID is unique enough for identifiers, but it should not be treated as a secret access token.',
+  'A QR code should always be scanned and tested before it is printed or sent to customers.',
+  'Placeholder text and images should be clearly replaced before publishing a final page.',
 ];
 
 const metadata = {
@@ -193,20 +233,56 @@ const faqSchema = {
       </div>
 
       <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Generator guides</h2>
-        <div class="mt-5 grid gap-3">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white">Helpful guides</h2>
+          <a href="/blog/category/generators/" class="text-sm font-semibold text-primary-600 hover:text-primary-700"
+            >More</a
+          >
+        </div>
+        <div class="mt-4 grid gap-2">
           {
-            guideLinks.map((guide) => (
+            guideLinks.slice(0, 6).map((guide) => (
               <a
                 href={guide.href}
-                class="rounded-xl border border-gray-100 bg-gray-50 p-4 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+                class="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2.5 transition hover:border-primary-200 hover:bg-primary-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
               >
                 <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{guide.description}</p>
+                <p class="mt-1 hidden text-xs leading-5 text-gray-600 dark:text-gray-300 sm:block">
+                  {guide.description}
+                </p>
               </a>
             ))
           }
         </div>
+      </div>
+    </section>
+
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Pick the right generator</h2>
+        <div class="mt-5 grid gap-4">
+          {
+            generatorTypes.map((item) => (
+              <div class="rounded-xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{item.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">{item.description}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Review before using generated output</h2>
+        <ul class="mt-5 space-y-3">
+          {
+            generatorRisks.map((item) => (
+              <li class="rounded-xl border border-gray-100 bg-gray-50 p-4 text-sm leading-6 text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                {item}
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </section>
 
@@ -227,6 +303,21 @@ const faqSchema = {
       <p>
         Yes. Each generator is designed to be simple, fast, and browser-based. You can adjust the options you need,
         generate the result, then copy or use it immediately.
+      </p>
+
+      <h2>When generated output needs extra review</h2>
+      <p>
+        Generated values are fast, but they are not automatically appropriate for every context. Passwords need secure
+        storage, QR codes need device testing, IDs need collision and privacy considerations, and placeholder content
+        needs to be replaced before a real launch. Treat generators as a starting point, then review the output against
+        the workflow where it will be used.
+      </p>
+
+      <h2>Generators for prototypes, tests, and operations</h2>
+      <p>
+        Developers can use generated IDs, random numbers, and sample content for repeatable tests. Designers can use
+        placeholder text and images for layout exploration. Operations and marketing teams can use QR codes and slugs
+        for campaigns, print materials, and internal documentation.
       </p>
     </div>
   </section>

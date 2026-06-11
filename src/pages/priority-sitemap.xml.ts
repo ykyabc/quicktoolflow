@@ -7,7 +7,6 @@ const priorityUrls = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
   { path: '/tools/', priority: '0.95', changefreq: 'weekly' },
   { path: '/blog/', priority: '0.85', changefreq: 'weekly' },
-  { path: '/blog/category/', priority: '0.75', changefreq: 'weekly' },
 
   { path: '/tools/structured-data/', priority: '0.95', changefreq: 'weekly' },
   { path: '/tools/code-formatting/', priority: '0.9', changefreq: 'weekly' },

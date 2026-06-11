@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Tracking social media posts in analytics tools',
     'Creating tagged links for paid search or affiliate campaigns',
     'Standardizing campaign URLs before sharing them with a team',
+    'Creating separate links for hero buttons, footer links, and banner placements in the same campaign',
+    'Checking that paid, email, social, and partner links use consistent naming before launch',
   ]}
   howToSteps={[
     'Enter the destination URL for your campaign.',
@@ -36,11 +38,28 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: 'https://example.com/pricing?utm_source=newsletter&utm_medium=email&utm_campaign=spring_launch',
       note: 'Consistent UTM values make campaign reports easier to group and compare.',
     },
+    {
+      title: 'Compare two placements in one campaign',
+      input: 'URL: https://example.com/demo\nSource: linkedin\nMedium: social\nCampaign: q2_demo\nContent: hero_card',
+      output:
+        'https://example.com/demo?utm_source=linkedin&utm_medium=social&utm_campaign=q2_demo&utm_content=hero_card',
+      note: 'Use utm_content to distinguish placements, creatives, or links that point to the same destination.',
+    },
+    {
+      title: 'Track paid search terms',
+      input: 'URL: https://example.com/signup\nSource: google\nMedium: cpc\nCampaign: brand_search\nTerm: online tools',
+      output:
+        'https://example.com/signup?utm_source=google&utm_medium=cpc&utm_campaign=brand_search&utm_term=online+tools',
+      note: 'utm_term is most useful for paid search or keyword-level campaign analysis.',
+    },
   ]}
   tips={[
     'Use lowercase and consistent naming for source, medium, and campaign values.',
     'Avoid changing UTM naming conventions halfway through a campaign.',
     'Do not tag internal links with UTM parameters because they can overwrite attribution data.',
+    'Choose one naming style such as spring_launch or spring-launch, then keep it consistent across every channel.',
+    'Use utm_content for placement or creative differences, not as a second campaign name.',
+    'Test the final URL before publishing so redirects, anchors, and existing query parameters are preserved correctly.',
   ]}
   faq={[
     {
@@ -57,6 +76,26 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       question: 'Does this shorten URLs?',
       answer:
         'No. It builds the tagged URL. You can paste the generated result into your preferred shortener if needed.',
+    },
+    {
+      question: 'What is the difference between source and medium?',
+      answer:
+        'Source identifies where the click came from, such as newsletter, google, linkedin, or partner-site. Medium identifies the channel type, such as email, cpc, social, referral, or affiliate.',
+    },
+    {
+      question: 'When should I use utm_content?',
+      answer:
+        'Use utm_content to compare links inside the same campaign, such as hero_button versus footer_link, image_ad versus text_ad, or variant_a versus variant_b.',
+    },
+    {
+      question: 'Should internal site links use UTMs?',
+      answer:
+        'Usually no. Internal UTMs can overwrite the original acquisition source in analytics reports. Use internal event tracking or link IDs instead.',
+    },
+    {
+      question: 'Can I add custom parameters with UTMs?',
+      answer:
+        'Yes. The custom parameter field supports key=value pairs for extra tracking values, but keep custom names consistent and avoid personal or sensitive data.',
     },
   ]}
 >

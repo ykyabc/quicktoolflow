@@ -99,6 +99,17 @@ Use a slug when:
 - SEO and user clarity matter
 - you can handle duplicate slugs
 
+## Comparison Table
+
+| Identifier type | Best for                                        | Strength                           | Main risk                            |
+| --------------- | ----------------------------------------------- | ---------------------------------- | ------------------------------------ |
+| UUID            | Records, objects, distributed systems           | Very low collision risk            | Long and hard to read                |
+| Short ID        | Share codes, invite links, temporary references | Compact and easy to type           | Collisions and guessing if too short |
+| Slug            | Articles, docs, products, category URLs         | Human-readable and SEO-friendly    | Not unique by itself                 |
+| Secret token    | Password resets, private links, access grants   | Can be generated with high entropy | Must be stored and expired carefully |
+
+This distinction helps avoid a common design mistake: using one string format for every job. A UUID can identify a record, a slug can describe a page, and a secret token can authorize a temporary action.
+
 ## Combining Identifiers
 
 Many systems combine a readable slug with a stable ID:
@@ -109,8 +120,60 @@ Many systems combine a readable slug with a stable ID:
 
 This gives humans a useful URL while the system still has a stable unique reference. Another pattern is to use the slug for display and the database ID internally.
 
+## Collision Handling
+
+Every identifier system needs a plan for duplicates. UUID collisions are extremely unlikely in normal use, but short IDs and slugs need explicit checks.
+
+For slugs, a CMS might generate:
+
+```text
+json-formatting-best-practices
+json-formatting-best-practices-2
+json-formatting-best-practices-3
+```
+
+For short IDs, the application should generate a candidate, check whether it already exists, and retry if needed. The shorter the ID, the more important that retry logic becomes.
+
+Do not rely on visual uniqueness. Two strings can look different to developers but confusing to users, especially if they mix `0` and `O`, `1` and `l`, or uppercase and lowercase letters.
+
+## SEO and URL Stability
+
+Slugs are visible in search results, browser history, shared links, and documentation. A clean slug can reinforce the page topic:
+
+```text
+/blog/css-minifier-guide/
+```
+
+That is easier to understand than:
+
+```text
+/blog/post?id=839201/
+```
+
+However, changing slugs after publication can break links and reset accumulated signals if redirects are missing. If you update a title later, do not automatically change the slug unless the old URL redirects cleanly to the new one.
+
+The [Slug Generator](/tools/text-to-slug/) is useful for creating consistent candidates, but the final publishing workflow should also check duplicates, redirects, and internal links.
+
+## Security Notes
+
+A short public ID is not the same thing as a permission check. For example, this kind of URL may be convenient:
+
+```text
+/share/a8K2pQ
+```
+
+But if anyone with the link can see private data, the application still needs expiration, rate limiting, access controls, or signed tokens depending on the risk.
+
+UUIDs are also not secret. They are harder to guess than sequential numbers, but they should not replace authorization.
+
 ## Bottom Line
 
 UUIDs are for uniqueness. Short IDs are for compact sharing. Slugs are for readable URLs. Secret tokens are a separate category.
 
 Pick the identifier based on the risk and workflow, not just the shape of the string.
+
+## Related Guides
+
+- [UUID generator guide for developers](/blog/uuid-generator-guide-for-developers/) explains when UUIDs are the right default identifier.
+- [Slug generator guide](/blog/slug-generator-guide/) focuses on readable, stable URLs for public pages.
+- Browse related utilities in the [Generators collection](/tools/generators/).

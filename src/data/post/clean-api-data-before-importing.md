@@ -100,6 +100,14 @@ Before importing API data, confirm:
 - Dates, IDs, and empty values have been reviewed.
 - The converted file opens correctly before final import.
 
+## Test With a Small Sample First
+
+Before importing a full API export, convert and import a small representative sample. Include normal records, empty fields, long text, nested objects, arrays, unusual characters, and date values.
+
+This smaller test helps you catch mapping problems before they affect hundreds or thousands of rows. It also gives you a chance to confirm how the destination handles missing values, duplicate IDs, type coercion, and leading zeros.
+
+After the sample import succeeds, compare the record count and a few individual fields against the source response. Do not rely only on a successful import message.
+
 ## Related QuickToolFlow Tools
 
 - [JSON Formatter & Validator](/tools/json-formatter/) for validating and formatting raw API responses.

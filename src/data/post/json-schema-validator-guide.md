@@ -126,3 +126,9 @@ A good schema is specific enough to catch mistakes but not so rigid that harmles
 - [JSON Formatter & Validator](/tools/json-formatter/) for parsing and formatting JSON.
 - [JSON Path Tester](/tools/json-path-tester/) for inspecting nested values.
 - [JSON Minifier](/tools/json-minifier/) for compact JSON output after validation.
+
+## Related Guides
+
+- [JSON Schema vs JSON Validation](/blog/json-schema-vs-json-validation/) for understanding where schema checks fit.
+- [JSON Schema for API Validation](/blog/json-schema-for-api-validation/) for API contract examples.
+- [Structured Data Tools](/tools/structured-data/) for the full JSON and schema workflow.

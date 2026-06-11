@@ -152,9 +152,32 @@ Be careful with:
 
 When converting CSV to JSON, decide whether values should remain strings or become numbers and booleans.
 
+## Pre-Import CSV Checklist
+
+Before sending a CSV file into a CRM, database, spreadsheet, or analytics tool, check a small sample and the full file shape.
+
+Look for:
+
+- unique headers
+- consistent delimiter use
+- the same number of columns per row
+- quoted values that contain commas
+- escaped quotes inside text fields
+- UTF-8 characters displaying correctly
+- empty rows at the end of the file
+- formula-like values if the file will open in a spreadsheet
+
+This quick review can prevent shifted columns, duplicate fields, and silent data loss.
+
 ## Related QuickToolFlow Tools
 
 - [CSV Formatter](/tools/csv-formatter/) for normalizing delimited data.
 - [CSV to JSON Converter](/tools/csv-to-json/) for turning CSV rows into JSON arrays.
 - [JSON to CSV Converter](/tools/json-to-csv/) for exporting JSON to spreadsheet-friendly CSV.
 - [Text Diff Checker](/tools/text-diff/) for comparing cleaned CSV against the original.
+
+## Related Guides
+
+- [Common CSV Formatting Problems](/blog/common-csv-formatting-problems/) for broken rows, quotes, delimiters, and encodings.
+- [CSV to JSON Conversion Guide](/blog/csv-to-json-conversion-guide/) when cleaned CSV needs to become structured JSON.
+- [Converters Tools](/tools/converters/) for moving data between CSV, JSON, YAML, timestamps, and number formats.

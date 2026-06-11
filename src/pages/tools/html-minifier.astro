@@ -30,6 +30,8 @@ const useCases = [
   'Reducing copied markup before sharing it in tickets or docs',
   'Cleaning static HTML fragments after code review',
   'Comparing formatted and compact HTML during frontend debugging',
+  'Compressing CMS, help center, and landing page snippets before pasting them into constrained fields',
+  'Preparing email or widget markup when every character makes the final snippet harder to review',
 ];
 
 const examples = [
@@ -39,12 +41,27 @@ const examples = [
     output: '<article class="card"><h2>Hello</h2><p>Example content.</p></article>',
     note: 'Whitespace between tags can be removed while text content remains readable.',
   },
+  {
+    title: 'Keep preformatted content intact',
+    input: '<pre>Line 1\\n    Line 2</pre>\\n<div> Done </div>',
+    output: '<pre>Line 1\\n    Line 2</pre><div> Done </div>',
+    note: 'The minifier preserves pre, textarea, script, and style blocks because whitespace inside those elements can be meaningful.',
+  },
+  {
+    title: 'Remove review comments before sharing',
+    input: '<!-- TODO: replace copy -->\\n<section>\\n  <p>Published text</p>\\n</section>',
+    output: '<section><p>Published text</p></section>',
+    note: 'Removing comments is useful before handing snippets to clients, support teams, or external systems.',
+  },
 ];
 
 const tips = [
   'Always test minified HTML in the page or template system that will render it.',
   'Be careful with email templates, CMS placeholders, and framework-specific whitespace behavior.',
   'Use HTML Formatter when you need readable markup for review, then minify only after edits are complete.',
+  'Keep an editable source version elsewhere. Minified HTML is harder to debug once it has been pasted into a CMS field.',
+  'Do not remove conditional comments if the snippet targets older email clients or legacy browser-specific markup.',
+  'Minify small manual snippets here; use a build pipeline for full production pages with asset hashing, templating, and repeatable output.',
 ];
 
 const faq = [
@@ -66,6 +83,16 @@ const faq = [
     question: 'Should I use this instead of a build tool minifier?',
     answer:
       'Use this for quick snippets and manual debugging. For production websites, a build pipeline can provide more complete optimization, source handling, and repeatability.',
+  },
+  {
+    question: 'Can I minify email HTML?',
+    answer:
+      'Yes, but test the final email carefully. Some email clients are sensitive to table markup, conditional comments, and spacing around inline text.',
+  },
+  {
+    question: 'Why are script and style blocks preserved?',
+    answer:
+      'Whitespace and comments inside JavaScript, CSS, textarea, and preformatted blocks may be meaningful. The tool protects those blocks while compacting surrounding markup.',
   },
 ];
 ---

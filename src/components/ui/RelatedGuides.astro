@@ -8,24 +8,28 @@ export interface Props {
 }
 
 const { guides } = Astro.props;
+const visibleGuides = guides.slice(0, 4);
 ---
 
 {
-  guides.length > 0 && (
-    <section class="mt-12">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Guides</h2>
+  visibleGuides.length > 0 && (
+    <section class="mt-8">
+      <div class="mb-4 flex items-center justify-between gap-3">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Related Guides</h2>
+        <a href="/blog/" class="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          More
+        </a>
+      </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {guides.map((guide) => (
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {visibleGuides.map((guide) => (
           <a
             href={guide.href}
-            class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            class="rounded-lg border border-gray-200 bg-white px-3 py-2.5 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
           >
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{guide.title}</h3>
 
-            <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{guide.description}</p>
-
-            <span class="mt-4 inline-flex text-sm font-semibold text-blue-600 dark:text-blue-400">Read guide</span>
+            <p class="mt-1 hidden text-xs leading-5 text-gray-600 dark:text-gray-400 sm:block">{guide.description}</p>
           </a>
         ))}
       </div>

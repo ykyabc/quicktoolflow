@@ -25,6 +25,19 @@ padding: 16px;
 
 They are easy to reason about, especially for borders, icons, small gaps, and fixed visual details. But if everything is hard-coded in pixels, typography and spacing may not adapt well to user preferences.
 
+## Unit Choice Cheat Sheet
+
+| Use case                         | Usually a good fit              |
+| -------------------------------- | ------------------------------- |
+| Thin borders and precise icons   | `px`                            |
+| Typography scale                 | `rem`                           |
+| Button padding tied to text size | `em`                            |
+| Fluid columns and media          | `%`, grid, flex                 |
+| Full viewport panels             | `dvh`, `svh`, `vh` with testing |
+| Design tokens                    | `rem`, CSS variables            |
+
+The goal is not to eliminate pixels. The goal is to use each unit for the relationship it describes.
+
 ## Rem
 
 `rem` is relative to the root font size. If the browser root is 16px, then:
@@ -75,6 +88,18 @@ They are useful for full-screen sections, responsive type experiments, and viewp
 
 Modern CSS includes units such as `svh`, `lvh`, and `dvh` for more precise viewport height behavior. When supporting older browsers, test carefully.
 
+## Mobile Viewport Height Problems
+
+`100vh` can be surprising on mobile because browser controls expand and collapse as the user scrolls. A section that looks full-screen on desktop can become too tall, too short, or clipped on a phone.
+
+Modern viewport units help:
+
+- `svh`: small viewport height
+- `lvh`: large viewport height
+- `dvh`: dynamic viewport height
+
+For mobile-heavy layouts, test real devices or responsive previews. A unit conversion that is mathematically correct may still feel wrong in the browser.
+
 ## Typography
 
 For typography, rem is often a good default:
@@ -86,6 +111,20 @@ h1 {
 ```
 
 Avoid scaling text purely with viewport width unless you set sensible minimum and maximum values. Text that grows or shrinks too aggressively can become inaccessible or visually unstable.
+
+## Use Clamp for Responsive Type Carefully
+
+CSS `clamp()` can create responsive sizes with boundaries:
+
+```css
+h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+```
+
+This gives the browser a minimum, preferred value, and maximum. It is better than using raw `vw` for text because it prevents extreme sizes on very narrow or very wide screens.
+
+Still, keep body text stable and readable. Large display headings can be fluid; dense interface labels and form text usually should not change dramatically with viewport width.
 
 ## Spacing
 
@@ -113,6 +152,23 @@ When converting a design:
 
 The [CSS Unit Converter](/tools/css-unit-converter/) helps compare values quickly, but the final decision should come from layout behavior.
 
+## Converting Design Values to Tokens
+
+When a design file uses pixel values, convert repeated values into a small token system instead of creating dozens of unrelated measurements.
+
+Example:
+
+```css
+:root {
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+}
+```
+
+This makes spacing easier to maintain across cards, forms, toolbars, and content sections. If every component uses one-off converted values, the design still becomes inconsistent.
+
 ## Common Mistakes
 
 Common mistakes include:
@@ -126,8 +182,27 @@ Common mistakes include:
 
 The best unit is the one that matches the relationship you want.
 
+## Accessibility Checks
+
+After converting units, test:
+
+- browser zoom
+- increased root font size
+- long labels
+- mobile width
+- landscape orientation
+- dark mode if spacing changes with components
+
+Responsive design is not finished when the numbers convert cleanly. It is finished when the layout still works under real user settings.
+
 ## Bottom Line
 
 Pixels are precise. Rem supports consistent scalable systems. Em follows local text size. Percentages follow containers. Viewport units follow the screen.
 
 Responsive design improves when unit choices describe relationships, not just converted numbers.
+
+## Related Guides
+
+- [CSS units guide: px, em, rem, vw, and vh](/blog/css-units-guide-px-em-rem-vw-vh/) explains when each unit fits a layout decision.
+- [Color conversion guide for web designers](/blog/color-conversion-guide-for-web-designers/) pairs well when documenting design tokens and CSS variables.
+- Browse related utilities in the [Design / Frontend Tools collection](/tools/frontend-design/).

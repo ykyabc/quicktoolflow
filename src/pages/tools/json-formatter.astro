@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Cleaning compact JSON before sharing it in tickets or documentation',
     'Checking configuration files before committing them',
     'Minifying JSON payloads for examples, tests, or storage',
+    'Comparing raw webhook payloads before writing parsing logic',
+    'Preparing readable JSON fixtures for unit tests and bug reports',
   ]}
   howToSteps={[
     'Paste raw JSON, an API response, or a configuration snippet into the input field.',
@@ -37,11 +39,25 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         '{\n  "user": {\n    "id": 42,\n    "name": "Alex"\n  },\n  "roles": [\n    "admin",\n    "editor"\n  ],\n  "active": true\n}',
       note: 'Formatting makes nested objects and arrays easier to scan when you are debugging an API response.',
     },
+    {
+      title: 'Catch a trailing comma before a deploy',
+      input: '{\n  "name": "QuickToolFlow",\n  "enabled": true,\n}',
+      output: 'Invalid JSON: unexpected token near the trailing comma',
+      note: 'JavaScript object literals often allow trailing commas, but strict JSON does not. Validate config snippets before copying them into tools that expect JSON.',
+    },
+    {
+      title: 'Minify a small JSON fixture',
+      input: '{\n  "event": "signup",\n  "source": "landing-page",\n  "paid": false\n}',
+      output: '{"event":"signup","source":"landing-page","paid":false}',
+      note: 'Minified JSON is useful for compact examples, URLs, test fixtures, and storage where human readability is not required.',
+    },
   ]}
   tips={[
     'JSON does not allow trailing commas, comments, or unquoted object keys. Those are common reasons validation fails.',
     'This tool parses JSON with the browser JavaScript engine, so the result follows standard JSON.parse behavior.',
     'Formatting changes whitespace only. It does not change key names, values, array order, or object structure.',
+    'If a payload is valid JSON but still breaks your app, validate it against a schema to catch missing fields or wrong value types.',
+    'When debugging copied API responses, first remove log prefixes, HTTP headers, or text around the JSON object before validating.',
   ]}
   faq={[
     {
@@ -63,6 +79,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       question: 'What is the difference between format and minify?',
       answer:
         'Format adds indentation and line breaks for readability. Minify removes unnecessary whitespace to make JSON shorter.',
+    },
+    {
+      question: 'Can this fix invalid JSON automatically?',
+      answer:
+        'No. It reports parser errors so you can fix the source intentionally. Automatic repair can hide problems such as missing quotes, truncated arrays, or non-JSON JavaScript syntax.',
+    },
+    {
+      question: 'Why is my API response valid but my app still rejects it?',
+      answer:
+        'Syntax validation only proves the text is parseable JSON. Your app may also require certain fields, value types, enum values, or array shapes. Use schema validation for those checks.',
     },
   ]}
 >

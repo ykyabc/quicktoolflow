@@ -107,6 +107,19 @@ Use a Base64 image when:
 - you are debugging data URLs
 - you need a portable test example
 
+## Performance Review Checklist
+
+Before choosing Base64 for an image, check:
+
+- How large is the encoded string?
+- Will the image appear on more than one page?
+- Does the browser need responsive image sizes?
+- Would caching the image separately help?
+- Will the image change often?
+- Does the HTML or CSS become harder to maintain?
+
+If several answers point to reuse, responsiveness, or caching, a normal image file is usually the better delivery method.
+
 ## Related Tools
 
 The [Base64 Encoder & Decoder](/tools/base64/) helps with general text and binary-safe encoding concepts. The [Base64 Image Converter](/tools/base64-image-converter/) focuses on image data URLs and previews.

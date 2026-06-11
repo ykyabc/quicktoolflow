@@ -31,6 +31,8 @@ const useCases = [
   'Preparing non-UTM query strings for product or search pages',
   'Encoding special characters inside query parameter values',
   'Normalizing long URLs before sharing them in tickets or examples',
+  'Rebuilding filter URLs for QA cases where repeated parameters and sort order matter',
+  'Parsing pasted URLs into key-value lines before comparing two request examples',
 ];
 
 const examples = [
@@ -40,12 +42,27 @@ const examples = [
     output: 'https://example.com/search?q=json+formatter&sort=recent',
     note: 'The builder encodes spaces and special characters so query values remain parseable.',
   },
+  {
+    title: 'Use repeated keys for filters',
+    input: 'https://example.com/tools\ntag=json\ntag=csv\ntag=formatter',
+    output: 'https://example.com/tools?tag=json&tag=csv&tag=formatter',
+    note: 'Repeated keys are common in filter URLs and API requests. This tool keeps each repeated line as its own parameter.',
+  },
+  {
+    title: 'Encode reserved characters safely',
+    input: 'https://api.example.com/search\nq=name=Alice & role=admin\nredirect=https://example.com/callback?ok=true',
+    output: 'A URL where equals signs, ampersands, spaces, and nested URLs are percent-encoded inside values.',
+    note: 'Encoding prevents one value from accidentally becoming multiple query parameters.',
+  },
 ];
 
 const tips = [
   'Use UTM Builder for campaign tracking URLs. Use this tool for general query parameters.',
   'Repeated keys are valid in URLs and are useful for filters such as tag=js and tag=css.',
   'Avoid placing secrets, tokens, or private data in URLs because URLs can appear in logs and browser history.',
+  'Sort parameters when you need stable URLs for documentation, snapshots, or code review comments.',
+  'Keep existing query parameters only when you intentionally want to merge new values into a pasted URL.',
+  'For API testing, copy the parsed parameter lines into your notes so reviewers can see exactly which options changed.',
 ];
 
 const faq = [
@@ -67,6 +84,21 @@ const faq = [
     question: 'Is this the same as a UTM builder?',
     answer:
       'No. A UTM builder is specialized for analytics campaign parameters. This query builder is for general URL parameters.',
+  },
+  {
+    question: 'What happens if my base URL already has parameters?',
+    answer:
+      'If Keep existing query is enabled, the new parameters are appended to the existing ones. If it is disabled, the final URL is built from the parameter lines only.',
+  },
+  {
+    question: 'Should I put API keys in query strings?',
+    answer:
+      'Avoid it when possible. URLs can be stored in logs, browser history, analytics tools, and referrer headers, so private tokens are safer in headers or server-side configuration.',
+  },
+  {
+    question: 'Why does a space become a plus sign or percent code?',
+    answer:
+      'Query strings must encode spaces and reserved characters. Different encoders may use + or %20 depending on context, but both represent a space in query values.',
   },
 ];
 ---

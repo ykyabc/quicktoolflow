@@ -156,6 +156,27 @@ Raw `&` characters often break XML parsing.
 **Invalid nesting**
 Tags must close in reverse order.
 
+## XML Formatting Workflow
+
+When an XML file fails, start by formatting it before changing values. Indentation makes the tree easier to inspect, especially in feeds, sitemaps, SOAP responses, and configuration files.
+
+A practical workflow:
+
+1. Format the XML.
+2. Check that there is one root element.
+3. Look for unclosed or incorrectly nested tags.
+4. Search for raw `&` characters.
+5. Confirm required attributes are present.
+6. Compare the cleaned version against the original if the file came from another system.
+
+For publishing files such as sitemaps, also verify that URLs are absolute and dates use the expected format.
+
+## Related Guides
+
+- [JSON vs YAML vs XML](/blog/json-vs-yaml-vs-xml/) compares XML with other structured data formats.
+- [YAML formatting guide](/blog/yaml-formatting-guide/) covers a more indentation-sensitive configuration format.
+- Browse related utilities in the [Code Formatting Tools collection](/tools/code-formatting/).
+
 ## Related QuickToolFlow Tools
 
 - [XML Formatter](/tools/xml-formatter/) for formatting, validating, and minifying XML.

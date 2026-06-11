@@ -42,6 +42,19 @@ Can become:
 
 The structure is the same, but the representation is shorter.
 
+## Safe vs Risky Minification
+
+| Markup area               | Usually safe to compact? | Notes                                                         |
+| ------------------------- | ------------------------ | ------------------------------------------------------------- |
+| Spaces between block tags | Usually yes              | Browsers ignore most layout whitespace between block elements |
+| HTML comments             | Usually yes              | Except comments used by email clients or template systems     |
+| Inline text spacing       | Be careful               | Removing a space can join visible words                       |
+| `pre` and `textarea`      | No                       | Whitespace is part of the content                             |
+| `script` and `style`      | Treat separately         | JavaScript and CSS need their own parsers                     |
+| Template syntax           | Be careful               | Server-side placeholders may not be valid plain HTML          |
+
+This is why minification should not be a blind find-and-replace operation. A good workflow understands which parts of the document are structure and which parts are user-visible content.
+
 ## What Minification Should Preserve
 
 HTML minification should be careful around content where whitespace has meaning:
@@ -99,6 +112,32 @@ Production sites often use both:
 
 Minification helps, but compression usually has a larger effect on transfer size.
 
+## HTML Minification in Modern Build Pipelines
+
+For full websites, HTML is often produced by a framework, template engine, CMS, or static site generator. In that workflow, developers usually keep source files readable and let the build step create optimized output.
+
+That approach has several advantages:
+
+- code reviews stay readable
+- templates keep meaningful indentation
+- minification is repeatable
+- production output is generated consistently
+- source files can be formatted again without losing context
+
+Manual minification is most useful for small snippets, examples, embeds, test cases, and debugging generated output. For application source code, automated build tooling is usually safer.
+
+## Email and CMS Edge Cases
+
+Email templates are unusually sensitive because different clients interpret markup differently. Some older email patterns use comments, conditional comments, table spacing, or inline styles in ways that a normal webpage would not.
+
+CMS snippets can also include placeholders:
+
+```html
+<a href="{{ product.url }}">{{ product.title }}</a>
+```
+
+A plain HTML minifier may not understand that syntax. Before minifying templates, test them in the actual rendering system, not only in a browser preview.
+
 ## A Safe HTML Minification Workflow
 
 1. Format the HTML first.
@@ -108,6 +147,21 @@ Minification helps, but compression usually has a larger effect on transfer size
 5. Keep the readable source copy.
 
 That last step is important. Minified markup is not pleasant to maintain.
+
+## Testing Minified Output
+
+After minifying, inspect the result in the context where it will be used. For a webpage, render it in the browser. For an email, test it in the email platform. For a CMS field, preview the page that consumes the snippet.
+
+Check for:
+
+- joined words in inline text
+- missing spaces around links or icons
+- removed comments that were actually required
+- broken template placeholders
+- changed attribute values
+- JavaScript or CSS blocks that no longer run
+
+If the snippet contains structured data, forms, or tracking attributes, verify those separately. Compact markup can still be valid HTML while breaking an integration detail.
 
 ## Common Mistakes
 
@@ -122,6 +176,12 @@ Minified HTML is still readable. Anyone can format it again.
 
 **Minifying mixed template syntax blindly**
 Template languages may use delimiters that normal HTML minifiers do not understand.
+
+## Related Guides
+
+- [HTML formatter vs HTML minifier](/blog/html-formatter-vs-html-minifier/) helps decide which step belongs in your workflow.
+- [HTML formatter guide](/blog/html-formatter-guide/) is the safer starting point when markup still needs review.
+- Browse related utilities in the [Code Formatting Tools collection](/tools/code-formatting/).
 
 ## Related QuickToolFlow Tools
 

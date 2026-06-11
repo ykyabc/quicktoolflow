@@ -139,6 +139,74 @@ Alice,New York,JSON; CSV`}</code></pre>
     </div>
 
     <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Before You Convert JSON to CSV</h2>
+      <div class="space-y-5 text-gray-600 dark:text-gray-400">
+        <p>
+          CSV works best when every record has a similar shape. Before converting a large API response, identify the
+          array that actually contains the rows you want. A full API response often includes metadata, pagination, and
+          nested objects around the real dataset.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Pick the row array</h3>
+            <p class="text-sm">
+              Convert <code>items</code>, <code>users</code>, or <code>orders</code> instead of the entire wrapper object
+              when an API response contains pagination metadata.
+            </p>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Check nested fields</h3>
+            <p class="text-sm">
+              Nested objects become dotted columns. Confirm that headers such as <code>profile.city</code> match the import
+              system you plan to use.
+            </p>
+          </div>
+          <div class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Review arrays</h3>
+            <p class="text-sm">
+              Arrays are joined into one cell. That is useful for tags or roles, but not ideal for line items that
+              should become separate rows.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Common JSON to CSV Workflows</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">API response review</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Convert a sample response into CSV so product, support, or operations teams can inspect records in a
+            spreadsheet without reading nested JSON manually.
+          </p>
+        </div>
+        <div class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Import template preparation</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Flatten JSON into columns, then rename headers to match the import template used by a CRM, analytics
+            platform, or internal admin tool.
+          </p>
+        </div>
+        <div class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Test fixture sharing</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Convert small JSON fixtures into CSV when reviewers need a compact table, then keep the original JSON for
+            automated tests.
+          </p>
+        </div>
+        <div class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Data cleanup handoff</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Move structured records into a spreadsheet for manual cleanup, then convert the cleaned CSV back to JSON
+            when the data needs to return to an app or script.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
@@ -191,6 +259,20 @@ Alice,New York,JSON; CSV`}</code></pre>
             key does not exist.
           </p>
         </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Can this convert deeply nested JSON?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            It can flatten nested objects into dotted headers. For deeply nested arrays such as order line items, decide
+            whether those arrays should stay in one cell or be exported as a separate table.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Why does my API response not convert?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            The input must be an array of objects. If your response is an object with fields like <code>data</code> or
+            <code>items</code>, copy the array inside that field and convert it instead.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -214,7 +296,7 @@ Alice,New York,JSON; CSV`}</code></pre>
         <div class="max-w-4xl mx-auto mt-12">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {relatedTools.map((tool) => (
+            {relatedTools.slice(0, 4).map((tool) => (
               <ToolCard
                 slug={tool.slug}
                 name={tool.name}

@@ -123,6 +123,21 @@ console.log(JSON.stringify(data, null, 2));
 
 For production CSV, use a real CSV parser or a browser tool that supports quoted values.
 
+## Validate the JSON After Conversion
+
+CSV conversion can produce syntactically valid JSON that still has the wrong shape. Always inspect a sample of the output before using it in an API, import script, or documentation example.
+
+Check:
+
+- Are header names clean JSON keys?
+- Are all rows present?
+- Did empty cells become empty strings, nulls, or missing fields?
+- Did leading zeros survive?
+- Are numbers and booleans still strings when they need to be?
+- Did quoted commas stay inside the right field?
+
+Use the [JSON Formatter & Validator](/tools/json-formatter/) after conversion so nested arrays and object keys are easier to review.
+
 ## Related QuickToolFlow Tools
 
 - [CSV to JSON Converter](/tools/csv-to-json/) for converting spreadsheet data into JSON arrays.

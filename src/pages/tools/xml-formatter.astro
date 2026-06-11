@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Checking whether copied XML is well-formed',
     'Cleaning RSS, sitemap, SOAP, SVG, or configuration snippets',
     'Minifying XML before embedding or sharing compact examples',
+    'Reviewing vendor XML exports before importing them into another system',
+    'Checking sitemap, feed, or SOAP payload structure without opening a desktop editor',
   ]}
   howToSteps={[
     'Paste XML into the input field.',
@@ -36,11 +38,27 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: '<site>\n  <name>QuickToolFlow</name>\n  <tool>XML Formatter</tool>\n</site>',
       note: 'Readable XML is easier to inspect when debugging APIs, feeds, and configuration files.',
     },
+    {
+      title: 'Find an unescaped ampersand',
+      input: '<company><name>Research & Tools</name></company>',
+      output: 'Parser error until the ampersand is written as &amp;amp;',
+      note: 'Raw ampersands are one of the most common XML copy-and-paste errors in feeds and exports.',
+    },
+    {
+      title: 'Review sitemap entries',
+      input: '<urlset><url><loc>https://quicktoolflow.com/tools/</loc><lastmod>2026-06-11</lastmod></url></urlset>',
+      output:
+        '<urlset>\n  <url>\n    <loc>https://quicktoolflow.com/tools/</loc>\n    <lastmod>2026-06-11</lastmod>\n  </url>\n</urlset>',
+      note: 'Formatting a sitemap makes it easier to spot missing loc, lastmod, or nested URL elements.',
+    },
   ]}
   tips={[
     'XML must have one root element.',
     'Attribute values should be quoted.',
     'If formatting fails, look for an unclosed tag or an unescaped ampersand.',
+    'A formatted XML document can still be semantically wrong if it does not match the schema expected by the receiving system.',
+    'Namespaces such as xmlns are part of element and attribute names, so keep them when sharing SOAP, SVG, or feed snippets.',
+    'Minify only after you have reviewed the readable version, especially for generated feeds or configuration exports.',
   ]}
   faq={[
     {
@@ -60,6 +78,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       question: 'Why is my XML invalid?',
       answer:
         'Common causes include missing closing tags, multiple root elements, unquoted attributes, or raw ampersands that should be escaped.',
+    },
+    {
+      question: 'Does formatting validate an XML schema?',
+      answer:
+        'No. This tool checks whether XML is well-formed. It does not validate XSD rules, required business fields, or feed-specific requirements.',
+    },
+    {
+      question: 'Why did my XML declaration change or disappear?',
+      answer:
+        'Browser XML serialization can normalize the document. If your workflow requires a specific XML declaration, encoding line, or processing instruction, review that header after formatting.',
     },
   ]}
 >

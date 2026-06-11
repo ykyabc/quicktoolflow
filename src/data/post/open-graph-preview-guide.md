@@ -100,8 +100,22 @@ Before publishing:
 - Does the preview still make sense if the image is cropped?
 - Are Open Graph tags consistent with the page content?
 
+## Testing Across Page Types
+
+Different pages need different social previews. A homepage may use a broad brand image, while a tool page should usually make the task obvious. A blog post can use a more editorial title, but the image still needs to communicate the topic at feed speed.
+
+For tool sites, avoid using the exact same `og:title`, `og:description`, and image across every page. Repeated social cards make pages look interchangeable and can reduce click confidence when links are shared in chats or communities.
+
+After updating Open Graph metadata, test at least one homepage, one tool page, and one article page. That catches repeated defaults before they spread across the site.
+
 ## Related QuickToolFlow Tools
 
 - [Open Graph Preview](/tools/open-graph-preview/) for checking social card fields.
 - [Meta Tag Generator](/tools/meta-tag-generator/) for generating broader metadata.
 - [SERP Snippet Preview Tool](/tools/serp-snippet-preview/) for search result titles and descriptions.
+
+## Related Guides
+
+- [SERP Snippet Preview: Titles and Descriptions](/blog/serp-snippet-preview-guide/) for search result metadata.
+- [UTM Builder for Campaign URLs](/blog/utm-builder-guide/) when social links need campaign tracking.
+- [SEO Tools](/tools/seo/) for metadata, snippets, robots.txt, and campaign URL workflows.

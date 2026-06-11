@@ -143,6 +143,25 @@ Use UUIDs for identity. Use secure random strings for secrets.
 
 If a value grants access, treat it like a password or token. If it only labels a record, a UUID is often enough.
 
+## Review Checklist
+
+Before choosing UUIDs or random strings, ask:
+
+- Does the value only identify a record?
+- Does it grant access to private data?
+- Does it need to be typed by a human?
+- Does it need to be short enough for print or email?
+- Can collisions be checked and retried?
+- Does it need expiration or revocation?
+
+These questions separate identity, convenience, and security. A UUID can be a great public identifier, while a random secret string is better for reset links, invite flows, and temporary access.
+
+## Related Guides
+
+- [UUID generator guide for developers](/blog/uuid-generator-guide-for-developers/) covers UUID basics, use cases, and database tradeoffs.
+- [UUID vs short ID vs slug](/blog/uuid-vs-short-id-vs-slug/) compares public identifiers with readable URL slugs.
+- Browse related utilities in the [Generators collection](/tools/generators/).
+
 ## Related QuickToolFlow Tools
 
 - [UUID Generator](/tools/uuid-generator/) for standard UUID v4 identifiers.

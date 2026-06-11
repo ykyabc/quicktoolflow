@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Converting semicolon or tab-delimited data to comma-separated CSV',
     'Checking whether quoted CSV values are parsed correctly',
     'Preparing CSV samples for docs, tests, or support tickets',
+    'Normalizing vendor exports before uploading them to a CRM or analytics tool',
+    'Reviewing inconsistent row lengths before converting CSV to JSON',
   ]}
   howToSteps={[
     'Paste CSV or delimited text into the input field.',
@@ -36,11 +38,25 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: 'name,note\nAlice,"Hello, world"\nBob,Example',
       note: 'The formatter trims values and keeps quotes where they are required.',
     },
+    {
+      title: 'Convert semicolon-delimited data to CSV',
+      input: 'name;email;status\nAda;ada@example.com;active',
+      output: 'name,email,status\nAda,ada@example.com,active',
+      note: 'Some regional spreadsheet exports use semicolons. Choose semicolon as the input delimiter and comma as the output delimiter.',
+    },
+    {
+      title: 'Preserve a comma inside a value',
+      input: 'company,note\nExample Inc,"Sales, support, and billing"',
+      output: 'company,note\nExample Inc,"Sales, support, and billing"',
+      note: 'Values containing commas must stay quoted so import tools do not split them into extra columns.',
+    },
   ]}
   tips={[
     'CSV values containing delimiters, quotes, or line breaks should be quoted.',
     'Choose Tab as the input delimiter for TSV exports.',
     'Use the CSV to JSON Converter when you need structured JSON output.',
+    'Check row counts before and after formatting. A sudden change usually means a quote or line break was interpreted differently than expected.',
+    'Avoid editing CSV in rich text tools. Smart quotes and invisible characters can cause import failures.',
   ]}
   faq={[
     {
@@ -59,6 +75,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       question: 'Does it change my data?',
       answer:
         'It normalizes whitespace and quoting based on your options. Review the output before using it in production imports.',
+    },
+    {
+      question: 'Why does my CSV open as one column?',
+      answer:
+        'The file probably uses a delimiter your spreadsheet app is not detecting, such as semicolon, tab, or pipe. Select the correct input delimiter and output comma-separated CSV if the target expects commas.',
+    },
+    {
+      question: 'Can CSV contain line breaks inside cells?',
+      answer:
+        'Yes, but those values must be quoted. Some simple import scripts still struggle with multiline fields, so test the destination system before relying on them.',
     },
   ]}
 >

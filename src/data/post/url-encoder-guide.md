@@ -57,6 +57,24 @@ space -> %20
 
 Encoding keeps the meaning of the value while preventing the URL parser from treating it as syntax.
 
+## Reserved vs Unreserved Characters
+
+URLs have characters that are allowed as normal data and characters that may have structural meaning.
+
+Unreserved characters such as letters, numbers, hyphens, underscores, dots, and tildes usually do not need encoding:
+
+```text
+a-z A-Z 0-9 - _ . ~
+```
+
+Reserved characters may need encoding when they are part of a value:
+
+```text
+: / ? # [ ] @ ! $ & ' ( ) * + , ; =
+```
+
+The important phrase is "when they are part of a value." A slash separates path segments in a URL, but a slash inside a redirect parameter should usually be encoded.
+
 ## Spaces: `%20` vs `+`
 
 Spaces are commonly represented as `%20`. In form-encoded query strings, you may also see `+`.
@@ -90,6 +108,26 @@ q=red%20shoes
 
 Use the [URL Parser](/tools/url-parser/) if you need to inspect which part of a URL should be encoded.
 
+## Path Segments vs Query Values
+
+Different URL parts have different encoding expectations.
+
+Path segment:
+
+```text
+/docs/url-encoding-guide
+```
+
+Query value:
+
+```text
+?q=url%20encoding%20guide
+```
+
+A slash in a path separates sections. A slash inside a query value may simply be data. This is why the safest process is to identify the URL part first, then encode that component.
+
+For building full query strings from multiple values, use the [URL Query Builder](/tools/url-query-builder/) instead of manually joining strings.
+
 ## Nested URLs and Redirect Parameters
 
 Some links include another URL as a parameter value:
@@ -106,11 +144,47 @@ https://example.com/redirect?to=https%3A%2F%2Fquicktoolflow.com%2Ftools%2F
 
 This is common in redirect links, OAuth flows, payment callbacks, and campaign tools.
 
+## Double Encoding
+
+Double encoding happens when an already encoded value is encoded again.
+
+One pass:
+
+```text
+& -> %26
+```
+
+Two passes:
+
+```text
+%26 -> %2526
+```
+
+Sometimes nested systems intentionally require more than one encoding layer, but most everyday URL bugs come from accidental double encoding. If a server receives `%2526` where you expected `&`, decode one layer at a time and check which system encoded the value.
+
 ## URL Encoding vs Base64
 
 URL encoding and Base64 solve different problems. URL encoding makes text safe inside a URL. Base64 represents binary or text data using a limited character set.
 
 Use URL encoding for query values and path-safe text. Use [Base64 Encoder & Decoder](/tools/base64/) when you need reversible representation of data, not normal URL parameter escaping.
+
+## Security Limits of URL Encoding
+
+URL encoding is not encryption, signing, or validation. It does not make a dangerous URL safe. It only changes how characters are represented.
+
+For example, this encoded value:
+
+```text
+%3Cscript%3E
+```
+
+decodes to:
+
+```text
+<script>
+```
+
+If decoded content is later inserted into HTML without proper escaping, it can still be dangerous. Treat URL decoding as parsing, not as sanitizing.
 
 ## A Practical Workflow
 
@@ -129,6 +203,19 @@ Do not assume encoding makes a link safe or trusted. It only changes representat
 Do not confuse URL encoding with encryption. Anyone can decode percent-encoded text.
 
 Do not double-encode values unless the receiving system explicitly expects it. `%26` can become `%2526`, which changes what the server receives after one decoding pass.
+
+## Debugging URL Encoding Problems
+
+When a link does not behave as expected:
+
+1. Parse the URL into protocol, host, path, query, and fragment.
+2. Identify which parameter or path segment looks wrong.
+3. Decode only that component.
+4. Check whether separators such as `&`, `=`, or `#` were meant to be data.
+5. Re-encode the value once.
+6. Test the rebuilt URL.
+
+This step-by-step approach is more reliable than repeatedly pasting the whole URL into an encoder.
 
 ## Final Tip
 

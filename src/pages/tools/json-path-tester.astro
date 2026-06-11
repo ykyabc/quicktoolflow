@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Testing paths before writing code or documentation',
     'Checking array indexes and wildcard selections',
     'Extracting values from logs, configs, and sample payloads',
+    'Verifying webhook payload examples before writing integration code',
+    'Documenting which field should be read from a deeply nested response',
   ]}
   howToSteps={[
     'Paste JSON into the input field.',
@@ -36,11 +38,26 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       output: '[\n  "alice@example.com",\n  "bob@example.com"\n]',
       note: 'The wildcard selects the email property from every item in the users array.',
     },
+    {
+      title: 'Read a specific array item',
+      input: '$.orders[0].items[0].sku',
+      output: '"starter-plan"',
+      note: 'Indexes are zero-based, so [0] means the first item in an array.',
+    },
+    {
+      title: 'Use bracket notation for special keys',
+      input: '$["user-profile"]["display-name"]',
+      output: '"Alice Chen"',
+      note: 'Bracket notation is useful when a JSON key contains a hyphen, space, or other character that dot notation cannot express.',
+    },
   ]}
   tips={[
     'Start paths with $ to represent the root JSON value.',
     'Use [0] to select the first array item.',
     'Use [*] to select all items in an array or all values in an object.',
+    'If a path returns no matches, test the parent path first and then add one segment at a time.',
+    'JSONPath lookups are case-sensitive: $.User.name and $.user.name are different paths.',
+    'Use bracket notation for keys such as user-id, content type, or fields copied from third-party APIs.',
   ]}
   faq={[
     {
@@ -61,6 +78,16 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
       question: 'Why does my path return no matches?',
       answer:
         'Check property names, array indexes, and whether the path starts from the correct root object. JSON paths are case-sensitive.',
+    },
+    {
+      question: 'How should I debug a long JSON path?',
+      answer:
+        'Start with the root, then test each level separately. For example, test $.orders, then $.orders[0], then $.orders[0].items before adding the final field.',
+    },
+    {
+      question: 'What should I do when field names contain dots?',
+      answer:
+        'Use bracket notation with quotes, such as $["user.name"]. Dot notation treats a dot as a path separator instead of part of the field name.',
     },
   ]}
 >

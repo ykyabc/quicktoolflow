@@ -88,8 +88,6 @@ For example:
 ```
 ````
 
-```
-
 The language label helps syntax highlighting and makes code examples easier to scan.
 
 ## Where Markdown Is Used
@@ -121,9 +119,14 @@ Writing Markdown blind is frustrating. Use our free [Markdown Preview](/tools/ma
 
 Markdown is simple enough to learn in 10 minutes but powerful enough for full technical documentation. Start with the basics and add tables, code blocks, and task lists as needed. Practice with our live preview tool and you will be writing clean documentation in no time.
 
+## Related Guides
+
+- [SQL formatter guide](/blog/sql-formatter-guide/) helps when documentation includes readable database examples.
+- [Text diff checker guide](/blog/text-diff-checker-guide/) is useful when reviewing documentation edits.
+- Browse related utilities in the [Code Formatting Tools collection](/tools/code-formatting/).
+
 ## Related QuickToolFlow Tools
 
 - [Markdown Preview](/tools/markdown-preview/) for writing and previewing Markdown side by side.
 - [Word Counter](/tools/word-counter/) for checking article length and reading time.
 - [Text Diff Checker](/tools/text-diff/) for comparing documentation revisions.
-```

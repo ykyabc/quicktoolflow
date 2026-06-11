@@ -94,6 +94,12 @@ Use our free [QR Code Generator](/tools/qr-code-generator/) to create QR codes f
 
 QR codes are a simple yet powerful tool for bridging the physical and digital worlds. Whether you are creating marketing materials, sharing WiFi credentials, or building a contactless experience, a free QR code generator gives you everything you need in seconds.
 
+## Related Guides
+
+- [QR code use cases for marketing and operations](/blog/qr-code-use-cases-for-marketing-and-operations/) shows practical campaign, print, and field-work examples.
+- [URL query builder guide](/blog/url-query-builder-guide/) helps build destination URLs with clean parameters before generating a QR code.
+- Browse related utilities in the [Generators collection](/tools/generators/).
+
 ## Related QuickToolFlow Tools
 
 - [QR Code Generator](/tools/qr-code-generator/) for creating downloadable QR codes.

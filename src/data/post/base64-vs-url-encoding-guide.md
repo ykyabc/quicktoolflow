@@ -28,6 +28,19 @@ You can test both workflows with the [Base64 Encoder and Decoder](/tools/base64/
 
 Encoding is not encryption. Anyone who knows the encoding can reverse it.
 
+## When Each Encoding Appears
+
+| Scenario                           | Usually involved               |
+| ---------------------------------- | ------------------------------ |
+| Query parameter value contains `&` | URL encoding                   |
+| Binary data in a text field        | Base64                         |
+| JWT header and payload sections    | Base64Url                      |
+| Nested redirect URL                | URL encoding                   |
+| Data URL image preview             | Base64                         |
+| OAuth or callback URL parameter    | URL encoding, sometimes nested |
+
+The destination decides the encoding. Ask where the value will be placed before choosing a transformation.
+
 ## What Base64 Encoding Does
 
 Base64 takes bytes and represents them with a limited alphabet. It is useful when binary data needs to travel through a text-only channel.
@@ -53,6 +66,12 @@ aGVsbG8=
 ```
 
 The `=` at the end is padding. It helps the decoder know how many bytes were in the original input.
+
+## Base64 Is Larger Than the Original
+
+Base64 is convenient, but it is not a compression format. Encoded output is usually about one third larger than the original bytes before compression.
+
+That is fine for small tokens, snippets, or data URLs. It can be a poor fit for large images, large files, or repeated payloads. For images, use the [Base64 Image Converter](/tools/base64-image-converter/) to inspect output size before embedding it.
 
 ## What URL Encoding Does
 
@@ -81,6 +100,22 @@ name%3DAlex%20%26%20Jordan
 ```
 
 The `%26` represents `&`, so the browser does not treat it as a query separator.
+
+## Encode URL Components, Not the Wrong Layer
+
+If a query value contains text, encode that value:
+
+```text
+q=red%20%26%20blue
+```
+
+If a query value contains another URL, encode the nested URL:
+
+```text
+redirect=https%3A%2F%2Fexample.com%2Fdocs%3Fa%3D1%26b%3D2
+```
+
+Encoding the entire final URL usually creates a string that is no longer a normal clickable URL. Use the [URL Parser](/tools/url-parser/) when you are unsure which part is structural and which part is data.
 
 ## Base64Url: The JWT Variant
 
@@ -127,6 +162,19 @@ If a Base64 string contains `+`, `/`, or `=`, it may need URL encoding before it
 
 Base64Url avoids that by using URL-safe characters.
 
+## Debugging Decoding Problems
+
+When a value does not decode correctly, check:
+
+- is it Base64, Base64Url, or percent-encoded text?
+- was padding removed?
+- were `+` and `/` replaced with `-` and `_`?
+- was the value already decoded once?
+- is the value a whole URL or only a component?
+- does it contain binary data that should not be displayed as plain text?
+
+Do not repeatedly decode until the result "looks right." Multiple decoding passes can change meaning and may create security problems in redirect or routing logic.
+
 ## Which One Should You Use?
 
 Use Base64 when you need to represent bytes as text.
@@ -135,8 +183,27 @@ Use URL encoding when you need to place text inside a URL path, query parameter,
 
 Use Base64Url when you need a URL-safe Base64 representation, especially for tokens.
 
+## Security Boundary
+
+Encoding only changes representation. It does not:
+
+- encrypt data
+- prove integrity
+- hide secrets
+- validate URLs
+- sanitize HTML
+- authorize access
+
+If a value is sensitive, use proper encryption, signing, access control, or secret storage. Encoded values should still be treated as readable by anyone who can see them.
+
 ## Related QuickToolFlow Tools
 
 - [Base64 Encoder and Decoder](/tools/base64/) for encoding and decoding Base64 strings.
 - [URL Encoder and Decoder](/tools/url-encoder/) for escaping query values and URL text.
 - [JWT Decoder](/tools/jwt-decoder/) for inspecting Base64Url-encoded token sections.
+
+## Related Guides
+
+- [Understanding Base64 Encoding](/blog/understanding-base64-encoding-explained/) for Base64 padding, Unicode, and payload behavior.
+- [URL Encoder: Percent-Encoding Guide](/blog/url-encoder-guide/) for URL component encoding.
+- [Security & Encoding Tools](/tools/security-encoding/) for encoding, hashing, JWT, password, and escaping tools.

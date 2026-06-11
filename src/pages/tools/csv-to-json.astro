@@ -22,6 +22,8 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     'Preparing CSV reports for API mockups or front-end prototypes',
     'Converting simple datasets before importing into developer tools',
     'Checking how CSV headers map to JSON object keys',
+    'Cleaning CRM, analytics, or product catalog exports before using them in scripts',
+    'Turning tabular QA data into JSON fixtures for front-end tests',
   ]}
   howToSteps={[
     'Paste CSV data into the input area.',
@@ -37,11 +39,28 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
         '[\n  {\n    "name": "Alice",\n    "role": "Developer"\n  },\n  {\n    "name": "Bob",\n    "role": "Designer"\n  }\n]',
       note: 'Header names become object keys, and each following row becomes one JSON object.',
     },
+    {
+      title: 'Preserve commas inside quoted fields',
+      input: 'name,notes\nAlice,"Uses JSON, CSV, and YAML"\nBob,"Reviews imports"',
+      output:
+        '[\n  {\n    "name": "Alice",\n    "notes": "Uses JSON, CSV, and YAML"\n  },\n  {\n    "name": "Bob",\n    "notes": "Reviews imports"\n  }\n]',
+      note: 'Quoted CSV fields allow commas inside a value without creating extra columns.',
+    },
+    {
+      title: 'Convert tab-separated data',
+      input: 'sku\tprice\tactive\nstarter\t19\ttrue\npro\t49\ttrue',
+      output:
+        '[\n  {\n    "sku": "starter",\n    "price": "19",\n    "active": "true"\n  },\n  {\n    "sku": "pro",\n    "price": "49",\n    "active": "true"\n  }\n]',
+      note: 'Choose the Tab delimiter when copying data from spreadsheets or TSV exports.',
+    },
   ]}
   tips={[
     'Use clear header names before converting so the JSON keys are easy to understand.',
     'If your data contains commas inside values, make sure those values are wrapped in quotes.',
     'For tab-separated exports, choose the Tab delimiter before converting.',
+    'Check whether numeric-looking values should stay strings before using the JSON in code.',
+    'Normalize duplicate or blank headers before converting because JSON object keys should be predictable.',
+    'If rows have different column counts, inspect the source CSV before using the output in an import workflow.',
   ]}
   faq={[
     {
@@ -60,6 +79,21 @@ import ToolActionButton from '~/components/ui/ToolActionButton.astro';
     {
       question: 'Can I download the JSON result?',
       answer: 'Yes. After conversion, use the Download button to save the result as a .json file.',
+    },
+    {
+      question: 'Are numbers and booleans converted to JSON types?',
+      answer:
+        'This tool keeps cell values as strings so spreadsheet data is not changed unexpectedly. Convert types later in your application if needed.',
+    },
+    {
+      question: 'What should I do with duplicate CSV headers?',
+      answer:
+        'Rename duplicate headers before converting. JSON objects work best when each property name is unique and stable.',
+    },
+    {
+      question: 'Why are some JSON fields blank?',
+      answer:
+        'Blank fields usually mean a row has fewer cells than the header row, or the source CSV has an unquoted comma that split one value into multiple columns.',
     },
   ]}
 >

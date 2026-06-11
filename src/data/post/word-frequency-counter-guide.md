@@ -95,6 +95,20 @@ Do not compare unrelated topics. A security article and a design article should 
 
 Do not edit only from the frequency table. Read the full text afterward to make sure the article still sounds natural.
 
+## What to Do After Counting
+
+A frequency report is most useful when it leads to a concrete edit. If one vague word appears too often, replace some instances with more specific terms. If a key topic barely appears, check whether the draft actually covers that topic in enough depth.
+
+For SEO content, use the report to improve clarity, not to chase a fixed keyword density. A useful article may repeat the main term naturally, but it should also include related concepts, examples, and user problems.
+
+For documentation, frequency can reveal inconsistent naming. If the same feature is called a "token", "key", and "secret" in different sections, decide whether those are truly different concepts or just inconsistent wording.
+
 ## Final Tip
 
 Use word frequency analysis to notice patterns you would otherwise miss. The best edits usually come from combining the numbers with a clear reading of the text.
+
+## Related Guides
+
+- [Word counter guide](/blog/word-counter-guide/) gives the broader length and reading-time view before you edit repeated terms.
+- [Text diff checker guide](/blog/text-diff-checker-guide/) helps review exactly what changed after a frequency-driven edit.
+- Browse related utilities in the [Text Tools collection](/tools/text/).

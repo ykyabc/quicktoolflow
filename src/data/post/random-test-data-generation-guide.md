@@ -30,6 +30,18 @@ For example, a random age between 1 and 100 may be useful for a demo, but it may
 
 Random generation is helpful, but edge cases still need deliberate coverage.
 
+## Random vs Boundary Test Data
+
+| Data type   | Random examples | Boundary examples            |
+| ----------- | --------------- | ---------------------------- |
+| Age         | 23, 41, 67      | 0, 17, 18, 120               |
+| Price       | 12.49, 84.10    | 0, 0.01, max price           |
+| Quantity    | 3, 19, 222      | 0, 1, stock limit            |
+| Percentage  | 34, 72          | 0, 100, 101                  |
+| Text length | 12 words        | empty, max length, very long |
+
+Random values help you explore variety. Boundary values help you test the rules that usually break.
+
 ## Use Ranges That Match the Domain
 
 Avoid arbitrary ranges unless the field is truly arbitrary. A price, rating, inventory count, percentage, or quantity usually has domain limits.
@@ -44,6 +56,21 @@ temperature: -40 to 60
 ```
 
 The generated values should look realistic enough to reveal layout, validation, and formatting issues.
+
+## Match Data to the UI
+
+A table, chart, form, or dashboard can fail for different reasons. Good test data should match the surface you are testing.
+
+For UI layouts, include:
+
+- short and long values
+- repeated values
+- zero values
+- negative values if allowed
+- maximum realistic values
+- decimal values with different precision
+
+For validation rules, include values just inside and just outside the allowed range. For charts, include flat data, spikes, and missing values. Random generation is useful, but it should be guided by the interface.
 
 ## Integers vs Decimals
 
@@ -86,6 +113,18 @@ A practical workflow:
 
 This gives you the best of both worlds: broad exploration and repeatable tests.
 
+## Seeds, Snapshots, and Regression Cases
+
+Some test frameworks support seeded random data. A seed lets you generate the same "random" sequence again. If your workflow supports seeds, save the seed with any failure report.
+
+When seed support is not available, save the generated values themselves:
+
+```text
+12, 44, 0, 999, -3, 18.75
+```
+
+Those values can become a fixed regression case. The goal is to avoid a bug report that says "it broke once with random data" but cannot reproduce the problem later.
+
 ## Watch for Formatting Issues
 
 Random values can reveal display problems:
@@ -99,8 +138,31 @@ Random values can reveal display problems:
 
 If your UI displays charts or tables, include extremes. A beautiful table with tiny values may break when a realistic large value appears.
 
+## Privacy and Fake Data
+
+Random test data should not accidentally look like real private data. Avoid using live customer records, copied production emails, real phone numbers, or actual payment-like values in screenshots and demos.
+
+For identifiers, use the [UUID Generator](/tools/uuid-generator/) when uniqueness is the goal. For secret-like samples, use generated placeholder secrets and clearly label them as examples. For structured imports, clean values before converting them with the [CSV to JSON Converter](/tools/csv-to-json/).
+
+## Practical QA Checklist
+
+Before relying on generated data, ask:
+
+- does the range match the domain?
+- are edge cases included?
+- are values reproducible if a bug appears?
+- are long values and empty values covered?
+- is private or production data avoided?
+- does the generated data match the format the app expects?
+
 ## Bottom Line
 
 Random test data is useful when it is bounded, realistic, and paired with deliberate edge cases. Use random values to explore. Use fixed examples to verify.
 
 The goal is not to make data unpredictable. The goal is to make problems visible.
+
+## Related Guides
+
+- [Random number generator guide](/blog/random-number-generator-guide/) covers ranges, boundaries, and simple numeric samples.
+- [UUID generator guide for developers](/blog/uuid-generator-guide-for-developers/) helps when test records need unique public identifiers.
+- Browse related utilities in the [Generators collection](/tools/generators/).

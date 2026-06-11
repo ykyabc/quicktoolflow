@@ -30,6 +30,8 @@ const useCases = [
   'Testing image data fields in JSON fixtures or API examples',
   'Preparing CSS background-image data URLs for small assets',
   'Checking whether a copied Base64 image string decodes correctly',
+  'Creating self-contained HTML examples for bug reports, support tickets, or offline demos',
+  'Inspecting whether an unknown data URL is a PNG, JPEG, WebP, GIF, or SVG before using it',
 ];
 
 const examples = [
@@ -39,12 +41,27 @@ const examples = [
     output: '<img src="data:image/png;base64,iVBORw0KGgo..." alt="Embedded icon">',
     note: 'Data URLs are convenient for small assets, but large images should usually remain normal files.',
   },
+  {
+    title: 'Use a data URL in CSS',
+    input: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iLi4u',
+    output: '.icon { background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iLi4u"); }',
+    note: 'CSS data URLs can be handy for very small icons, but they make stylesheets harder to read when overused.',
+  },
+  {
+    title: 'Add an image fixture to JSON',
+    input: '{ "avatar": "data:image/webp;base64,UklGR..." }',
+    output: 'A self-contained test record with an embedded preview image.',
+    note: 'This is useful for fixtures and demos where you do not want to host a separate asset file.',
+  },
 ];
 
 const tips = [
   'Base64 image strings are usually about one third larger than the original binary file.',
   'Use data URLs for small icons, placeholders, and fixtures. Avoid embedding large screenshots or photos.',
   'Base64 is not encryption. Anyone with the string can decode and view the image.',
+  'Prefer normal image files when browser caching, responsive images, lazy loading, or CDN optimization matters.',
+  'For SVG assets, review the source before embedding because SVG can contain scripts or external references.',
+  'If a preview fails, check that the data URL starts with the correct MIME type and includes the ;base64 marker.',
 ];
 
 const faq = [
@@ -66,6 +83,21 @@ const faq = [
   {
     question: 'Can this decode plain Base64 without a data URL prefix?',
     answer: 'Yes. If you paste plain Base64, choose a MIME type first so the preview can build the correct data URL.',
+  },
+  {
+    question: 'How large is too large for a Base64 image?',
+    answer:
+      'There is no single hard limit, but Base64 is best for tiny icons and fixtures. If the encoded string is long enough to make the HTML, CSS, or JSON hard to read, a normal image file is usually better.',
+  },
+  {
+    question: 'Can Base64 images hurt performance?',
+    answer:
+      'Yes. Base64 increases payload size and prevents the image from being cached as a separate file. That tradeoff is acceptable for small one-off assets but poor for repeated or large images.',
+  },
+  {
+    question: 'Is it safe to paste sensitive images?',
+    answer:
+      'The conversion runs locally in your browser, but Base64 is still plain data in text form. Anyone who receives the output can decode the image.',
   },
 ];
 ---

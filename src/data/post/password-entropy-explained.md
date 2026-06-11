@@ -30,6 +30,19 @@ entropy = length * log2(character pool size)
 
 If a password uses 10 random lowercase letters, the pool size is 26. If it uses lowercase, uppercase, numbers, and symbols, the pool is larger.
 
+## Entropy as a Guessing Space
+
+Entropy bits describe the number of possible guesses:
+
+| Entropy   | Approximate possibilities         |
+| --------- | --------------------------------- |
+| 40 bits   | About 1 trillion                  |
+| 60 bits   | About 1 quintillion               |
+| 80 bits   | Far beyond casual guessing        |
+| 100+ bits | Strong for most account passwords |
+
+These numbers are only meaningful when the password is actually random. A human pattern can look complex while having much less practical strength.
+
 ## Length Matters More Than Tricks
 
 Many people try to make passwords stronger by replacing letters:
@@ -67,6 +80,21 @@ Different settings create different pools:
 
 Increasing the pool helps, but increasing length is often easier and more reliable.
 
+## Length vs Character Variety
+
+Adding symbols can help, but length often helps more when the password is randomly generated.
+
+For example, a short password with symbols may still be weaker than a longer password made from a smaller pool. Many sites also restrict symbols, which can make overly complex passwords harder to enter correctly.
+
+A good practical rule is:
+
+- use enough length first
+- include variety when allowed
+- avoid predictable substitutions
+- store passwords in a manager
+
+The [Password Generator](/tools/password-generator/) is useful because it lets you create long random values without relying on memory tricks.
+
 ## Why Entropy Estimates Are Imperfect
 
 Entropy estimates assume the password was generated randomly from the stated pool. Human-created passwords usually violate that assumption. For example, `BlueCoffee2026!` appears to use many character types, but it is still built from words, a year, and a predictable symbol.
@@ -74,6 +102,21 @@ Entropy estimates assume the password was generated randomly from the stated poo
 Attackers do not always try every possible string in order. They often use leaked password lists, dictionaries, keyboard patterns, names, dates, and transformation rules first. That is why a theoretically large character pool does not guarantee real-world strength.
 
 Use entropy as a useful estimate, not as a complete security score.
+
+## Common Human Patterns
+
+Attackers often test patterns before pure brute force:
+
+- seasons and years
+- names plus birthdays
+- keyboard walks such as `qwerty`
+- repeated words
+- service name plus symbol
+- `!` at the end
+- `@` replacing `a`
+- `0` replacing `o`
+
+These patterns reduce real-world strength. `CompanyName2026!` may satisfy a password rule while still being easy to guess if the attacker knows the account context.
 
 ## Randomness Is the Key
 
@@ -98,11 +141,33 @@ For example, four random dictionary words can be easier to type than a symbol-he
 
 Use random generation whenever possible.
 
+## Unique Passwords Matter
+
+Even a strong password becomes dangerous if reused. If one service is breached, attackers can try the same email and password on other sites.
+
+That is why uniqueness is as important as entropy. A password manager makes unique passwords practical because you do not need to memorize every random value.
+
+For important accounts, combine:
+
+- a unique random password
+- multi-factor authentication
+- recovery codes stored safely
+- breach monitoring when available
+- immediate rotation after exposure
+
 ## Offline vs Online Guessing
 
 Password strength also depends on the attack scenario. Online guessing against a login form is usually rate-limited, monitored, and slowed by lockouts or multi-factor authentication. Offline guessing is different: if password hashes are leaked, attackers can try guesses very quickly on their own hardware.
 
 This is why important accounts deserve unique, high-entropy passwords even if the login page limits attempts. You are protecting against both visible login attempts and future breach scenarios.
+
+## Entropy Is Not Password Storage
+
+Entropy describes the password choice. It does not describe how safely a service stores passwords.
+
+A responsible service should use password hashing designed for passwords, usually with salts and slow hashing algorithms. A normal fast hash is not enough for password storage.
+
+The [Hash Generator](/tools/hash-generator/) is useful for understanding digests, but it should not be treated as a password-storage implementation.
 
 ## Practical Recommendations
 

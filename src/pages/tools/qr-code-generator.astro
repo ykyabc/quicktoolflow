@@ -169,6 +169,33 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
     </div>
 
     <div class="max-w-4xl mx-auto mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Practical QR Code Workflows</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Campaign tracking</h3>
+          <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
+            Build a UTM-tagged URL first, then generate a QR code from the final campaign link. This keeps offline
+            posters, flyers, packaging, and event signs measurable in analytics.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Operations and support</h3>
+          <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
+            Use QR codes for equipment labels, setup instructions, return forms, onboarding checklists, or support
+            intake pages. Short destination URLs scan more reliably on small labels.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Print review checklist</h3>
+          <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
+            Test the downloaded PNG at final print size, confirm contrast under real lighting, and scan from the
+            expected distance before ordering a full batch.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Scanning Reliability Tips</h2>
       <ul class="space-y-3 text-gray-600 dark:text-gray-400">
         <li>Keep strong contrast between the foreground and background colors.</li>
@@ -215,6 +242,20 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
             output before distribution.
           </p>
         </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Should I use a short URL?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Shorter URLs usually create less dense QR codes, which can improve scanning on small labels or low-quality
+            print materials. Make sure the short URL is stable before printing.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Can I track QR code performance?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Yes. Generate the QR code from a tagged URL, such as a URL with UTM parameters, so analytics tools can
+            separate scans by campaign, medium, source, or placement.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -229,7 +270,7 @@ const relatedGuides = getRelatedGuides('qr-code-generator');
         <div class="max-w-4xl mx-auto mt-12">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Tools</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {relatedTools.map((tool) => (
+            {relatedTools.slice(0, 4).map((tool) => (
               <ToolCard
                 slug={tool.slug}
                 name={tool.name}

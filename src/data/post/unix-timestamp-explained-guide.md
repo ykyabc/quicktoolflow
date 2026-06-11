@@ -123,6 +123,20 @@ JWT tokens commonly use `iat`, `exp`, and `nbf` as Unix timestamps in seconds. I
 
 Use the [JWT Decoder](/tools/jwt-decoder/) to inspect token claims and the [Timestamp Converter](/tools/timestamp-converter/) to convert the values.
 
+## Common Timestamp Debugging Mistakes
+
+The most common timestamp bug is treating seconds as milliseconds or milliseconds as seconds. A 10-digit value and a 13-digit value can both look like "just a number" until they are converted.
+
+Watch for these signs:
+
+- a modern event appears near 1970
+- a date appears thousands of years in the future
+- an expiration time is earlier than the issued time
+- frontend and backend logs disagree by a factor of 1000
+- a field name says `timestamp` without documenting the unit
+
+When reviewing API fields, convert the value both ways if you are unsure. Then update the documentation or field name so the next person does not need to guess.
+
 ## Practical Tips
 
 1. Store timestamps in UTC.
@@ -139,6 +153,12 @@ Use the [Timestamp Converter](/tools/timestamp-converter/) to convert between Un
 ## Conclusion
 
 Unix timestamps are a simple, universal way to represent time in software. Once you understand seconds, milliseconds, and UTC, they become much easier to work with across APIs, databases, and logs.
+
+## Related Guides
+
+- [Unix timestamp seconds vs milliseconds](/blog/unix-seconds-vs-milliseconds/) explains how to identify 10-digit and 13-digit timestamp values.
+- [Timestamp log debugging guide](/blog/timestamp-log-debugging-guide/) applies timestamp conversion to API and production log review.
+- Explore more practical utilities in the [Developer Tools collection](/tools/developer/).
 
 ## Related QuickToolFlow Tools
 

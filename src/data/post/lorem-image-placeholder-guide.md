@@ -107,6 +107,20 @@ Before swapping in final images, confirm:
 
 This avoids the common problem where the prototype looked polished but the final content breaks the layout.
 
+## Placeholder Images in Responsive Layouts
+
+Image placeholders are most useful when they test the same constraints as final assets. A square avatar, a 16:9 video thumbnail, and a tall product image create very different layout behavior.
+
+When testing responsive designs, check:
+
+- whether the image keeps its aspect ratio
+- how the crop behaves on mobile
+- whether surrounding text still aligns
+- whether lazy-loaded images reserve space
+- whether the final image size matches the placeholder shape
+
+If a placeholder has the wrong aspect ratio, the layout may look stable during design and then shift when real images arrive.
+
 ## Common Mistakes
 
 Do not use random dimensions that do not match the final design.
@@ -120,3 +134,9 @@ Do not rely only on desktop preview. Images often cause the most layout problems
 ## Final Tip
 
 Placeholder images are most valuable when they match the shape of your final assets. Treat them as realistic layout stand-ins, not decoration.
+
+## Related Guides
+
+- [Lorem ipsum generator guide](/blog/lorem-ipsum-generator-guide/) helps test text rhythm beside placeholder images.
+- [Color conversion guide for web designers](/blog/color-conversion-guide-for-web-designers/) is useful when placeholder colors need to match design tokens.
+- Browse related utilities in the [Generators collection](/tools/generators/).
