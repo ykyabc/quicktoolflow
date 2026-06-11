@@ -27,7 +27,9 @@ export default defineConfig({
   trailingSlash: 'ignore',
 
   integrations: [
-    sitemap(),
+    sitemap({
+      lastmod: new Date(),
+    }),
     mdx(),
     icon({
       include: {
