@@ -27,6 +27,12 @@ const guideToolSlugsMap: Record<string, string[]> = {
   'whitespace-remover-guide': ['whitespace-remover', 'word-counter', 'text-diff'],
   'text-reverser-guide': ['text-reverser', 'case-converter', 'whitespace-remover'],
   'json-formatting-best-practices': ['json-formatter', 'json-minifier', 'json-path-tester'],
+  'json-vs-yaml-vs-xml': ['json-formatter', 'yaml-formatter', 'xml-formatter'],
+  'csv-vs-json-for-developers': ['csv-formatter', 'json-formatter', 'json-to-csv'],
+  'why-is-my-json-invalid': ['json-formatter', 'json-schema-validator', 'json-path-tester'],
+  'clean-api-data-before-importing': ['json-formatter', 'json-path-tester', 'json-to-csv'],
+  'json-schema-for-api-validation': ['json-schema-validator', 'json-formatter', 'json-path-tester'],
+  'common-csv-formatting-problems': ['csv-formatter', 'csv-to-json', 'json-to-csv'],
   'json-minifier-guide': ['json-minifier', 'json-formatter', 'json-path-tester'],
   'json-path-tester-guide': ['json-path-tester', 'json-formatter', 'json-to-csv'],
   'json-to-csv-conversion-guide': ['json-to-csv', 'json-formatter', 'csv-formatter'],
@@ -65,6 +71,84 @@ const guideToolSlugsMap: Record<string, string[]> = {
   'robots-txt-generator-guide': ['robots-txt-generator', 'serp-snippet-preview', 'url-parser'],
   'utm-builder-guide': ['utm-builder', 'url-parser', 'qr-code-generator'],
   'top-10-free-online-developer-tools-2026': ['json-formatter', 'password-generator', 'base64'],
+};
+
+const guideToolkitMap: Record<string, { title: string; href: string; description: string }> = {
+  'json-formatting-best-practices': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Format, validate, convert, and inspect JSON, CSV, YAML, and XML in one focused toolkit.',
+  },
+  'json-vs-yaml-vs-xml': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Compare formats, then use the matching formatter, validator, or converter.',
+  },
+  'csv-vs-json-for-developers': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Move between table-shaped CSV and nested JSON with focused browser tools.',
+  },
+  'why-is-my-json-invalid': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Validate JSON, inspect nested values, and check schemas from the same toolkit.',
+  },
+  'clean-api-data-before-importing': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Clean API responses before converting them for spreadsheets, imports, or documentation.',
+  },
+  'json-schema-for-api-validation': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Validate API payloads, inspect JSON paths, and format samples before testing schemas.',
+  },
+  'common-csv-formatting-problems': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Clean CSV files and convert them safely to JSON or spreadsheet-friendly formats.',
+  },
+  'json-minifier-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Format, validate, minify, and inspect structured data before sharing it.',
+  },
+  'json-path-tester-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Inspect nested JSON alongside related formatters, validators, and converters.',
+  },
+  'json-to-csv-conversion-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Prepare JSON, CSV, YAML, and XML data for conversion and review.',
+  },
+  'csv-to-json-conversion-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Clean CSV rows and turn tabular data into structured JSON objects.',
+  },
+  'csv-formatting-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Review CSV alongside JSON, YAML, and XML formatting workflows.',
+  },
+  'json-to-yaml-conversion-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Convert API-style JSON into configuration-friendly YAML and review the result.',
+  },
+  'yaml-formatting-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Format YAML and compare it with related JSON, CSV, and XML workflows.',
+  },
+  'xml-formatting-guide': {
+    title: 'Structured Data Tools',
+    href: '/tools/structured-data/',
+    description: 'Format XML and compare it with other structured data formats.',
+  },
 };
 
 const categoryToolkits: Record<string, { title: string; href: string; description: string }> = {
@@ -127,7 +211,7 @@ const relatedTools = selectedToolSlugs
   .filter((tool): tool is (typeof tools)[number] => Boolean(tool))
   .slice(0, 3);
 
-const toolkit = category ? categoryToolkits[category] : undefined;
+const toolkit = guideToolkitMap[normalizedSlug] || (category ? categoryToolkits[category] : undefined);
 const visibleRelatedPosts = relatedPosts.slice(0, 3);
 ---
 
