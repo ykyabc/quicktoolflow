@@ -222,3 +222,13 @@ Do not add a large batch of new URLs yet. The next best move is:
 3. Then run an old-article strengthening batch starting with `json-formatting-best-practices`.
 
 This sequence should send a clearer signal to Google: fewer weak priority URLs, stronger hubs, and deeper supporting articles.
+
+## Priority Submission Follow-Up
+
+Date: 2026-06-12
+
+A separate execution checklist has been added for Search Console URL inspection and manual submission:
+
+- `docs/search-console-priority-submission-plan.md`
+
+Use that document as the working tracker for the current 40-URL priority pool. This audit remains the diagnostic baseline, while the submission plan defines batches, status labels, follow-up timing, and URLs that should not be manually submitted.

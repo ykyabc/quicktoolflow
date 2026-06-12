@@ -11,10 +11,72 @@ const metadata = {
   title: 'JSON to CSV Converter - Free Online Tool',
   description:
     'Convert JSON data to CSV format instantly. Paste your JSON array and download a CSV file. Free, fast, and runs entirely in your browser.',
+  canonical: 'https://quicktoolflow.com/tools/json-to-csv/',
 };
 
 const related = ['json-formatter', 'json-to-yaml', 'string-escape', 'markdown-preview'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'JSON to CSV Converter - QuickToolFlow',
+  description: metadata.description,
+  url: metadata.canonical,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'QuickToolFlow', url: 'https://quicktoolflow.com' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What JSON format works best for CSV conversion?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A JSON array of similarly shaped objects works best. Each object becomes a row and object keys become CSV headers.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How are nested JSON objects handled?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Nested objects are flattened into dotted column names such as profile.city. This keeps the output as a simple table while preserving where each value came from.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How are arrays converted to CSV cells?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Array values are joined into a single CSV cell with semicolons. This is useful for tags and roles, but line-item arrays may need a different data model.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is my JSON data uploaded?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. JSON parsing and CSV generation run locally in your browser.',
+      },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'JSON to CSV Converter', item: metadata.canonical },
+  ],
+};
 ---
 
 <Layout metadata={metadata}>
@@ -322,6 +384,10 @@ Alice,New York,JSON; CSV`}</code></pre>
       >
     </div>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(toolSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
 
   <script is:inline>
     (function () {

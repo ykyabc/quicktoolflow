@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
+import { getSitemapLastmod } from '~/utils/sitemap-lastmod';
 
 const site = 'https://quicktoolflow.com';
-const lastmod = new Date().toISOString();
 
 const priorityUrls = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
@@ -53,14 +53,16 @@ export const GET: APIRoute = () => {
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${priorityUrls
-  .map(
-    (item) => `  <url>
+  .map((item) => {
+    const lastmod = getSitemapLastmod(item.path);
+
+    return `  <url>
     <loc>${site}${item.path}</loc>
-    <lastmod>${lastmod}</lastmod>
+    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>${item.changefreq}</changefreq>
     <priority>${item.priority}</priority>
-  </url>`
-  )
+  </url>`;
+  })
   .join('\n')}
 </urlset>`;
 

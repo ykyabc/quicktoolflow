@@ -14,6 +14,7 @@ import type { AstroIntegration } from 'astro';
 import astrowind from './vendor/integration';
 
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
+import { getSitemapLastmod, isLowValuePaginatedUrl } from './src/utils/sitemap-lastmod';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -28,7 +29,15 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      lastmod: new Date(),
+      filter: (page) => !isLowValuePaginatedUrl(page),
+      serialize: (item) => {
+        const lastmod = getSitemapLastmod(item.url);
+
+        return {
+          ...item,
+          ...(lastmod ? { lastmod } : {}),
+        };
+      },
     }),
     mdx(),
     icon({

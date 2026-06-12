@@ -11,10 +11,72 @@ const metadata = {
   title: 'JSON to YAML Converter - Free Online Tool',
   description:
     'Convert JSON to YAML and YAML to JSON instantly. Paste your data, get the converted output, and copy or download the result. Free, fast, and private.',
+  canonical: 'https://quicktoolflow.com/tools/json-to-yaml/',
 };
 
 const related = ['json-formatter', 'json-to-csv'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'JSON to YAML Converter - QuickToolFlow',
+  description: metadata.description,
+  url: metadata.canonical,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'QuickToolFlow', url: 'https://quicktoolflow.com' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Can this convert JSON to YAML and YAML to JSON?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. The converter supports both directions so you can move API-style JSON into configuration-style YAML or turn YAML back into JSON for validation and tooling.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What should I check after converting to YAML?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Review indentation, arrays, nested objects, quoted values, booleans, dates, and strings such as yes, no, on, or off because YAML parsers can treat some values specially.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does conversion validate my production configuration?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Conversion checks syntax and structure, but the target system such as Docker Compose, Kubernetes, or GitHub Actions should still validate the final file.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is my JSON or YAML uploaded?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. The conversion runs locally in your browser.',
+      },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'JSON to YAML Converter', item: metadata.canonical },
+  ],
+};
 ---
 
 <Layout metadata={metadata}>
@@ -289,6 +351,10 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       >
     </div>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(toolSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
 
   <script is:inline>
     (function () {

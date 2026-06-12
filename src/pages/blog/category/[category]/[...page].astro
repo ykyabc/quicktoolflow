@@ -125,6 +125,10 @@ const metadata = {
     currentPage > 1
       ? `Read page ${currentPage} of ${category.title.toLowerCase()} tutorials, tool guides, and practical workflow articles from QuickToolFlow.`
       : `Read ${category.title.toLowerCase()} tutorials, tool guides, and practical workflow articles from QuickToolFlow.`,
+  robots: {
+    index: currentPage === 1,
+    follow: true,
+  },
 };
 ---
 

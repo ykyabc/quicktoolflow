@@ -11,10 +11,72 @@ const metadata = {
   title: 'Cron Expression Generator - Free Online Tool',
   description:
     'Generate and understand cron expressions visually. Build schedules for minutes, hours, days, months, and weekdays. See human-readable descriptions and next run times.',
+  canonical: 'https://quicktoolflow.com/tools/cron-expression-generator/',
 };
 
 const related = ['timestamp-converter', 'uuid-generator'];
 const relatedTools = tools.filter((t) => related.includes(t.slug));
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Cron Expression Generator - QuickToolFlow',
+  description: metadata.description,
+  url: metadata.canonical,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'QuickToolFlow', url: 'https://quicktoolflow.com' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a cron expression?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A cron expression is a compact schedule format used by many systems to run recurring jobs. The common five-field format represents minute, hour, day of month, month, and day of week.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can this generator show next run times?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. The tool estimates upcoming run times in the browser for common five-field cron schedules so you can check whether the expression matches your intent.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does every system use the same cron syntax?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Cron syntax can vary between Linux cron, cloud schedulers, CI tools, and application frameworks. Always confirm the final expression in the system that will run it.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is my schedule data uploaded?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Cron expression generation and next-run estimation happen locally in your browser.',
+      },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quicktoolflow.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://quicktoolflow.com/tools/' },
+    { '@type': 'ListItem', position: 3, name: 'Cron Expression Generator', item: metadata.canonical },
+  ],
+};
 ---
 
 <Layout metadata={metadata}>
@@ -359,6 +421,10 @@ const relatedTools = tools.filter((t) => related.includes(t.slug));
       >
     </div>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(toolSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />
 
   <script is:inline>
     (function () {
